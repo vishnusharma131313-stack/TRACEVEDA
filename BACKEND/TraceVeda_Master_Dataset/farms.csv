@@ -1,0 +1,16 @@
+farm_id,farm_name,location,district,state,supplier_id,certification_status,is_synthetic
+FARM-001,Farm A,"District-1, State-2",District-1,State-2,SUPPLIER-001,VERIFIED,True
+FARM-002,Farm B,"District-2, State-3",District-2,State-3,SUPPLIER-002,PENDING_RENEWAL,True
+FARM-003,Farm C,"District-3, State-4",District-3,State-4,SUPPLIER-003,VERIFIED,True
+FARM-004,Farm D,"District-4, State-5",District-4,State-5,SUPPLIER-004,VERIFIED,True
+FARM-005,Farm E,"District-5, State-1",District-5,State-1,SUPPLIER-005,PENDING_RENEWAL,True
+FARM-006,Farm F,"District-6, State-2",District-6,State-2,SUPPLIER-006,PENDING_RENEWAL,True
+FARM-007,Farm G,"District-7, State-3",District-7,State-3,SUPPLIER-007,VERIFIED,True
+FARM-008,Farm H,"District-8, State-4",District-8,State-4,SUPPLIER-008,VERIFIED,True
+FARM-009,Farm I,"District-9, State-5",District-9,State-5,SUPPLIER-009,VERIFIED,True
+FARM-010,Farm J,"District-10, State-1",District-10,State-1,SUPPLIER-010,PENDING_RENEWAL,True
+FARM-011,Farm K,"District-11, State-2",District-11,State-2,SUPPLIER-011,VERIFIED,True
+FARM-012,Farm L,"District-12, State-3",District-12,State-3,SUPPLIER-012,PENDING_RENEWAL,True
+FARM-013,Farm M,"District-13, State-4",District-13,State-4,SUPPLIER-013,VERIFIED,True
+FARM-014,Farm N,"District-14, State-5",District-14,State-5,SUPPLIER-014,VERIFIED,True
+FARM-015,Farm O,"District-15, State-1",District-15,State-1,SUPPLIER-015,PENDING_RENEWAL,True

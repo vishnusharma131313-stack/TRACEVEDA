@@ -1,0 +1,17 @@
+{
+  "bsi_records": 1915,
+  "nmpb_records": 960,
+  "plant_master_records": 2300,
+  "supply_chain_tables": 13,
+  "foreign_key_checks_passed": true,
+  "foreign_key_checks": 18,
+  "raw_to_processing_temporal_violations": 0,
+  "shipment_temporal_violations": 0,
+  "lab_manufacturing_temporal_violations": 0,
+  "reverse_trace_tests_passed": 10,
+  "reverse_trace_tests_total": 10,
+  "forward_trace_tests_passed": 20,
+  "forward_trace_tests_total": 20,
+  "many_to_one_processing": 17,
+  "one_to_many_processing": 14
+}
