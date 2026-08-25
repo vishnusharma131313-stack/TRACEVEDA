@@ -1,9 +1,0 @@
-test_type,start_id,passed,count_a,count_b,count_c
-REVERSE_TRACE,MED-2026-001,True,1,2.0,2.0
-REVERSE_TRACE,MED-2026-011,True,1,2.0,2.0
-REVERSE_TRACE,MED-2026-021,True,1,1.0,1.0
-FORWARD_TRACE,ASH-2026-001,True,1,1.0,1.0
-FORWARD_TRACE,ASH-2026-002,True,1,1.0,1.0
-FORWARD_TRACE,ASH-2026-011,True,1,1.0,1.0
-MANY_TO_ONE,multiple raw parents to processing,True,17,,
-ONE_TO_MANY,one raw parent to multiple processing,True,14,,

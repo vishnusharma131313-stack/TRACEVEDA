@@ -1,5 +1,0 @@
-source,files_received,source_rows,processed_rows,quarantined_rows,role,notes
-BSI,20,1915,1915,0,Plant reference,"20 CSV parts merged by S_No; all 1,915 unique records retained."
-NMPB,1,960,960,0,Plant reference,960 numbered records extracted from supplied 62-page PDF; header and reference rows excluded.
-GS1 EPCIS 2.0,1,N/A,N/A,N/A,Event schema reference,"Used for event dimensions such as when, where, business step, disposition, source/destination and sensor context."
-IoT Environmental Sensor Dataset,1,2313682,2219803,93879,IoT reference,Complete 8-field records normalized; partial/malformed rows preserved in quarantine rather than silently discarded.

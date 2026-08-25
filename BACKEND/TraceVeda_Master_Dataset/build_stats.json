@@ -1,9 +1,0 @@
-{
-  "bsi_unique_records": 1915,
-  "nmpb_numbered_records": 960,
-  "plant_master_records": 2300,
-  "exact_binomial_matches": 562,
-  "iot_reference_valid_rows": 2220176,
-  "iot_reference_partial_rows": 373,
-  "iot_output": "/mnt/data/TraceVeda_Master_Dataset/iot_reference_normalized.csv"
-}
