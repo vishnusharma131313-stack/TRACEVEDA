@@ -10,9 +10,12 @@ from routes.transport import router as transport_router
 from routes.storage import router as storage_router
 from routes.trace import router as trace_router
 from routes.blockchain import router as blockchain_router
+from routes.consumer import router as consumer_router
 
 
-app = FastAPI(title="TraceVeda API")
+app = FastAPI(
+    title="TraceVeda API"
+)
 
 
 # =========================
@@ -27,6 +30,7 @@ app.include_router(transport_router)
 app.include_router(storage_router)
 app.include_router(trace_router)
 app.include_router(blockchain_router)
+app.include_router(consumer_router)
 
 
 # =========================
@@ -42,6 +46,7 @@ def home():
 
 @app.get("/api/health")
 def health():
+
     try:
         db.command("ping")
 
@@ -51,6 +56,7 @@ def health():
         }
 
     except Exception:
+
         return {
             "status": "unhealthy",
             "database": "disconnected"
