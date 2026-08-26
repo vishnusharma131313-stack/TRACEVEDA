@@ -18,6 +18,7 @@ qr_id
 
 ## Core Flow
 
+```text
 FARMER
    ↓
 FARM
@@ -28,8 +29,8 @@ PROCESSING BATCH
    ↓
 MEDICINE BATCH
    ↓
-QR
-
+   QR
+```
 
 ## 1. Authentication
 
