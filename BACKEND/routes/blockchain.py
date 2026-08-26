@@ -38,11 +38,11 @@ def create_blockchain_event(data: BlockchainEventRequest):
         sort=[("created_at", -1)]
     )
 
-    previous_hash = (
-        previous["event_hash"]
-        if previous
-        else "GENESIS"
-    )
+    # Safely handle old events that don't have event_hash
+    if previous and previous.get("event_hash"):
+        previous_hash = previous["event_hash"]
+    else:
+        previous_hash = "GENESIS"
 
     timestamp = datetime.utcnow().isoformat()
 
@@ -136,6 +136,14 @@ def verify_blockchain_event(transaction_id: str):
             status_code=404,
             detail="Blockchain event not found"
         )
+
+    # Old events without hash cannot be verified
+    if not event.get("event_hash"):
+        return {
+            "transaction_id": transaction_id,
+            "valid": False,
+            "message": "Event was created before hash tracking was enabled"
+        }
 
     payload = {
         "event_type": event["event_type"],

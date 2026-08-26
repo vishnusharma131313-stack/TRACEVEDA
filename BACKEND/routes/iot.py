@@ -53,9 +53,6 @@ class IoTReadingRequest(BaseModel):
 # DEMO CONFIGURABLE RULES
 # =========================
 
-# These are prototype configuration values.
-# Later they can be moved to an iot_rules collection.
-
 IOT_RULES = {
     "temperature_c": {
         "min": 10,
@@ -135,7 +132,10 @@ def create_iot_reading(data: IoTReadingRequest):
 
     alerts = []
 
-    # Temperature
+    # ---------------------------------
+    # TEMPERATURE
+    # ---------------------------------
+
     if data.temperature_c is not None:
 
         rule = IOT_RULES["temperature_c"]
@@ -151,7 +151,11 @@ def create_iot_reading(data: IoTReadingRequest):
                 "severity": "CRITICAL"
             })
 
-    # Humidity
+
+    # ---------------------------------
+    # HUMIDITY
+    # ---------------------------------
+
     if data.humidity_percent is not None:
 
         rule = IOT_RULES["humidity_percent"]
@@ -167,12 +171,17 @@ def create_iot_reading(data: IoTReadingRequest):
                 "severity": "WARNING"
             })
 
-    # Light
+
+    # ---------------------------------
+    # LIGHT
+    # ---------------------------------
+
     if data.light_intensity_lux is not None:
 
         rule = IOT_RULES["light_intensity_lux"]
 
         if data.light_intensity_lux > rule["max"]:
+
             alerts.append({
                 "parameter": "light_intensity_lux",
                 "value": data.light_intensity_lux,
@@ -180,12 +189,17 @@ def create_iot_reading(data: IoTReadingRequest):
                 "severity": "WARNING"
             })
 
-    # Tilt
+
+    # ---------------------------------
+    # TILT
+    # ---------------------------------
+
     if data.tilt_angle_deg is not None:
 
         rule = IOT_RULES["tilt_angle_deg"]
 
         if abs(data.tilt_angle_deg) > rule["max"]:
+
             alerts.append({
                 "parameter": "tilt_angle_deg",
                 "value": data.tilt_angle_deg,
@@ -193,7 +207,11 @@ def create_iot_reading(data: IoTReadingRequest):
                 "severity": "WARNING"
             })
 
-    # Shock
+
+    # ---------------------------------
+    # SHOCK
+    # ---------------------------------
+
     if data.shock_detected is True:
 
         alerts.append({
@@ -203,37 +221,101 @@ def create_iot_reading(data: IoTReadingRequest):
             "severity": "CRITICAL"
         })
 
-    # Tamper / limit switch
+
+    # =================================
+    # 2FA TAMPER DETECTION
+    # =================================
+    #
+    # FACTOR 1 = Gate / Door status
+    # FACTOR 2 = Weight change
+    #
+    # Gate OPEN + No weight change
+    #       → YELLOW / WARNING
+    #
+    # Gate OPEN + Weight change
+    #       → CRITICAL
+    #
+    # Weight change without gate opening
+    #       → YELLOW / WARNING
+    #
+    # This prevents a simple door opening
+    # from being treated as confirmed theft.
+    # =================================
+
+    gate_open = False
+    weight_changed = False
+
+    # Factor 1: Gate
     if data.switch_status is not None:
 
-        if data.switch_status.upper() in [
+        gate_open = data.switch_status.upper() in [
             "OPEN",
             "TAMPER",
             "TRIGGERED"
-        ]:
-            alerts.append({
-                "parameter": "switch_status",
-                "value": data.switch_status,
-                "message": "Possible tampering detected",
-                "severity": "CRITICAL"
-            })
+        ]
 
-    # Weight change
+    # Factor 2: Weight
     if data.weight_change_kg is not None:
 
-        rule = IOT_RULES["weight_change_kg"]
+        # Any meaningful weight change is considered
+        # product movement/removal.
+        weight_changed = abs(data.weight_change_kg) > 0
 
-        if abs(data.weight_change_kg) > rule["max"]:
-            alerts.append({
-                "parameter": "weight_change_kg",
-                "value": data.weight_change_kg,
-                "message": "Abnormal weight change detected",
-                "severity": "WARNING"
-            })
 
-    # =========================
+    # ---------------------------------
+    # 2FA DECISION
+    # ---------------------------------
+
+    if gate_open and weight_changed:
+
+        alerts.append({
+            "parameter": "tamper_2fa",
+            "value": {
+                "gate_open": True,
+                "weight_changed": True,
+                "weight_change_kg": data.weight_change_kg
+            },
+            "message": (
+                "Critical tampering detected: "
+                "gate opened and weight changed"
+            ),
+            "severity": "CRITICAL"
+        })
+
+    elif gate_open and not weight_changed:
+
+        alerts.append({
+            "parameter": "tamper_2fa",
+            "value": {
+                "gate_open": True,
+                "weight_changed": False,
+                "weight_change_kg": data.weight_change_kg
+            },
+            "message": (
+                "Gate opened but no weight change detected"
+            ),
+            "severity": "YELLOW"
+        })
+
+    elif not gate_open and weight_changed:
+
+        alerts.append({
+            "parameter": "tamper_2fa",
+            "value": {
+                "gate_open": False,
+                "weight_changed": True,
+                "weight_change_kg": data.weight_change_kg
+            },
+            "message": (
+                "Weight change detected without gate opening"
+            ),
+            "severity": "YELLOW"
+        })
+
+
+    # ---------------------------------
     # STORE ALERTS
-    # =========================
+    # ---------------------------------
 
     for alert in alerts:
 
@@ -256,9 +338,26 @@ def create_iot_reading(data: IoTReadingRequest):
             "created_at": datetime.utcnow()
         })
 
+
+    # ---------------------------------
+    # DETERMINE TAMPER STATUS
+    # ---------------------------------
+
+    tamper_status = "NORMAL"
+
+    if gate_open and weight_changed:
+        tamper_status = "CRITICAL"
+
+    elif gate_open or weight_changed:
+        tamper_status = "YELLOW"
+
+
     return {
         "reading_id": reading_id,
         "status": "STORED",
+        "tamper_status": tamper_status,
+        "gate_open": gate_open,
+        "weight_changed": weight_changed,
         "alerts_generated": len(alerts)
     }
 
