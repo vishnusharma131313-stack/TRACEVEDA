@@ -1,0 +1,47 @@
+table_name,column_name,data_type,description,unit,required,primary_key
+iot_devices,sensor_id,string,Unique physical sensor identifier,True,True,
+iot_devices,device_id,string,ESP32/device gateway identifier,True,False,
+iot_devices,sensor_type,string,Physical sensor type,True,False,
+iot_devices,sensor_name,string,Sensor/module name,True,False,
+iot_devices,interface,string,Hardware interface,True,False,I2C|GPIO|UART
+iot_devices,measurement_type,string,Measurement category,True,False,
+iot_devices,installation_location,string,Transport or storage installation context,True,False,TRANSPORT_AND_STORAGE
+iot_devices,calibration_status,string,Calibration state,True,False,CALIBRATED|PENDING
+iot_devices,installation_date,date,Installation date,True,False,
+iot_devices,status,string,Device status,True,False,ACTIVE|INACTIVE
+iot_readings,temperature_c,float,DHT22 temperature reading,°C,True,False
+iot_readings,humidity_percent,float,DHT22 relative humidity reading,%,True,False
+iot_readings,light_intensity_lux,float,BH1750 light intensity,lux,True,False
+iot_readings,switch_status,string,Lever/limit switch state,,True,False
+iot_readings,accel_x_g,float,MPU6050 X-axis acceleration,g,True,False
+iot_readings,accel_y_g,float,MPU6050 Y-axis acceleration,g,True,False
+iot_readings,accel_z_g,float,MPU6050 Z-axis acceleration,g,True,False
+iot_readings,gyro_x_dps,float,MPU6050 X-axis gyroscope,degrees/second,True,False
+iot_readings,gyro_y_dps,float,MPU6050 Y-axis gyroscope,degrees/second,True,False
+iot_readings,gyro_z_dps,float,MPU6050 Z-axis gyroscope,degrees/second,True,False
+iot_readings,shock_detected,boolean,Derived shock flag from MPU6050,,True,False
+iot_readings,tilt_angle_deg,float,Derived tilt angle,degrees,True,False
+iot_readings,weight_kg,float,Load Cell + HX711 measured weight,kg,True,False
+iot_readings,weight_change_kg,float,Derived change from baseline weight,kg,True,False
+iot_readings,latitude,float,GPS latitude,degrees,True,False
+iot_readings,longitude,float,GPS longitude,degrees,True,False
+iot_readings,gps_valid,boolean,Whether GPS fix is valid,,True,False
+iot_readings,alert_status,string,Overall reading status,,True,False
+storage_events,temperature_c,float,DHT22 storage temperature,°C,True,False
+storage_events,humidity_percent,float,DHT22 storage humidity,%,True,False
+storage_events,light_intensity_lux,float,BH1750 storage light intensity,lux,True,False
+storage_events,switch_status,string,Storage opening/closing state,,True,False
+storage_events,accel_x_g,float,Storage MPU6050 X acceleration,g,True,False
+storage_events,accel_y_g,float,Storage MPU6050 Y acceleration,g,True,False
+storage_events,accel_z_g,float,Storage MPU6050 Z acceleration,g,True,False
+storage_events,gyro_x_dps,float,Storage MPU6050 X gyroscope,degrees/second,True,False
+storage_events,gyro_y_dps,float,Storage MPU6050 Y gyroscope,degrees/second,True,False
+storage_events,gyro_z_dps,float,Storage MPU6050 Z gyroscope,degrees/second,True,False
+storage_events,shock_detected,boolean,Derived storage shock flag,,True,False
+storage_events,tilt_angle_deg,float,Derived storage tilt angle,degrees,True,False
+storage_events,weight_kg,float,Storage weight,kg,True,False
+storage_events,weight_change_kg,float,Storage weight change,kg,True,False
+storage_events,latitude,float,GPS latitude when available,degrees,True,False
+storage_events,longitude,float,GPS longitude when available,degrees,True,False
+storage_events,gps_valid,boolean,Whether GPS fix is valid,,True,False
+storage_events,alert_status,string,Storage reading status,,True,False
