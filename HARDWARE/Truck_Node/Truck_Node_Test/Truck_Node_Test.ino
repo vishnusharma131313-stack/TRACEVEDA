@@ -6,11 +6,12 @@
 #include <HardwareSerial.h>
 #include <math.h>
 #include <WiFi.h>
+#include "HX711.h"
 
 // ======================================================
 // TRACEVEDA TRUCK NODE
 // Integrated Hardware Test
-// MPU-6500 + BH1750 + DHT22 + GPS + Switch + LCD
+// MPU-6500 + BH1750 + DHT22 + GPS + Switch + LCD + HX711
 // ======================================================
 
 // ---------------- PIN DEFINITIONS ----------------
@@ -28,7 +29,7 @@
 
 #define RED_LED_PIN 25
 
-// HX711 RESERVED FOR LATER
+// HX711
 #define HX711_DT 32
 #define HX711_SCK 33
 
@@ -36,7 +37,7 @@
 // WI-FI
 // ======================================================
 
-const char* ssid = "YOUR_WIFI_NAME ";
+const char* ssid = "new";
 const char* password = "YOUR_WIFI_PASSWORD";
 
 
@@ -65,6 +66,24 @@ BH1750 lightMeter;
 
 HardwareSerial GPS(2);
 TinyGPSPlus gps;
+
+
+// ======================================================
+// HX711
+// ======================================================
+
+HX711 scale;
+
+// Calibration factor obtained using 177 g S21 FE
+const float HX711_CALIBRATION_FACTOR = 126.4576;
+
+float weightGrams = 0.0;
+float weightKg = 0.0;
+float weightChangeKg = 0.0;
+
+float previousWeightKg = 0.0;
+
+bool hx711OK = false;
 
 
 // ======================================================
@@ -133,6 +152,7 @@ bool doorClosed = false;
 unsigned long lastMPURead = 0;
 unsigned long lastDHTRead = 0;
 unsigned long lastLightRead = 0;
+unsigned long lastHX711Read = 0;
 unsigned long lastLCDUpdate = 0;
 unsigned long lastLCDScreenChange = 0;
 unsigned long lastSerialOutput = 0;
@@ -140,6 +160,7 @@ unsigned long lastSerialOutput = 0;
 const unsigned long MPU_INTERVAL = 50;
 const unsigned long DHT_INTERVAL = 2000;
 const unsigned long LIGHT_INTERVAL = 500;
+const unsigned long HX711_INTERVAL = 500;
 const unsigned long LCD_INTERVAL = 250;
 const unsigned long SCREEN_INTERVAL = 2000;
 const unsigned long SERIAL_INTERVAL = 1000;
@@ -151,7 +172,8 @@ const unsigned long SERIAL_INTERVAL = 1000;
 
 int currentScreen = 0;
 
-const int TOTAL_SCREENS = 8;
+// Added Weight screen
+const int TOTAL_SCREENS = 9;
 
 
 // ======================================================
@@ -204,6 +226,92 @@ void connectWiFi()
   }
 
   Serial.println("================================");
+}
+
+
+// ======================================================
+// HX711 INITIALIZATION
+// ======================================================
+
+void initializeHX711()
+{
+  Serial.println();
+  Serial.println("================================");
+  Serial.println("          HX711 LOAD CELL");
+  Serial.println("================================");
+
+  scale.begin(HX711_DT, HX711_SCK);
+
+  delay(500);
+
+  if (!scale.is_ready())
+  {
+    Serial.println("HX711 NOT detected!");
+    hx711OK = false;
+    return;
+  }
+
+  Serial.println("HX711 detected!");
+
+  // Apply calibration factor
+  scale.set_scale(HX711_CALIBRATION_FACTOR);
+
+  Serial.println("Remove ALL weight from the load cell.");
+  Serial.println("Taring in 3 seconds...");
+
+  delay(3000);
+
+  scale.tare(20);
+
+  weightGrams = 0.0;
+  weightKg = 0.0;
+  previousWeightKg = 0.0;
+  weightChangeKg = 0.0;
+
+  hx711OK = true;
+
+  Serial.println("HX711 tare complete!");
+  Serial.print("Calibration factor: ");
+  Serial.println(HX711_CALIBRATION_FACTOR, 4);
+
+  Serial.println("================================");
+}
+
+
+// ======================================================
+// READ HX711
+// ======================================================
+
+void readHX711()
+{
+  if (!hx711OK)
+  {
+    return;
+  }
+
+  if (!scale.is_ready())
+  {
+    return;
+  }
+
+  // Average 10 readings
+  float newWeightGrams = scale.get_units(10);
+
+  // Small near-zero correction
+  if (fabs(newWeightGrams) < 1.0)
+  {
+    newWeightGrams = 0.0;
+  }
+
+  float newWeightKg = newWeightGrams / 1000.0;
+
+  // Calculate change from previous reading
+  weightChangeKg = newWeightKg - previousWeightKg;
+
+  weightGrams = newWeightGrams;
+  weightKg = newWeightKg;
+
+  previousWeightKg = newWeightKg;
 }
 
 
@@ -857,6 +965,34 @@ void updateLCD()
       }
 
       break;
+
+
+    // ----------------------------------------
+    // 8 — Weight
+    // ----------------------------------------
+
+    case 8:
+
+      if (hx711OK)
+      {
+        snprintf(
+          line,
+          sizeof(line),
+          "Wt:%6.1fg"
+          ,
+          weightGrams
+        );
+      }
+      else
+      {
+        snprintf(
+          line,
+          sizeof(line),
+          "Wt: HX ERR"
+        );
+      }
+
+      break;
   }
 
 
@@ -1026,6 +1162,30 @@ void printSerialData()
   }
 
 
+  // HX711
+
+  Serial.println();
+
+  if (hx711OK)
+  {
+    Serial.print("Weight: ");
+    Serial.print(weightGrams, 1);
+    Serial.println(" g");
+
+    Serial.print("Weight: ");
+    Serial.print(weightKg, 3);
+    Serial.println(" kg");
+
+    Serial.print("Weight Change: ");
+    Serial.print(weightChangeKg, 3);
+    Serial.println(" kg");
+  }
+  else
+  {
+    Serial.println("HX711: NOT AVAILABLE");
+  }
+
+
   // Wi-Fi
 
   Serial.println();
@@ -1171,6 +1331,13 @@ void setup()
 
 
   // ------------------------------------------
+  // HX711
+  // ------------------------------------------
+
+  initializeHX711();
+
+
+  // ------------------------------------------
   // Wi-Fi
   // ------------------------------------------
 
@@ -1191,6 +1358,9 @@ void setup()
   lastLightRead =
     now - LIGHT_INTERVAL;
 
+  lastHX711Read =
+    now - HX711_INTERVAL;
+
   lastLCDUpdate =
     now - LCD_INTERVAL;
 
@@ -1205,6 +1375,8 @@ void setup()
   Serial.println();
   Serial.println("Truck Node initialized.");
 
+
+  // LED hardware test
   digitalWrite(RED_LED_PIN, HIGH);
   delay(1000);
   digitalWrite(RED_LED_PIN, LOW);
@@ -1284,6 +1456,20 @@ void loop()
 
     lux =
       lightMeter.readLightLevel();
+  }
+
+
+  // ==================================================
+  // HX711
+  // ==================================================
+
+  if (
+    now - lastHX711Read >= HX711_INTERVAL
+  )
+  {
+    lastHX711Read = now;
+
+    readHX711();
   }
 
 
