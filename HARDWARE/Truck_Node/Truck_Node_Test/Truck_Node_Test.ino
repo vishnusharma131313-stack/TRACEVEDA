@@ -36,7 +36,7 @@
 // WI-FI
 // ======================================================
 
-const char* ssid = "YOUR_WIFI_NAME";
+const char* ssid = "YOUR_WIFI_NAME ";
 const char* password = "YOUR_WIFI_PASSWORD";
 
 
@@ -1204,6 +1204,10 @@ void setup()
 
   Serial.println();
   Serial.println("Truck Node initialized.");
+
+  digitalWrite(RED_LED_PIN, HIGH);
+  delay(1000);
+  digitalWrite(RED_LED_PIN, LOW);
 }
 
 
