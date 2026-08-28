@@ -1,7 +1,7 @@
 #include "HX711.h"
 
-#define HX711_DT 18
-#define HX711_SCK 19
+#define HX711_DT 32
+#define HX711_SCK 33
 
 HX711 scale;
 
