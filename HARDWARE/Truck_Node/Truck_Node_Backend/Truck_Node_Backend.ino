@@ -244,21 +244,18 @@ void bufferPayload(const String& payload);
 // QUEUE
 // ======================================================
 
-bool enqueuePayload(const String& payload)
-{
+bool enqueuePayload(const String& payload) {
   bool full = false;
   if (queueMutex != nullptr) xSemaphoreTake(queueMutex, portMAX_DELAY);
   if (queueCount >= QUEUE_SIZE) full = true;
-  else
-  {
+  else {
     payloadQueue[queueTail] = payload;
     queueTail++;
     if (queueTail >= QUEUE_SIZE) queueTail = 0;
     queueCount++;
   }
   if (queueMutex != nullptr) xSemaphoreGive(queueMutex);
-  if (full)
-  {
+  if (full) {
     Serial.println("RAM queue FULL -> LittleFS");
     bufferPayload(payload);
     return false;
@@ -266,12 +263,10 @@ bool enqueuePayload(const String& payload)
   return true;
 }
 
-bool peekQueue(String& payload)
-{
+bool peekQueue(String& payload) {
   bool available = false;
   if (queueMutex != nullptr) xSemaphoreTake(queueMutex, portMAX_DELAY);
-  if (queueCount > 0)
-  {
+  if (queueCount > 0) {
     payload = payloadQueue[queueHead];
     available = true;
   }
@@ -279,11 +274,9 @@ bool peekQueue(String& payload)
   return available;
 }
 
-void dequeuePayload()
-{
+void dequeuePayload() {
   if (queueMutex != nullptr) xSemaphoreTake(queueMutex, portMAX_DELAY);
-  if (queueCount > 0)
-  {
+  if (queueCount > 0) {
     payloadQueue[queueHead] = "";
     queueHead++;
     if (queueHead >= QUEUE_SIZE) queueHead = 0;
@@ -596,24 +589,32 @@ void readWeight() {
     return;
   }
 
-  float newWeight = scale.get_units(3);
+  // HX711 calibration code returns grams.
+  float newWeightGrams = scale.get_units(10);
 
-  if (!isfinite(newWeight)) {
+  if (!isfinite(newWeightGrams)) {
     return;
   }
 
-  if (newWeight < 0 && newWeight > -0.05) {
-    newWeight = 0;
+  // Convert grams to kilograms.
+  float newWeightKg =
+    newWeightGrams / 1000.0;
+
+  // Small negative values are treated as zero.
+  if (newWeightKg < 0 && newWeightKg > -0.05) {
+    newWeightKg = 0;
   }
 
-  weightKg = newWeight;
+  weightKg = newWeightKg;
 
   if (!weightInitialized) {
     previousWeightKg = weightKg;
     weightChangeKg = 0.0;
     weightInitialized = true;
   } else {
-    weightChangeKg = weightKg - previousWeightKg;
+    weightChangeKg =
+      weightKg - previousWeightKg;
+
     previousWeightKg = weightKg;
   }
 }
@@ -828,18 +829,15 @@ bool bufferHasSpace(size_t payloadSize) {
     currentSize + payloadSize + 2 <= MAX_BUFFER_BYTES);
 }
 
-void bufferPayload(const String& payload)
-{
+void bufferPayload(const String& payload) {
   if (fsMutex != nullptr) xSemaphoreTake(fsMutex, portMAX_DELAY);
-  if (!bufferHasSpace(payload.length()))
-  {
+  if (!bufferHasSpace(payload.length())) {
     Serial.println("ERROR: LittleFS buffer FULL.");
     if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
     return;
   }
   File file = LittleFS.open(BUFFER_FILE, FILE_APPEND);
-  if (!file)
-  {
+  if (!file) {
     Serial.println("ERROR: Could not open LittleFS buffer.");
     if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
     return;
@@ -857,8 +855,7 @@ void applyBackendRedLED(const String& response) {
   // Backend response example:
   // {"status":"success","red_led":true}
 
-  if (response.indexOf("\"red_led\":true") >= 0 ||
-      response.indexOf("\"red_led\": true") >= 0) {
+  if (response.indexOf("\"red_led\":true") >= 0 || response.indexOf("\"red_led\": true") >= 0) {
     redLedState = true;
 
     digitalWrite(
@@ -867,8 +864,7 @@ void applyBackendRedLED(const String& response) {
 
     Serial.println(
       "Backend RED LED = ON");
-  } else if (response.indexOf("\"red_led\":false") >= 0 ||
-             response.indexOf("\"red_led\": false") >= 0) {
+  } else if (response.indexOf("\"red_led\":false") >= 0 || response.indexOf("\"red_led\": false") >= 0) {
     redLedState = false;
 
     digitalWrite(
@@ -936,27 +932,23 @@ bool sendPayload(const String& payload) {
 // UPLOAD ONE LITTLEFS READING
 // ======================================================
 
-void uploadBufferedData()
-{
+void uploadBufferedData() {
   if (WiFi.status() != WL_CONNECTED) return;
 
   String firstPayload;
   String oldRemaining;
 
   if (fsMutex != nullptr) xSemaphoreTake(fsMutex, portMAX_DELAY);
-  if (!LittleFS.exists(BUFFER_FILE))
-  {
+  if (!LittleFS.exists(BUFFER_FILE)) {
     if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
     return;
   }
   File file = LittleFS.open(BUFFER_FILE, FILE_READ);
-  if (!file)
-  {
+  if (!file) {
     if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
     return;
   }
-  if (file.size() == 0)
-  {
+  if (file.size() == 0) {
     file.close();
     LittleFS.remove(BUFFER_FILE);
     if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
@@ -964,11 +956,13 @@ void uploadBufferedData()
   }
   firstPayload = file.readStringUntil('\n');
   firstPayload.trim();
-  while (file.available())
-  {
+  while (file.available()) {
     String line = file.readStringUntil('\n');
     line.trim();
-    if (line.length() > 0) { oldRemaining += line; oldRemaining += '\n'; }
+    if (line.length() > 0) {
+      oldRemaining += line;
+      oldRemaining += '\n';
+    }
   }
   file.close();
   if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
@@ -981,19 +975,19 @@ void uploadBufferedData()
   if (fsMutex != nullptr) xSemaphoreTake(fsMutex, portMAX_DELAY);
   String newlyAppended;
   File current = LittleFS.open(BUFFER_FILE, FILE_READ);
-  if (current)
-  {
-    while (current.available())
-    {
+  if (current) {
+    while (current.available()) {
       String line = current.readStringUntil('\n');
       line.trim();
-      if (line.length() > 0) { newlyAppended += line; newlyAppended += '\n'; }
+      if (line.length() > 0) {
+        newlyAppended += line;
+        newlyAppended += '\n';
+      }
     }
     current.close();
   }
   File remaining = LittleFS.open(REMAINING_FILE, FILE_WRITE);
-  if (remaining)
-  {
+  if (remaining) {
     if (!uploaded) remaining.println(firstPayload);
     remaining.print(oldRemaining);
     remaining.print(newlyAppended);
@@ -1011,12 +1005,14 @@ void uploadBufferedData()
 // PROCESS ONE RAM READING
 // ======================================================
 
-void processQueue()
-{
+void processQueue() {
   String payload;
   if (!peekQueue(payload)) return;
   if (sendPayload(payload)) dequeuePayload();
-  else { bufferPayload(payload); dequeuePayload(); }
+  else {
+    bufferPayload(payload);
+    dequeuePayload();
+  }
 }
 
 // ======================================================
@@ -1266,11 +1262,9 @@ void printSerialData() {
 }
 
 // ======================================================
-void uploadTask(void* parameter)
-{
+void uploadTask(void* parameter) {
   (void)parameter;
-  for (;;)
-  {
+  for (;;) {
     uploadBufferedData();
     processQueue();
     vTaskDelay(pdMS_TO_TICKS(UPLOAD_TASK_INTERVAL));
@@ -1339,15 +1333,47 @@ void setup() {
 
   Serial.println("GPS serial initialized.");
 
+  // ======================================================
   // HX711
+  // ======================================================
+
   scale.begin(HX711_DT, HX711_SCK);
-  scale.set_scale(HX711_CALIBRATION_FACTOR);
+
+  // Give HX711 time to power up
+  delay(1000);
 
   if (scale.is_ready()) {
-    Serial.println("HX711 detected. Taring...");
+    Serial.println("HX711 detected.");
+
+    // IMPORTANT:
+    // Same sequence as the verified calibration code.
+    // First tare with no calibration factor.
+    scale.set_scale();
     scale.tare(20);
+
+    // Now apply the verified calibration factor.
+    scale.set_scale(HX711_CALIBRATION_FACTOR);
+
     hx711OK = true;
+
     Serial.println("HX711 tare complete.");
+    Serial.print("HX711 calibration factor: ");
+    Serial.println(HX711_CALIBRATION_FACTOR, 4);
+
+    // Initial weight reading
+    float initialWeight = scale.get_units(10);
+
+    if (isfinite(initialWeight)) {
+      weightKg = initialWeight / 1000.0;
+
+      if (weightKg < 0 && weightKg > -0.05) {
+        weightKg = 0;
+      }
+
+      previousWeightKg = weightKg;
+      weightChangeKg = 0.0;
+      weightInitialized = true;
+    }
   } else {
     Serial.println("HX711 NOT detected.");
   }
@@ -1407,8 +1433,7 @@ void setup() {
     nullptr,
     1,
     &uploadTaskHandle,
-    0
-  );
+    0);
 
   Serial.println("Truck Node initialized.");
 }
