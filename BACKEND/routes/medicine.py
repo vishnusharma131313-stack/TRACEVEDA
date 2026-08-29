@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from datetime import date, datetime
 
 from database import db
+from services import blockchain_service
 
 router = APIRouter(
     prefix="/api",
@@ -71,10 +72,26 @@ def create_medicine_batch(data: MedicineBatchRequest):
 
     db.medicine_batches.insert_one(medicine_batch)
 
+    blockchain_tx = blockchain_service.safe_anchor(
+        "MEDICINE_LINKED",
+        "MEDICINE",
+        medicine_batch_id,
+        {
+            "processing_batch_id": data.processing_batch_id,
+            "manufacturer_id": data.manufacturer_id,
+            "qr_id": qr_id,
+            "product_name": data.product_name,
+            "manufacturing_date": data.manufacturing_date,
+            "expiry_date": data.expiry_date,
+            "batch_status": "RELEASED"
+        }
+    )
+
     return {
         "medicine_batch_id": medicine_batch_id,
         "qr_id": qr_id,
-        "status": "CREATED"
+        "status": "CREATED",
+        "blockchain_tx": blockchain_tx
     }
 
 

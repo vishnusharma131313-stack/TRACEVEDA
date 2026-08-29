@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from datetime import date, datetime
 
 from database import db
+from services import blockchain_service
 
 router = APIRouter(prefix="/api/batches", tags=["Batches"])
 
@@ -79,9 +80,24 @@ def create_raw_batch(data: RawBatchRequest):
 
     db.raw_material_batches.insert_one(batch)
 
+    blockchain_tx = blockchain_service.safe_anchor(
+        "BATCH_CREATED",
+        "RAW",
+        raw_batch_id,
+        {
+            "farm_id": data.farm_id,
+            "plant_id": data.plant_id,
+            "collection_date": data.collection_date,
+            "quantity": data.quantity,
+            "unit": data.unit,
+            "batch_status": "CREATED"
+        }
+    )
+
     return {
         "raw_batch_id": raw_batch_id,
-        "status": "CREATED"
+        "status": "CREATED",
+        "blockchain_tx": blockchain_tx
     }
 
 
@@ -132,9 +148,24 @@ def create_processing_batch(data: ProcessingBatchRequest):
 
     db.processing_batches.insert_one(batch)
 
+    blockchain_tx = blockchain_service.safe_anchor(
+        "BATCH_CREATED",
+        "PROCESSING",
+        processing_batch_id,
+        {
+            "processor_id": data.processor_id,
+            "processing_date": data.processing_date,
+            "output_quantity": data.output_quantity,
+            "unit": data.unit,
+            "processing_type": data.processing_type,
+            "batch_status": "CREATED"
+        }
+    )
+
     return {
         "processing_batch_id": processing_batch_id,
-        "status": "CREATED"
+        "status": "CREATED",
+        "blockchain_tx": blockchain_tx
     }
 
 
@@ -206,9 +237,26 @@ def create_batch_relationship(
 
     db.batch_relationships.insert_one(relationship)
 
+    # Manufacturing linkage: the raw -> processing edge the data model is
+    # built around. Anchored deliberately, not opportunistically.
+    blockchain_tx = blockchain_service.safe_anchor(
+        "BATCH_LINKED",
+        "PROCESSING",
+        data.child_batch_id,
+        {
+            "relationship_id": relationship_id,
+            "parent_batch_id": data.parent_batch_id,
+            "child_batch_id": data.child_batch_id,
+            "relationship_type": data.relationship_type,
+            "quantity_contributed": data.quantity_contributed,
+            "unit": data.unit
+        }
+    )
+
     return {
         "relationship_id": relationship_id,
-        "status": "CREATED"
+        "status": "CREATED",
+        "blockchain_tx": blockchain_tx
     }
 
 

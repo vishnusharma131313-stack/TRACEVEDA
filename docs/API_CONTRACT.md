@@ -63,7 +63,8 @@ Response:
 
 {
   "raw_batch_id": "RAW-2026-001",
-  "status": "CREATED"
+  "status": "CREATED",
+  "blockchain_tx": "TX-2026-000001"
 }
 
 
@@ -90,7 +91,8 @@ Response:
 
 {
   "processing_batch_id": "PROCESS-2026-001",
-  "status": "CREATED"
+  "status": "CREATED",
+  "blockchain_tx": "TX-2026-000002"
 }
 
 
@@ -117,7 +119,8 @@ Response:
 
 {
   "relationship_id": "REL-2026-001",
-  "status": "CREATED"
+  "status": "CREATED",
+  "blockchain_tx": "TX-2026-000003"
 }
 
 
@@ -151,7 +154,9 @@ Response:
   "lab_test_id": "LABTEST-2026-001",
   "batch_id": "PROCESS-2026-001",
   "result": "PASS",
-  "status": "VERIFIED"
+  "status": "VERIFIED",
+  "batch_status": "APPROVED_FOR_MANUFACTURING",
+  "blockchain_tx": "TX-2026-000004"
 }
 
 GET /api/lab/tests/{batch_id}
@@ -217,8 +222,16 @@ Response:
 
 {
   "reading_id": "READ-2026-0001",
-  "status": "STORED"
+  "status": "STORED",
+  "tamper_status": "CRITICAL",
+  "gate_open": true,
+  "weight_changed": true,
+  "red_led": true,
+  "alerts_generated": 1,
+  "blockchain_tx": "TX-2026-000006"
 }
+
+blockchain_tx is null unless a CRITICAL alert was raised.
 
 
 ## 12. IoT Alerts
@@ -276,7 +289,8 @@ Response:
 {
   "medicine_batch_id": "MED-2026-001",
   "qr_id": "QR-2026-001",
-  "status": "CREATED"
+  "status": "CREATED",
+  "blockchain_tx": "TX-2026-000005"
 }
 
 
@@ -325,4 +339,96 @@ GET /api/investigations/{investigation_id}
 
 POST /api/blockchain/events
 
-GET /api/blockchain/events/{batch_id}
+Manual / admin anchoring. Batch, lab, medicine and critical IoT
+events anchor themselves - see "Automatic Anchoring" below.
+
+Request:
+
+{
+  "event_type": "BATCH_CREATED",
+  "entity_type": "RAW",
+  "entity_id": "RAW-2026-001",
+  "data": {}
+}
+
+Response:
+
+{
+  "transaction_id": "TX-2026-000001",
+  "event_hash": "9f2b...",
+  "previous_hash": "GENESIS",
+  "blockchain_status": "ANCHORED"
+}
+
+
+GET /api/blockchain/events/{transaction_id}
+
+One anchored event.
+
+
+GET /api/blockchain/batch/{entity_id}
+
+Full anchored trail for one batch or medicine id, in chain order.
+
+Response:
+
+{
+  "entity_id": "PROCESS-2026-001",
+  "event_count": 4,
+  "events": [ ... ]
+}
+
+
+GET /api/blockchain/verify/{transaction_id}
+
+Recompute one event's hash.
+
+
+GET /api/blockchain/verify-chain
+
+Walk every event in sequence order and prove the whole chain.
+
+Response:
+
+{
+  "valid": true,
+  "checked": 376,
+  "broken_at": null,
+  "reason": null
+}
+
+
+## Automatic Anchoring
+
+These routes anchor to the chain on success and return the
+transaction id as "blockchain_tx". The field is null if anchoring
+failed - a ledger outage never fails the underlying write.
+
+POST /api/batches/raw            -> BATCH_CREATED    (RAW)
+POST /api/batches/processing     -> BATCH_CREATED    (PROCESSING)
+POST /api/batches/relationships  -> BATCH_LINKED     (PROCESSING)
+POST /api/lab/tests              -> QUALITY_STATUS   (PROCESSING, PASS and FAIL)
+POST /api/medicine               -> MEDICINE_LINKED  (MEDICINE)
+POST /api/iot/readings           -> TAMPER_EVENT     (CRITICAL alerts only)
+
+On-chain / off-chain split: only dispute-relevant, state-changing
+events are anchored. WARNING and YELLOW alerts and the raw
+high-frequency sensor readings stay in MongoDB only.
+
+
+## Blockchain Ordering
+
+The chain is ordered by an integer "sequence" field and nothing
+else. It comes from an atomic counter, so concurrent writers cannot
+fork the chain or mint duplicate transaction ids. Timestamps are
+informational - MongoDB datetimes are only millisecond-precise and
+have no tiebreak.
+
+
+## Seed Data
+
+blockchain_events.csv ships in a legacy schema. Load and migrate it
+before verify-chain will report a fully valid history:
+
+    python import_csv.py
+    python migrate_seed_blockchain_events.py
