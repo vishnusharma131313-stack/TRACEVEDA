@@ -31,6 +31,11 @@
 // When backend returns:
 // LittleFS → Backend
 //
+// RED LED:
+// Backend response contains:
+// "red_led": true / false
+//
+// ESP32 reads that response and controls GPIO 25.
 // ======================================================
 
 
@@ -79,8 +84,8 @@ const char* IOT_ENDPOINT =
 //
 // ======================================================
 
-const char* ssid = "YOUR_WIFI_SSID";
-const char* password = "YOUR_WIFI_PASSWORD";
+const char* ssid = "new";
+const char* password = "12345678";
 
 
 // ======================================================
@@ -149,15 +154,29 @@ bool doorClosed = false;
 
 
 // ======================================================
+// BACKEND RED LED STATE
+// ======================================================
+//
+// This state is controlled by the backend response.
+//
+// true  -> RED LED ON
+// false -> RED LED OFF
+//
+// If a response does not contain red_led, the previous
+// state is retained.
+// ======================================================
+
+bool redLedState = false;
+
+
+// ======================================================
 // TIMERS
 // ======================================================
 
 unsigned long lastSensorRead = 0;
 unsigned long lastLCDUpdate = 0;
 unsigned long lastWiFiCheck = 0;
-unsigned long lastLEDUpdate = 0;
 unsigned long lastSerialOutput = 0;
-unsigned long lastUploadAttempt = 0;
 
 
 // ======================================================
@@ -167,16 +186,7 @@ unsigned long lastUploadAttempt = 0;
 const unsigned long SENSOR_INTERVAL = 2000;
 const unsigned long LCD_INTERVAL = 250;
 const unsigned long WIFI_INTERVAL = 5000;
-const unsigned long LED_INTERVAL = 2000;
 const unsigned long SERIAL_INTERVAL = 1000;
-const unsigned long UPLOAD_INTERVAL = 3000;
-
-
-// ======================================================
-// LED TEST STATE
-// ======================================================
-
-bool ledState = false;
 
 
 // ======================================================
@@ -208,6 +218,11 @@ int queueHead = 0;
 int queueTail = 0;
 int queueCount = 0;
 
+SemaphoreHandle_t queueMutex = nullptr;
+SemaphoreHandle_t fsMutex = nullptr;
+TaskHandle_t uploadTaskHandle = nullptr;
+const unsigned long UPLOAD_TASK_INTERVAL = 500;
+
 
 // ======================================================
 // FORWARD DECLARATIONS
@@ -223,31 +238,23 @@ bool sendPayload(const String& payload);
 
 bool enqueuePayload(const String& payload)
 {
-  if (queueCount >= QUEUE_SIZE)
+  bool full = false;
+  if (queueMutex != nullptr) xSemaphoreTake(queueMutex, portMAX_DELAY);
+  if (queueCount >= QUEUE_SIZE) full = true;
+  else
   {
-    Serial.println(
-      "RAM queue FULL. Moving payload to LittleFS."
-    );
-
+    payloadQueue[queueTail] = payload;
+    queueTail++;
+    if (queueTail >= QUEUE_SIZE) queueTail = 0;
+    queueCount++;
+  }
+  if (queueMutex != nullptr) xSemaphoreGive(queueMutex);
+  if (full)
+  {
+    Serial.println("RAM queue FULL -> LittleFS");
     bufferPayload(payload);
-
     return false;
   }
-
-  payloadQueue[queueTail] = payload;
-
-  queueTail++;
-
-  if (queueTail >= QUEUE_SIZE)
-  {
-    queueTail = 0;
-  }
-
-  queueCount++;
-
-  Serial.print("Queued payload. Queue size: ");
-  Serial.println(queueCount);
-
   return true;
 }
 
@@ -258,14 +265,15 @@ bool enqueuePayload(const String& payload)
 
 bool peekQueue(String& payload)
 {
-  if (queueCount == 0)
+  bool available = false;
+  if (queueMutex != nullptr) xSemaphoreTake(queueMutex, portMAX_DELAY);
+  if (queueCount > 0)
   {
-    return false;
+    payload = payloadQueue[queueHead];
+    available = true;
   }
-
-  payload = payloadQueue[queueHead];
-
-  return true;
+  if (queueMutex != nullptr) xSemaphoreGive(queueMutex);
+  return available;
 }
 
 
@@ -275,21 +283,15 @@ bool peekQueue(String& payload)
 
 void dequeuePayload()
 {
-  if (queueCount == 0)
+  if (queueMutex != nullptr) xSemaphoreTake(queueMutex, portMAX_DELAY);
+  if (queueCount > 0)
   {
-    return;
+    payloadQueue[queueHead] = "";
+    queueHead++;
+    if (queueHead >= QUEUE_SIZE) queueHead = 0;
+    queueCount--;
   }
-
-  payloadQueue[queueHead] = "";
-
-  queueHead++;
-
-  if (queueHead >= QUEUE_SIZE)
-  {
-    queueHead = 0;
-  }
-
-  queueCount--;
+  if (queueMutex != nullptr) xSemaphoreGive(queueMutex);
 }
 
 
@@ -615,6 +617,76 @@ String createDoorPayload()
 
 
 // ======================================================
+// APPLY BACKEND RED LED RESPONSE
+// ======================================================
+//
+// Expected backend response:
+//
+// {
+//   ...,
+//   "red_led": true
+// }
+//
+// or:
+//
+// {
+//   ...,
+//   "red_led": false
+// }
+//
+// We intentionally do not create a new request field.
+// red_led is read ONLY from the backend response.
+// ======================================================
+
+void processBackendLEDResponse(
+  const String& response
+)
+{
+  if (
+    response.indexOf("\"red_led\":true") >= 0 ||
+    response.indexOf("\"red_led\": true") >= 0
+  )
+  {
+    redLedState = true;
+
+    digitalWrite(
+      RED_LED_PIN,
+      HIGH
+    );
+
+    Serial.println(
+      "Backend RED LED command: ON"
+    );
+
+    return;
+  }
+
+  if (
+    response.indexOf("\"red_led\":false") >= 0 ||
+    response.indexOf("\"red_led\": false") >= 0
+  )
+  {
+    redLedState = false;
+
+    digitalWrite(
+      RED_LED_PIN,
+      LOW
+    );
+
+    Serial.println(
+      "Backend RED LED command: OFF"
+    );
+
+    return;
+  }
+
+  Serial.println(
+    "Backend response contains no red_led command."
+  );
+}
+
+
+// ======================================================
 // SEND HTTP POST
 // ======================================================
 
@@ -672,6 +744,12 @@ bool sendPayload(
     );
 
     Serial.println(response);
+
+    // --------------------------------------------------
+    // BACKEND RED LED COMMAND
+    // --------------------------------------------------
+
+    processBackendLEDResponse(response);
   }
   else
   {
@@ -738,47 +816,25 @@ bool bufferHasSpace(
 // APPEND PAYLOAD TO LITTLEFS
 // ======================================================
 
-void bufferPayload(
-  const String& payload
-)
+void bufferPayload(const String& payload)
 {
-  if (
-    !bufferHasSpace(payload.length())
-  )
+  if (fsMutex != nullptr) xSemaphoreTake(fsMutex, portMAX_DELAY);
+  if (!bufferHasSpace(payload.length()))
   {
-    Serial.println(
-      "ERROR: LittleFS buffer FULL!"
-    );
-
-    Serial.println(
-      "Reading could not be stored."
-    );
-
+    Serial.println("ERROR: LittleFS buffer FULL.");
+    if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
     return;
   }
-
-  File file =
-    LittleFS.open(
-      BUFFER_FILE,
-      FILE_APPEND
-    );
-
+  File file = LittleFS.open(BUFFER_FILE, FILE_APPEND);
   if (!file)
   {
-    Serial.println(
-      "ERROR: Could not open local buffer."
-    );
-
+    Serial.println("ERROR: Could not open LittleFS buffer.");
+    if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
     return;
   }
-
   file.println(payload);
-
   file.close();
-
-  Serial.println(
-    "Reading stored in LittleFS buffer."
-  );
+  if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
 }
 
 
@@ -793,134 +849,73 @@ void bufferPayload(
 
 void uploadBufferedData()
 {
-  if (
-    WiFi.status() != WL_CONNECTED
-  )
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  String firstPayload;
+  String oldRemaining;
+
+  if (fsMutex != nullptr) xSemaphoreTake(fsMutex, portMAX_DELAY);
+  if (!LittleFS.exists(BUFFER_FILE))
   {
+    if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
     return;
   }
-
-  if (
-    !LittleFS.exists(BUFFER_FILE)
-  )
-  {
-    return;
-  }
-
-  File file =
-    LittleFS.open(
-      BUFFER_FILE,
-      FILE_READ
-    );
-
+  File file = LittleFS.open(BUFFER_FILE, FILE_READ);
   if (!file)
   {
+    if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
     return;
   }
-
   if (file.size() == 0)
   {
     file.close();
-
-    LittleFS.remove(
-      BUFFER_FILE
-    );
-
+    LittleFS.remove(BUFFER_FILE);
+    if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
     return;
   }
-
-  String payload =
-    file.readStringUntil('\n');
-
-  payload.trim();
-
-  // --------------------------------------------------
-  // Create temporary remaining file
-  // --------------------------------------------------
-
-  File remaining =
-    LittleFS.open(
-      REMAINING_FILE,
-      FILE_WRITE
-    );
-
-  if (!remaining)
-  {
-    file.close();
-
-    Serial.println(
-      "Could not create remaining buffer."
-    );
-
-    return;
-  }
-
-  bool uploaded = false;
-
-  if (payload.length() > 0)
-  {
-    uploaded =
-      sendPayload(payload);
-  }
-
-  // --------------------------------------------------
-  // If first payload failed, preserve it
-  // --------------------------------------------------
-
-  if (!uploaded && payload.length() > 0)
-  {
-    remaining.println(payload);
-  }
-
-  // --------------------------------------------------
-  // Copy remaining old readings
-  // --------------------------------------------------
-
+  firstPayload = file.readStringUntil('\n');
+  firstPayload.trim();
   while (file.available())
   {
-    String remainingPayload =
-      file.readStringUntil('\n');
-
-    remainingPayload.trim();
-
-    if (
-      remainingPayload.length() > 0
-    )
-    {
-      remaining.println(
-        remainingPayload
-      );
-    }
+    String line = file.readStringUntil('\n');
+    line.trim();
+    if (line.length() > 0) { oldRemaining += line; oldRemaining += '\n'; }
   }
-
   file.close();
-  remaining.close();
+  if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
 
-  // --------------------------------------------------
-  // Replace original buffer
-  // --------------------------------------------------
+  if (firstPayload.length() == 0) return;
 
-  LittleFS.remove(
-    BUFFER_FILE
-  );
+  // HTTPClient::POST() blocks, but this function runs only in UploadTask.
+  bool uploaded = sendPayload(firstPayload);
 
-  LittleFS.rename(
-    REMAINING_FILE,
-    BUFFER_FILE
-  );
-
-  if (uploaded)
+  if (fsMutex != nullptr) xSemaphoreTake(fsMutex, portMAX_DELAY);
+  String newlyAppended;
+  File current = LittleFS.open(BUFFER_FILE, FILE_READ);
+  if (current)
   {
-    Serial.println(
-      "Oldest buffered reading uploaded."
-    );
+    while (current.available())
+    {
+      String line = current.readStringUntil('\n');
+      line.trim();
+      if (line.length() > 0) { newlyAppended += line; newlyAppended += '\n'; }
+    }
+    current.close();
   }
-  else
+  File remaining = LittleFS.open(REMAINING_FILE, FILE_WRITE);
+  if (remaining)
   {
-    Serial.println(
-      "Buffered reading retained for retry."
-    );
+    if (!uploaded) remaining.println(firstPayload);
+    remaining.print(oldRemaining);
+    remaining.print(newlyAppended);
+    remaining.close();
+    LittleFS.remove(BUFFER_FILE);
+    LittleFS.rename(REMAINING_FILE, BUFFER_FILE);
   }
+  if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
+
+  if (uploaded) Serial.println("Oldest buffered reading uploaded.");
+  else Serial.println("Buffered reading retained for retry.");
 }
 
 
@@ -977,49 +972,10 @@ void sendCurrentData()
 
 void processQueue()
 {
-  if (queueCount == 0)
-  {
-    return;
-  }
-
   String payload;
-
-  if (!peekQueue(payload))
-  {
-    return;
-  }
-
-  Serial.println();
-  Serial.println(
-    "Processing queued reading..."
-  );
-
-  // --------------------------------------------------
-  // Try backend upload
-  // --------------------------------------------------
-
-  if (sendPayload(payload))
-  {
-    Serial.println(
-      "Queued reading uploaded successfully."
-    );
-
-    dequeuePayload();
-  }
-  else
-  {
-    Serial.println(
-      "Queued reading upload failed."
-    );
-
-    Serial.println(
-      "Moving reading to LittleFS."
-    );
-
-    bufferPayload(payload);
-
-    dequeuePayload();
-  }
+  if (!peekQueue(payload)) return;
+  if (sendPayload(payload)) dequeuePayload();
+  else { bufferPayload(payload); dequeuePayload(); }
 }
 
 
@@ -1028,7 +984,7 @@ void processQueue()
 // ======================================================
 //
 // IMPORTANT:
-// Keep this layout unchanged from the tested version.
+// Layout intentionally unchanged from tested version.
 //
 // ======================================================
 
@@ -1215,6 +1171,24 @@ void printSerialData()
 
 
   // --------------------------------------------------
+  // RED LED
+  // --------------------------------------------------
+
+  Serial.print(
+    "Red LED: "
+  );
+
+  if (redLedState)
+  {
+    Serial.println("ON");
+  }
+  else
+  {
+    Serial.println("OFF");
+  }
+
+
+  // --------------------------------------------------
   // Wi-Fi
   // --------------------------------------------------
 
@@ -1301,12 +1275,26 @@ void printSerialData()
 
 
 // ======================================================
+void uploadTask(void* parameter)
+{
+  (void)parameter;
+  for (;;)
+  {
+    uploadBufferedData();
+    processQueue();
+    vTaskDelay(pdMS_TO_TICKS(UPLOAD_TASK_INTERVAL));
+  }
+}
+
 // SETUP
 // ======================================================
 
 void setup()
 {
   Serial.begin(115200);
+
+  queueMutex = xSemaphoreCreateMutex();
+  fsMutex = xSemaphoreCreateMutex();
 
   delay(1000);
 
@@ -1425,6 +1413,7 @@ void setup()
   connectWiFi();
 
 
+
   // ==================================================
   // INITIAL SENSOR READ
   // ==================================================
@@ -1451,12 +1440,21 @@ void setup()
   lastSensorRead = now;
   lastLCDUpdate = now;
   lastWiFiCheck = now;
-  lastLEDUpdate = now;
   lastSerialOutput = now;
-  lastUploadAttempt = now;
 
 
   Serial.println();
+
+  xTaskCreatePinnedToCore(
+    uploadTask,
+    "UploadTask",
+    8192,
+    nullptr,
+    1,
+    &uploadTaskHandle,
+    0
+  );
+
   Serial.println(
     "Storage Node initialized."
   );
@@ -1546,52 +1544,6 @@ void loop()
 
 
   // ==================================================
-  // BUFFER + QUEUE PROCESSING
-  // ==================================================
-
-  if (
-    now - lastUploadAttempt >=
-    UPLOAD_INTERVAL
-  )
-  {
-    lastUploadAttempt = now;
-
-    // Priority 1:
-    // Upload oldest offline data.
-    uploadBufferedData();
-
-    // Priority 2:
-    // Process one new RAM item.
-    processQueue();
-  }
-
-
-  // ==================================================
-  // RED LED
-  // ==================================================
-  //
-  // Temporary hardware test.
-  //
-  // Backend-controlled LED will replace this once
-  // API response handling is finalized.
-  //
-  // ==================================================
-
-  if (
-    now - lastLEDUpdate >=
-    LED_INTERVAL
-  )
-  {
-    lastLEDUpdate = now;
-
-    ledState =
-      !ledState;
-
-    digitalWrite(
-      RED_LED_PIN,
-      ledState
-    );
-  }
 
 
   // ==================================================
