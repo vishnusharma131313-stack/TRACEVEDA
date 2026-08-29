@@ -5,7 +5,6 @@ from typing import Optional
 
 from database import db
 
-
 router = APIRouter(
     prefix="/api/iot",
     tags=["IoT"]
@@ -17,24 +16,20 @@ router = APIRouter(
 # =========================
 
 class IoTReadingRequest(BaseModel):
-
-    # For Storage Node:
-    # batch_id = RAW MATERIAL BATCH ID
     batch_id: str
-
     transport_id: Optional[str] = None
     storage_id: Optional[str] = None
-
     sensor_id: str
     timestamp: datetime
 
-    # Environmental Sensors
+    # Environmental
     temperature_c: Optional[float] = None
     humidity_percent: Optional[float] = None
 
     # GPS
-    gps_latitude: Optional[float] = None
-    gps_longitude: Optional[float] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    gps_valid: Optional[bool] = None
 
     # BH1750
     light_intensity_lux: Optional[float] = None
@@ -60,27 +55,26 @@ class IoTReadingRequest(BaseModel):
 
 
 # =========================
-# BACKEND RULES
+# DEMO CONFIGURABLE RULES
 # =========================
 
 IOT_RULES = {
-
     "temperature_c": {
         "min": 10,
         "max": 35
     },
-
     "humidity_percent": {
         "min": 20,
         "max": 70
     },
-
     "light_intensity_lux": {
         "max": 1000
     },
-
     "tilt_angle_deg": {
         "max": 45
+    },
+    "weight_change_kg": {
+        "max": 10
     }
 }
 
@@ -126,11 +120,8 @@ def create_iot_reading(data: IoTReadingRequest):
     # Create reading ID
     count = db.iot_readings.count_documents({}) + 1
 
-    reading_id = (
-        f"READ-{datetime.now().year}-{count:04d}"
-    )
+    reading_id = f"READ-{datetime.now().year}-{count:04d}"
 
-    # Prepare reading
     reading = data.model_dump()
 
     reading["reading_id"] = reading_id
@@ -140,17 +131,15 @@ def create_iot_reading(data: IoTReadingRequest):
     # Store original reading
     db.iot_readings.insert_one(reading)
 
-
     # =========================
     # RULE ENGINE
     # =========================
 
     alerts = []
 
-
-    # -------------------------
+    # ---------------------------------
     # TEMPERATURE
-    # -------------------------
+    # ---------------------------------
 
     if data.temperature_c is not None:
 
@@ -160,7 +149,6 @@ def create_iot_reading(data: IoTReadingRequest):
             data.temperature_c < rule["min"]
             or data.temperature_c > rule["max"]
         ):
-
             alerts.append({
                 "parameter": "temperature_c",
                 "value": data.temperature_c,
@@ -169,9 +157,9 @@ def create_iot_reading(data: IoTReadingRequest):
             })
 
 
-    # -------------------------
+    # ---------------------------------
     # HUMIDITY
-    # -------------------------
+    # ---------------------------------
 
     if data.humidity_percent is not None:
 
@@ -181,7 +169,6 @@ def create_iot_reading(data: IoTReadingRequest):
             data.humidity_percent < rule["min"]
             or data.humidity_percent > rule["max"]
         ):
-
             alerts.append({
                 "parameter": "humidity_percent",
                 "value": data.humidity_percent,
@@ -190,9 +177,9 @@ def create_iot_reading(data: IoTReadingRequest):
             })
 
 
-    # -------------------------
+    # ---------------------------------
     # LIGHT
-    # -------------------------
+    # ---------------------------------
 
     if data.light_intensity_lux is not None:
 
@@ -208,9 +195,9 @@ def create_iot_reading(data: IoTReadingRequest):
             })
 
 
-    # -------------------------
+    # ---------------------------------
     # TILT
-    # -------------------------
+    # ---------------------------------
 
     if data.tilt_angle_deg is not None:
 
@@ -226,9 +213,9 @@ def create_iot_reading(data: IoTReadingRequest):
             })
 
 
-    # -------------------------
+    # ---------------------------------
     # SHOCK
-    # -------------------------
+    # ---------------------------------
 
     if data.shock_detected is True:
 
@@ -240,14 +227,31 @@ def create_iot_reading(data: IoTReadingRequest):
         })
 
 
-    # =========================
+    # =================================
     # 2FA TAMPER DETECTION
-    # =========================
+    # =================================
+    #
+    # FACTOR 1 = Gate / Door status
+    # FACTOR 2 = Weight change
+    #
+    # Gate OPEN + No weight change
+    #       → YELLOW / WARNING
+    #
+    # Gate OPEN + Weight change
+    #       → CRITICAL
+    #
+    # Weight change without gate opening
+    #       → YELLOW / WARNING
+    # =================================
 
     gate_open = False
     weight_changed = False
 
-    # Factor 1: Gate
+
+    # ---------------------------------
+    # FACTOR 1: GATE
+    # ---------------------------------
+
     if data.switch_status is not None:
 
         gate_open = data.switch_status.upper() in [
@@ -256,19 +260,20 @@ def create_iot_reading(data: IoTReadingRequest):
             "TRIGGERED"
         ]
 
-    # Factor 2: Weight
+
+    # ---------------------------------
+    # FACTOR 2: WEIGHT
+    # ---------------------------------
+
     if data.weight_change_kg is not None:
 
-        weight_changed = (
-            abs(data.weight_change_kg) > 0
-        )
+        weight_changed = abs(data.weight_change_kg) > 0
 
 
-    # =========================
+    # ---------------------------------
     # 2FA DECISION
-    # =========================
+    # ---------------------------------
 
-    # Gate OPEN + Weight changed
     if gate_open and weight_changed:
 
         alerts.append({
@@ -285,8 +290,6 @@ def create_iot_reading(data: IoTReadingRequest):
             "severity": "CRITICAL"
         })
 
-
-    # Gate OPEN + No weight change
     elif gate_open and not weight_changed:
 
         alerts.append({
@@ -302,8 +305,6 @@ def create_iot_reading(data: IoTReadingRequest):
             "severity": "YELLOW"
         })
 
-
-    # Gate CLOSED + Weight changed
     elif not gate_open and weight_changed:
 
         alerts.append({
@@ -321,20 +322,12 @@ def create_iot_reading(data: IoTReadingRequest):
 
 
     # =========================
-    # RED LED STATUS
+    # RED LED DECISION
     # =========================
     #
-    # IMPORTANT:
-    # Red LED turns ON whenever ANY
-    # CRITICAL alert is generated from
-    # the CURRENT IoT reading.
+    # Red LED turns ON if ANY
+    # CRITICAL alert is generated.
     #
-    # This includes:
-    # - Temperature violations
-    # - Critical tampering
-    # - Shock
-    # - Any future CRITICAL rule
-    # =========================
 
     red_led = any(
         alert["severity"] == "CRITICAL"
@@ -348,29 +341,21 @@ def create_iot_reading(data: IoTReadingRequest):
 
     for alert in alerts:
 
-        alert_count = (
-            db.iot_alerts.count_documents({})
-            + 1
-        )
+        alert_count = db.iot_alerts.count_documents({}) + 1
 
         alert_id = (
-            f"ALERT-{datetime.now().year}-"
-            f"{alert_count:04d}"
+            f"ALERT-{datetime.now().year}-{alert_count:04d}"
         )
 
         db.iot_alerts.insert_one({
-
             "alert_id": alert_id,
             "reading_id": reading_id,
             "batch_id": data.batch_id,
-            "storage_id": data.storage_id,
             "sensor_id": data.sensor_id,
-
             "parameter": alert["parameter"],
             "value": alert["value"],
             "message": alert["message"],
             "severity": alert["severity"],
-
             "status": "OPEN",
             "created_at": datetime.utcnow()
         })
@@ -383,40 +368,10 @@ def create_iot_reading(data: IoTReadingRequest):
     tamper_status = "NORMAL"
 
     if gate_open and weight_changed:
-
         tamper_status = "CRITICAL"
 
     elif gate_open or weight_changed:
-
         tamper_status = "YELLOW"
-
-
-    # =========================
-    # FIND HIGHEST ALERT
-    # =========================
-
-    alert_status = "NORMAL"
-    alert_message = None
-
-    if alerts:
-
-        severity_priority = {
-            "CRITICAL": 3,
-            "YELLOW": 2,
-            "WARNING": 1,
-            "NORMAL": 0
-        }
-
-        highest_alert = max(
-            alerts,
-            key=lambda x: severity_priority.get(
-                x["severity"],
-                0
-            )
-        )
-
-        alert_status = highest_alert["severity"]
-        alert_message = highest_alert["message"]
 
 
     # =========================
@@ -424,25 +379,12 @@ def create_iot_reading(data: IoTReadingRequest):
     # =========================
 
     return {
-
         "reading_id": reading_id,
         "status": "STORED",
-
-        "batch_id": data.batch_id,
-        "storage_id": data.storage_id,
-        "sensor_id": data.sensor_id,
-
         "tamper_status": tamper_status,
-
-        "alert_status": alert_status,
-        "alert_message": alert_message,
-
-        # ESP32 uses this directly
-        "red_led": red_led,
-
         "gate_open": gate_open,
         "weight_changed": weight_changed,
-
+        "red_led": red_led,
         "alerts_generated": len(alerts)
     }
 
@@ -458,10 +400,7 @@ def get_iot_readings(batch_id: str):
         db.iot_readings.find(
             {"batch_id": batch_id},
             {"_id": 0}
-        ).sort(
-            "timestamp",
-            1
-        )
+        ).sort("timestamp", 1)
     )
 
     return {
@@ -471,7 +410,7 @@ def get_iot_readings(batch_id: str):
 
 
 # =========================
-# GET ALL ALERTS
+# GET ALERTS
 # =========================
 
 @router.get("/alerts/{batch_id}")
@@ -481,54 +420,10 @@ def get_iot_alerts(batch_id: str):
         db.iot_alerts.find(
             {"batch_id": batch_id},
             {"_id": 0}
-        ).sort(
-            "created_at",
-            -1
-        )
+        ).sort("created_at", -1)
     )
 
     return {
         "batch_id": batch_id,
         "alerts": alerts
-    }
-
-
-# =========================
-# GET ACTIVE ALERTS
-# =========================
-
-@router.get("/alerts/active/{batch_id}")
-def get_active_iot_alerts(batch_id: str):
-
-    alerts = list(
-        db.iot_alerts.find(
-            {
-                "batch_id": batch_id,
-                "status": "OPEN"
-            },
-            {
-                "_id": 0
-            }
-        ).sort(
-            "created_at",
-            -1
-        )
-    )
-
-    critical_alert = any(
-        alert.get("severity") == "CRITICAL"
-        for alert in alerts
-    )
-
-    return {
-
-        "batch_id": batch_id,
-
-        "active": len(alerts) > 0,
-
-        "red_led": critical_alert,
-
-        "alerts": alerts,
-
-        "count": len(alerts)
     }
