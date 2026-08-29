@@ -84,8 +84,8 @@ const char* IOT_ENDPOINT =
 //
 // ======================================================
 
-const char* ssid = "new";
-const char* password = "12345678";
+const char* ssid = "YOUR_WIFI_SSID";
+const char* password = "YOUR_WIFI_PASSWORD";
 
 
 // ======================================================
