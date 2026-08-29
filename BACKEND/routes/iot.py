@@ -79,6 +79,11 @@ IOT_RULES = {
 }
 
 
+# Ignore small HX711/load-cell fluctuations.
+# Changes smaller than 0.1 kg are treated as sensor noise.
+WEIGHT_CHANGE_TOLERANCE_KG = 0.1
+
+
 # =========================
 # HELPER
 # =========================
@@ -137,10 +142,7 @@ def create_iot_reading(data: IoTReadingRequest):
 
     alerts = []
 
-    # ---------------------------------
     # TEMPERATURE
-    # ---------------------------------
-
     if data.temperature_c is not None:
 
         rule = IOT_RULES["temperature_c"]
@@ -157,10 +159,7 @@ def create_iot_reading(data: IoTReadingRequest):
             })
 
 
-    # ---------------------------------
     # HUMIDITY
-    # ---------------------------------
-
     if data.humidity_percent is not None:
 
         rule = IOT_RULES["humidity_percent"]
@@ -177,10 +176,7 @@ def create_iot_reading(data: IoTReadingRequest):
             })
 
 
-    # ---------------------------------
     # LIGHT
-    # ---------------------------------
-
     if data.light_intensity_lux is not None:
 
         rule = IOT_RULES["light_intensity_lux"]
@@ -195,10 +191,7 @@ def create_iot_reading(data: IoTReadingRequest):
             })
 
 
-    # ---------------------------------
     # TILT
-    # ---------------------------------
-
     if data.tilt_angle_deg is not None:
 
         rule = IOT_RULES["tilt_angle_deg"]
@@ -213,10 +206,7 @@ def create_iot_reading(data: IoTReadingRequest):
             })
 
 
-    # ---------------------------------
     # SHOCK
-    # ---------------------------------
-
     if data.shock_detected is True:
 
         alerts.append({
@@ -230,28 +220,12 @@ def create_iot_reading(data: IoTReadingRequest):
     # =================================
     # 2FA TAMPER DETECTION
     # =================================
-    #
-    # FACTOR 1 = Gate / Door status
-    # FACTOR 2 = Weight change
-    #
-    # Gate OPEN + No weight change
-    #       → YELLOW / WARNING
-    #
-    # Gate OPEN + Weight change
-    #       → CRITICAL
-    #
-    # Weight change without gate opening
-    #       → YELLOW / WARNING
-    # =================================
 
     gate_open = False
     weight_changed = False
 
 
-    # ---------------------------------
     # FACTOR 1: GATE
-    # ---------------------------------
-
     if data.switch_status is not None:
 
         gate_open = data.switch_status.upper() in [
@@ -261,18 +235,17 @@ def create_iot_reading(data: IoTReadingRequest):
         ]
 
 
-    # ---------------------------------
     # FACTOR 2: WEIGHT
-    # ---------------------------------
-
+    # Ignore small fluctuations within tolerance.
     if data.weight_change_kg is not None:
 
-        weight_changed = abs(data.weight_change_kg) > 0
+        weight_changed = (
+            abs(data.weight_change_kg)
+            >= WEIGHT_CHANGE_TOLERANCE_KG
+        )
 
 
-    # ---------------------------------
     # 2FA DECISION
-    # ---------------------------------
 
     if gate_open and weight_changed:
 
@@ -299,9 +272,7 @@ def create_iot_reading(data: IoTReadingRequest):
                 "weight_changed": False,
                 "weight_change_kg": data.weight_change_kg
             },
-            "message": (
-                "Gate opened but no weight change detected"
-            ),
+            "message": "Gate opened but no significant weight change detected",
             "severity": "YELLOW"
         })
 
@@ -314,9 +285,7 @@ def create_iot_reading(data: IoTReadingRequest):
                 "weight_changed": True,
                 "weight_change_kg": data.weight_change_kg
             },
-            "message": (
-                "Weight change detected without gate opening"
-            ),
+            "message": "Significant weight change detected without gate opening",
             "severity": "YELLOW"
         })
 
@@ -324,10 +293,6 @@ def create_iot_reading(data: IoTReadingRequest):
     # =========================
     # RED LED DECISION
     # =========================
-    #
-    # Red LED turns ON if ANY
-    # CRITICAL alert is generated.
-    #
 
     red_led = any(
         alert["severity"] == "CRITICAL"
