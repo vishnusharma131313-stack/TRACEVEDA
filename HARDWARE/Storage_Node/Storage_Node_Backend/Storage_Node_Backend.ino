@@ -38,7 +38,7 @@
 // TRACEVEDA IDs
 // ======================================================
 
-const char* BATCH_ID   = "MED-2026-001";
+const char* BATCH_ID   = "RAW-2026-001";
 const char* STORAGE_ID = "STR-0001";
 
 
