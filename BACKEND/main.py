@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from database import db
 
+from routes.auth import router as auth_router
 from routes.batches import router as batches_router
 from routes.lab import router as lab_router
 from routes.iot import router as iot_router
@@ -36,6 +37,7 @@ app.add_middleware(
 # ROUTERS
 # =========================
 
+app.include_router(auth_router)
 app.include_router(batches_router)
 app.include_router(lab_router)
 app.include_router(iot_router)
