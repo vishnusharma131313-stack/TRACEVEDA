@@ -6,6 +6,7 @@
 #include <HTTPClient.h>
 #include <LittleFS.h>
 #include <time.h>
+#include <WiFiClientSecure.h>
 
 // ======================================================
 // TRACEVEDA STORAGE NODE
@@ -66,7 +67,7 @@ const char* STORAGE_ID = "STR-0001";
 // ======================================================
 
 const char* BACKEND_URL =
-  "http://YOUR_PC_IP:8000";
+  "https://traceveda.onrender.com";
 
 const char* IOT_ENDPOINT =
   "/api/iot/readings";
@@ -700,6 +701,8 @@ bool sendPayload(
   {
     return false;
   }
+  WiFiClientSecure client;
+client.setInsecure();
 
   HTTPClient http;
 
@@ -707,17 +710,23 @@ bool sendPayload(
     String(BACKEND_URL) +
     String(IOT_ENDPOINT);
 
-  http.begin(url);
+ http.begin(client, url);
 
   http.addHeader(
     "Content-Type",
     "application/json"
   );
 
-  http.setTimeout(1500);
+  http.setTimeout(15000);
 
-  int httpCode =
-    http.POST(payload);
+Serial.println("================================");
+Serial.println("SENDING TO BACKEND");
+Serial.println(url);
+Serial.println("PAYLOAD:");
+Serial.println(payload);
+Serial.println("================================");
+
+int httpCode = http.POST(payload);
 
   bool success = false;
 
