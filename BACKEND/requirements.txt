@@ -1,9 +1,10 @@
 fastapi==0.111.0
-uvicorn==0.30.1
+uvicorn[standard]==0.30.1
 pydantic==2.13.0
 python-dotenv==1.0.0
 pymongo==4.8.0
+dnspython
 
-# Testing only
+# Testing
 mongomock==4.1.2
 pytest==8.3.2
