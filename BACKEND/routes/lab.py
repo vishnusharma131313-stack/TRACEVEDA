@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 from database import db
+from services import blockchain_service
 
 router = APIRouter(
     prefix="/api/lab",
@@ -94,12 +95,29 @@ def create_lab_test(data: LabTestRequest):
         }
     )
 
+    # Anchored for PASS and FAIL alike - a failed quality test is exactly
+    # the record a dispute turns on.
+    blockchain_tx = blockchain_service.safe_anchor(
+        "QUALITY_STATUS",
+        "PROCESSING",
+        data.batch_id,
+        {
+            "lab_test_id": lab_test_id,
+            "lab_id": data.lab_id,
+            "test_stage": data.test_stage,
+            "test_type": data.test_type,
+            "result": result,
+            "batch_status": batch_status
+        }
+    )
+
     return {
         "lab_test_id": lab_test_id,
         "batch_id": data.batch_id,
         "result": result,
         "status": "VERIFIED",
-        "batch_status": batch_status
+        "batch_status": batch_status,
+        "blockchain_tx": blockchain_tx
     }
 
 

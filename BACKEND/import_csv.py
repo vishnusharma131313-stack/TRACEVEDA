@@ -8,9 +8,16 @@ from database import db
 # CONFIG
 # ==================================================
 
-DATA_FOLDER = (
-    Path(__file__).parent
-    / "TraceVeda_Master_Dataset"
+# Prefer the updated dataset when it is present locally,
+# otherwise fall back to the dataset checked into the repository.
+_CANDIDATE_FOLDERS = [
+    Path(__file__).parent / "TraceVeda_Master_Dataset_Updated",
+    Path(__file__).parent / "TraceVeda_Master_Dataset"
+]
+
+DATA_FOLDER = next(
+    (folder for folder in _CANDIDATE_FOLDERS if folder.exists()),
+    _CANDIDATE_FOLDERS[0]
 )
 
 BATCH_SIZE = 5000

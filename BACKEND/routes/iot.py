@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Optional
 
 from database import db
+from services import blockchain_service
 
 router = APIRouter(
     prefix="/api/iot",
@@ -88,24 +89,35 @@ WEIGHT_CHANGE_TOLERANCE_KG = 0.1
 # HELPER
 # =========================
 
-def batch_exists(batch_id: str):
+def resolve_entity_type(batch_id: str):
+    """
+    Which collection owns this batch id: RAW, PROCESSING, MEDICINE or None.
+
+    Doubles as the existence check and as the entity_type used when
+    anchoring a critical alert.
+    """
 
     if db.raw_material_batches.find_one({
         "raw_batch_id": batch_id
     }):
-        return True
+        return "RAW"
 
     if db.processing_batches.find_one({
         "processing_batch_id": batch_id
     }):
-        return True
+        return "PROCESSING"
 
     if db.medicine_batches.find_one({
         "medicine_batch_id": batch_id
     }):
-        return True
+        return "MEDICINE"
 
-    return False
+    return None
+
+
+def batch_exists(batch_id: str):
+
+    return resolve_entity_type(batch_id) is not None
 
 
 # =========================
@@ -115,8 +127,11 @@ def batch_exists(batch_id: str):
 @router.post("/readings")
 def create_iot_reading(data: IoTReadingRequest):
 
-    # Validate batch
-    if not batch_exists(data.batch_id):
+    # Validate batch, and remember which collection owns it so critical
+    # alerts can be anchored with the right entity_type.
+    entity_type = resolve_entity_type(data.batch_id)
+
+    if entity_type is None:
         raise HTTPException(
             status_code=404,
             detail="Batch not found"
@@ -304,6 +319,8 @@ def create_iot_reading(data: IoTReadingRequest):
     # STORE ALERTS
     # =========================
 
+    blockchain_tx = None
+
     for alert in alerts:
 
         alert_count = db.iot_alerts.count_documents({}) + 1
@@ -324,6 +341,33 @@ def create_iot_reading(data: IoTReadingRequest):
             "status": "OPEN",
             "created_at": datetime.utcnow()
         })
+
+        # ON-CHAIN / OFF-CHAIN SPLIT
+        # Only CRITICAL, dispute-relevant alerts are anchored.
+        # WARNING and YELLOW alerts, and the raw high-frequency readings
+        # themselves, stay in MongoDB only.
+        if alert["severity"] != "CRITICAL":
+            continue
+
+        transaction_id = blockchain_service.safe_anchor(
+            "TAMPER_EVENT",
+            entity_type,
+            data.batch_id,
+            {
+                "alert_id": alert_id,
+                "reading_id": reading_id,
+                "sensor_id": data.sensor_id,
+                "parameter": alert["parameter"],
+                "value": alert["value"],
+                "message": alert["message"],
+                "severity": alert["severity"]
+            }
+        )
+
+        # A single reading can raise several critical alerts; the response
+        # carries the first anchored transaction id.
+        if transaction_id and blockchain_tx is None:
+            blockchain_tx = transaction_id
 
 
     # =========================
@@ -350,7 +394,8 @@ def create_iot_reading(data: IoTReadingRequest):
         "gate_open": gate_open,
         "weight_changed": weight_changed,
         "red_led": red_led,
-        "alerts_generated": len(alerts)
+        "alerts_generated": len(alerts),
+        "blockchain_tx": blockchain_tx
     }
 
 
