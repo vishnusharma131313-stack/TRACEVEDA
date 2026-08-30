@@ -13,7 +13,7 @@ DATA_FOLDER = (
     / "TraceVeda_Master_Dataset"
 )
 
-BATCH_SIZE = 5000
+BATCH_SIZE = 100000
 
 
 # ==================================================
@@ -30,46 +30,48 @@ def convert_value(value):
     if value == "":
         return None
 
-    # Boolean
     if value.lower() == "true":
         return True
 
     if value.lower() == "false":
         return False
 
-    # Integer
     try:
         if "." not in value:
             return int(value)
     except ValueError:
         pass
 
-    # Float
     try:
         return float(value)
     except ValueError:
         pass
 
-    # String
     return value
 
 
 # ==================================================
-# IMPORT ONE CSV
+# IMPORT FILE
 # ==================================================
 
-def import_csv(file_path):
+def import_csv(filename):
+
+    file_path = DATA_FOLDER / filename
 
     collection_name = file_path.stem
 
     print("\n" + "=" * 50)
-    print(f"Importing: {file_path.name}")
+    print(f"Importing: {filename}")
     print(f"Collection: {collection_name}")
     print("=" * 50)
 
+    if not file_path.exists():
+        print(f"ERROR: File not found: {file_path}")
+        return
+
     collection = db[collection_name]
 
-    # Replace old dataset contents
+    # Clear old/incomplete data from previous attempt
     collection.delete_many({})
 
     batch = []
@@ -86,7 +88,6 @@ def import_csv(file_path):
 
         for row in reader:
 
-            # Skip completely empty rows
             if not any(
                 value is not None
                 and str(value).strip()
@@ -101,20 +102,16 @@ def import_csv(file_path):
                 if key is None:
                     continue
 
-                key = key.strip()
-
-                document[key] = convert_value(value)
+                document[key.strip()] = convert_value(value)
 
             batch.append(document)
 
-            # Insert in batches
+            # Smaller batches reduce Atlas connection/load issues
             if len(batch) >= BATCH_SIZE:
 
-                result = collection.insert_many(batch)
+                collection.insert_many(batch)
 
-                total_inserted += len(
-                    result.inserted_ids
-                )
+                total_inserted += len(batch)
 
                 print(
                     f"Inserted {total_inserted} documents..."
@@ -125,79 +122,12 @@ def import_csv(file_path):
         # Insert remaining documents
         if batch:
 
-            result = collection.insert_many(batch)
+            collection.insert_many(batch)
 
-            total_inserted += len(
-                result.inserted_ids
-            )
+            total_inserted += len(batch)
 
-    print(
-        f"SUCCESS: {total_inserted} documents inserted"
-    )
-
-
-# ==================================================
-# MAIN
-# ==================================================
-
-def main():
-
-    print("=" * 50)
-    print("TraceVeda CSV -> MongoDB Import")
-    print("=" * 50)
-
-    if not DATA_FOLDER.exists():
-
-        print("\nERROR: Dataset folder not found!")
-
-        print("\nExpected location:")
-        print(DATA_FOLDER)
-
-        return
-
-    csv_files = sorted(
-        DATA_FOLDER.glob("*.csv")
-    )
-
-    if not csv_files:
-
-        print("\nERROR: No CSV files found!")
-        print(DATA_FOLDER)
-
-        return
-
-    print(
-        f"\nFound {len(csv_files)} CSV files."
-    )
-
-    successful = 0
-    failed = 0
-
-    for file_path in csv_files:
-
-        try:
-
-            import_csv(file_path)
-
-            successful += 1
-
-        except Exception as e:
-
-            failed += 1
-
-            print(
-                f"\nFAILED: {file_path.name}"
-            )
-
-            print(f"Reason: {e}")
-
-    print("\n" + "=" * 50)
-    print("IMPORT COMPLETED")
-    print("=" * 50)
-
-    print(f"Successful: {successful}")
-    print(f"Failed:     {failed}")
-    print(f"Total CSVs: {len(csv_files)}")
+    print("\nSUCCESS!")
+    print(f"Total inserted: {total_inserted}")
 
 
 # ==================================================
@@ -205,4 +135,21 @@ def main():
 # ==================================================
 
 if __name__ == "__main__":
-    main()
+
+    files = [
+        "iot_reference_normalized.csv",
+        "iot_reference_quarantine.csv"
+    ]
+
+    for filename in files:
+
+        try:
+            import_csv(filename)
+
+        except Exception as e:
+
+            print("\nFAILED!")
+            print(f"File: {filename}")
+            print(f"Reason: {e}")
+
+    print("\nIMPORT RETRY COMPLETED")
