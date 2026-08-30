@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { RoleContext } from '../../App'
+import { SessionContext } from '../../App'
 import ChainIntegrityBadge from './ChainIntegrityBadge'
 import { getRole } from '../../lib/roles'
 import { IconBlocks, IconGrid, IconLeaf, IconLogout, IconMenu, IconRoute, IconSignal, IconX } from '../ui/Icons'
@@ -13,7 +13,7 @@ const NAV = [
 ]
 
 export default function AppShell() {
-  const { role, logout } = useContext(RoleContext)
+  const { user, role, logout } = useContext(SessionContext)
   const location = useLocation()
   const [open, setOpen] = useState(false)
 
@@ -98,14 +98,17 @@ export default function AppShell() {
                 Signed in as
               </p>
               <p className="truncate text-small font-semibold text-ink">
-                {roleMeta?.label ?? 'Unknown role'}
+                {user?.fullName || user?.username || 'Unknown user'}
+              </p>
+              <p className="truncate text-[11px] text-neutral-500">
+                {roleMeta?.label ?? role ?? 'Unknown role'}
               </p>
             </div>
             <button
               type="button"
               onClick={logout}
-              title="Switch role"
-              aria-label="Switch role"
+              title="Sign out"
+              aria-label="Sign out"
               className="rounded-lg p-2 text-neutral-500 transition-colors hover:bg-critical-50 hover:text-critical-700"
             >
               <IconLogout />

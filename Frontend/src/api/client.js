@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { clearSession, readToken } from '../lib/auth'
 
 /*
  * Every function here returns the response BODY, not the axios envelope.
@@ -7,6 +8,10 @@ import axios from 'axios'
  *
  * Endpoints below were read off BACKEND/routes/*.py, not the contract doc,
  * which has drifted in a few places (noted inline).
+ *
+ * Everything except the two public consumer endpoints now requires a bearer
+ * token. It is attached by the request interceptor below, so no call site
+ * has to remember it.
  */
 
 const API_URL = import.meta.env.VITE_API_URL ?? ''
@@ -19,14 +24,31 @@ const http = axios.create({
 
 /** Thrown for every failed call so screens can show one consistent state. */
 export class ApiError extends Error {
-  constructor(message, { status, url, notImplemented = false } = {}) {
+  constructor(message, { status, url, notImplemented = false, unauthenticated = false, forbidden = false } = {}) {
     super(message)
     this.name = 'ApiError'
     this.status = status
     this.url = url
     this.notImplemented = notImplemented
+    this.unauthenticated = unauthenticated
+    this.forbidden = forbidden
   }
 }
+
+/* Subscribers are notified once when the server rejects our credentials, so
+ * App can drop the session and route back to the login screen. */
+const unauthorizedHandlers = new Set()
+
+export function onUnauthorized(handler) {
+  unauthorizedHandlers.add(handler)
+  return () => unauthorizedHandlers.delete(handler)
+}
+
+http.interceptors.request.use((config) => {
+  const token = readToken()
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
+})
 
 http.interceptors.response.use(
   (response) => response,
@@ -40,15 +62,66 @@ http.interceptors.response.use(
     // very differently, so the distinction is carried on the error.
     const notImplemented = status === 404 && !detail
 
+    // 401 and 403 mean genuinely different things and must not be collapsed:
+    // 401 is "log in again", 403 is "this role may not do that". Showing a
+    // login prompt for a permissions problem sends the user in a loop.
+    if (status === 401) {
+      clearSession()
+      unauthorizedHandlers.forEach((handler) => {
+        try {
+          handler()
+        } catch {
+          /* a listener must not mask the original API error */
+        }
+      })
+    }
+
     throw new ApiError(
-      detail || error.message || 'Request failed',
-      { status, url, notImplemented },
+      // FastAPI validation errors put an array of objects in `detail`;
+      // rendering that raw prints "[object Object]" into the UI.
+      formatDetail(detail) || error.message || 'Request failed',
+      {
+        status,
+        url,
+        notImplemented,
+        unauthenticated: status === 401,
+        forbidden: status === 403,
+      },
     )
   },
 )
 
+function formatDetail(detail) {
+  if (!detail) return null
+  if (typeof detail === 'string') return detail
+  if (Array.isArray(detail)) {
+    return detail
+      .map((item) => {
+        if (typeof item === 'string') return item
+        const field = Array.isArray(item?.loc) ? item.loc[item.loc.length - 1] : null
+        return field ? `${field}: ${item.msg}` : item?.msg
+      })
+      .filter(Boolean)
+      .join(' · ')
+  }
+  return null
+}
+
 const get = (url, config) => http.get(url, config).then((r) => r.data)
 const post = (url, body) => http.post(url, body).then((r) => r.data)
+const patch = (url, body) => http.patch(url, body).then((r) => r.data)
+
+// ============================================================
+// AUTHENTICATION
+// ============================================================
+export const authAPI = {
+  /** -> { access_token, token_type, expires_at, username, role, full_name } */
+  login: (username, password) => post('/api/auth/login', { username, password }),
+  /** -> { username, role, full_name, organisation_id } */
+  me: () => get('/api/auth/me'),
+  /** Public — the login screen renders it before anyone has a token. */
+  roles: () => get('/api/auth/roles'),
+}
 
 // ============================================================
 // BATCHES
@@ -75,6 +148,27 @@ export const medicineAPI = {
   create: (body) => post('/api/medicine', body),
   /* NOTE: mounted at /api/verify, not /api/medicine/verify. */
   verifyQr: (qrId) => get(`/api/verify/${encodeURIComponent(qrId)}`),
+}
+
+// ============================================================
+// PLANTS (botanical reference data)
+// ============================================================
+export const plantAPI = {
+  /** -> { plants: [...], count, total } */
+  list: (params) => get('/api/plants', { params }),
+  get: (id) => get(`/api/plants/${encodeURIComponent(id)}`),
+  /** -> { query, plants, count } — matches common/scientific/vernacular names */
+  search: (name) => get('/api/plants/search', { params: { name } }),
+}
+
+// ============================================================
+// INVESTIGATIONS (regulator only)
+// ============================================================
+export const investigationAPI = {
+  list: (status) => get('/api/investigations', { params: status ? { status } : undefined }),
+  get: (id) => get(`/api/investigations/${encodeURIComponent(id)}`),
+  open: (body) => post('/api/investigations', body),
+  close: (id, body) => patch(`/api/investigations/${encodeURIComponent(id)}/close`, body),
 }
 
 // ============================================================
@@ -146,10 +240,14 @@ export const blockchainAPI = {
 // CONSUMER
 // ============================================================
 export const consumerAPI = {
+  /* Public: someone reporting a bad reaction has no account. */
   createReport: (body) => post('/api/consumer/reports', body),
   getReportsForBatch: (medicineBatchId) =>
     get(`/api/consumer/reports/batch/${encodeURIComponent(medicineBatchId)}`),
   getReport: (reportId) => get(`/api/consumer/reports/${encodeURIComponent(reportId)}`),
+  /* Regulator only. Status must be one of the values in routes/consumer.py. */
+  updateStatus: (reportId, status) =>
+    patch(`/api/consumer/reports/${encodeURIComponent(reportId)}/status`, { status }),
 }
 
 // ============================================================

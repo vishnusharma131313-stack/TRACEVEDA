@@ -1,9 +1,13 @@
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, timezone
+from typing import Literal
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel, Field
 
 from database import db
-from services import blockchain_service
+from dependencies import require_authenticated, require_roles
+from services import blockchain_service, ids
+from services.accounts import LAB
 
 router = APIRouter(
     prefix="/api/lab",
@@ -11,30 +15,51 @@ router = APIRouter(
 )
 
 
+# Statuses this route may put on a processing batch.
+STATUS_BLOCKED = "BLOCKED"
+STATUS_APPROVED = "APPROVED_FOR_MANUFACTURING"
+
+# The stage that gates manufacturing. Anything else is a post-manufacturing
+# or in-process check and must not move the batch's status.
+GATING_STAGE = "PRE_MANUFACTURING"
+
+
 # =========================
 # REQUEST MODEL
 # =========================
 
 class LabTestRequest(BaseModel):
-    batch_id: str
-    lab_id: str
-    test_stage: str
-    test_type: str
-    test_parameters: dict
-    result: str
+    batch_id: str = Field(min_length=1, max_length=64)
+    lab_id: str = Field(min_length=1, max_length=64)
+
+    # Constrained rather than a free string: test_stage decides whether a
+    # batch becomes manufacturable, so a typo used to silently produce a
+    # test that gated nothing.
+    test_stage: Literal[
+        "PRE_MANUFACTURING",
+        "IN_PROCESS",
+        "POST_MANUFACTURING"
+    ]
+
+    test_type: str = Field(min_length=1, max_length=128)
+    test_parameters: dict = Field(default_factory=dict)
+    result: Literal["PASS", "FAIL", "pass", "fail"]
 
 
 # =========================
 # CREATE LAB TEST
 # =========================
 
-@router.post("/tests")
-def create_lab_test(data: LabTestRequest):
+@router.post("/tests", status_code=201)
+def create_lab_test(
+    data: LabTestRequest,
+    user: dict = Depends(require_roles(LAB)),
+):
 
-    # Check that batch exists
-    batch = db.processing_batches.find_one({
-        "processing_batch_id": data.batch_id
-    })
+    batch = db.processing_batches.find_one(
+        {"processing_batch_id": data.batch_id},
+        {"_id": 0, "status": 1}
+    )
 
     if not batch:
         raise HTTPException(
@@ -42,33 +67,18 @@ def create_lab_test(data: LabTestRequest):
             detail="Processing batch not found"
         )
 
-    # Validate result
     result = data.result.upper()
 
-    if result not in ["PASS", "FAIL"]:
-        raise HTTPException(
-            status_code=400,
-            detail="Result must be PASS or FAIL"
-        )
+    lab_test_id = ids.mint("lab_test")
 
-    # Generate test ID
-    count = db.lab_tests.count_documents({}) + 1
-
-    lab_test_id = f"LABTEST-{datetime.now().year}-{count:03d}"
-
-    # Determine batch status
-    if data.test_stage == "PRE_MANUFACTURING":
-
-        if result == "FAIL":
-            batch_status = "BLOCKED"
-
-        else:
-            batch_status = "APPROVED_FOR_MANUFACTURING"
+    # Only a pre-manufacturing test moves the batch's status; every other
+    # stage records its verdict without changing manufacturability.
+    if data.test_stage == GATING_STAGE:
+        batch_status = STATUS_BLOCKED if result == "FAIL" else STATUS_APPROVED
 
     else:
         batch_status = batch.get("status", "CREATED")
 
-    # Store lab test
     lab_test = {
         "lab_test_id": lab_test_id,
         "batch_id": data.batch_id,
@@ -78,22 +88,18 @@ def create_lab_test(data: LabTestRequest):
         "test_parameters": data.test_parameters,
         "result": result,
         "status": "VERIFIED",
-        "created_at": datetime.utcnow()
+        "verified_by": user["username"],
+        "created_at": datetime.now(timezone.utc)
     }
 
     db.lab_tests.insert_one(lab_test)
 
-    # Update processing batch status
-    db.processing_batches.update_one(
-        {
-            "processing_batch_id": data.batch_id
-        },
-        {
-            "$set": {
-                "status": batch_status
-            }
-        }
-    )
+    if data.test_stage == GATING_STAGE:
+
+        db.processing_batches.update_one(
+            {"processing_batch_id": data.batch_id},
+            {"$set": {"status": batch_status}}
+        )
 
     # Anchored for PASS and FAIL alike - a failed quality test is exactly
     # the record a dispute turns on.
@@ -107,7 +113,8 @@ def create_lab_test(data: LabTestRequest):
             "test_stage": data.test_stage,
             "test_type": data.test_type,
             "result": result,
-            "batch_status": batch_status
+            "batch_status": batch_status,
+            "recorded_by": user["username"]
         }
     )
 
@@ -126,13 +133,17 @@ def create_lab_test(data: LabTestRequest):
 # =========================
 
 @router.get("/tests/{batch_id}")
-def get_lab_tests(batch_id: str):
+def get_lab_tests(
+    batch_id: str,
+    limit: int = Query(default=200, ge=1, le=1000),
+    user: dict = Depends(require_authenticated),
+):
 
     tests = list(
         db.lab_tests.find(
             {"batch_id": batch_id},
             {"_id": 0}
-        )
+        ).limit(limit)
     )
 
     return {

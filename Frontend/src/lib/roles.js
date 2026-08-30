@@ -1,14 +1,18 @@
 /*
- * ROLE MODEL — client-side only, and labelled as such in the UI.
+ * ROLE MODEL — navigation only.
  *
- * There is no /api/auth/login or /api/auth/me in this backend. The contract
- * doc lists them but no auth router is mounted in main.py, so there is
- * nothing to call. Selecting a role therefore scopes NAVIGATION, not access:
- * it decides which screens a user sees, and the Login screen says plainly
- * that server-side auth is pending. That is honest, and it is also what the
- * demo needs — a judge asking "is this real auth?" gets a straight answer.
+ * The role is issued by the server. It arrives in the POST /api/auth/login
+ * response, travels inside the signed token, and the API re-reads it from
+ * the database on every request. So what this file decides is which screens
+ * a user is SHOWN; what they may actually do is decided by
+ * BACKEND/dependencies.require_roles and cannot be changed from here.
  *
- * When POST /api/auth/login lands, this file is where it plugs in.
+ * Editing localStorage now buys nothing: the screens appear and every call
+ * they make comes back 401 or 403.
+ *
+ * Ids must match services/accounts.ROLES on the backend. `consumer` is
+ * deliberately absent — the consumer journey is the public /verify page and
+ * has no account.
  */
 
 export const ROLES = [
@@ -55,11 +59,11 @@ export const ROLES = [
     screens: ['dashboard', 'blockchain', 'trace', 'iot'],
   },
   {
-    id: 'consumer',
-    label: 'Consumer',
-    blurb: 'Verify a medicine from its QR code',
-    home: '/verify',
-    screens: [],
+    id: 'admin',
+    label: 'Administrator',
+    blurb: 'Full access, including manual ledger anchoring',
+    home: '/dashboard',
+    screens: ['dashboard', 'blockchain', 'trace', 'iot'],
   },
 ]
 
@@ -75,25 +79,7 @@ export function canSee(roleId, screen) {
   return role.screens.includes(screen)
 }
 
-const STORAGE_KEY = 'traceveda.role'
-
-/** Reads the persisted role, ignoring the "null"/"undefined" strings that a
- *  careless localStorage write leaves behind. */
-export function readStoredRole() {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY)
-    if (!raw || raw === 'null' || raw === 'undefined') return null
-    return ROLE_BY_ID[raw] ? raw : null
-  } catch {
-    return null
-  }
-}
-
-export function writeStoredRole(roleId) {
-  try {
-    if (roleId) window.localStorage.setItem(STORAGE_KEY, roleId)
-    else window.localStorage.removeItem(STORAGE_KEY)
-  } catch {
-    /* private mode / blocked site data — role just does not persist */
-  }
+/** Where to land a user after login. Unknown roles still get a real screen. */
+export function homeFor(roleId) {
+  return getRole(roleId)?.home ?? '/dashboard'
 }

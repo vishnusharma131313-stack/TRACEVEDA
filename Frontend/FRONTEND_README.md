@@ -49,7 +49,7 @@ npm run preview      # serve the built bundle
 
 | Route | Screen | What it is for |
 |---|---|---|
-| `/login` | Role selector | Pick a role; scopes which screens are shown |
+| `/login` | Sign in | Username + password against `POST /api/auth/login` |
 | `/dashboard` | Batch command center | Every raw / processing / medicine batch |
 | `/batch/:kind/:id` | **Batch detail** | Lineage, timeline, lab, IoT — the main screen |
 | `/blockchain` | Blockchain explorer | Ledger list, per-event verify, whole-chain verify |
@@ -100,7 +100,8 @@ src/
 │   ├── status.js              the real status vocabulary + colour tone
 │   ├── iot.js                 sensor thresholds mirrored from the backend
 │   ├── format.js              dates, hashes, JSON-string coercion
-│   └── roles.js               the seven roles and what each can see
+│   ├── roles.js               which screens each server-issued role sees
+│   └── auth.js                token storage and session restore
 ├── components/
 │   ├── blockchain/            BlockAnchor, TxHashChip, VerifyEventButton
 │   ├── trace/LineageGraph     the lineage tree + one builder per endpoint
@@ -153,16 +154,25 @@ time.
 
 ## Known gaps, and why
 
-These are backend gaps surfaced honestly in the UI rather than papered over:
+### Closed
+
+These were real backend gaps that the UI used to work around. They are fixed,
+and the workarounds are gone:
+
+| Was | Now |
+|---|---|
+| No `POST /api/auth/login` — role selection was client-side | Real sign-in. The role comes from the server inside a signed token and is re-checked on every request. |
+| No `GET /api/plants` | Implemented, with search. Available as `plantAPI` in `api/client.js`. |
+| No `GET /api/investigations` | Implemented, regulator-only, as `investigationAPI`. |
+| Seeded alerts loaded into `alerts`, but the endpoint read `iot_alerts` | `GET /api/iot/alerts/{id}` reads both and tags each row with `source: "live" \| "seed"`. |
+| `GET /api/storage/{id}` keyed only on `raw_batch_id` | Matches `raw_batch_id` **or** `medicine_batch_id`, so seeded storage rows are visible. |
+
+### Still open
 
 | Gap | What the UI does |
 |---|---|
-| No `POST /api/auth/login` — no auth router is mounted | Role selection is client-side and the login screen says so in plain text. Roles scope navigation, not server access. |
-| No `GET /api/plants` | Raw batches show `plant_id` rather than a species name. |
-| No `GET /api/investigations` | Consumer reports are shown; the investigation workflow is not built. |
-| Seeded alerts load into an `alerts` collection, but `GET /api/iot/alerts/{id}` reads `iot_alerts` | The IoT screen's empty state names this explicitly. Alerts created live during the demo do appear. |
-| `GET /api/storage/{id}` keys on `raw_batch_id`, but seeded storage rows key on `medicine_batch_id` | Storage events are not surfaced; transport events are. |
 | No trace endpoint accepts a processing batch id | Processing lineage is assembled from `/relationships` plus `/api/medicine`. |
+| No screen consumes `plantAPI` or `investigationAPI` yet | The endpoints and client methods exist; wiring them into the batch detail and consumer-report screens is the next UI change. |
 
 ---
 

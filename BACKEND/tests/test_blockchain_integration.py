@@ -19,6 +19,13 @@ from routes import batches, iot, lab, medicine  # noqa: E402
 from services import blockchain_service  # noqa: E402
 
 
+# These tests call the route functions directly rather than over HTTP, so
+# they supply the identity that Depends(require_roles(...)) would inject.
+# Enforcement of those dependencies is covered by tests/test_auth.py,
+# which drives the real ASGI app.
+TEST_USER = {"username": "pytest", "role": "admin"}
+
+
 @pytest.fixture(autouse=True)
 def fresh_database():
     """A clean chain per test - see mongo_harness for why this is per-test."""
@@ -54,7 +61,8 @@ def make_raw_batch(day=26, quantity=100.0):
             collection_date=date(2026, 8, day),
             quantity=quantity,
             unit="kg"
-        )
+        ),
+        user=TEST_USER
     )
 
 
@@ -67,7 +75,8 @@ def make_processing_batch():
             output_quantity=80.0,
             unit="kg",
             processing_type="DRYING_AND_GRINDING"
-        )
+        ),
+        user=TEST_USER
     )
 
 
@@ -110,7 +119,8 @@ def test_full_supply_chain_anchors_every_step():
             relationship_type="RAW_TO_PROCESSING",
             quantity_contributed=100.0,
             unit="kg"
-        )
+        ),
+        user=TEST_USER
     )
 
     assert relationship["blockchain_tx"], "batch linkage was not anchored"
@@ -131,7 +141,8 @@ def test_full_supply_chain_anchors_every_step():
                 "moisture": "PASS"
             },
             result="PASS"
-        )
+        ),
+        user=TEST_USER
     )
 
     assert lab_test["blockchain_tx"], "lab test was not anchored"
@@ -148,7 +159,8 @@ def test_full_supply_chain_anchors_every_step():
             product_name="Ashwagandha Tablets",
             manufacturing_date=date(2026, 8, 26),
             expiry_date=date(2028, 8, 26)
-        )
+        ),
+        user=TEST_USER
     )
 
     assert med["blockchain_tx"], "medicine batch was not anchored"
@@ -178,7 +190,8 @@ def test_full_supply_chain_anchors_every_step():
             weight_change_kg=(
                 iot.WEIGHT_CHANGE_TOLERANCE_KG + 5.0
             )
-        )
+        ),
+        caller=TEST_USER
     )
 
     assert reading["tamper_status"] == "CRITICAL"
@@ -242,7 +255,8 @@ def test_failed_lab_test_is_also_anchored():
             test_type="QUALITY_TEST",
             test_parameters={"purity": "FAIL"},
             result="FAIL"
-        )
+        ),
+        user=TEST_USER
     )
 
     assert lab_test["blockchain_tx"], "failed lab test was not anchored"
@@ -284,7 +298,8 @@ def test_warning_alerts_are_not_anchored():
             humidity_percent=95.0,
             switch_status="OPEN",
             weight_change_kg=0.0
-        )
+        ),
+        caller=TEST_USER
     )
 
     assert reading["alerts_generated"] >= 2
@@ -323,7 +338,8 @@ def test_raw_sensor_readings_are_never_anchored():
                 timestamp=datetime(2026, 8, 26, 12, minute, 0),
                 temperature_c=22.0,
                 humidity_percent=45.0
-            )
+            ),
+            caller=TEST_USER
         )
 
     db = mongo_harness.current_db()

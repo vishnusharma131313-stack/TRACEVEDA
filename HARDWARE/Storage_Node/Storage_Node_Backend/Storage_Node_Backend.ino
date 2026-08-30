@@ -72,6 +72,24 @@ const char* BACKEND_URL =
 const char* IOT_ENDPOINT =
   "/api/iot/readings";
 
+// ======================================================
+// DEVICE AUTHENTICATION
+// ======================================================
+//
+// POST /api/iot/readings now requires this node to identify
+// itself. Send it as the X-Device-Key header.
+//
+// The value must match TRACEVEDA_DEVICE_API_KEY in
+// BACKEND/.env. If that variable is unset the backend logs a
+// warning and accepts the development key below, so an
+// unconfigured demo still works - but set both for anything
+// reachable from outside your LAN.
+//
+// ======================================================
+
+const char* DEVICE_API_KEY = "traceveda-dev-device-key";
+
+
 
 // ======================================================
 // WI-FI
@@ -715,6 +733,13 @@ client.setInsecure();
   http.addHeader(
     "Content-Type",
     "application/json"
+  );
+
+  // Identifies this node to the backend. Without it the
+  // request is rejected with 401.
+  http.addHeader(
+    "X-Device-Key",
+    DEVICE_API_KEY
   );
 
   http.setTimeout(15000);

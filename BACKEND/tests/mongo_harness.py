@@ -32,14 +32,24 @@ import mongomock  # noqa: E402
 import database  # noqa: E402
 
 
-# Reloaded in dependency order: the service before anything that calls it.
+# Reloaded in dependency order: services before the routes that call them.
 _CONSUMER_MODULES = [
     "services.blockchain_service",
+    "services.ids",
+    "services.accounts",
+    "dependencies",
+    "routes.auth",
     "routes.batches",
     "routes.lab",
     "routes.medicine",
     "routes.iot",
+    "routes.transport",
+    "routes.storage",
+    "routes.trace",
     "routes.blockchain",
+    "routes.consumer",
+    "routes.plants",
+    "routes.investigations",
     "import_csv",
     "migrate_seed_blockchain_events"
 ]
@@ -48,7 +58,9 @@ _CONSUMER_MODULES = [
 def install():
     """Point `database.db` at a fresh mongomock database and reload users."""
 
-    database.db = mongomock.MongoClient()["traceveda_test"]
+    # tz_aware matches the real client in database.py, so a datetime read
+    # back in a test has the same shape it would have in production.
+    database.db = mongomock.MongoClient(tz_aware=True)["traceveda_test"]
 
     for name in _CONSUMER_MODULES:
 
@@ -56,6 +68,39 @@ def install():
         importlib.reload(module)
 
     return database.db
+
+
+def make_app():
+    """
+    A FastAPI app wired to the current mongomock database.
+
+    Built after `install()` so the routers it mounts are the freshly reloaded
+    ones. Importing main at module scope would capture the routers from
+    whichever install ran last, which is the same trap the module docstring
+    describes for `db` itself.
+    """
+
+    from fastapi import FastAPI
+
+    app = FastAPI()
+
+    for name in [
+        "routes.auth",
+        "routes.batches",
+        "routes.lab",
+        "routes.iot",
+        "routes.medicine",
+        "routes.transport",
+        "routes.storage",
+        "routes.trace",
+        "routes.blockchain",
+        "routes.consumer",
+        "routes.plants",
+        "routes.investigations",
+    ]:
+        app.include_router(importlib.import_module(name).router)
+
+    return app
 
 
 def current_db():

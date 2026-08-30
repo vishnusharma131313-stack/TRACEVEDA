@@ -55,8 +55,10 @@ export function statusOf(batch) {
 
 /**
  * The human-facing subtitle for a batch card / header.
- * Raw batches have no product name, so the plant id is the most useful thing
- * we can show without a /api/plants endpoint (which does not exist yet).
+ *
+ * Raw batches have no product name, so this falls back to the plant id. To
+ * show the species instead, resolve it through plantAPI.get(plantId) — that
+ * endpoint exists now and returns scientific_name / common_name.
  */
 export function titleOf(batch, kind) {
   if (!batch) return null
