@@ -102,6 +102,36 @@ def create_raw_batch(data: RawBatchRequest):
 
 
 # =========================
+# LIST ALL RAW BATCHES
+# =========================
+
+@router.get("/raw")
+def list_raw_batches():
+    batches = list(
+        db.raw_material_batches.find(
+            {},
+            {"_id": 0}
+        ).sort("created_at", -1)
+    )
+    return {"batches": batches, "count": len(batches)}
+
+
+# =========================
+# LIST ALL PROCESSING BATCHES
+# =========================
+
+@router.get("/processing")
+def list_processing_batches():
+    batches = list(
+        db.processing_batches.find(
+            {},
+            {"_id": 0}
+        ).sort("created_at", -1)
+    )
+    return {"batches": batches, "count": len(batches)}
+
+
+# =========================
 # GET RAW BATCH
 # =========================
 

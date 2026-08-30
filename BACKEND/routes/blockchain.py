@@ -66,6 +66,22 @@ def verify_blockchain_chain():
 
 
 # =========================
+# LIST ALL BLOCKCHAIN EVENTS
+# =========================
+
+@router.get("/events")
+def list_blockchain_events():
+    from database import db
+    events = list(
+        db.blockchain_events.find(
+            {},
+            {"_id": 0}
+        ).sort("sequence", -1).limit(500)
+    )
+    return {"events": events, "count": len(events)}
+
+
+# =========================
 # BLOCKCHAIN TRAIL FOR ONE BATCH
 # =========================
 

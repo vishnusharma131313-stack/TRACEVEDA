@@ -96,6 +96,21 @@ def create_medicine_batch(data: MedicineBatchRequest):
 
 
 # =========================
+# LIST ALL MEDICINE BATCHES
+# =========================
+
+@router.get("/medicine")
+def list_medicine_batches():
+    batches = list(
+        db.medicine_batches.find(
+            {},
+            {"_id": 0}
+        ).sort("created_at", -1)
+    )
+    return {"batches": batches, "count": len(batches)}
+
+
+# =========================
 # GET MEDICINE BATCH
 # =========================
 
