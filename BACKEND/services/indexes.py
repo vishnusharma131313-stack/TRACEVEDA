@@ -85,6 +85,41 @@ INDEXES = [
 ]
 
 
+def _diagnose(errors):
+    """
+    One actionable sentence for why the indexes failed.
+
+    Written after a full Atlas M0 emitted the same 700-character quota error
+    32 times at startup, and the summary line then blamed duplicate ids. The
+    log was unreadable AND it pointed at the wrong cause.
+    """
+
+    joined = " ".join(errors).lower()
+
+    if "space quota" in joined or "over your space quota" in joined:
+        return (
+            "The cluster is OUT OF STORAGE, so writes - including index "
+            "builds - are blocked. Free space and restart. The bulk "
+            "reference collections are the usual culprit and no route reads "
+            "them: db.iot_reference_normalized.drop() in mongosh, or see "
+            "import_csv.py --list."
+        )
+
+    if "duplicate key" in joined or "e11000" in joined:
+        return (
+            "Duplicate business ids in the data. Find them before retrying - "
+            "a unique index is the guarantee behind services/ids.mint."
+        )
+
+    if "not authorized" in joined or "unauthorized" in joined:
+        return (
+            "The database user is not permitted to create indexes. Grant it "
+            "readWrite on this database."
+        )
+
+    return "See the first error above."
+
+
 def ensure_indexes(db):
     """
     Create every index. Returns (created_or_existing, failed).
@@ -105,20 +140,35 @@ def ensure_indexes(db):
 
             failed.append((collection, keys, str(error)))
 
-            logger.warning(
-                "Could not create %s index on %s%s: %s",
-                "unique" if unique else "",
-                collection,
-                keys,
-                error
-            )
+            # Only the first failure is logged in full. When the cause is
+            # environmental - a full cluster, a permissions problem - every
+            # one of the 32 carries the same multi-line message, and
+            # repeating it buries the startup log completely.
+            if len(failed) == 1:
+                logger.warning(
+                    "Could not create index on %s%s: %s",
+                    collection,
+                    keys,
+                    error
+                )
 
     if failed:
+
         logger.warning(
-            "%s of %s indexes could not be created. Duplicate business ids "
-            "in the data are the usual cause; the API still runs.",
+            "%s of %s indexes could not be created. %s",
             len(failed),
-            len(INDEXES)
+            len(INDEXES),
+            _diagnose([error for _, _, error in failed])
+        )
+
+        if len(failed) > 1:
+            logger.warning(
+                "Also affected: %s",
+                ", ".join(sorted({name for name, _, _ in failed[1:]}))
+            )
+
+        logger.warning(
+            "The API still runs; queries fall back to collection scans."
         )
 
     return succeeded, failed

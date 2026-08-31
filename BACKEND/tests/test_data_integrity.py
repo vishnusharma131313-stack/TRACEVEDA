@@ -668,3 +668,275 @@ def test_the_time_helpers_handle_every_input_shape():
     assert sort_key("2026-06-05T16:38:43") == "2026-06-05T16:38:43"
 
     assert now_utc().tzinfo is tz.utc
+
+
+# ============================================================
+# IMPORT SELECTION
+# ============================================================
+# A partial import is worse than none: import_csv truncates each collection
+# before re-inserting it, so a run that dies partway leaves the remaining
+# collections EMPTY. The API then starts perfectly happily with no medicines
+# in it. These pin the guard rails that make that loud instead of silent.
+
+def _collections_referenced_in_code(*directories):
+    """
+    Collection names reached through `db.<name>` or `db["<name>"]`.
+
+    Parses the AST rather than grepping the text. A regex over the source
+    also matches inside strings and comments - the diagnosis message in
+    services/indexes.py names `db.iot_reference_normalized.drop()` as advice,
+    which a text scan reads as a query the app makes.
+    """
+
+    import ast
+
+    found = set()
+
+    for directory in directories:
+
+        for path in sorted(directory.glob("*.py")):
+
+            tree = ast.parse(path.read_text(encoding="utf-8"), str(path))
+
+            for node in ast.walk(tree):
+
+                # db.<name>
+                if (
+                    isinstance(node, ast.Attribute)
+                    and isinstance(node.value, ast.Name)
+                    and node.value.id == "db"
+                ):
+                    found.add(node.attr)
+
+                # db["<name>"]
+                if (
+                    isinstance(node, ast.Subscript)
+                    and isinstance(node.value, ast.Name)
+                    and node.value.id == "db"
+                    and isinstance(node.slice, ast.Constant)
+                    and isinstance(node.slice.value, str)
+                ):
+                    found.add(node.slice.value)
+
+    return found
+
+
+def test_import_default_covers_every_collection_the_code_reads():
+    """
+    CORE_COLLECTIONS must not drift behind the routes.
+
+    If a new route starts reading a collection that the default import skips,
+    a fresh database will be missing it and the failure shows up as an empty
+    screen rather than an error.
+    """
+
+    from pathlib import Path
+
+    import import_csv
+
+    backend = Path(__file__).resolve().parents[1]
+
+    read = _collections_referenced_in_code(
+        backend / "routes",
+        backend / "services",
+    )
+
+    # Written by the app at runtime, not loaded from a CSV.
+    runtime_only = {"users", "counters", "iot_alerts", "investigations"}
+
+    # Not collections - attributes and methods on the database object.
+    not_collections = {
+        "command", "list_collection_names", "client", "name",
+        "drop_collection",
+    }
+
+    read -= runtime_only | not_collections
+
+    missing = read - import_csv.CORE_COLLECTIONS
+
+    assert not missing, (
+        f"routes read {sorted(missing)}, which the default import does not "
+        f"load. Add them to CORE_COLLECTIONS in import_csv.py."
+    )
+
+
+def test_the_collection_scanner_ignores_strings_and_comments():
+    """The false positive that motivated parsing the AST."""
+
+    import ast
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp:
+
+        directory = Path(tmp)
+
+        (directory / "sample.py").write_text(
+            'MESSAGE = "run db.some_reference_corpus.drop() in mongosh"\n'
+            "# db.another_mentioned_in_a_comment.find()\n"
+            "def go(db):\n"
+            "    return db.medicine_batches.find_one({})\n",
+            encoding="utf-8",
+        )
+
+        found = _collections_referenced_in_code(directory)
+
+    assert "medicine_batches" in found
+    assert "some_reference_corpus" not in found
+    assert "another_mentioned_in_a_comment" not in found
+
+
+def test_the_bulk_corpora_are_excluded_by_default():
+    """
+    iot_reference_normalized alone is 2.2M rows / ~135 MB and no route
+    touches it. Importing it by default filled an Atlas M0 cluster partway
+    through a run and left every later collection empty.
+    """
+
+    import import_csv
+
+    files = [
+        type("F", (), {"stem": name})()
+        for name in [
+            "medicine_batches",
+            "lab_tests",
+            "iot_reference_normalized",
+            "iot_reference_quarantine",
+            "bsi_reference_normalized",
+            "nmpb_reference_normalized",
+        ]
+    ]
+
+    chosen, skipped = import_csv.select_files(files)
+
+    chosen_names = {f.stem for f in chosen}
+    skipped_names = {f.stem for f, _ in skipped}
+
+    assert "medicine_batches" in chosen_names
+    assert "lab_tests" in chosen_names
+    assert import_csv.BULK_COLLECTIONS <= skipped_names
+
+    # --all opts back in.
+    chosen_all, skipped_all = import_csv.select_files(files, include_bulk=True)
+
+    assert not skipped_all
+    assert "iot_reference_normalized" in {f.stem for f in chosen_all}
+
+
+def test_only_selects_exactly_what_was_named():
+    """The recovery path: re-import one emptied collection, touch nothing else."""
+
+    import import_csv
+
+    files = [
+        type("F", (), {"stem": name})()
+        for name in ["medicine_batches", "lab_tests", "iot_readings", "plants"]
+    ]
+
+    chosen, skipped = import_csv.select_files(
+        files, only="medicine_batches,lab_tests"
+    )
+
+    assert {f.stem for f in chosen} == {"medicine_batches", "lab_tests"}
+    assert {f.stem for f, _ in skipped} == {"iot_readings", "plants"}
+
+
+def test_an_unknown_csv_is_imported_rather_than_silently_dropped():
+    """New project data should land in the database, not be quietly ignored."""
+
+    import import_csv
+
+    files = [type("F", (), {"stem": "brand_new_dataset"})()]
+
+    chosen, skipped = import_csv.select_files(files)
+
+    assert [f.stem for f in chosen] == ["brand_new_dataset"]
+    assert not skipped
+
+
+def test_verify_reports_an_empty_core_collection(client):
+    """
+    The check that turns a silent partial import into a non-zero exit code.
+    """
+
+    import import_csv
+
+    db = mongo_harness.current_db()
+
+    db.medicine_batches.delete_many({})
+    db.lab_tests.insert_one({"lab_test_id": "LABTEST-2026-001"})
+
+    empty_core, empty_other = import_csv.verify({"medicine_batches", "lab_tests"})
+
+    assert empty_core == ["medicine_batches"]
+    assert empty_other == []
+
+
+# ============================================================
+# INDEX FAILURE REPORTING
+# ============================================================
+
+def test_index_failures_are_diagnosed_not_just_repeated():
+    """
+    A full Atlas M0 made every one of the 32 index builds fail with the same
+    700-character quota error. All 32 were logged in full, and the summary
+    then blamed "duplicate business ids" - so the startup log was unreadable
+    AND it named the wrong cause.
+    """
+
+    from services import indexes
+
+    class FullCluster:
+        """Every create_index fails the way an out-of-space Atlas does."""
+
+        def __getitem__(self, name):
+            return self
+
+        def create_index(self, keys, unique=False):
+            raise RuntimeError(
+                "you are over your space quota, using 512 MB of 512 MB. "
+                "Writes are blocked on your cluster."
+            )
+
+    succeeded, failed = indexes.ensure_indexes(FullCluster())
+
+    assert succeeded == 0
+    assert len(failed) == len(indexes.INDEXES)
+
+    # The summary names the real cause and what to do about it.
+    diagnosis = indexes._diagnose([error for _, _, error in failed])
+
+    assert "OUT OF STORAGE" in diagnosis
+    assert "iot_reference_normalized" in diagnosis
+    assert "duplicate" not in diagnosis.lower()
+
+
+def test_a_duplicate_key_failure_is_diagnosed_differently():
+
+    from services import indexes
+
+    diagnosis = indexes._diagnose([
+        "E11000 duplicate key error collection: traceveda.medicine_batches"
+    ])
+
+    assert "Duplicate business ids" in diagnosis
+    assert "STORAGE" not in diagnosis
+
+
+def test_a_permissions_failure_is_diagnosed_differently():
+
+    from services import indexes
+
+    diagnosis = indexes._diagnose(["not authorized on traceveda to execute command"])
+
+    assert "not permitted to create indexes" in diagnosis
+
+
+def test_indexes_still_succeed_on_a_healthy_database():
+
+    from services import indexes
+
+    succeeded, failed = indexes.ensure_indexes(mongo_harness.current_db())
+
+    assert failed == []
+    assert succeeded == len(indexes.INDEXES)

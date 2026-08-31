@@ -14,7 +14,7 @@ import mongo_harness  # noqa: F401  (must be imported before routes/services)
 
 mongo_harness.install()
 
-from datetime import date, datetime, timedelta, timezone  # noqa: E402
+from datetime import datetime, timedelta, timezone  # noqa: E402
 
 import jwt  # noqa: E402
 import pytest  # noqa: E402
@@ -672,3 +672,105 @@ def test_usernames_are_case_insensitive(client):
     )
 
     assert response.status_code == 200
+
+
+# ============================================================
+# FRONTEND / BACKEND PERMISSION PARITY
+# ============================================================
+
+def test_the_frontend_permission_map_matches_the_backend():
+    """
+    Frontend/src/lib/permissions.js decides which buttons are enabled. If it
+    drifts from dependencies.require_roles, the UI offers actions the API
+    refuses - which is exactly the bug it was written to fix: the IoT demo
+    trigger was shown to regulators, who get 403 on POST /api/iot/readings.
+
+    Parses the JS rather than trusting a comment, so drift fails the build.
+    """
+
+    import json
+    import re
+    from pathlib import Path
+
+    permissions_js = (
+        Path(__file__).resolve().parents[2]
+        / "Frontend" / "src" / "lib" / "permissions.js"
+    )
+
+    assert permissions_js.exists(), permissions_js
+
+    source = permissions_js.read_text(encoding="utf-8")
+
+    block = re.search(
+        r"const ACTION_ROLES = \{(.*?)\n\}", source, re.S
+    )
+
+    assert block, "could not find ACTION_ROLES in permissions.js"
+
+    declared = dict(
+        re.findall(r"'([\w.]+)':\s*(\[[^\]]*\])", block.group(1))
+    )
+
+    declared = {
+        action: json.loads(roles.replace("'", '"'))
+        for action, roles in declared.items()
+    }
+
+    # The truth, taken from the route modules themselves.
+    expected = {
+        "batch.createRaw": [accounts.FARMER],
+        "batch.createProcessing": [accounts.PROCESSOR],
+        "batch.createRelationship": [accounts.PROCESSOR],
+        "lab.createTest": [accounts.LAB],
+        "medicine.create": [accounts.MANUFACTURER],
+        "iot.postReading": [accounts.LOGISTICS],
+        "transport.createEvent": [accounts.LOGISTICS],
+        "storage.createEvent": [accounts.LOGISTICS],
+        "blockchain.anchorEvent": [accounts.REGULATOR],
+        "consumer.updateStatus": [accounts.REGULATOR],
+        "investigation.open": [accounts.REGULATOR],
+        "investigation.close": [accounts.REGULATOR],
+        "investigation.list": [accounts.REGULATOR],
+    }
+
+    assert declared == expected, (
+        "Frontend/src/lib/permissions.js has drifted from the backend.\n"
+        f"  frontend: {declared}\n"
+        f"  backend:  {expected}"
+    )
+
+
+def test_a_role_that_can_see_the_iot_screen_may_not_always_write_to_it(client):
+    """
+    The concrete asymmetry permissions.js exists to communicate.
+
+    regulator and manufacturer can open /iot (roles.js grants them the
+    screen) but the API refuses their readings. The UI must disable the
+    trigger rather than let them discover this by clicking it.
+    """
+
+    seed_reference_data()
+
+    mongo_harness.current_db().raw_material_batches.insert_one({
+        "raw_batch_id": "RAW-2026-001"
+    })
+
+    reading = {
+        "batch_id": "RAW-2026-001",
+        "sensor_id": "IOT-DEMO-001",
+        "timestamp": "2026-08-26T12:00:00",
+        "temperature_c": 22.0,
+    }
+
+    make_user("logistics", accounts.LOGISTICS)
+    make_user("regulator", accounts.REGULATOR)
+    make_user("manufacturer", accounts.MANUFACTURER)
+
+    assert client.post(
+        "/api/iot/readings", json=reading, headers=auth_header("logistics")
+    ).status_code == 201
+
+    for username in ("regulator", "manufacturer"):
+        assert client.post(
+            "/api/iot/readings", json=reading, headers=auth_header(username)
+        ).status_code == 403, username

@@ -52,7 +52,7 @@ def seeded():
     import import_csv
     import migrate_seed_blockchain_events
     import seed_users
-    from services import accounts, ids
+    from services import ids
     from services.indexes import ensure_indexes
 
     importlib.reload(import_csv)
