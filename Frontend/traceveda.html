@@ -3131,7 +3131,7 @@ tbody tr:hover{
 
     <div class="demo-right">
 
-        <!--
+        
         <span id="demoInstruction">
             Explore the TraceVeda platform
         </span>
@@ -6741,13 +6741,46 @@ function submitConsumerReport(event) {
     </div>
 
 </div>
-
-
-
 <script>
 
 let selectedAuthRole = null;
 let currentAuthMode = "signin";
+
+
+/* ==========================================
+   API
+========================================== */
+
+const API_URL = "https://traceveda.onrender.com";
+
+
+/* ==========================================
+   ROLE MAPPING
+========================================== */
+
+function getBackendRole(frontendRole) {
+
+    const roleMap = {
+
+        lab: "lab",
+
+        manufacturer: "manufacturer",
+
+        auditor: "regulator",
+
+        farmer: "farmer",
+
+        processor: "processor",
+
+        logistics: "logistics",
+
+        admin: "admin"
+
+    };
+
+    return roleMap[frontendRole] || null;
+
+}
 
 
 /* ==========================================
@@ -6758,50 +6791,55 @@ function openAuthModal(mode) {
 
     currentAuthMode = mode;
 
-    const modal = document.getElementById("authModal");
+    const modal =
+        document.getElementById("authModal");
 
-    const title = document.getElementById("authTitle");
+    const title =
+        document.getElementById("authTitle");
 
-    const subtitle = document.getElementById("authSubtitle");
+    const subtitle =
+        document.getElementById("authSubtitle");
 
-    const signinForm = document.getElementById("signinForm");
+    const signinForm =
+        document.getElementById("signinForm");
 
-    const signupForm = document.getElementById("signupForm");
+    const signupForm =
+        document.getElementById("signupForm");
 
     const authSections =
-    document.querySelectorAll(".auth-section");
+        document.querySelectorAll(".auth-section");
 
-    const message = document.getElementById("authMessage");
+    const message =
+        document.getElementById("authMessage");
 
 
     modal.classList.add("active");
 
+
     selectedAuthRole = null;
 
-    // Show/hide Auditor depending on auth mode
+
+    /* ------------------------------------------
+       HIDE AUDITOR DURING SIGNUP
+    ------------------------------------------ */
+
     document.querySelectorAll(".auth-role").forEach(role => {
 
         if (role.dataset.role === "auditor") {
 
             role.style.display =
-                mode === "signup" ? "none" : "";
+                mode === "signup"
+                    ? "none"
+                    : "";
 
         }
 
     });
 
 
-    // Clear previously generated username
-
-    const signupUsername =
-        document.getElementById("signupUsername");
-
-    if (signupUsername) {
-        signupUsername.value = "";
-    }
-
-
-    // Clear previous role selection
+    /* ------------------------------------------
+       RESET ROLE SELECTION
+    ------------------------------------------ */
 
     document.querySelectorAll(".auth-role").forEach(role => {
 
@@ -6810,12 +6848,66 @@ function openAuthModal(mode) {
     });
 
 
-    // Clear previous message
+    /* ------------------------------------------
+       CLEAR MESSAGE
+    ------------------------------------------ */
 
-    message.className = "auth-message";
+    if (message) {
 
-    message.textContent = "";
+        message.className = "auth-message";
 
+        message.textContent = "";
+
+    }
+
+
+    /* ------------------------------------------
+       RESET FORMS
+    ------------------------------------------ */
+
+    if (signinForm) {
+
+        signinForm.style.display = "none";
+
+        signinForm.reset();
+
+    }
+
+
+    if (signupForm) {
+
+        signupForm.style.display = "none";
+
+        signupForm.reset();
+
+    }
+
+
+    /* ------------------------------------------
+       USERNAME IS AUTO-GENERATED
+    ------------------------------------------ */
+
+    const signupUsername =
+        document.getElementById("signupUsername");
+
+
+    if (signupUsername) {
+
+        signupUsername.value = "";
+
+        signupUsername.required = false;
+
+        signupUsername.disabled = true;
+
+        signupUsername.placeholder =
+            "Your TraceVeda ID will be generated automatically";
+
+    }
+
+
+    /* ------------------------------------------
+       MODAL TEXT
+    ------------------------------------------ */
 
     if (mode === "signin") {
 
@@ -6835,22 +6927,22 @@ function openAuthModal(mode) {
 
     }
 
-    // Reset role selection screen
+
+    /* ------------------------------------------
+       SHOW ROLE SELECTION
+    ------------------------------------------ */
+
     authSections.forEach(section => {
+
         section.style.display = "";
+
     });
-
-    // Hide authentication forms until a role is selected
-
-    signinForm.style.display = "none";
-
-    signupForm.style.display = "none";
 
 }
 
 
 /* ==========================================
-   CLOSE MODAL
+   CLOSE AUTH MODAL
 ========================================== */
 
 function closeAuthModal() {
@@ -6861,32 +6953,6 @@ function closeAuthModal() {
 
 }
 
-/* ==========================================
-   DUMMY SIGN-IN CREDENTIALS
-   TEMPORARY — FOR FRONTEND TESTING ONLY
-========================================== */
-
-const dummyUsers = {
-    auditor: {
-        username: "Aud-001",
-        password: "123"
-    },
-
-    lab: {
-        username: "Lab-001",
-        password: "123"
-    },
-
-    manufacturer: {
-        username: "Man-001",
-        password: "123"
-    },
-
-    consumer: {
-        username: "Con-001",
-        password: "123"
-    }
-};
 
 /* ==========================================
    SIGN IN
@@ -6894,104 +6960,230 @@ const dummyUsers = {
 
 document
     .getElementById("signinForm")
-    .addEventListener("submit", function(event) {
+    .addEventListener(
+        "submit",
+        async function(event) {
 
-        event.preventDefault();
-
-
-        /* ------------------------------------------
-           GET USER INPUT
-        ------------------------------------------ */
-
-        const username =
-            document
-                .getElementById("signinUsername")
-                .value
-                .trim();
-
-        const password =
-            document
-                .getElementById("signinPassword")
-                .value;
+            event.preventDefault();
 
 
-        /* ------------------------------------------
-           CHECK ROLE
-        ------------------------------------------ */
+            const username =
+                document
+                    .getElementById("signinUsername")
+                    .value
+                    .trim()
+                    .toLowerCase();
 
-        if (!selectedAuthRole) {
+
+            const password =
+                document
+                    .getElementById("signinPassword")
+                    .value;
+
+
+            /* ------------------------------------------
+               CHECK ROLE
+            ------------------------------------------ */
+
+            if (!selectedAuthRole) {
+
+                showAuthMessage(
+
+                    "Please select your role first.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            /* ------------------------------------------
+               CHECK INPUT
+            ------------------------------------------ */
+
+            if (!username || !password) {
+
+                showAuthMessage(
+
+                    "Please enter your ID and password.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            /* ------------------------------------------
+               LOADING
+            ------------------------------------------ */
 
             showAuthMessage(
-                "Please select your role first.",
-                "error"
-            );
 
-            return;
-        }
+                "Signing in...",
 
-
-        /* ------------------------------------------
-           GET USER FOR SELECTED ROLE
-        ------------------------------------------ */
-
-        const user =
-            dummyUsers[selectedAuthRole];
-
-
-        /* ------------------------------------------
-           CHECK USERNAME + PASSWORD
-        ------------------------------------------ */
-
-        if (
-            user &&
-            username === user.username &&
-            password === user.password
-        ) {
-
-            showAuthMessage(
-                "Sign in successful.",
                 "success"
+
             );
 
 
-            console.log(
-                "Logged in as:",
-                selectedAuthRole,
-                username
-            );
+            try {
 
 
-            /* --------------------------------------
-               OPEN ROLE-SPECIFIC WORKSPACE
-            -------------------------------------- */
+                /* ------------------------------------------
+                   BACKEND LOGIN
+                ------------------------------------------ */
 
-            setTimeout(function() {
+                const response =
+                    await fetch(
 
-                console.log("========== ROLE DEBUG ==========");
-                console.log("Selected role:", selectedAuthRole);
-                console.log("Current role:", currentRole);
-                console.log("Opening role:", selectedAuthRole);
-                console.log("Role menu:", roleMenus[selectedAuthRole]);
-                console.log("================================");
+                        `${API_URL}/api/auth/login`,
 
-                closeAuthModal();
+                        {
 
-                openRole(selectedAuthRole);
+                            method: "POST",
 
-            }, 400);
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body: JSON.stringify({
+
+                                username: username,
+
+                                password: password
+
+                            })
+
+                        }
+
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                /* ------------------------------------------
+                   LOGIN FAILED
+                ------------------------------------------ */
+
+                if (!response.ok) {
+
+                    showAuthMessage(
+
+                        data.detail ||
+                        "Invalid username or password.",
+
+                        "error"
+
+                    );
+
+                    return;
+
+                }
+
+
+                /* ------------------------------------------
+                   SAVE USER
+                ------------------------------------------ */
+
+                localStorage.setItem(
+
+                    "traceveda_user",
+
+                    JSON.stringify(data.user)
+
+                );
+
+
+                /* ------------------------------------------
+                   SAVE TOKEN IF BACKEND PROVIDES ONE
+                ------------------------------------------ */
+
+                if (data.access_token) {
+
+                    localStorage.setItem(
+
+                        "traceveda_token",
+
+                        data.access_token
+
+                    );
+
+                }
+
+
+                /* ------------------------------------------
+                   SUCCESS
+                ------------------------------------------ */
+
+                showAuthMessage(
+
+                    "Sign in successful!",
+
+                    "success"
+
+                );
+
+
+                console.log(
+
+                    "Backend login successful:",
+
+                    data
+
+                );
+
+
+                /* ------------------------------------------
+                   OPEN ROLE DASHBOARD
+                ------------------------------------------ */
+
+                setTimeout(function() {
+
+                    closeAuthModal();
+
+                    openRole(selectedAuthRole);
+
+                }, 500);
+
+
+            }
+
+            catch (error) {
+
+
+                console.error(
+
+                    "Login error:",
+
+                    error
+
+                );
+
+
+                showAuthMessage(
+
+                    "Unable to connect to the server.",
+
+                    "error"
+
+                );
+
+            }
 
         }
+    );
 
-        else {
-
-            showAuthMessage(
-                "Invalid username or password.",
-                "error"
-            );
-
-        }
-
-});
 
 /* ==========================================
    SELECT ROLE
@@ -6999,78 +7191,107 @@ document
 
 function selectAuthRole(button) {
 
-    // Remove previous selection
-    document.querySelectorAll(".auth-role").forEach(role => {
-        role.classList.remove("selected");
-    });
 
-    // Select clicked role
+    /* ------------------------------------------
+       REMOVE PREVIOUS SELECTION
+    ------------------------------------------ */
+
+    document
+        .querySelectorAll(".auth-role")
+        .forEach(role => {
+
+            role.classList.remove("selected");
+
+        });
+
+
+    /* ------------------------------------------
+       SELECT CURRENT ROLE
+    ------------------------------------------ */
+
     button.classList.add("selected");
 
-    // Store selected role
-    selectedAuthRole = button.dataset.role;
+
+    selectedAuthRole =
+        button.dataset.role;
 
 
-    /* ==========================================
-       GENERATE SIGNUP USERNAME
-    ========================================== */
+    /* ------------------------------------------
+       SIGNUP USERNAME MESSAGE
+    ------------------------------------------ */
 
     const signupUsername =
         document.getElementById("signupUsername");
 
-    if (signupUsername && currentAuthMode === "signup") {
 
-        const usernameMap = {
-
-            lab: "lab-001",
-
-            manufacturer: "manufacturer-001",
-
-            consumer: "consumer-001"
-
-        };
+    if (
+        signupUsername &&
+        currentAuthMode === "signup"
+    ) {
 
         signupUsername.value =
-            usernameMap[selectedAuthRole] || "";
+            "ID will be generated automatically";
+
     }
 
 
-    /* ==========================================
-       MOVE FROM ROLE SELECTION TO AUTH FORM
-    ========================================== */
+    /* ------------------------------------------
+       GET FORMS
+    ------------------------------------------ */
 
     const authSections =
         document.querySelectorAll(".auth-section");
 
+
     const signinForm =
         document.getElementById("signinForm");
+
 
     const signupForm =
         document.getElementById("signupForm");
 
 
-    // Hide role selection
+    /* ------------------------------------------
+       HIDE ROLE SELECTION
+    ------------------------------------------ */
+
     authSections.forEach(section => {
+
         section.style.display = "none";
+
     });
 
 
-    // Show correct form
+    /* ------------------------------------------
+       SHOW CORRECT FORM
+    ------------------------------------------ */
+
     if (currentAuthMode === "signin") {
 
+
         if (signinForm) {
+
             signinForm.style.display = "flex";
+
         }
 
-    } else {
+
+    }
+
+    else {
+
 
         if (signupForm) {
+
             signupForm.style.display = "flex";
+
         }
+
 
     }
 
 }
+
 
 /* ==========================================
    SIGN UP
@@ -7078,78 +7299,360 @@ function selectAuthRole(button) {
 
 document
     .getElementById("signupForm")
-    .addEventListener("submit", async function(event) {
+    .addEventListener(
+        "submit",
+        async function(event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
 
-        if (!selectedAuthRole) {
+            /* ------------------------------------------
+               CHECK ROLE
+            ------------------------------------------ */
+
+            if (!selectedAuthRole) {
+
+                showAuthMessage(
+
+                    "Please select your role first.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            /* ------------------------------------------
+               CONVERT FRONTEND ROLE
+               TO BACKEND ROLE
+            ------------------------------------------ */
+
+            const backendRole =
+                getBackendRole(selectedAuthRole);
+
+
+            /* ------------------------------------------
+               CONSUMER DOES NOT REQUIRE ACCOUNT
+            ------------------------------------------ */
+
+            if (
+                selectedAuthRole === "consumer"
+            ) {
+
+                showAuthMessage(
+
+                    "Consumer access does not require an account.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            if (!backendRole) {
+
+                showAuthMessage(
+
+                    "This role cannot create an account.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            /* ------------------------------------------
+               GET PASSWORD
+            ------------------------------------------ */
+
+            const password =
+                document
+                    .getElementById("signupPassword")
+                    .value;
+
+
+            const confirmPassword =
+                document
+                    .getElementById("signupConfirmPassword")
+                    .value;
+
+
+            /* ------------------------------------------
+               PASSWORD MATCH
+            ------------------------------------------ */
+
+            if (password !== confirmPassword) {
+
+                showAuthMessage(
+
+                    "Passwords do not match.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            /* ------------------------------------------
+               PASSWORD LENGTH
+            ------------------------------------------ */
+
+            if (password.length < 8) {
+
+                showAuthMessage(
+
+                    "Password must contain at least 8 characters.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            /* ------------------------------------------
+               LOADING
+            ------------------------------------------ */
 
             showAuthMessage(
-                "Please select your role first.",
-                "error"
+
+                "Creating your TraceVeda account...",
+
+                "success"
+
             );
 
-            return;
+
+            try {
+
+
+                /* ------------------------------------------
+                   BACKEND SIGNUP REQUEST
+                ------------------------------------------ */
+
+                const response =
+                    await fetch(
+
+                        `${API_URL}/api/auth/signup`,
+
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body: JSON.stringify({
+
+                                password: password,
+
+                                role: backendRole
+
+                            })
+
+                        }
+
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                /* ------------------------------------------
+                   SIGNUP FAILED
+                ------------------------------------------ */
+
+                if (!response.ok) {
+
+                    showAuthMessage(
+
+                        data.detail ||
+                        "Unable to create account.",
+
+                        "error"
+
+                    );
+
+                    return;
+
+                }
+
+
+                /* ------------------------------------------
+                   SUCCESS
+                ------------------------------------------ */
+
+                const generatedID =
+                    data.user.username;
+
+
+                showAuthMessage(
+
+                    `Account created successfully! Your TraceVeda ID is: ${generatedID}`,
+
+                    "success"
+
+                );
+
+
+                console.log(
+
+                    "Account created:",
+
+                    data
+
+                );
+
+
+                /* ------------------------------------------
+                   SAVE USER DATA
+                ------------------------------------------ */
+
+                localStorage.setItem(
+
+                    "traceveda_user",
+
+                    JSON.stringify(data.user)
+
+                );
+
+
+                /* ------------------------------------------
+                   OPTIONAL:
+                   AUTO-FILL SIGNIN USERNAME
+                ------------------------------------------ */
+
+                setTimeout(function() {
+
+
+                    alert(
+
+                        "Account Created Successfully!\n\n" +
+
+                        "Your TraceVeda ID is:\n" +
+
+                        generatedID +
+
+                        "\n\nPlease remember this ID."
+
+                    );
+
+
+                    /* Close signup modal */
+
+                    closeAuthModal();
+
+
+                    /* Open signin modal */
+
+                    openAuthModal("signin");
+
+
+                    /* Select same role */
+
+                    document
+                        .querySelectorAll(".auth-role")
+                        .forEach(role => {
+
+                            if (
+                                role.dataset.role ===
+                                selectedAuthRole
+                            ) {
+
+                                selectAuthRole(role);
+
+                            }
+
+                        });
+
+
+                    /* Fill generated ID */
+
+                    const signinUsername =
+                        document.getElementById(
+                            "signinUsername"
+                        );
+
+
+                    if (signinUsername) {
+
+                        signinUsername.value =
+                            generatedID;
+
+                    }
+
+
+                }, 1000);
+
+
+            }
+
+            catch (error) {
+
+
+                console.error(
+
+                    "Signup error:",
+
+                    error
+
+                );
+
+
+                showAuthMessage(
+
+                    "Unable to connect to the server.",
+
+                    "error"
+
+                );
+
+            }
 
         }
-
-
-        const password =
-            document
-                .getElementById("signupPassword")
-                .value;
-
-
-        const confirmPassword =
-            document
-                .getElementById("signupConfirmPassword")
-                .value;
-
-
-        if (password !== confirmPassword) {
-
-            showAuthMessage(
-                "Passwords do not match.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        /*
-         * BACKEND REQUEST WILL GO HERE
-         */
-
-        console.log({
-            action: "signup",
-            role: selectedAuthRole,
-            password: password
-        });
-
-
-        // Temporary response
-
-        showAuthMessage(
-            "Creating your TraceVeda account...",
-            "success"
-        );
-
-    });
+    );
 
 
 /* ==========================================
-   MESSAGE
+   SHOW AUTH MESSAGE
 ========================================== */
 
 function showAuthMessage(message, type) {
 
+
     const element =
         document.getElementById("authMessage");
 
-    element.textContent = message;
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    element.textContent =
+        message;
+
 
     element.className =
         "auth-message " + type;
@@ -7161,15 +7664,21 @@ function showAuthMessage(message, type) {
    ESCAPE KEY
 ========================================== */
 
-document.addEventListener("keydown", function(event) {
+document.addEventListener(
 
-    if (event.key === "Escape") {
+    "keydown",
 
-        closeAuthModal();
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeAuthModal();
+
+        }
 
     }
 
-});
+);
 
 </script>
 

@@ -1,17 +1,7177 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="TraceVeda — Blockchain + IoT Based Herbal Medicine Traceability System for Ayurvedic supply chain integrity verification" />
-    <title>TraceVeda — Herbal Medicine Traceability</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  </head>
-  <body class="bg-surface text-ink font-sans antialiased">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TraceVeda — Digital Evidence Trail</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cardo:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* =========================================================
+   TRACEVEDA DESIGN SYSTEM
+========================================================= */
+
+:root{
+
+    --bg:#fbfaf5;
+    --bg2:#f2eee1;
+
+    --green-dark:#0d2c21;
+    --green:#174d3d;
+    --green-light:#2f7658;
+
+    --gold:#c99835;
+    --gold-light:#e8ca79;
+
+    --text:#242b27;
+    --muted:#68716b;
+
+    --border:#ded8c8;
+
+    --white:#ffffff;
+
+    --success:#2d7545;
+    --success-bg:#eaf5ed;
+
+    --warning:#d39120;
+    --warning-bg:#fff6e4;
+
+    --danger:#b13d31;
+    --danger-bg:#faece9;
+
+    --info:#35658d;
+    --info-bg:#edf4f9;
+
+    --shadow:0 12px 35px rgba(19,45,34,.08);
+
+    --radius:12px;
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    font-family:'DM Sans',sans-serif;
+
+    line-height:1.5;
+
+    overflow-x:hidden;
+}
+
+button,
+input,
+select{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+h1,
+h2,
+h3,
+h4{
+    font-family:'Cardo',serif;
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+    width:7px;
+}
+
+::-webkit-scrollbar-track{
+    background:#ece7d8;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#bcb5a4;
+    border-radius:10px;
+}
+
+/* =========================================================
+   ANIMATED BOTANICAL BACKGROUND
+========================================================= */
+
+.botanical-background{
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    z-index:-10;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(circle at 15% 30%,rgba(48,111,76,.09),transparent 30%),
+        radial-gradient(circle at 85% 70%,rgba(200,152,53,.08),transparent 30%),
+        linear-gradient(135deg,#fbfaf5,#f7f3e8);
+}
+
+/* soft glow */
+
+.glow{
+
+    position:absolute;
+
+    width:350px;
+
+    height:350px;
+
+    border-radius:50%;
+
+    filter:blur(70px);
+
+    opacity:.18;
+
+    animation:glowMove 12s infinite alternate ease-in-out;
+}
+
+.glow.one{
+    background:#6c9c65;
+    left:-100px;
+    top:15%;
+}
+
+.glow.two{
+    background:#d8b35b;
+    right:-120px;
+    bottom:10%;
+    animation-delay:3s;
+}
+
+@keyframes glowMove{
+
+    0%{
+        transform:translate(0,0);
+    }
+
+    100%{
+        transform:translate(100px,-50px);
+    }
+}
+
+/* =========================================================
+   FLOATING LEAVES
+========================================================= */
+
+.leaf{
+
+    position:absolute;
+
+    color:#356b49;
+
+    opacity:.18;
+
+    animation:leafFloat linear infinite;
+
+    filter:drop-shadow(0 4px 4px rgba(0,0,0,.08));
+}
+
+.leaf i{
+    font-size:var(--size);
+}
+
+@keyframes leafFloat{
+
+    0%{
+        transform:
+        translateY(110vh)
+        translateX(0)
+        rotate(0deg);
+    }
+
+    25%{
+        transform:
+        translateY(75vh)
+        translateX(35px)
+        rotate(70deg);
+    }
+
+    50%{
+        transform:
+        translateY(50vh)
+        translateX(-25px)
+        rotate(150deg);
+    }
+
+    75%{
+        transform:
+        translateY(25vh)
+        translateX(40px)
+        rotate(230deg);
+    }
+
+    100%{
+        transform:
+        translateY(-15vh)
+        translateX(-20px)
+        rotate(360deg);
+    }
+}
+
+/* =========================================================
+   FIRE FLIES
+========================================================= */
+
+.firefly{
+
+    position:absolute;
+
+    width:4px;
+
+    height:4px;
+
+    border-radius:50%;
+
+    background:#d7b452;
+
+    box-shadow:
+        0 0 8px #e3c968,
+        0 0 18px rgba(218,186,87,.7);
+
+    animation:fireflyMove 6s infinite alternate ease-in-out;
+}
+
+@keyframes fireflyMove{
+
+    0%{
+        transform:translate(0,0);
+        opacity:.2;
+    }
+
+    50%{
+        opacity:1;
+    }
+
+    100%{
+        transform:translate(80px,-100px);
+        opacity:.15;
+    }
+}
+
+/* =========================================================
+   DECORATIVE PLANTS
+========================================================= */
+
+.plant{
+
+    position:absolute;
+
+    bottom:-10px;
+
+    opacity:.25;
+
+    color:#1c553f;
+
+}
+
+.plant.left{
+    left:-25px;
+}
+
+.plant.right{
+    right:-25px;
+    transform:scaleX(-1);
+}
+
+.plant i{
+    font-size:160px;
+}
+
+/* =========================================================
+   DEMO BAR
+========================================================= */
+
+.demo-playbook-bar{
+
+    height:46px;
+
+    background:#101613;
+
+    color:#e9e6dc;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 22px;
+
+    font-size:.78rem;
+
+    position:relative;
+
+    z-index:300;
+
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.demo-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.demo-badge{
+
+    background:#174d3d;
+
+    border:1px solid #4d8069;
+
+    padding:4px 8px;
+
+    border-radius:4px;
+
+    color:#d7ebdd;
+
+    font-family:'IBM Plex Mono';
+
+    font-size:.65rem;
+
+    font-weight:bold;
+}
+
+.demo-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+}
+
+.demo-dots{
+
+    display:flex;
+
+    gap:5px;
+}
+
+.demo-dot{
+
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:#4c554f;
+}
+
+.demo-dot.active{
+
+    background:#e7c65e;
+
+    box-shadow:0 0 8px #e7c65e;
+}
+
+.demo-btn{
+
+    background:#252c28;
+
+    border:1px solid #535b55;
+
+    color:white;
+
+    padding:5px 10px;
+
+    border-radius:4px;
+
+    font-size:.7rem;
+}
+
+.demo-btn:hover{
+
+    background:#e5c765;
+
+    color:#15231c;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+
+    height:76px;
+
+    background:rgba(13,44,33,.96);
+
+    backdrop-filter:blur(14px);
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 40px;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:200;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 5px 25px rgba(0,0,0,.1);
+}
+
+.brand-section{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.brand-logo{
+
+    width:42px;
+
+    height:42px;
+
+    border:1px solid rgba(255,255,255,.35);
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(255,255,255,.06);
+
+    color:#e9d486;
+
+    font-size:1.25rem;
+}
+
+.brand-title{
+
+    font-family:'Cardo',serif;
+
+    font-size:1.5rem;
+
+    font-weight:bold;
+
+    letter-spacing:.02em;
+}
+
+.brand-subtitle{
+
+    font-family:'IBM Plex Mono';
+
+    font-size:.58rem;
+
+    letter-spacing:.14em;
+
+    opacity:.65;
+}
+
+.header-links{
+
+    display:flex;
+
+    gap:28px;
+
+    font-size:.83rem;
+
+    color:rgba(255,255,255,.78);
+}
+
+.header-links a{
+
+    position:relative;
+
+    transition:.25s;
+}
+
+.header-links a::after{
+
+    content:"";
+
+    position:absolute;
+
+    bottom:-8px;
+
+    left:0;
+
+    width:0;
+
+    height:1px;
+
+    background:#d8bd65;
+
+    transition:.3s;
+}
+
+.header-links a:hover{
+
+    color:#fff;
+}
+
+.header-links a:hover::after{
+
+    width:100%;
+}
+
+.header-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+.role-dropdown{
+
+    position:relative;
+}
+
+.role-btn{
+
+    background:rgba(255,255,255,.07);
+
+    border:1px solid rgba(255,255,255,.25);
+
+    color:white;
+
+    padding:9px 15px;
+
+    border-radius:5px;
+
+    font-size:.8rem;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+}
+
+.role-btn:hover{
+
+    background:rgba(255,255,255,.14);
+}
+
+.role-menu{
+
+    display:none;
+
+    position:absolute;
+
+    top:calc(100% + 8px);
+
+    right:0;
+
+    width:220px;
+
+    background:white;
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+
+    border-radius:8px;
+
+    overflow:hidden;
+
+    z-index:500;
+}
+
+.role-menu.open{
+
+    display:block;
+
+    animation:menuIn .2s ease;
+}
+
+@keyframes menuIn{
+
+    from{
+        opacity:0;
+        transform:translateY(-5px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.role-item{
+
+    width:100%;
+
+    padding:13px 16px;
+
+    border:0;
+
+    background:white;
+
+    text-align:left;
+
+    color:var(--text);
+
+    font-size:.82rem;
+
+    border-bottom:1px solid #eee9dc;
+}
+
+.role-item:hover{
+
+    background:#f3efe2;
+
+    color:var(--green);
+}
+
+.sign-btn{
+
+    padding:9px 17px;
+
+    border:1px solid #ddd7c5;
+
+    color:white;
+
+    background:transparent;
+
+    border-radius:5px;
+
+    font-size:.8rem;
+
+}
+
+.sign-btn:hover{
+
+    background:white;
+
+    color:var(--green-dark);
+}
+
+/* =========================================================
+   LANDING
+========================================================= */
+
+.landing-page{
+
+    display:block;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    min-height:650px;
+
+    display:grid;
+
+    grid-template-columns:1.05fr .95fr;
+
+    gap:55px;
+
+    align-items:center;
+
+    max-width:1450px;
+
+    margin:auto;
+
+    padding:70px 60px;
+
+    position:relative;
+}
+
+.hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:500px;
+
+    height:500px;
+
+    border-radius:50%;
+
+    background:radial-gradient(circle,rgba(57,110,72,.1),transparent 65%);
+
+    left:-180px;
+
+    top:30px;
+
+    pointer-events:none;
+}
+
+.hero-content{
+
+    position:relative;
+
+    z-index:3;
+
+    animation:heroIn .9s ease;
+}
+
+@keyframes heroIn{
+
+    from{
+        opacity:0;
+        transform:translateY(25px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.platform-tag{
+
+    color:#33714e;
+
+    font-family:'IBM Plex Mono';
+
+    font-size:.7rem;
+
+    letter-spacing:.13em;
+
+    font-weight:bold;
+
+    text-transform:uppercase;
+
+    margin-bottom:15px;
+}
+
+.hero h1{
+
+    font-size:4rem;
+
+    line-height:1.05;
+
+    color:var(--green-dark);
+
+    margin-bottom:22px;
+}
+
+.hero h1 span{
+
+    color:#397455;
+
+    font-style:italic;
+}
+
+.hero-desc{
+
+    max-width:600px;
+
+    color:var(--muted);
+
+    font-size:1rem;
+
+    line-height:1.8;
+
+    margin-bottom:28px;
+}
+
+/* =========================================================
+   HERO FEATURES
+========================================================= */
+
+.hero-features{
+
+    display:flex;
+
+    gap:13px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:30px;
+}
+
+.hero-feature{
+
+    width:90px;
+
+    text-align:center;
+
+    transition:.3s;
+}
+
+.hero-feature:hover{
+
+    transform:translateY(-7px);
+}
+
+.hero-icon{
+
+    width:48px;
+
+    height:48px;
+
+    border:1px solid #d9d0b9;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.85);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin:auto;
+
+    color:var(--green);
+
+    box-shadow:0 5px 15px rgba(0,0,0,.04);
+
+    transition:.3s;
+}
+
+.hero-feature:hover .hero-icon{
+
+    background:var(--green);
+
+    color:white;
+
+    box-shadow:0 8px 22px rgba(23,77,61,.25);
+}
+
+.hero-feature span{
+
+    display:block;
+
+    margin-top:7px;
+
+    font-size:.65rem;
+
+    font-weight:700;
+
+    line-height:1.25;
+}
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta-wrap{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-bottom:18px;
+}
+
+.btn{
+
+    padding:11px 19px;
+
+    border-radius:5px;
+
+    font-size:.82rem;
+
+    font-weight:600;
+
+    transition:.25s;
+
+    border:1px solid transparent;
+}
+
+.btn-primary{
+
+    background:var(--green-dark);
+
+    color:white;
+
+    box-shadow:0 6px 15px rgba(13,44,33,.15);
+}
+
+.btn-primary:hover{
+
+    background:#21634d;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 22px rgba(13,44,33,.2);
+}
+
+.btn-outline{
+
+    background:white;
+
+    border-color:#9f998a;
+
+    color:var(--text);
+}
+
+.btn-outline:hover{
+
+    background:#f0ebdd;
+
+    transform:translateY(-2px);
+}
+
+.trusted{
+
+    font-size:.72rem;
+
+    color:var(--muted);
+}
+
+.trusted i{
+
+    color:var(--success);
+}
+
+/* =========================================================
+   JOURNEY CARD
+========================================================= */
+
+.journey-card{
+
+    background:rgba(255,255,255,.84);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(213,204,180,.8);
+
+    border-radius:18px;
+
+    padding:30px 25px;
+
+    box-shadow:
+        0 25px 60px rgba(23,77,61,.1),
+        inset 0 0 30px rgba(255,255,255,.4);
+
+    position:relative;
+
+    overflow:hidden;
+
+    animation:cardFloat 5s infinite ease-in-out;
+}
+
+@keyframes cardFloat{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-7px);
+    }
+}
+
+.journey-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+        radial-gradient(circle at 50% 0%,rgba(211,183,92,.12),transparent 35%);
+
+    pointer-events:none;
+}
+
+.journey-title{
+
+    text-align:center;
+
+    font-size:1.25rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.12em;
+
+    color:var(--green-dark);
+
+    margin-bottom:32px;
+
+    position:relative;
+}
+
+.journey-title::before,
+.journey-title::after{
+
+    content:"❧";
+
+    color:#7d9d6f;
+
+    margin:0 12px;
+
+    font-size:1.1rem;
+}
+
+.journey{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    position:relative;
+
+    margin-bottom:40px;
+}
+
+.journey::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:25px;
+
+    right:25px;
+
+    top:24px;
+
+    border-top:1px dashed #cfc7b3;
+
+    z-index:0;
+}
+
+.stage{
+
+    width:80px;
+
+    text-align:center;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.stage-circle{
+
+    width:48px;
+
+    height:48px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    border:1px solid #d4cbb6;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:var(--green);
+
+    position:relative;
+
+    transition:.3s;
+
+}
+
+.stage:hover .stage-circle{
+
+    transform:scale(1.1);
+
+    border-color:var(--gold);
+
+    box-shadow:0 0 0 6px rgba(201,152,53,.1);
+}
+
+.stage-check{
+
+    position:absolute;
+
+    right:-3px;
+
+    bottom:-2px;
+
+    width:16px;
+
+    height:16px;
+
+    border-radius:50%;
+
+    background:var(--success);
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:.5rem;
+
+    border:2px solid white;
+}
+
+.stage.warning .stage-circle{
+
+    border-color:var(--warning);
+
+    color:var(--warning);
+}
+
+.stage.warning .stage-check{
+
+    background:var(--warning);
+}
+
+.stage-number{
+
+    margin-top:9px;
+
+    font-family:'IBM Plex Mono';
+
+    font-size:.63rem;
+
+    color:#77776f;
+}
+
+.stage-name{
+
+    font-size:.7rem;
+
+    font-weight:bold;
+
+    margin-top:2px;
+}
+
+.stage-detail{
+
+    font-size:.57rem;
+
+    color:var(--muted);
+
+    line-height:1.2;
+
+    margin-top:2px;
+}
+
+/* =========================================================
+   KPI
+========================================================= */
+
+.kpi-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:10px;
+
+    border-top:1px solid #e2dccd;
+
+    padding-top:20px;
+}
+
+.kpi{
+
+    padding:8px;
+
+    border-radius:8px;
+
+    transition:.3s;
+}
+
+.kpi:hover{
+
+    background:#f7f3e8;
+
+    transform:translateY(-3px);
+}
+
+.kpi-icon{
+
+    color:var(--green);
+
+    font-size:.9rem;
+}
+
+.kpi-label{
+
+    font-size:.58rem;
+
+    text-transform:uppercase;
+
+    color:var(--muted);
+
+    margin-top:4px;
+}
+
+.kpi-value{
+
+    font-family:'IBM Plex Mono';
+
+    font-size:1.25rem;
+
+    font-weight:600;
+
+    color:var(--green-dark);
+
+    margin-top:2px;
+}
+
+.kpi-trend{
+
+    font-size:.55rem;
+
+    color:var(--success);
+}
+
+.kpi-trend.warning{
+
+    color:var(--warning);
+}
+
+/* =========================================================
+   WHY SECTION
+========================================================= */
+
+.why{
+
+    background:
+        linear-gradient(rgba(13,44,33,.96),rgba(13,44,33,.96)),
+        radial-gradient(circle at 20% 50%,#35664a,transparent 40%);
+
+    color:white;
+
+    padding:65px 60px;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.why::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:450px;
+
+    height:450px;
+
+    border:1px solid rgba(223,194,101,.15);
+
+    border-radius:50%;
+
+    left:-120px;
+
+    top:30px;
+
+    box-shadow:
+        0 0 0 30px rgba(223,194,101,.02),
+        0 0 0 70px rgba(223,194,101,.02);
+}
+
+.why-title{
+
+    text-align:center;
+
+    font-size:1.7rem;
+
+    letter-spacing:.12em;
+
+    text-transform:uppercase;
+
+    margin-bottom:45px;
+
+    color:#f0d57e;
+}
+
+.why-layout{
+
+    max-width:1350px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:260px 1fr;
+
+    gap:55px;
+
+    align-items:center;
+}
+
+.mortar{
+
+    text-align:center;
+
+    font-size:10rem;
+
+    color:#d1ba70;
+
+    opacity:.85;
+
+    animation:mortarFloat 4s infinite ease-in-out;
+}
+
+@keyframes mortarFloat{
+
+    0%,100%{
+        transform:rotate(-3deg) translateY(0);
+    }
+
+    50%{
+        transform:rotate(3deg) translateY(-8px);
+    }
+}
+
+.benefits{
+
+    display:grid;
+
+    grid-template-columns:repeat(5,1fr);
+
+    gap:14px;
+}
+
+.benefit{
+
+    border:1px solid rgba(219,202,144,.25);
+
+    background:rgba(255,255,255,.035);
+
+    padding:20px 15px;
+
+    border-radius:8px;
+
+    min-height:220px;
+
+    transition:.3s;
+
+}
+
+.benefit:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#d3b957;
+
+    background:rgba(255,255,255,.08);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.2);
+}
+
+.benefit i{
+
+    font-size:1.35rem;
+
+    color:#e4c968;
+
+    margin-bottom:15px;
+}
+
+.benefit h4{
+
+    font-family:'DM Sans';
+
+    font-size:.88rem;
+
+    margin-bottom:10px;
+
+    color:#fff;
+}
+
+.benefit p{
+
+    font-size:.7rem;
+
+    color:#c5c9c4;
+
+    line-height:1.55;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+
+    background:#0a2119;
+
+    color:#cfd6d0;
+
+    padding:28px 50px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    font-size:.7rem;
+}
+
+.footer-brand strong{
+
+    font-family:'Cardo';
+
+    font-size:1.2rem;
+
+    color:white;
+}
+
+.footer-links{
+
+    display:flex;
+
+    gap:20px;
+}
+
+.footer-links a:hover{
+
+    color:#e2ca72;
+}
+
+.socials{
+
+    display:flex;
+
+    gap:15px;
+
+    font-size:1rem;
+}
+
+/* =========================================================
+   WORKSPACE
+========================================================= */
+
+.workspace{
+
+    display:none;
+
+    min-height:calc(100vh - 122px);
+}
+
+.workspace.active{
+
+    display:block;
+
+    animation:workspaceIn .5s ease;
+}
+
+@keyframes workspaceIn{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+}
+
+.workspace-layout{
+
+    display:grid;
+
+    grid-template-columns:245px 1fr;
+
+    min-height:calc(100vh - 122px);
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar{
+
+    background:#f1ede1;
+
+    border-right:1px solid var(--border);
+
+    padding:25px 14px;
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+.sidebar-role{
+
+    padding:0 10px 20px;
+
+    font-family:'IBM Plex Mono';
+
+    font-size:.65rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.13em;
+
+    color:var(--muted);
+
+    border-bottom:1px solid var(--border);
+
+    margin-bottom:14px;
+}
+
+.sidebar-menu{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+}
+
+.sidebar-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+    width:100%;
+
+    padding:11px 12px;
+
+    border:0;
+
+    border-radius:6px;
+
+    background:transparent;
+
+    color:var(--text);
+
+    text-align:left;
+
+    font-size:.8rem;
+
+    transition:.25s;
+}
+
+.sidebar-item:hover{
+
+    background:#e6e0d1;
+
+    color:var(--green);
+}
+
+.sidebar-item.active{
+
+    background:var(--green-dark);
+
+    color:white;
+
+    box-shadow:0 5px 15px rgba(13,44,33,.15);
+}
+
+.sidebar-item i{
+
+    width:18px;
+
+    text-align:center;
+}
+
+.exit{
+
+    margin-top:auto;
+
+    border-top:1px solid var(--border);
+
+    padding-top:15px;
+}
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.workspace-content{
+
+    padding:35px;
+
+    background:#fbfaf5;
+
+    overflow:auto;
+}
+
+.panel{
+
+    display:none;
+
+    animation:panelIn .35s ease;
+}
+
+.panel.active{
+
+    display:block;
+}
+
+@keyframes panelIn{
+
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.panel-header{
+
+    border-bottom:1px solid var(--border);
+
+    padding-bottom:15px;
+
+    margin-bottom:22px;
+}
+
+.panel-title{
+
+    font-size:1.8rem;
+
+    color:var(--green-dark);
+}
+
+.panel-subtitle{
+
+    color:var(--muted);
+
+    font-size:.78rem;
+
+    margin-top:4px;
+}
+
+/* =========================================================
+   DASHBOARD STATS
+========================================================= */
+
+.dashboard-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:14px;
+
+    margin-bottom:22px;
+}
+
+.stat-card{
+
+    background:white;
+
+    border:1px solid var(--border);
+
+    border-radius:9px;
+
+    padding:18px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:.3s;
+}
+
+.stat-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:var(--shadow);
+}
+
+.stat-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    bottom:0;
+
+    width:3px;
+
+    background:var(--green);
+}
+
+.stat-card.warning::before{
+
+    background:var(--warning);
+}
+
+.stat-card.danger::before{
+
+    background:var(--danger);
+}
+
+.stat-label{
+
+    font-size:.65rem;
+
+    color:var(--muted);
+
+    text-transform:uppercase;
+
+    letter-spacing:.06em;
+}
+
+.stat-value{
+
+    font-family:'IBM Plex Mono';
+
+    font-size:1.65rem;
+
+    font-weight:600;
+
+    margin-top:4px;
+
+    color:var(--green-dark);
+}
+
+.stat-desc{
+
+    font-size:.62rem;
+
+    color:var(--success);
+
+    margin-top:3px;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.card{
+
+    background:white;
+
+    border:1px solid var(--border);
+
+    border-radius:9px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:0 5px 18px rgba(30,40,32,.025);
+}
+
+.card-title{
+
+    font-size:1rem;
+
+    color:var(--green-dark);
+
+    margin-bottom:15px;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-box{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-bottom:20px;
+}
+
+.input{
+
+    width:100%;
+
+    border:1px solid #cbc5b6;
+
+    background:white;
+
+    padding:10px 12px;
+
+    border-radius:5px;
+
+    outline:none;
+
+    font-size:.8rem;
+}
+
+.input:focus{
+
+    border-color:var(--green);
+
+    box-shadow:0 0 0 3px rgba(23,77,61,.08);
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrap{
+
+    width:100%;
+
+    overflow:auto;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    background:white;
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    font-size:.76rem;
+}
+
+th{
+
+    background:#f1ede1;
+
+    padding:12px;
+
+    text-align:left;
+
+    font-size:.63rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.05em;
+
+    color:var(--green-dark);
+
+    white-space:nowrap;
+}
+
+td{
+
+    padding:12px;
+
+    border-top:1px solid #eee9dc;
+
+    white-space:nowrap;
+}
+
+tbody tr{
+
+    transition:.2s;
+}
+
+tbody tr:hover{
+
+    background:#faf7ef;
+}
+
+.mono{
+
+    font-family:'IBM Plex Mono';
+}
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:4px 8px;
+
+    border-radius:20px;
+
+    font-size:.58rem;
+
+    font-weight:bold;
+
+    text-transform:uppercase;
+}
+
+.badge-success{
+
+    color:var(--success);
+
+    background:var(--success-bg);
+}
+
+.badge-warning{
+
+    color:var(--warning);
+
+    background:var(--warning-bg);
+}
+
+.badge-danger{
+
+    color:var(--danger);
+
+    background:var(--danger-bg);
+}
+
+.badge-info{
+
+    color:var(--info);
+
+    background:var(--info-bg);
+}
+
+/* =========================================================
+   TWO COLUMN
+========================================================= */
+
+.two-column{
+
+    display:grid;
+
+    grid-template-columns:1.3fr .7fr;
+
+    gap:20px;
+}
+
+/* =========================================================
+   INVESTIGATION CARDS
+========================================================= */
+
+.investigation{
+
+    border:1px solid var(--border);
+
+    background:white;
+
+    border-radius:7px;
+
+    padding:13px;
+
+    margin-bottom:10px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    transition:.25s;
+}
+
+.investigation:hover{
+
+    transform:translateX(4px);
+
+    box-shadow:var(--shadow);
+}
+
+.investigation-id{
+
+    font-family:'IBM Plex Mono';
+
+    font-size:.65rem;
+
+    color:var(--green);
+}
+
+.investigation-title{
+
+    font-size:.78rem;
+
+    font-weight:600;
+
+    margin-top:3px;
+}
+
+.investigation-meta{
+
+    font-size:.62rem;
+
+    color:var(--muted);
+
+    margin-top:3px;
+}
+
+/* =========================================================
+   TRACE TIMELINE
+========================================================= */
+
+.trace-container{
+
+    background:white;
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    padding:25px;
+
+    margin-top:20px;
+}
+
+.trace-line{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    position:relative;
+
+    margin:50px 10px;
+}
+
+.trace-line::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:20px;
+
+    left:0;
+
+    right:0;
+
+    height:2px;
+
+    background:#ddd7c7;
+}
+
+.trace-node{
+
+    position:relative;
+
+    z-index:2;
+
+    text-align:center;
+
+    width:90px;
+
+    cursor:pointer;
+}
+
+.trace-circle{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    margin:auto;
+
+    background:white;
+
+    border:2px solid var(--success);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:var(--success);
+
+    transition:.3s;
+}
+
+.trace-node:hover .trace-circle{
+
+    transform:scale(1.18);
+
+    box-shadow:0 0 0 7px rgba(45,117,69,.1);
+}
+
+.trace-node.warning .trace-circle{
+
+    border-color:var(--warning);
+
+    color:var(--warning);
+}
+
+.trace-node.critical .trace-circle{
+
+    border-color:var(--danger);
+
+    color:white;
+
+    background:var(--danger);
+
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+
+    0%{
+        box-shadow:0 0 0 0 rgba(177,61,49,.5);
+    }
+
+    70%{
+        box-shadow:0 0 0 10px rgba(177,61,49,0);
+    }
+
+    100%{
+        box-shadow:0 0 0 0 rgba(177,61,49,0);
+    }
+}
+
+.trace-name{
+
+    font-size:.7rem;
+
+    font-weight:bold;
+
+    margin-top:8px;
+}
+
+.trace-date{
+
+    font-size:.58rem;
+
+    color:var(--muted);
+}
+
+/* =========================================================
+   EVIDENCE
+========================================================= */
+
+.evidence{
+
+    display:none;
+
+    margin-top:25px;
+
+    border-top:1px dashed var(--border);
+
+    padding-top:20px;
+}
+
+.evidence.active{
+
+    display:block;
+
+    animation:panelIn .3s ease;
+}
+
+.evidence-grid{
+
+    display:grid;
+
+    grid-template-columns:1.3fr .7fr;
+
+    gap:20px;
+}
+
+.proof{
+
+    background:#f2eee1;
+
+    border:1px solid var(--border);
+
+    padding:15px;
+
+    border-radius:7px;
+}
+
+.proof-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:8px 0;
+
+    border-bottom:1px dashed #d8d0be;
+
+    font-size:.68rem;
+}
+
+.proof-row:last-child{
+
+    border-bottom:0;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+}
+
+.form-group{
+
+    margin-bottom:15px;
+}
+
+.form-group label{
+
+    display:block;
+
+    font-size:.65rem;
+
+    font-weight:bold;
+
+    text-transform:uppercase;
+
+    color:var(--green);
+
+    margin-bottom:6px;
+}
+
+/* =========================================================
+   SENSOR CARDS
+========================================================= */
+
+.sensor-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:14px;
+}
+
+.sensor{
+
+    background:white;
+
+    border:1px solid var(--border);
+
+    border-radius:9px;
+
+    padding:20px;
+
+    transition:.3s;
+}
+
+.sensor:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:var(--shadow);
+}
+
+.sensor-label{
+
+    font-family:'IBM Plex Mono';
+
+    font-size:.62rem;
+
+    color:var(--muted);
+
+    text-transform:uppercase;
+}
+
+.sensor-value{
+
+    font-family:'IBM Plex Mono';
+
+    font-size:1.7rem;
+
+    font-weight:600;
+
+    margin:10px 0;
+
+    color:var(--green-dark);
+}
+
+.sensor-status{
+
+    font-size:.65rem;
+
+    color:var(--success);
+
+    font-weight:bold;
+}
+
+/* =========================================================
+   QUICK ACCESS
+========================================================= */
+
+.quick-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(5,1fr);
+
+    gap:12px;
+}
+
+.quick{
+
+    background:white;
+
+    border:1px solid var(--border);
+
+    padding:18px;
+
+    border-radius:8px;
+
+    transition:.25s;
+
+    cursor:pointer;
+}
+
+.quick:hover{
+
+    transform:translateY(-5px);
+
+    border-color:#9eac8d;
+
+    box-shadow:var(--shadow);
+}
+
+.quick i{
+
+    color:var(--green);
+
+    font-size:1.25rem;
+
+    margin-bottom:10px;
+}
+
+.quick strong{
+
+    display:block;
+
+    font-size:.72rem;
+}
+
+.quick span{
+
+    font-size:.6rem;
+
+    color:var(--muted);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:1100px){
+
+    .header-links{
+        display:none;
+    }
+
+    .hero{
+
+        grid-template-columns:1fr;
+
+        padding:50px 30px;
+    }
+
+    .hero h1{
+        font-size:3rem;
+    }
+
+    .benefits{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .why-layout{
+        grid-template-columns:1fr;
+    }
+
+    .mortar{
+        display:none;
+    }
+
+    .workspace-layout{
+        grid-template-columns:200px 1fr;
+    }
+
+    .dashboard-stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .sensor-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .quick-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+
+    .demo-playbook-bar{
+        display:none;
+    }
+
+    header{
+        height:68px;
+        padding:0 15px;
+    }
+
+    .brand-title{
+        font-size:1.2rem;
+    }
+
+    .sign-btn{
+        display:none;
+    }
+
+    .hero{
+        padding:40px 20px;
+    }
+
+    .hero h1{
+        font-size:2.5rem;
+    }
+
+    .journey-card{
+        padding:18px 10px;
+    }
+
+    .journey{
+        overflow-x:auto;
+        justify-content:flex-start;
+        gap:18px;
+        padding-bottom:10px;
+    }
+
+    .journey::before{
+        display:none;
+    }
+
+    .kpi-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .why{
+        padding:45px 20px;
+    }
+
+    .benefits{
+        grid-template-columns:1fr;
+    }
+
+    footer{
+        flex-direction:column;
+        gap:15px;
+        text-align:center;
+        padding:25px;
+    }
+
+    .footer-links{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .workspace-layout{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        border-right:0;
+        border-bottom:1px solid var(--border);
+        padding:10px;
+    }
+
+    .sidebar-menu{
+        flex-direction:row;
+        overflow:auto;
+    }
+
+    .sidebar-item{
+        min-width:max-content;
+    }
+
+    .exit{
+        display:none;
+    }
+
+    .workspace-content{
+        padding:20px 15px;
+    }
+
+    .dashboard-stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .two-column{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .evidence-grid{
+        grid-template-columns:1fr;
+    }
+
+    .trace-line{
+        overflow-x:auto;
+        justify-content:flex-start;
+        gap:35px;
+    }
+
+    .trace-line::before{
+        display:none;
+    }
+}
+
+/* ==================================================
+   AUTHENTICATION BUTTONS
+================================================== */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-btn {
+    height: 36px;
+    padding: 0 20px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.signin-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    color: #ffffff;
+}
+
+.signin-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.signup-btn {
+    background: #d9b95f;
+    border: 1px solid #d9b95f;
+    color: #123c30;
+}
+
+.signup-btn:hover {
+    background: #e5c96f;
+    border-color: #e5c96f;
+}
+
+
+/* ==================================================
+   AUTH MODAL
+================================================== */
+
+.auth-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-modal.active {
+    display: flex;
+}
+
+.auth-modal-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(10, 30, 24, 0.55);
+    backdrop-filter: blur(5px);
+}
+
+
+/* ==================================================
+   AUTH BOX
+================================================== */
+
+.auth-box {
+    position: relative;
+    z-index: 2;
+
+    width: min(460px, calc(100vw - 40px));
+
+    padding: 42px;
+
+    background: #f8f7f0;
+
+    border: 1px solid #d7d2c2;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.22);
+
+    animation: authAppear 0.25s ease;
+}
+
+@keyframes authAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+/* ==================================================
+   CLOSE BUTTON
+================================================== */
+
+.auth-close {
+    position: absolute;
+
+    top: 16px;
+    right: 18px;
+
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 26px;
+    font-weight: 300;
+
+    color: #60716a;
+
+    cursor: pointer;
+}
+
+.auth-close:hover {
+    color: #123c30;
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.auth-header {
+    margin-bottom: 32px;
+}
+
+.auth-eyebrow {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: 0.18em;
+
+    color: #527568;
+}
+
+.auth-header h2 {
+    margin: 0 0 8px;
+
+    font-family: inherit;
+
+    font-size: 38px;
+    line-height: 1;
+
+    letter-spacing: -0.04em;
+
+    color: #14201b;
+}
+
+.auth-header p {
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.6;
+
+    color: #738079;
+}
+
+
+/* ==================================================
+   ROLE SELECTION
+================================================== */
+
+.auth-section {
+    margin-bottom: 28px;
+}
+
+.auth-section > label {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    color: #40554c;
+}
+
+.auth-role-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+.auth-role {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #d5d8d1;
+
+    border-radius: 6px;
+
+    color: #23483b;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.auth-role i {
+    width: 20px;
+
+    font-size: 15px;
+
+    color: #527568;
+}
+
+.auth-role span {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.auth-role:hover {
+    border-color: #527568;
+
+    transform: translateY(-1px);
+}
+
+.auth-role.selected {
+    background: #eaf1ec;
+
+    border-color: #3f8068;
+
+    box-shadow: inset 0 0 0 1px #3f8068;
+}
+
+.auth-role.selected i {
+    color: #3f8068;
+}
+
+
+/* ==================================================
+   FORM
+================================================== */
+
+.auth-form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+.auth-field {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.auth-field label {
+    font-size: 11px;
+
+    font-weight: 600;
+
+    color: #40554c;
+}
+
+.auth-field input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 13px 14px;
+
+    border: 1px solid #cdd3cd;
+
+    border-radius: 5px;
+
+    background: #ffffff;
+
+    color: #14201b;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    outline: none;
+
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.auth-field input:focus {
+    border-color: #3f8068;
+
+    box-shadow:
+        0 0 0 3px rgba(63, 128, 104, 0.08);
+}
+
+.auth-field input::placeholder {
+    color: #a0aaa5;
+}
+
+
+/* ==================================================
+   SIGNUP USERNAME MESSAGE
+================================================== */
+
+.username-info {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+
+    background: #edf3ee;
+
+    border-left: 2px solid #3f8068;
+
+    color: #527568;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.username-info i {
+    margin-top: 2px;
+}
+
+
+/* ==================================================
+   SUBMIT BUTTON
+================================================== */
+
+.auth-submit {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    width: 100%;
+
+    padding: 14px 18px;
+
+    margin-top: 4px;
+
+    background: #123c30;
+
+    border: 1px solid #123c30;
+
+    border-radius: 5px;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.auth-submit:hover {
+    background: #245b49;
+}
+
+
+/* ==================================================
+   ERROR / SUCCESS MESSAGE
+================================================== */
+
+.auth-message {
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 11px 13px;
+
+    border-radius: 4px;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.auth-message.error {
+    display: block;
+
+    background: #f8e9e7;
+
+    color: #8b3e35;
+
+    border: 1px solid #e2c4c0;
+}
+
+.auth-message.success {
+    display: block;
+
+    background: #e8f2eb;
+
+    color: #32634e;
+
+    border: 1px solid #bfd4c5;
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 600px) {
+
+    .header-actions {
+        gap: 6px;
+    }
+
+    .auth-btn {
+        padding: 0 13px;
+
+        font-size: 11px;
+    }
+
+    .auth-box {
+        padding: 30px 24px;
+    }
+
+    .auth-header h2 {
+        font-size: 32px;
+    }
+
+    .auth-role-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     ANIMATED BACKGROUND
+========================================================= -->
+
+<div class="botanical-background">
+
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+
+    <div class="leaf" style="left:4%;animation-duration:18s;--size:30px;">
+        <i class="fa-solid fa-leaf"></i>
+    </div>
+
+    <div class="leaf" style="left:14%;animation-duration:23s;animation-delay:4s;--size:22px;">
+        <i class="fa-solid fa-leaf"></i>
+    </div>
+
+    <div class="leaf" style="left:27%;animation-duration:20s;animation-delay:7s;--size:28px;">
+        <i class="fa-solid fa-leaf"></i>
+    </div>
+
+    <div class="leaf" style="left:43%;animation-duration:25s;animation-delay:2s;--size:20px;">
+        <i class="fa-solid fa-leaf"></i>
+    </div>
+
+    <div class="leaf" style="left:61%;animation-duration:19s;animation-delay:5s;--size:26px;">
+        <i class="fa-solid fa-leaf"></i>
+    </div>
+
+    <div class="leaf" style="left:74%;animation-duration:22s;animation-delay:9s;--size:34px;">
+        <i class="fa-solid fa-leaf"></i>
+    </div>
+
+    <div class="leaf" style="left:88%;animation-duration:24s;animation-delay:1s;--size:23px;">
+        <i class="fa-solid fa-leaf"></i>
+    </div>
+
+    <div class="firefly" style="left:12%;top:25%;animation-delay:1s;"></div>
+    <div class="firefly" style="left:35%;top:55%;animation-delay:3s;"></div>
+    <div class="firefly" style="left:68%;top:28%;animation-delay:2s;"></div>
+    <div class="firefly" style="left:85%;top:65%;animation-delay:4s;"></div>
+    <div class="firefly" style="left:52%;top:75%;animation-delay:5s;"></div>
+
+    <div class="plant left">
+        <i class="fa-solid fa-seedling"></i>
+    </div>
+
+    <div class="plant right">
+        <i class="fa-solid fa-seedling"></i>
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     DEMO BAR
+========================================================= -->
+
+<div class="demo-playbook-bar">
+
+    <!--
+    <div class="demo-left">
+
+        <span class="demo-badge">
+            SIH DEMO DECK
+        </span>
+
+        <strong id="demoText">
+            Step 1 of 12: Landing Page
+        </strong>
+
+    </div>
+    
+
+    <div class="demo-right">
+
+        
+        <span id="demoInstruction">
+            Explore the TraceVeda platform
+        </span>
+        
+
+        <div class="demo-dots">
+
+            <span class="demo-dot active"></span>
+            <span class="demo-dot"></span>
+            <span class="demo-dot"></span>
+            <span class="demo-dot"></span>
+            <span class="demo-dot"></span>
+            <span class="demo-dot"></span>
+
+        </div>
+        
+
+        <button class="demo-btn" onclick="prevDemo()">
+            <i class="fa fa-chevron-left"></i>
+        </button>
+
+        <button class="demo-btn" onclick="nextDemo()">
+            <i class="fa fa-chevron-right"></i>
+        </button>
+
+    </div>
+    -->
+</div>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header>
+
+    <div class="brand-section">
+
+        <div class="brand-logo">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+
+            <div class="brand-title">
+                TraceVeda
+            </div>
+
+            <div class="brand-subtitle">
+                DIGITAL EVIDENCE TRAIL
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <nav class="header-links">
+
+        <a href="#" onclick="showLanding();return false;">
+            Overview
+        </a>
+
+        <a href="#" onclick="openRole('auditor','trace');return false;">
+            Trace Journey
+        </a>
+
+        <a href="#" onclick="openRole('consumer','qr');return false;">
+            Verify Medicine
+        </a>
+
+        <a href="#why">
+            How It Works
+        </a>
+
+        <a href="#why">
+            About Us
+        </a>
+
+    </nav>
+
+
+    <div class="header-actions">
+
+        <button class="auth-btn signin-btn" onclick="openAuthModal('signin')">
+            Sign In
+        </button>
+
+        <button class="auth-btn signup-btn" onclick="openAuthModal('signup')">
+            Sign Up
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     LANDING PAGE
+========================================================= -->
+
+<section class="landing-page" id="landing">
+
+
+<!-- HERO -->
+
+<div class="hero">
+
+    <div class="hero-content">
+
+        <div class="platform-tag">
+            End-to-End Traceability Platform
+        </div>
+
+        <h1>
+            Every Medicine<br>
+            Leaves a
+            <span>Digital Trail.</span>
+        </h1>
+
+        <p class="hero-desc">
+
+            TraceVeda ensures authenticity, quality and safety of
+            Ayurvedic medicines through verified records, IoT evidence,
+            laboratory verification and blockchain integrity.
+
+        </p>
+
+
+        <div class="hero-features">
+
+            <div class="hero-feature">
+                <div class="hero-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <span>Authentic<br>Provenance</span>
+            </div>
+
+            <div class="hero-feature">
+                <div class="hero-icon">
+                    <i class="fa-solid fa-flask"></i>
+                </div>
+                <span>Laboratory<br>Verified</span>
+            </div>
+
+            <div class="hero-feature">
+                <div class="hero-icon">
+                    <i class="fa-solid fa-wifi"></i>
+                </div>
+                <span>IoT<br>Monitored</span>
+            </div>
+
+            <div class="hero-feature">
+                <div class="hero-icon">
+                    <i class="fa-solid fa-link"></i>
+                </div>
+                <span>Blockchain<br>Integrity</span>
+            </div>
+
+            <div class="hero-feature">
+                <div class="hero-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <span>Investigate<br>& Action</span>
+            </div>
+
+        </div>
+
+
+        <div class="cta-wrap">
+
+            <button class="btn btn-primary"
+            onclick="openRole('auditor')">
+
+                Enter TraceVeda
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+            <button class="btn btn-outline"
+            onclick="openRole('consumer','qr')">
+
+                <i class="fa-solid fa-qrcode"></i>
+
+                Verify Medicine
+
+            </button>
+
+        </div>
+
+
+        <div class="trusted">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            Trusted by Farmers, Labs, Manufacturers,
+            Auditors & Consumers
+
+        </div>
+
+    </div>
+
+
+    <!-- JOURNEY CARD -->
+
+    <div class="journey-card">
+
+        <div class="journey-title">
+            The Medicine Journey
+        </div>
+
+
+        <div class="journey">
+
+            <div class="stage">
+
+                <div class="stage-circle">
+                    <i class="fa-solid fa-seedling"></i>
+
+                    <div class="stage-check">
+                        <i class="fa fa-check"></i>
+                    </div>
+
+                </div>
+
+                <div class="stage-number">01</div>
+                <div class="stage-name">Farm</div>
+                <div class="stage-detail">Source Recorded</div>
+
+            </div>
+
+
+            <div class="stage">
+
+                <div class="stage-circle">
+                    <i class="fa-solid fa-mortar-pestle"></i>
+
+                    <div class="stage-check">
+                        <i class="fa fa-check"></i>
+                    </div>
+
+                </div>
+
+                <div class="stage-number">02</div>
+                <div class="stage-name">Processing</div>
+                <div class="stage-detail">Raw Material</div>
+
+            </div>
+
+
+            <div class="stage">
+
+                <div class="stage-circle">
+                    <i class="fa-solid fa-flask"></i>
+
+                    <div class="stage-check">
+                        <i class="fa fa-check"></i>
+                    </div>
+
+                </div>
+
+                <div class="stage-number">03</div>
+                <div class="stage-name">Laboratory</div>
+                <div class="stage-detail">Quality Verified</div>
+
+            </div>
+
+
+            <div class="stage warning">
+
+                <div class="stage-circle">
+                    <i class="fa-solid fa-truck"></i>
+
+                    <div class="stage-check">
+                        <i class="fa fa-exclamation"></i>
+                    </div>
+
+                </div>
+
+                <div class="stage-number">04</div>
+                <div class="stage-name">Transport</div>
+                <div class="stage-detail">IoT Monitored</div>
+
+            </div>
+
+
+            <div class="stage">
+
+                <div class="stage-circle">
+                    <i class="fa-solid fa-industry"></i>
+
+                    <div class="stage-check">
+                        <i class="fa fa-check"></i>
+                    </div>
+
+                </div>
+
+                <div class="stage-number">05</div>
+                <div class="stage-name">Manufacturing</div>
+                <div class="stage-detail">Medicine Produced</div>
+
+            </div>
+
+
+            <div class="stage">
+
+                <div class="stage-circle">
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <div class="stage-check">
+                        <i class="fa fa-check"></i>
+                    </div>
+
+                </div>
+
+                <div class="stage-number">06</div>
+                <div class="stage-name">Final Lab</div>
+                <div class="stage-detail">Quality Tested</div>
+
+            </div>
+
+
+            <div class="stage">
+
+                <div class="stage-circle">
+                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                    <div class="stage-check">
+                        <i class="fa fa-check"></i>
+                    </div>
+
+                </div>
+
+                <div class="stage-number">07</div>
+                <div class="stage-name">Medicine</div>
+                <div class="stage-detail">Ready</div>
+
+            </div>
+
+        </div>
+
+
+        <div class="kpi-grid">
+
+            <div class="kpi">
+
+                <i class="fa fa-folder-open kpi-icon"></i>
+
+                <div class="kpi-label">
+                    Total Batches
+                </div>
+
+                <div class="kpi-value">
+                    1,248
+                </div>
+
+                <div class="kpi-trend">
+                    +12.5% this month
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <i class="fa fa-tower-broadcast kpi-icon"></i>
+
+                <div class="kpi-label">
+                    IoT Events
+                </div>
+
+                <div class="kpi-value">
+                    1,356
+                </div>
+
+                <div class="kpi-trend">
+                    +8.2% this month
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <i class="fa fa-triangle-exclamation kpi-icon"></i>
+
+                <div class="kpi-label">
+                    Investigation
+                </div>
+
+                <div class="kpi-value">
+                    23
+                </div>
+
+                <div class="kpi-trend warning">
+                    +4 new today
+                </div>
+
+            </div>
+
+
+            <div class="kpi">
+
+                <i class="fa fa-heart-pulse kpi-icon"></i>
+
+                <div class="kpi-label">
+                    Lab Pass Rate
+                </div>
+
+                <div class="kpi-value">
+                    98.7%
+                </div>
+
+                <div class="kpi-trend">
+                    This month
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     WHY TRACEVEDA
+========================================================= -->
+
+<section class="why" id="why">
+
+    <h2 class="why-title">
+        ❧ Why TraceVeda? ❧
+    </h2>
+
+    <div class="why-layout">
+
+        <div class="mortar">
+
+            <i class="fa-solid fa-mortar-pestle"></i>
+
+        </div>
+
+
+        <div class="benefits">
+
+            <div class="benefit">
+
+                <i class="fa-solid fa-hands-holding-circle"></i>
+
+                <h4>
+                    Complete Transparency
+                </h4>
+
+                <p>
+                    Trace every step from organic farm
+                    cultivation to final bottled medicine.
+                </p>
+
+            </div>
+
+
+            <div class="benefit">
+
+                <i class="fa-solid fa-shield-circle-check"></i>
+
+                <h4>
+                    Quality & Safety
+                </h4>
+
+                <p>
+                    Integrates strict laboratory verification
+                    signatures at every processing stage.
+                </p>
+
+            </div>
+
+
+            <div class="benefit">
+
+                <i class="fa-solid fa-tower-broadcast"></i>
+
+                <h4>
+                    Real-time Monitoring
+                </h4>
+
+                <p>
+                    Physical IoT checkpoints track temperature,
+                    light exposure and weight changes.
+                </p>
+
+            </div>
+
+
+            <div class="benefit">
+
+                <i class="fa-solid fa-folder-tree"></i>
+
+                <h4>
+                    Investigation Ready
+                </h4>
+
+                <p>
+                    Run forward and reverse traceability queries
+                    to identify affected batches instantly.
+                </p>
+
+            </div>
+
+
+            <div class="benefit">
+
+                <i class="fa-solid fa-circle-nodes"></i>
+
+                <h4>
+                    Builds Trust
+                </h4>
+
+                <p>
+                    Empowers practitioners and consumers with
+                    tamper-evident digital records.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footer-brand">
+
+        <strong>
+            TraceVeda
+        </strong>
+
+        <div>
+            Digital Evidence Trail
+        </div>
+
+    </div>
+
+    <div>
+        © 2026 TraceVeda Protocol Ledger Framework
+    </div>
+
+    <div class="footer-links">
+
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+        <a href="#">Help</a>
+
+    </div>
+
+    <div class="socials">
+
+        <i class="fab fa-linkedin"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fa fa-envelope"></i>
+
+    </div>
+
+</footer>
+
+</section>
+
+
+<!-- =========================================================
+     WORKSPACE
+========================================================= -->
+
+<section class="workspace" id="workspace">
+
+<div class="workspace-layout">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="sidebar-role" id="sidebarRole">
+        Auditor Workspace
+    </div>
+
+    <div class="sidebar-menu" id="sidebarMenu"></div>
+
+    <div class="exit">
+
+        <button class="sidebar-item"
+        onclick="showLanding()">
+
+            <i class="fa fa-arrow-left"></i>
+
+            Exit Workspace
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- CONTENT -->
+
+<main class="workspace-content">
+
+
+<!-- =====================================================
+     AUDITOR OVERVIEW
+===================================================== -->
+
+<div class="panel active" id="auditor-overview">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Forensic Audit Overview
+        </h2>
+
+        <p class="panel-subtitle">
+            Monitor supply-chain evidence, sensor alerts and active investigations.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard-stats">
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Active Investigations
+            </div>
+
+            <div class="stat-value">
+                23
+            </div>
+
+            <div class="stat-desc">
+                +4 today
+            </div>
+
+        </div>
+
+
+        <div class="stat-card danger">
+
+            <div class="stat-label">
+                Critical Alerts
+            </div>
+
+            <div class="stat-value">
+                7
+            </div>
+
+            <div class="stat-desc"
+            style="color:var(--danger)">
+                High priority
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Lab Pass Rate
+            </div>
+
+            <div class="stat-value">
+                98.7%
+            </div>
+
+            <div class="stat-desc">
+                This month
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                IoT Events
+            </div>
+
+            <div class="stat-value">
+                1,356
+            </div>
+
+            <div class="stat-desc">
+                Live feed
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Audit Batch Search
+        </div>
+
+        <div class="search-box">
+
+            <input
+            class="input mono"
+            id="auditSearch"
+            value="MED-2026-043"
+            placeholder="Batch ID / QR code">
+
+            <button class="btn btn-primary"
+            onclick="runAuditSearch()">
+
+                <i class="fa fa-search"></i>
+
+                Audit Batch
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="two-column">
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Critical Alerts Action Queue
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Batch</th>
+                            <th>Alert</th>
+                            <th>Time</th>
+                            <th>Priority</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td class="mono">MED-2026-044</td>
+                            <td>Temperature Breach</td>
+                            <td>10:18 AM</td>
+                            <td>
+                                <span class="badge badge-danger">
+                                    HIGH
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="mono">RAW-2026-071</td>
+                            <td>Seal Tamper</td>
+                            <td>09:52 AM</td>
+                            <td>
+                                <span class="badge badge-danger">
+                                    HIGH
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="mono">PROCESS-2026-049</td>
+                            <td>Weight Discrepancy</td>
+                            <td>09:33 AM</td>
+                            <td>
+                                <span class="badge badge-warning">
+                                    MEDIUM
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="mono">MED-2026-043</td>
+                            <td>Light Exposure</td>
+                            <td>08:17 AM</td>
+                            <td>
+                                <span class="badge badge-warning">
+                                    MEDIUM
+                                </span>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Active Investigations
+            </div>
+
+
+            <div class="investigation">
+
+                <div>
+
+                    <div class="investigation-id">
+                        INV-2026-021
+                    </div>
+
+                    <div class="investigation-title">
+                        MED-2026-044
+                    </div>
+
+                    <div class="investigation-meta">
+                        Seal Tamper at Transport
+                    </div>
+
+                </div>
+
+                <span class="badge badge-danger">
+                    OPEN
+                </span>
+
+            </div>
+
+
+            <div class="investigation">
+
+                <div>
+
+                    <div class="investigation-id">
+                        INV-2026-019
+                    </div>
+
+                    <div class="investigation-title">
+                        RAW-2026-071
+                    </div>
+
+                    <div class="investigation-meta">
+                        Weight Discrepancy
+                    </div>
+
+                </div>
+
+                <span class="badge badge-warning">
+                    IN PROGRESS
+                </span>
+
+            </div>
+
+
+            <div class="investigation">
+
+                <div>
+
+                    <div class="investigation-id">
+                        INV-2026-018
+                    </div>
+
+                    <div class="investigation-title">
+                        PROCESS-2026-049
+                    </div>
+
+                    <div class="investigation-meta">
+                        Humidity Breach
+                    </div>
+
+                </div>
+
+                <span class="badge badge-success">
+                    OPEN
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Quick Access
+        </div>
+
+        <div class="quick-grid">
+
+            <div class="quick"
+            onclick="switchPanel('trace')">
+
+                <i class="fa fa-route"></i>
+
+                <strong>Trace Journey</strong>
+
+                <span>Analyze provenance</span>
+
+            </div>
+
+            <div class="quick"
+            onclick="switchPanel('iot')">
+
+                <i class="fa fa-wifi"></i>
+
+                <strong>IoT Evidence</strong>
+
+                <span>Sensor recordings</span>
+
+            </div>
+
+            <div class="quick"
+            onclick="switchPanel('lab')">
+
+                <i class="fa fa-flask"></i>
+
+                <strong>Lab Dossiers</strong>
+
+                <span>Certificates</span>
+
+            </div>
+
+            <div class="quick"
+            onclick="switchPanel('batches')">
+
+                <i class="fa fa-box"></i>
+
+                <strong>Batch Ledger</strong>
+
+                <span>View records</span>
+
+            </div>
+
+            <div class="quick"
+            onclick="switchPanel('reports')">
+
+                <i class="fa fa-chart-line"></i>
+
+                <strong>Reports</strong>
+
+                <span>Analytics</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     AUDITOR TRACE
+===================================================== -->
+
+<div class="panel" id="auditor-trace">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Provenance Trail Analysis
+        </h2>
+
+        <p class="panel-subtitle">
+            Perform forward and reverse traceability verification.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="search-box">
+
+            <input
+            class="input mono"
+            id="traceInput"
+            value="MED-2026-043">
+
+            <button
+            class="btn btn-primary"
+            onclick="runTrace()">
+
+                <i class="fa fa-route"></i>
+
+                Draw Provenance Map
+
+            </button>
+
+        </div>
+
+        <small style="color:var(--muted)">
+            Try:
+            <b>MED-2026-043</b>
+            or
+            <b>RAW-2026-071</b>
+        </small>
+
+    </div>
+
+
+    <div class="trace-container"
+    id="traceResult"
+    style="display:none">
+
+        <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        border-bottom:1px solid var(--border);
+        padding-bottom:12px">
+
+            <h3>
+                Ledger Record:
+                <span id="traceBatch"
+                class="mono">
+                    MED-2026-043
+                </span>
+            </h3>
+
+            <span class="badge badge-success">
+                Blockchain Verified
+            </span>
+
+        </div>
+
+
+        <div class="trace-line">
+
+
+            <div class="trace-node"
+            onclick="showEvidence('Farm')">
+
+                <div class="trace-circle">
+                    <i class="fa fa-seedling"></i>
+                </div>
+
+                <div class="trace-name">
+                    Farm
+                </div>
+
+                <div class="trace-date">
+                    10 Jan
+                </div>
+
+            </div>
+
+
+            <div class="trace-node"
+            onclick="showEvidence('Processing')">
+
+                <div class="trace-circle">
+                    <i class="fa fa-mortar-pestle"></i>
+                </div>
+
+                <div class="trace-name">
+                    Processing
+                </div>
+
+                <div class="trace-date">
+                    28 Jan
+                </div>
+
+            </div>
+
+
+            <div class="trace-node"
+            onclick="showEvidence('Laboratory')">
+
+                <div class="trace-circle">
+                    <i class="fa fa-flask"></i>
+                </div>
+
+                <div class="trace-name">
+                    Laboratory
+                </div>
+
+                <div class="trace-date">
+                    29 Jan
+                </div>
+
+            </div>
+
+
+            <div class="trace-node warning"
+            onclick="showEvidence('Transport')">
+
+                <div class="trace-circle">
+                    <i class="fa fa-truck"></i>
+                </div>
+
+                <div class="trace-name">
+                    Transport
+                </div>
+
+                <div class="trace-date">
+                    05 Feb
+                </div>
+
+            </div>
+
+
+            <div class="trace-node"
+            onclick="showEvidence('Manufacturing')">
+
+                <div class="trace-circle">
+                    <i class="fa fa-industry"></i>
+                </div>
+
+                <div class="trace-name">
+                    Manufacturing
+                </div>
+
+                <div class="trace-date">
+                    10 Feb
+                </div>
+
+            </div>
+
+
+            <div class="trace-node"
+            onclick="showEvidence('Final Lab')">
+
+                <div class="trace-circle">
+                    <i class="fa fa-shield"></i>
+                </div>
+
+                <div class="trace-name">
+                    Final Lab
+                </div>
+
+                <div class="trace-date">
+                    11 Feb
+                </div>
+
+            </div>
+
+
+            <div class="trace-node"
+            onclick="showEvidence('Medicine')">
+
+                <div class="trace-circle">
+                    <i class="fa fa-prescription-bottle"></i>
+                </div>
+
+                <div class="trace-name">
+                    Medicine
+                </div>
+
+                <div class="trace-date">
+                    Ready
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="evidence"
+        id="evidence">
+
+            <h3 id="evidenceTitle">
+                Node Evidence
+            </h3>
+
+            <br>
+
+            <div class="evidence-grid">
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Measurement</th>
+                                <th>Ledger Value</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="evidenceBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="proof">
+
+                    <h4>
+                        <i class="fa fa-link"></i>
+                        Ledger Sign-off
+                    </h4>
+
+                    <div class="proof-row">
+                        <span>Transaction ID</span>
+                        <span class="mono">
+                            0x4F8A3B91
+                        </span>
+                    </div>
+
+                    <div class="proof-row">
+                        <span>Block Height</span>
+                        <span class="mono">
+                            #49811
+                        </span>
+                    </div>
+
+                    <div class="proof-row">
+                        <span>Verification</span>
+                        <span style="color:var(--success)">
+                            Cryptographically Intact
+                        </span>
+                    </div>
+
+                    <br>
+
+                    <span class="badge badge-success">
+                        VERIFIED
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     AUDITOR BATCHES
+===================================================== -->
+
+<div class="panel" id="auditor-batches">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Batch Records Ledger
+        </h2>
+
+        <p class="panel-subtitle">
+            Complete supply-chain batch records.
+        </p>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Batch ID</th>
+                    <th>Product</th>
+                    <th>Origin</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td class="mono">MED-2026-043</td>
+                    <td>Ashwagandha Extract Tablets</td>
+                    <td>AyurLabs Facility</td>
+                    <td>12 March 2026</td>
+                    <td>
+                        <span class="badge badge-success">
+                            PASS
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="mono">MED-2026-044</td>
+                    <td>Balya Ashwagandha Syrup</td>
+                    <td>AyurLabs Facility</td>
+                    <td>14 March 2026</td>
+                    <td>
+                        <span class="badge badge-danger">
+                            QUARANTINED
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="mono">PROCESS-2026-046</td>
+                    <td>Ashwagandha Extract</td>
+                    <td>Central Extraction Unit</td>
+                    <td>28 Jan 2026</td>
+                    <td>
+                        <span class="badge badge-success">
+                            PASS
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="mono">RAW-2026-071</td>
+                    <td>Raw Botanical Roots</td>
+                    <td>Himalayan Organic Farm</td>
+                    <td>10 Jan 2026</td>
+                    <td>
+                        <span class="badge badge-success">
+                            PASS
+                        </span>
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LAB DOSSIERS
+===================================================== -->
+
+<div class="panel" id="auditor-lab">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Laboratory Test Dossiers
+        </h2>
+
+        <p class="panel-subtitle">
+            Verified laboratory certificates and assay records.
+        </p>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Certificate</th>
+                    <th>Batch</th>
+                    <th>Laboratory</th>
+                    <th>HPLC Purity</th>
+                    <th>Lead</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td class="mono">
+                        LAB-2026-014
+                    </td>
+
+                    <td class="mono">
+                        PROCESS-2026-046
+                    </td>
+
+                    <td>
+                        Inter-State Analytical Laboratory
+                    </td>
+
+                    <td>
+                        98.5%
+                    </td>
+
+                    <td>
+                        0.02 ppm
+                    </td>
+
+                    <td>
+                        <span class="badge badge-success">
+                            PASS
+                        </span>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td class="mono">
+                        LAB-2026-018
+                    </td>
+
+                    <td class="mono">
+                        PROCESS-2026-049
+                    </td>
+
+                    <td>
+                        Western Lab Agency
+                    </td>
+
+                    <td>
+                        99.1%
+                    </td>
+
+                    <td>
+                        0.01 ppm
+                    </td>
+
+                    <td>
+                        <span class="badge badge-success">
+                            PASS
+                        </span>
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     IOT
+===================================================== -->
+
+<div class="panel" id="auditor-iot">
+
+    <div class="panel-header">
+        <h2 class="panel-title">IoT Telemetry & Device Ledger</h2>
+        <p class="panel-subtitle">
+            Live physical evidence loaded from the TraceVeda backend and MongoDB.
+        </p>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+        <div class="card-title">Load Batch IoT Evidence</div>
+
+        <div style="display:flex;gap:12px;align-items:end;flex-wrap:wrap;">
+            <div class="form-group" style="flex:1;min-width:240px;margin-bottom:0;">
+                <label for="iotBatchId">Batch ID</label>
+                <input
+                    type="text"
+                    id="iotBatchId"
+                    class="input mono"
+                    placeholder="Example: ASH-2026-001"
+                >
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="loadIoTEvidence()"
+            >
+                <i class="fa-solid fa-wifi"></i>
+                Load IoT Evidence
+            </button>
+        </div>
+
+        <div
+            id="iotMessage"
+            class="auth-message"
+            style="margin-top:15px;"
+        ></div>
+    </div>
+
+
+    <div class="sensor-grid">
+
+        <div class="sensor">
+            <div class="sensor-label">Load Cell HX711</div>
+            <div class="sensor-value" id="iotWeightValue">—</div>
+            <div class="sensor-status" id="iotWeightStatus">
+                Waiting for batch data
+            </div>
+        </div>
+
+        <div class="sensor">
+            <div class="sensor-label">Limit Switch</div>
+            <div class="sensor-value" id="iotDoorValue">—</div>
+            <div class="sensor-status" id="iotDoorStatus">
+                Waiting for batch data
+            </div>
+        </div>
+
+        <div class="sensor">
+            <div class="sensor-label">BH1750 Lux</div>
+            <div class="sensor-value" id="iotLightValue">—</div>
+            <div class="sensor-status" id="iotLightStatus">
+                Waiting for batch data
+            </div>
+        </div>
+
+        <div class="sensor">
+            <div class="sensor-label">MPU6050 Motion</div>
+            <div class="sensor-value" id="iotMotionValue">—</div>
+            <div class="sensor-status" id="iotMotionStatus">
+                Waiting for batch data
+            </div>
+        </div>
+
+    </div>
+
+
+    <br>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Device</th>
+                    <th>Weight</th>
+                    <th>Door</th>
+                    <th>Light</th>
+                    <th>Motion</th>
+                    <th>Integrity</th>
+                </tr>
+            </thead>
+
+            <tbody id="iotReadingsBody">
+                <tr>
+                    <td colspan="7" style="text-align:center;">
+                        Enter a batch ID and load IoT evidence.
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     INVESTIGATIONS
+===================================================== -->
+
+<div class="panel" id="auditor-investigations">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Active Investigations
+        </h2>
+
+        <p class="panel-subtitle">
+            Suspected anomalies requiring containment and investigation.
+        </p>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Incident ID</th>
+                    <th>Batch</th>
+                    <th>Anomaly</th>
+                    <th>Source</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td class="mono">INV-2026-021</td>
+                    <td class="mono">MED-2026-044</td>
+                    <td>Seal Tamper</td>
+                    <td>IoT Sensor</td>
+                    <td>
+                        <span class="badge badge-danger">
+                            OPEN
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="mono">INV-2026-019</td>
+                    <td class="mono">RAW-2026-071</td>
+                    <td>Weight Discrepancy</td>
+                    <td>Load Cell</td>
+                    <td>
+                        <span class="badge badge-warning">
+                            IN PROGRESS
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="mono">INV-2026-018</td>
+                    <td class="mono">PROCESS-2026-049</td>
+                    <td>Humidity Breach</td>
+                    <td>IoT Sensor</td>
+                    <td>
+                        <span class="badge badge-success">
+                            OPEN
+                        </span>
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     REPORTS
+===================================================== -->
+
+<div class="panel" id="auditor-reports">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Consumer Quality Reports
+        </h2>
+
+        <p class="panel-subtitle">
+            Consumer-submitted reports and seal discrepancies.
+        </p>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Report ID</th>
+                    <th>Batch</th>
+                    <th>Issue</th>
+                    <th>Description</th>
+                    <th>Time</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td class="mono">REP-1024</td>
+                    <td class="mono">MED-2026-044</td>
+                    <td>Broken Seal</td>
+                    <td>Outer seal appears disturbed</td>
+                    <td>10:15 AM</td>
+                </tr>
+
+                <tr>
+                    <td class="mono">REP-1025</td>
+                    <td class="mono">MED-2026-043</td>
+                    <td>Packaging</td>
+                    <td>Minor package deformation</td>
+                    <td>09:22 AM</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LAB WORKSPACE
+===================================================== -->
+
+<div class="panel" id="lab-workspace">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Log Test Certification
+        </h2>
+
+        <p class="panel-subtitle">
+            Sign quality test results and register them on the ledger.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>
+                    Target Batch ID
+                </label>
+
+                <input
+                class="input mono"
+                id="labBatch"
+                value="PROCESS-2026-046">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Certificate ID
+                </label>
+
+                <input
+                class="input mono"
+                id="labCert"
+                value="LAB-2026-014">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Purity
+                </label>
+
+                <input
+                class="input"
+                id="labPurity"
+                value="98.5%">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Lead
+                </label>
+
+                <input
+                class="input"
+                id="labLead"
+                value="0.02 ppm">
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Verification Verdict
+            </label>
+
+            <select class="input"
+            id="labVerdict">
+
+                <option value="PASS">
+                    ✓ PASS — Verified Safe
+                </option>
+
+                <option value="FAIL">
+                    ✕ FAIL — Substandard
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <button class="btn btn-primary"
+        onclick="submitLab()">
+
+            <i class="fa fa-signature"></i>
+
+            Sign Ledger Verification
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LAB HISTORY
+===================================================== -->
+
+<div class="panel" id="lab-history">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Verification History
+        </h2>
+
+        <p class="panel-subtitle">
+            Archived laboratory certifications.
+        </p>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Batch</th>
+                    <th>Purity</th>
+                    <th>Lead</th>
+                    <th>Verdict</th>
+                    <th>Transaction</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="labHistory">
+
+                <tr>
+
+                    <td>29 Aug 2026</td>
+
+                    <td class="mono">
+                        PROCESS-2026-046
+                    </td>
+
+                    <td>98.5%</td>
+
+                    <td>0.02 ppm</td>
+
+                    <td>
+                        <span class="badge badge-success">
+                            PASS
+                        </span>
+                    </td>
+
+                    <td class="mono">
+                        0x4F8A3
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MANUFACTURER
+===================================================== -->
+
+<div class="panel" id="manufacturer-workspace">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Manufacturer Formulation & Log
+        </h2>
+
+        <p class="panel-subtitle">
+            Register new medicine batches using verified raw material.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>
+                    New Medicine Batch ID
+                </label>
+
+                <input
+                class="input mono"
+                id="mfgBatch"
+                value="MED-2026-046">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Source Processing Lot
+                </label>
+
+                <input
+                class="input mono"
+                id="mfgSource"
+                value="PROCESS-2026-046">
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Product Name
+            </label>
+
+            <input
+            class="input"
+            id="mfgProduct"
+            value="Ashwagandha Fortified Tablets">
+
+        </div>
+
+
+        <button class="btn btn-primary"
+        onclick="submitManufacturer()">
+
+            <i class="fa fa-plus"></i>
+
+            Formulate & Register Batch
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MANUFACTURING BATCHES
+===================================================== -->
+
+<div class="panel" id="manufacturer-batches">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Formulated Medicine Batches
+        </h2>
+
+        <p class="panel-subtitle">
+            Registered medicine batches.
+        </p>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Medicine Batch</th>
+                    <th>Product</th>
+                    <th>Ingredient Lot</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="mfgHistory">
+
+                <tr>
+
+                    <td class="mono">
+                        MED-2026-043
+                    </td>
+
+                    <td>
+                        Ashwagandha Extract Tablets
+                    </td>
+
+                    <td class="mono">
+                        PROCESS-2026-046
+                    </td>
+
+                    <td>
+                        12 March 2026
+                    </td>
+
+                    <td>
+                        <span class="badge badge-success">
+                            MONITORED
+                        </span>
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     STORAGE MONITORING
+===================================================== -->
+
+<div class="panel" id="manufacturer-storage">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Active Storage Node Vault
+        </h2>
+
+        <p class="panel-subtitle">
+            Live telemetry from physical storage monitoring hardware.
+        </p>
+
+    </div>
+
+
+    <div class="sensor-grid">
+
+        <div class="sensor">
+
+            <div class="sensor-label">
+                HX711 Load Cell
+            </div>
+
+            <div class="sensor-value"
+            id="weightSensor">
+                5.01 kg
+            </div>
+
+            <div class="sensor-status">
+                <i class="fa fa-circle-check"></i>
+                Stable Weight
+            </div>
+
+        </div>
+
+
+        <div class="sensor">
+
+            <div class="sensor-label">
+                Limit Switch
+            </div>
+
+            <div class="sensor-value">
+                CLOSED
+            </div>
+
+            <div class="sensor-status">
+                <i class="fa fa-circle-check"></i>
+                Seal Intact
+            </div>
+
+        </div>
+
+
+        <div class="sensor">
+
+            <div class="sensor-label">
+                BH1750 Lux
+            </div>
+
+            <div class="sensor-value">
+                0.2 lx
+            </div>
+
+            <div class="sensor-status">
+                <i class="fa fa-circle-check"></i>
+                Dark Environment
+            </div>
+
+        </div>
+
+
+        <div class="sensor">
+
+            <div class="sensor-label">
+                MPU6050 Motion
+            </div>
+
+            <div class="sensor-value">
+                Normal
+            </div>
+
+            <div class="sensor-status">
+                <i class="fa fa-circle-check"></i>
+                Stable Environment
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CONSUMER
+===================================================== -->
+
+<div class="panel" id="consumer-qr">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Verify Your Medicine
+        </h2>
+
+        <p class="panel-subtitle">
+            Scan or enter the medicine batch ID to verify its provenance.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div style="
+        text-align:center;
+        padding:20px">
+
+            <i class="fa fa-qrcode"
+            style="
+            font-size:5rem;
+            color:var(--green);
+            margin-bottom:20px">
+            </i>
+
+            <h3>
+                QR Verification
+            </h3>
+
+            <p style="
+            color:var(--muted);
+            font-size:.78rem;
+            margin:10px auto 20px;
+            max-width:450px">
+
+                Enter the medicine batch ID printed on the
+                packaging to retrieve its verified digital trail.
+
+            </p>
+
+
+            <div class="search-box"
+            style="max-width:500px;margin:auto">
+
+                <input
+                class="input mono"
+                id="consumerBatch"
+                value="MED-2026-043"
+                placeholder="Enter Batch ID">
+
+                <button class="btn btn-primary"
+                onclick="verifyMedicine()">
+
+                    Verify
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card"
+    id="consumerResult"
+    style="display:none">
+
+        <div style="
+        display:flex;
+        align-items:center;
+        gap:15px">
+
+            <div style="
+            width:55px;
+            height:55px;
+            border-radius:50%;
+            background:var(--success-bg);
+            color:var(--success);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:1.5rem">
+
+                <i class="fa fa-check"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    Medicine Verified
+                </h3>
+
+                <p style="
+                font-size:.7rem;
+                color:var(--muted)">
+
+                    Batch:
+                    <span id="verifiedBatch"
+                    class="mono">
+                        MED-2026-043
+                    </span>
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <hr style="
+        border:0;
+        border-top:1px solid var(--border);
+        margin:20px 0">
+
+        <div class="two-column">
+
+            <div>
+
+                <p>
+                    <strong>Product:</strong>
+                    Ashwagandha Extract Tablets
+                </p>
+
+                <p>
+                    <strong>Origin:</strong>
+                    Himalayan Organic Farm
+                </p>
+
+                <p>
+                    <strong>Laboratory:</strong>
+                    Verified
+                </p>
+
+            </div>
+
+            <div>
+
+                <p>
+                    <strong>Blockchain:</strong>
+                    <span class="badge badge-success">
+                        Verified
+                    </span>
+                </p>
+
+                <p>
+                    <strong>IoT Monitoring:</strong>
+                    <span class="badge badge-success">
+                        Active
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Provenance:</strong>
+                    Complete
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     CONSUMER — REPORT MEDICINE
+===================================================== -->
+
+<div class="panel" id="consumer-report">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Report Medicine
+        </h2>
+
+        <p class="panel-subtitle">
+            Report a problem with a medicine or its provenance.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Submit a Medicine Report
+        </div>
+
+
+        <form
+            id="consumerReportForm"
+            onsubmit="submitConsumerReport(event)"
+        >
+
+            <!-- MEDICINE BATCH -->
+
+            <div class="form-group">
+
+                <label for="consumerReportBatch">
+                    Medicine Batch
+                </label>
+
+                <input
+                    type="text"
+                    id="consumerReportBatch"
+                    class="input mono"
+                    placeholder="Enter medicine batch ID"
+                    required
+                >
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+
+                <label for="consumerReportDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="consumerReportDescription"
+                    class="input"
+                    rows="7"
+                    placeholder="Describe the problem you encountered..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+
+                <i class="fa-solid fa-paper-plane"></i>
+
+                Submit Report
+
+            </button>
+
+
+            <!-- MESSAGE -->
+
+            <div
+                id="consumerReportMessage"
+                class="auth-message"
+                style="margin-top:15px;"
+            ></div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</main>
+
+</div>
+
+</section>
+
+
+<script>
+
+/* =========================================================
+   ROLE CONFIGURATION
+========================================================= */
+
+const roleMenus = {
+
+    auditor: [
+        ["auditor-overview","Overview","fa-house"],
+        ["auditor-trace","Trace Journey","fa-route"],
+        ["auditor-batches","Batch Records","fa-box"],
+        ["auditor-lab","Laboratory Dossiers","fa-flask"],
+        ["auditor-iot","IoT Evidence","fa-wifi"],
+        ["auditor-investigations","Investigations","fa-shield-halved"],
+        ["auditor-reports","Consumer Reports","fa-file-lines"]
+    ],
+
+    lab: [
+
+        ["lab-workspace","Log Certification","fa-signature"],
+
+        ["lab-history","Verification History","fa-clock-rotate-left"]
+
+    ],
+
+    manufacturer: [
+
+        ["manufacturer-workspace","Formulate Batch","fa-industry"],
+
+        ["manufacturer-batches","Medicine Batches","fa-boxes-stacked"],
+
+        ["manufacturer-storage","Storage Monitoring","fa-temperature-half"]
+
+    ],
+
+    consumer: [
+
+        ["consumer-qr","Verify Medicine","fa-qrcode"],
+
+        ["consumer-report","Report Medicine","fa-flag"]
+
+    ]
+
+};
+
+
+/* =========================================================
+   ROLE SWITCH
+========================================================= */
+
+
+const API_BASE_URL = "https://traceveda.onrender.com";
+
+/* =========================================================
+   IOT EVIDENCE
+========================================================= */
+
+function setIoTMessage(message, type = "info") {
+    const box = document.getElementById("iotMessage");
+    if (!box) return;
+
+    box.textContent = message;
+    box.style.display = message ? "block" : "none";
+
+    if (type === "error") {
+        box.style.color = "var(--danger)";
+    } else if (type === "success") {
+        box.style.color = "var(--success)";
+    } else {
+        box.style.color = "var(--text)";
+    }
+}
+
+function iotValue(value, suffix = "") {
+    if (value === null || value === undefined || value === "") return "—";
+    return `${value}${suffix}`;
+}
+
+function latestIoTReading(readings, field) {
+    for (let i = readings.length - 1; i >= 0; i--) {
+        const value = readings[i]?.[field];
+        if (value !== null && value !== undefined && value !== "") {
+            return readings[i];
+        }
+    }
+    return null;
+}
+
+function formatIoTTimestamp(value) {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    return date.toLocaleString();
+}
+
+function getMotionText(reading) {
+    if (!reading) return "—";
+
+    if (reading.shock_detected === true) {
+        const parts = ["Shock"];
+        if (reading.accel_x_g !== null && reading.accel_x_g !== undefined) {
+            parts.push(`${reading.accel_x_g}g`);
+        }
+        return parts.join(" ");
+    }
+
+    if (reading.tilt_angle_deg !== null && reading.tilt_angle_deg !== undefined) {
+        return `Tilt ${reading.tilt_angle_deg}°`;
+    }
+
+    const accel = [
+        reading.accel_x_g,
+        reading.accel_y_g,
+        reading.accel_z_g
+    ].filter(v => v !== null && v !== undefined);
+
+    return accel.length ? `Accel ${accel.join(", ")}g` : "Normal";
+}
+
+function renderIoTReadings(readings, alerts) {
+    const latest = readings.length ? readings[readings.length - 1] : null;
+
+    const weightReading = latestIoTReading(readings, "weight_kg");
+    const doorReading = latestIoTReading(readings, "switch_status");
+    const lightReading = latestIoTReading(readings, "light_intensity_lux");
+    const motionReading = readings.length ? readings[readings.length - 1] : null;
+
+    document.getElementById("iotWeightValue").textContent =
+        weightReading ? iotValue(weightReading.weight_kg, " kg") : "—";
+    document.getElementById("iotWeightStatus").textContent =
+        weightReading ? `Latest reading • ${formatIoTTimestamp(weightReading.timestamp)}` : "No weight reading";
+
+    document.getElementById("iotDoorValue").textContent =
+        doorReading ? String(doorReading.switch_status).toUpperCase() : "—";
+    document.getElementById("iotDoorStatus").textContent =
+        doorReading ? `Latest switch reading • ${formatIoTTimestamp(doorReading.timestamp)}` : "No switch reading";
+
+    document.getElementById("iotLightValue").textContent =
+        lightReading ? iotValue(lightReading.light_intensity_lux, " lx") : "—";
+    document.getElementById("iotLightStatus").textContent =
+        lightReading ? `Latest light reading • ${formatIoTTimestamp(lightReading.timestamp)}` : "No light reading";
+
+    document.getElementById("iotMotionValue").textContent =
+        getMotionText(motionReading);
+    document.getElementById("iotMotionStatus").textContent =
+        motionReading ? `Latest motion data • ${formatIoTTimestamp(motionReading.timestamp)}` : "No motion reading";
+
+    const body = document.getElementById("iotReadingsBody");
+    body.innerHTML = "";
+
+    if (!readings.length) {
+        body.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align:center;">
+                    No IoT readings were found for this batch.
+                </td>
+            </tr>`;
+        return;
+    }
+
+    const sortedReadings = [...readings].sort((a, b) =>
+        new Date(b.timestamp) - new Date(a.timestamp)
+    );
+
+    sortedReadings.forEach(reading => {
+        const matchingAlerts = alerts.filter(alert => {
+            const alertSensor = alert.sensor_id;
+            const sameSensor = !alertSensor || alertSensor === reading.sensor_id;
+            return sameSensor;
+        });
+
+        const hasCritical = matchingAlerts.some(alert =>
+            String(alert.severity || "").toUpperCase() === "CRITICAL"
+        );
+
+        const integrity = reading.alert_status ||
+            (hasCritical ? "BREACH" :
+            (matchingAlerts.length ? "ALERT" : "NORMAL"));
+
+        const badgeClass =
+            ["BREACH", "CRITICAL", "ALERT"].includes(String(integrity).toUpperCase())
+                ? "badge-danger"
+                : "badge-success";
+
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${formatIoTTimestamp(reading.timestamp)}</td>
+            <td class="mono">${reading.sensor_id || "—"}</td>
+            <td>${iotValue(reading.weight_kg, " kg")}</td>
+            <td>${reading.switch_status ? String(reading.switch_status).toUpperCase() : "—"}</td>
+            <td>${iotValue(reading.light_intensity_lux, " lux")}</td>
+            <td>${getMotionText(reading)}</td>
+            <td><span class="badge ${badgeClass}">${integrity}</span></td>
+        `;
+
+        body.appendChild(tr);
+    });
+}
+
+async function loadIoTEvidence() {
+    const input = document.getElementById("iotBatchId");
+    const batchId = input ? input.value.trim() : "";
+
+    if (!batchId) {
+        setIoTMessage("Please enter a batch ID.", "error");
+        return;
+    }
+
+    setIoTMessage("Loading IoT evidence from MongoDB...");
+
+    try {
+        const encodedBatchId = encodeURIComponent(batchId);
+
+        const [readingsResponse, alertsResponse] = await Promise.all([
+            fetch(`${API_BASE_URL}/api/iot/readings/${encodedBatchId}`),
+            fetch(`${API_BASE_URL}/api/iot/alerts/${encodedBatchId}`)
+        ]);
+
+        const readingsData = await readingsResponse.json();
+
+        let alertsData = { alerts: [] };
+        try {
+            alertsData = await alertsResponse.json();
+        } catch (_) {}
+
+        if (!readingsResponse.ok) {
+            throw new Error(readingsData.detail || "Unable to load IoT readings.");
+        }
+
+        const readings = Array.isArray(readingsData.readings)
+            ? readingsData.readings
+            : [];
+
+        const alerts = Array.isArray(alertsData.alerts)
+            ? alertsData.alerts
+            : [];
+
+        renderIoTReadings(readings, alerts);
+
+        if (readings.length) {
+            setIoTMessage(
+                `Loaded ${readings.length} IoT reading(s) for ${batchId}.`,
+                "success"
+            );
+        } else {
+            setIoTMessage(
+                `No IoT readings are currently stored in MongoDB for ${batchId}.`,
+                "info"
+            );
+        }
+
+    } catch (error) {
+        console.error("IoT loading error:", error);
+        renderIoTReadings([], []);
+        setIoTMessage(`IoT evidence failed to load: ${error.message}`, "error");
+    }
+}
+
+let currentRole = "auditor";
+
+
+function openRole(role, panel = null){
+
+    console.log("Opening role:", role);
+
+    // Validate role
+    if(!roleMenus[role]){
+        console.error("Invalid role:", role);
+        return;
+    }
+
+
+    // Store current role
+    currentRole = role;
+
+
+    // Hide landing page
+    const landing = document.getElementById("landing");
+
+    if(landing){
+        landing.style.display = "none";
+    }
+
+
+    // Show workspace
+    const workspace = document.getElementById("workspace");
+
+    if(workspace){
+        workspace.classList.add("active");
+    }
+
+
+    // Close role dropdown
+    const roleMenu = document.getElementById("roleMenu");
+
+    if(roleMenu){
+        roleMenu.classList.remove("open");
+    }
+
+
+    // Update sidebar heading
+    const sidebarRole =
+        document.getElementById("sidebarRole");
+
+    if(sidebarRole){
+
+        const roleNames = {
+            auditor: "Auditor Workspace",
+            lab: "Laboratory Workspace",
+            manufacturer: "Manufacturer Workspace",
+            consumer: "Consumer Experience"
+        };
+
+        sidebarRole.textContent =
+            roleNames[role] || "TraceVeda Workspace";
+    }
+
+
+    // Build the correct sidebar
+    buildSidebar(role);
+
+
+    // Determine which panel to open
+    const firstPanel =
+        panel || roleMenus[role][0][0];
+
+
+    console.log("Opening panel:", firstPanel);
+
+
+    // Open role-specific panel
+    switchPanel(firstPanel);
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+function buildSidebar(role){
+
+    const menu =
+        document.getElementById("sidebarMenu");
+
+    menu.innerHTML="";
+
+    roleMenus[role].forEach(item=>{
+
+        const [id,label,icon] = item;
+
+        const button =
+            document.createElement("button");
+
+        button.className="sidebar-item";
+
+        button.dataset.panel=id;
+
+        button.innerHTML=
+            `<i class="fa-solid ${icon}"></i>${label}`;
+
+        button.onclick=()=>{
+            switchPanel(id);
+        };
+
+        menu.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   PANEL SWITCHING
+========================================================= */
+
+function switchPanel(name){
+
+    // Hide every panel first
+    document.querySelectorAll(".panel").forEach(panel => {
+        panel.classList.remove("active");
+    });
+
+
+    // The panel ID is already provided by roleMenus
+    // for role-specific panels.
+    const target = document.getElementById(name);
+
+
+    if(target){
+        target.classList.add("active");
+    }
+    else{
+        console.error("Panel not found:", name);
+    }
+
+
+    // If IoT Evidence is opened and a batch ID is already entered,
+    // refresh its live backend data.
+    if(name === "auditor-iot"){
+        const iotInput = document.getElementById("iotBatchId");
+        if(iotInput && iotInput.value.trim()){
+            loadIoTEvidence();
+        }
+    }
+
+    // Update active sidebar item
+    document.querySelectorAll(".sidebar-item").forEach(item => {
+
+        item.classList.toggle(
+            "active",
+            item.dataset.panel === name
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   LANDING
+========================================================= */
+
+function showLanding(){
+
+    document.getElementById("workspace")
+    .classList.remove("active");
+
+    document.getElementById("landing")
+    .style.display="block";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+function toggleRoleMenu(){
+
+    document
+    .getElementById("roleMenu")
+    .classList.toggle("open");
+
+}
+
+
+/* =========================================================
+   AUDIT SEARCH
+========================================================= */
+
+function runAuditSearch(){
+
+    const id =
+        document.getElementById("auditSearch").value;
+
+    if(!id.trim()){
+
+        alert("Please enter a batch ID.");
+
+        return;
+
+    }
+
+    openRole("auditor","trace");
+
+    document.getElementById("traceInput").value=id;
+
+    runTrace();
+
+}
+
+
+/* =========================================================
+   TRACE
+========================================================= */
+
+function runTrace(){
+
+    const id =
+        document.getElementById("traceInput").value;
+
+    document.getElementById("traceResult")
+    .style.display="block";
+
+    document.getElementById("traceBatch")
+    .textContent=id;
+
+    document.getElementById("evidence")
+    .classList.remove("active");
+
+    document.getElementById("traceResult")
+    .scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
+
+}
+
+
+/* =========================================================
+   EVIDENCE
+========================================================= */
+
+function showEvidence(stage){
+
+    const evidence =
+        document.getElementById("evidence");
+
+    const title =
+        document.getElementById("evidenceTitle");
+
+    const body =
+        document.getElementById("evidenceBody");
+
+    title.textContent =
+        stage+" — Digital Evidence";
+
+    const data = {
+
+        Farm:[
+            ["Source","Himalayan Organic Farm"],
+            ["Batch","RAW-2026-071"],
+            ["Cultivation","Organic"],
+            ["Harvest Date","10 Jan 2026"]
+        ],
+
+        Processing:[
+            ["Process Lot","PROCESS-2026-046"],
+            ["Material","Ashwagandha Extract"],
+            ["Temperature","38.2°C"],
+            ["Process Status","Verified"]
+        ],
+
+        Laboratory:[
+            ["Certificate","LAB-2026-014"],
+            ["HPLC Purity","98.5%"],
+            ["Lead","0.02 ppm"],
+            ["Result","PASS"]
+        ],
+
+        Transport:[
+            ["Device","IOT-001"],
+            ["Weight","4.18 kg"],
+            ["Door","OPEN"],
+            ["Light","1850 lux"],
+            ["Motion","Shock 3.2g"],
+            ["Status","ANOMALY DETECTED"]
+        ],
+
+        Manufacturing:[
+            ["Facility","AyurLabs Facility"],
+            ["Batch","MED-2026-043"],
+            ["Production Status","Complete"],
+            ["Ledger","Verified"]
+        ],
+
+        "Final Lab":[
+            ["Certificate","LAB-FINAL-027"],
+            ["Purity","99.1%"],
+            ["Heavy Metals","Within Limit"],
+            ["Result","PASS"]
+        ],
+
+        Medicine:[
+            ["Product","Ashwagandha Extract Tablets"],
+            ["Batch","MED-2026-043"],
+            ["Blockchain","Verified"],
+            ["Consumer Status","Authentic"]
+        ]
+
+    };
+
+
+    body.innerHTML="";
+
+    (data[stage] || []).forEach(row=>{
+
+        body.innerHTML += `
+
+        <tr>
+
+            <td>
+                ${row[0]}
+            </td>
+
+            <td class="mono">
+                ${row[1]}
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    evidence.classList.add("active");
+
+    evidence.scrollIntoView({
+        behavior:"smooth",
+        block:"nearest"
+    });
+
+}
+
+
+/* =========================================================
+   LAB SUBMIT
+========================================================= */
+
+function submitLab(){
+
+    const batch =
+        document.getElementById("labBatch").value;
+
+    const cert =
+        document.getElementById("labCert").value;
+
+    const purity =
+        document.getElementById("labPurity").value;
+
+    const lead =
+        document.getElementById("labLead").value;
+
+    const verdict =
+        document.getElementById("labVerdict").value;
+
+
+    const table =
+        document.getElementById("labHistory");
+
+
+    const row =
+        document.createElement("tr");
+
+
+    row.innerHTML=`
+
+        <td>
+            ${new Date().toLocaleDateString()}
+        </td>
+
+        <td class="mono">
+            ${batch}
+        </td>
+
+        <td>
+            ${purity}
+        </td>
+
+        <td>
+            ${lead}
+        </td>
+
+        <td>
+            <span class="badge ${
+                verdict==="PASS"
+                ?"badge-success"
+                :"badge-danger"
+            }">
+                ${verdict}
+            </span>
+        </td>
+
+        <td class="mono">
+            0x${Math.random()
+            .toString(16)
+            .substring(2,9)
+            .toUpperCase()}
+        </td>
+
+    `;
+
+    table.prepend(row);
+
+    alert(
+        verdict==="PASS"
+        ? "✓ Laboratory certification successfully signed and registered."
+        : "⚠ Failed certification registered."
+    );
+
+}
+
+
+/* =========================================================
+   MANUFACTURER
+========================================================= */
+
+function submitManufacturer(){
+
+    const batch =
+        document.getElementById("mfgBatch").value;
+
+    const source =
+        document.getElementById("mfgSource").value;
+
+    const product =
+        document.getElementById("mfgProduct").value;
+
+
+    const table =
+        document.getElementById("mfgHistory");
+
+
+    const row =
+        document.createElement("tr");
+
+
+    row.innerHTML=`
+
+        <td class="mono">
+            ${batch}
+        </td>
+
+        <td>
+            ${product}
+        </td>
+
+        <td class="mono">
+            ${source}
+        </td>
+
+        <td>
+            ${new Date().toLocaleDateString()}
+        </td>
+
+        <td>
+            <span class="badge badge-success">
+                MONITORED
+            </span>
+        </td>
+
+    `;
+
+
+    table.prepend(row);
+
+
+    alert(
+        "✓ Medicine batch successfully registered on TraceVeda."
+    );
+
+}
+
+
+/* =========================================================
+   CONSUMER VERIFICATION
+========================================================= */
+
+function verifyMedicine(){
+
+    const batch =
+        document.getElementById("consumerBatch").value;
+
+
+    if(!batch.trim()){
+
+        alert("Enter a valid medicine batch ID.");
+
+        return;
+
+    }
+
+
+    document.getElementById("verifiedBatch")
+    .textContent=batch;
+
+
+    const result =
+        document.getElementById("consumerResult");
+
+
+    result.style.display="block";
+
+
+    result.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+    });
+
+}
+
+
+/* =========================================================
+   DEMO CONTROLLER
+========================================================= */
+
+let demoStep=1;
+
+const demoTexts=[
+
+    "Landing Page",
+
+    "Auditor Workspace",
+
+    "Trace Journey",
+
+    "Laboratory Evidence",
+
+    "IoT Monitoring",
+
+    "Investigation"
+
+];
+
+function updateDemo(){
+
+    document.getElementById("demoText")
+    .textContent=
+    `Step ${demoStep} of 12: ${demoTexts[demoStep-1] || "TraceVeda Workspace"}`;
+
+    document.querySelectorAll(".demo-dot")
+    .forEach((dot,i)=>{
+
+        dot.classList.toggle(
+            "active",
+            i===demoStep-1
+        );
+
+    });
+
+}
+
+
+function nextDemo(){
+
+    demoStep++;
+
+    if(demoStep>6)
+        demoStep=1;
+
+    updateDemo();
+
+}
+
+
+function prevDemo(){
+
+    demoStep--;
+
+    if(demoStep<1)
+        demoStep=6;
+
+    updateDemo();
+
+}
+
+
+/* =========================================================
+   LIVE SENSOR SIMULATION
+========================================================= */
+
+setInterval(()=>{
+
+    const weight =
+        document.getElementById("weightSensor");
+
+    if(weight){
+
+        const value =
+            (5 + (Math.random()-.5)*.05)
+            .toFixed(2);
+
+        weight.textContent =
+            value+" kg";
+
+    }
+
+},3000);
+
+
+/* =========================================================
+   CLOSE DROPDOWN OUTSIDE
+========================================================= */
+
+document.addEventListener("click",(event)=>{
+
+    const dropdown =
+        document.querySelector(".role-dropdown");
+
+    if(
+        dropdown &&
+        !dropdown.contains(event.target)
+    ){
+
+        document
+        .getElementById("roleMenu")
+        .classList.remove("open");
+
+    }
+
+});
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+buildSidebar("auditor");
+
+/* =========================================================
+   CONSUMER MEDICINE REPORT
+========================================================= */
+
+function submitConsumerReport(event) {
+
+    event.preventDefault();
+
+
+    const batch =
+        document
+            .getElementById("consumerReportBatch")
+            .value
+            .trim();
+
+
+    const description =
+        document
+            .getElementById("consumerReportDescription")
+            .value
+            .trim();
+
+
+    const message =
+        document.getElementById("consumerReportMessage");
+
+
+    /* ------------------------------------------
+       VALIDATION
+    ------------------------------------------ */
+
+    if (!batch || !description) {
+
+        message.className =
+            "auth-message error";
+
+        message.textContent =
+            "Please complete all fields.";
+
+        return;
+    }
+
+
+    /* ------------------------------------------
+       TEMPORARY FRONTEND BEHAVIOUR
+    ------------------------------------------ */
+
+    console.log("Medicine Report:", {
+        batch: batch,
+        description: description,
+        reportedBy: currentRole
+    });
+
+
+    message.className =
+        "auth-message success";
+
+    message.textContent =
+        "Your medicine report has been submitted successfully.";
+
+
+    /* ------------------------------------------
+       CLEAR FORM
+    ------------------------------------------ */
+
+    document
+        .getElementById("consumerReportForm")
+        .reset();
+
+}
+
+</script>
+<!-- AUTH MODAL -->
+<div class="auth-modal" id="authModal">
+
+    <div class="auth-modal-overlay" onclick="closeAuthModal()"></div>
+
+    <div class="auth-box">
+
+        <button class="auth-close" onclick="closeAuthModal()">
+            &times;
+        </button>
+
+        <div class="auth-header">
+            <span class="auth-eyebrow">TRACEVEDA · SECURE ACCESS</span>
+
+            <h2 id="authTitle">Sign In</h2>
+
+            <p id="authSubtitle">
+                Access your TraceVeda workspace.
+            </p>
+        </div>
+
+        <!-- ROLE SELECTION -->
+        <div class="auth-section">
+
+            <label>Select your role</label>
+
+            <div class="auth-role-grid">
+
+                <button
+                    class="auth-role"
+                    data-role="auditor"
+                    onclick="selectAuthRole(this)"
+                >
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>Auditor</span>
+                </button>
+
+                <button
+                    class="auth-role"
+                    data-role="lab"
+                    onclick="selectAuthRole(this)"
+                >
+                    <i class="fa-solid fa-flask"></i>
+                    <span>Laboratory</span>
+                </button>
+
+                <button
+                    class="auth-role"
+                    data-role="manufacturer"
+                    onclick="selectAuthRole(this)"
+                >
+                    <i class="fa-solid fa-industry"></i>
+                    <span>Manufacturer</span>
+                </button>
+
+                <button
+                    class="auth-role"
+                    data-role="consumer"
+                    onclick="selectAuthRole(this)"
+                >
+                    <i class="fa-solid fa-user"></i>
+                    <span>Consumer</span>
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- SIGN UP FORM -->
+        <form id="signupForm" class="auth-form" style="display: none;">
+
+            <!-- ASSIGNED USERNAME -->
+            <div class="auth-field">
+
+                <label for="signupUsername">
+                    Assigned Username
+                </label>
+
+                <input
+                    type="text"
+                    id="signupUsername"
+                    placeholder="Select your role first"
+                    readonly
+                >
+
+            </div>
+
+
+            <!-- USERNAME INFORMATION -->
+            <div class="username-info">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>
+                    Your username will be generated by TraceVeda.
+                </span>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+            <div class="auth-field">
+
+                <label for="signupPassword">
+                    Create Password
+                </label>
+
+                <input
+                    type="password"
+                    id="signupPassword"
+                    placeholder="Create your password"
+                    required
+                >
+
+            </div>
+
+
+            <!-- CONFIRM PASSWORD -->
+            <div class="auth-field">
+
+                <label for="signupConfirmPassword">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="signupConfirmPassword"
+                    placeholder="Confirm your password"
+                    required
+                >
+
+            </div>
+
+
+            <!-- SUBMIT -->
+            <button type="submit" class="auth-submit">
+
+                Create Account
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+        </form>
+
+        <!-- SIGN IN FORM -->
+        <form id="signinForm" class="auth-form">
+
+            <div class="auth-field">
+
+                <label for="signinUsername">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="signinUsername"
+                    placeholder="Enter your username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="auth-field">
+
+                <label for="signinPassword">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="signinPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit" class="auth-submit">
+
+                Sign In
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+        </form>
+
+        <div class="auth-message" id="authMessage"></div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+let selectedAuthRole = null;
+let currentAuthMode = "signin";
+
+
+/* ==========================================
+   OPEN AUTH MODAL
+========================================== */
+
+function openAuthModal(mode) {
+
+    currentAuthMode = mode;
+
+    const modal = document.getElementById("authModal");
+
+    const title = document.getElementById("authTitle");
+
+    const subtitle = document.getElementById("authSubtitle");
+
+    const signinForm = document.getElementById("signinForm");
+
+    const signupForm = document.getElementById("signupForm");
+
+    const authSections =
+    document.querySelectorAll(".auth-section");
+
+    const message = document.getElementById("authMessage");
+
+
+    modal.classList.add("active");
+
+    selectedAuthRole = null;
+
+    // Show/hide Auditor depending on auth mode
+    document.querySelectorAll(".auth-role").forEach(role => {
+
+        if (role.dataset.role === "auditor") {
+
+            role.style.display =
+                mode === "signup" ? "none" : "";
+
+        }
+
+    });
+
+
+    // Clear previously generated username
+
+    const signupUsername =
+        document.getElementById("signupUsername");
+
+    if (signupUsername) {
+        signupUsername.value = "";
+    }
+
+
+    // Clear previous role selection
+
+    document.querySelectorAll(".auth-role").forEach(role => {
+
+        role.classList.remove("selected");
+
+    });
+
+
+    // Clear previous message
+
+    message.className = "auth-message";
+
+    message.textContent = "";
+
+
+    if (mode === "signin") {
+
+        title.textContent = "Sign In";
+
+        subtitle.textContent =
+            "Access your TraceVeda workspace.";
+
+    }
+
+    else {
+
+        title.textContent = "Create Account";
+
+        subtitle.textContent =
+            "Create your secure TraceVeda account.";
+
+    }
+
+    // Reset role selection screen
+    authSections.forEach(section => {
+        section.style.display = "";
+    });
+
+    // Hide authentication forms until a role is selected
+
+    signinForm.style.display = "none";
+
+    signupForm.style.display = "none";
+
+}
+
+
+/* ==========================================
+   CLOSE MODAL
+========================================== */
+
+function closeAuthModal() {
+
+    document
+        .getElementById("authModal")
+        .classList.remove("active");
+
+}
+
+/* ==========================================
+   DUMMY SIGN-IN CREDENTIALS
+   TEMPORARY — FOR FRONTEND TESTING ONLY
+========================================== */
+
+const dummyUsers = {
+    auditor: {
+        username: "Aud-001",
+        password: "123"
+    },
+
+    lab: {
+        username: "Lab-001",
+        password: "123"
+    },
+
+    manufacturer: {
+        username: "Man-001",
+        password: "123"
+    },
+
+    consumer: {
+        username: "Con-001",
+        password: "123"
+    }
+};
+
+/* ==========================================
+   SIGN IN
+========================================== */
+
+document
+    .getElementById("signinForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        /* ------------------------------------------
+           GET USER INPUT
+        ------------------------------------------ */
+
+        const username =
+            document
+                .getElementById("signinUsername")
+                .value
+                .trim();
+
+        const password =
+            document
+                .getElementById("signinPassword")
+                .value;
+
+
+        /* ------------------------------------------
+           CHECK ROLE
+        ------------------------------------------ */
+
+        if (!selectedAuthRole) {
+
+            showAuthMessage(
+                "Please select your role first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* ------------------------------------------
+           GET USER FOR SELECTED ROLE
+        ------------------------------------------ */
+
+        const user =
+            dummyUsers[selectedAuthRole];
+
+
+        /* ------------------------------------------
+           CHECK USERNAME + PASSWORD
+        ------------------------------------------ */
+
+        if (
+            user &&
+            username === user.username &&
+            password === user.password
+        ) {
+
+            showAuthMessage(
+                "Sign in successful.",
+                "success"
+            );
+
+
+            console.log(
+                "Logged in as:",
+                selectedAuthRole,
+                username
+            );
+
+
+            /* --------------------------------------
+               OPEN ROLE-SPECIFIC WORKSPACE
+            -------------------------------------- */
+
+            setTimeout(function() {
+
+                console.log("========== ROLE DEBUG ==========");
+                console.log("Selected role:", selectedAuthRole);
+                console.log("Current role:", currentRole);
+                console.log("Opening role:", selectedAuthRole);
+                console.log("Role menu:", roleMenus[selectedAuthRole]);
+                console.log("================================");
+
+                closeAuthModal();
+
+                openRole(selectedAuthRole);
+
+            }, 400);
+
+        }
+
+        else {
+
+            showAuthMessage(
+                "Invalid username or password.",
+                "error"
+            );
+
+        }
+
+});
+
+/* ==========================================
+   SELECT ROLE
+========================================== */
+
+function selectAuthRole(button) {
+
+    // Remove previous selection
+    document.querySelectorAll(".auth-role").forEach(role => {
+        role.classList.remove("selected");
+    });
+
+    // Select clicked role
+    button.classList.add("selected");
+
+    // Store selected role
+    selectedAuthRole = button.dataset.role;
+
+
+    /* ==========================================
+       GENERATE SIGNUP USERNAME
+    ========================================== */
+
+    const signupUsername =
+        document.getElementById("signupUsername");
+
+    if (signupUsername && currentAuthMode === "signup") {
+
+        const usernameMap = {
+
+            lab: "lab-001",
+
+            manufacturer: "manufacturer-001",
+
+            consumer: "consumer-001"
+
+        };
+
+        signupUsername.value =
+            usernameMap[selectedAuthRole] || "";
+    }
+
+
+    /* ==========================================
+       MOVE FROM ROLE SELECTION TO AUTH FORM
+    ========================================== */
+
+    const authSections =
+        document.querySelectorAll(".auth-section");
+
+    const signinForm =
+        document.getElementById("signinForm");
+
+    const signupForm =
+        document.getElementById("signupForm");
+
+
+    // Hide role selection
+    authSections.forEach(section => {
+        section.style.display = "none";
+    });
+
+
+    // Show correct form
+    if (currentAuthMode === "signin") {
+
+        if (signinForm) {
+            signinForm.style.display = "flex";
+        }
+
+    } else {
+
+        if (signupForm) {
+            signupForm.style.display = "flex";
+        }
+
+    }
+
+}
+
+/* ==========================================
+   SIGN UP
+========================================== */
+
+document
+    .getElementById("signupForm")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+
+        if (!selectedAuthRole) {
+
+            showAuthMessage(
+                "Please select your role first.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const password =
+            document
+                .getElementById("signupPassword")
+                .value;
+
+
+        const confirmPassword =
+            document
+                .getElementById("signupConfirmPassword")
+                .value;
+
+
+        if (password !== confirmPassword) {
+
+            showAuthMessage(
+                "Passwords do not match.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * BACKEND REQUEST WILL GO HERE
+         */
+
+        console.log({
+            action: "signup",
+            role: selectedAuthRole,
+            password: password
+        });
+
+
+        // Temporary response
+
+        showAuthMessage(
+            "Creating your TraceVeda account...",
+            "success"
+        );
+
+    });
+
+
+/* ==========================================
+   MESSAGE
+========================================== */
+
+function showAuthMessage(message, type) {
+
+    const element =
+        document.getElementById("authMessage");
+
+    element.textContent = message;
+
+    element.className =
+        "auth-message " + type;
+
+}
+
+
+/* ==========================================
+   ESCAPE KEY
+========================================== */
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Escape") {
+
+        closeAuthModal();
+
+    }
+
+});
+
+</script>
+
+</body>
 </html>
