@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from database import db
+from services.accounts import authenticate
 
 
 router = APIRouter(
@@ -26,21 +26,15 @@ class LoginRequest(BaseModel):
 @router.post("/login")
 def login(data: LoginRequest):
 
-    user = db.users.find_one({
-        "username": data.username
-    })
+    user = authenticate(
+        data.username,
+        data.password
+    )
 
     if not user:
         raise HTTPException(
-            status_code=404,
-            detail="User not found"
-        )
-
-    # Prototype authentication
-    if user.get("password") != data.password:
-        raise HTTPException(
             status_code=401,
-            detail="Invalid password"
+            detail="Invalid username or password"
         )
 
     return {
