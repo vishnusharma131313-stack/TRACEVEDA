@@ -88,6 +88,28 @@ def create_consumer_report(
         "status": "CREATED"
     }
 
+# =========================
+# GET ALL CONSUMER REPORTS
+# =========================
+@router.post("/reports")
+@router.get("/reports")
+def get_all_consumer_reports(
+    limit: int = Query(default=200, ge=1, le=1000),
+    user: dict = Depends(require_authenticated),
+):
+
+    reports = list(
+        db.consumer_reports.find(
+            {},
+            {"_id": 0}
+        ).sort("reported_at", -1).limit(limit)
+    )
+
+    return {
+        "reports": reports,
+        "count": len(reports)
+    }
+
 
 # =========================
 # GET REPORT
@@ -140,9 +162,6 @@ def get_batch_consumer_reports(
 
 # =========================
 # UPDATE REPORT STATUS
-# =========================
-# Closing an adverse-event report is a regulatory act. It was previously an
-# unauthenticated PATCH taking an arbitrary string as a query parameter.
 # =========================
 
 @router.patch("/reports/{report_id}/status")
