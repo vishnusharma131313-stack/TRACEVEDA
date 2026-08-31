@@ -1,47 +1,44 @@
-from database import db
+from services.accounts import create_user, set_password
 
 
 users = [
     {
-        "user_id": "LAB-001",
-        "username": "Lab-001",
-        "password": "123",
-        "role": "laboratory"
+        "username": "lab-001",
+        "password": "12345678",
+        "role": "lab",
+        "full_name": "Laboratory Demo"
     },
     {
-        "user_id": "MFG-001",
-        "username": "Man-001",
-        "password": "123",
-        "role": "manufacturer"
+        "username": "man-001",
+        "password": "12345678",
+        "role": "manufacturer",
+        "full_name": "Manufacturer Demo"
     },
     {
-        "user_id": "CON-001",
-        "username": "Con-001",
-        "password": "123",
-        "role": "consumer"
+        "username": "aud-001",
+        "password": "12345678",
+        "role": "regulator",
+        "full_name": "Regulator Demo"
     },
-    {
-        "user_id": "AUD-001",
-        "username": "Aud-001",
-        "password": "123",
-        "role": "auditor"
-    }
 ]
 
 
 for user in users:
 
-    db.users.update_one(
-        {"username": user["username"]},
-        {"$set": user},
-        upsert=True
-    )
+    try:
 
-    print(
-        f"Added/Updated: "
-        f"{user['username']} "
-        f"({user['role']})"
-    )
+        create_user(**user)
+
+        print(f"Created: {user['username']}")
+
+    except ValueError:
+
+        set_password(
+            user["username"],
+            user["password"]
+        )
+
+        print(f"Password updated: {user['username']}")
 
 
-print("\nUsers successfully added to MongoDB!")
+print("\nUsers are ready!")
