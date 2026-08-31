@@ -1,6 +1,28 @@
+# Dependencies
 node_modules/
+
+# Secrets — never commit these. Copy the .example files instead.
 .env
+.env.local
+*.pem
+
+# Python
 venv/
+.venv/
+env/
 __pycache__/
 *.pyc
 *.pyo
+.pytest_cache/
+
+# Build output
+dist/
+build/
+*.egg-info/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.env.backup*

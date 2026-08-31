@@ -5,6 +5,12 @@ python-dotenv==1.0.0
 pymongo==4.8.0
 dnspython
 
+# Auth. Access tokens are signed with PyJWT; passwords use PBKDF2-HMAC-SHA256
+# from the standard library, so there is no compiled bcrypt/argon2 dependency
+# to break on a different machine. See services/security.py.
+PyJWT==2.9.0
+
 # Testing
 mongomock==4.1.2
 pytest==8.3.2
+httpx==0.28.1

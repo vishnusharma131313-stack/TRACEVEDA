@@ -1,155 +1,59 @@
-import csv
-from pathlib import Path
+"""
+Re-import only the two IoT reference CSVs.
 
-from database import db
+    python retry_iot_import.py
 
+These two files are the ones most likely to fail partway through against a
+remote Atlas cluster, and re-running the whole of import_csv.py to recover
+them wipes and reloads every other collection too.
 
-# ==================================================
-# CONFIG
-# ==================================================
+This was previously a near-verbatim copy of import_csv.py, including its own
+slightly different copy of convert_value. It now reuses that module, so the
+two paths cannot drift into typing the same CSV cell differently.
+"""
 
-DATA_FOLDER = (
-    Path(__file__).parent
-    / "TraceVeda_Master_Dataset"
-)
+import sys
 
-BATCH_SIZE = 100000
-
-
-# ==================================================
-# CONVERT VALUE
-# ==================================================
-
-def convert_value(value):
-
-    if value is None:
-        return None
-
-    value = value.strip()
-
-    if value == "":
-        return None
-
-    if value.lower() == "true":
-        return True
-
-    if value.lower() == "false":
-        return False
-
-    try:
-        if "." not in value:
-            return int(value)
-    except ValueError:
-        pass
-
-    try:
-        return float(value)
-    except ValueError:
-        pass
-
-    return value
+import database
+from import_csv import DATA_FOLDER, import_csv
 
 
-# ==================================================
-# IMPORT FILE
-# ==================================================
-
-def import_csv(filename):
-
-    file_path = DATA_FOLDER / filename
-
-    collection_name = file_path.stem
-
-    print("\n" + "=" * 50)
-    print(f"Importing: {filename}")
-    print(f"Collection: {collection_name}")
-    print("=" * 50)
-
-    if not file_path.exists():
-        print(f"ERROR: File not found: {file_path}")
-        return
-
-    collection = db[collection_name]
-
-    # Clear old/incomplete data from previous attempt
-    collection.delete_many({})
-
-    batch = []
-    total_inserted = 0
-
-    with open(
-        file_path,
-        "r",
-        encoding="utf-8-sig",
-        newline=""
-    ) as file:
-
-        reader = csv.DictReader(file)
-
-        for row in reader:
-
-            if not any(
-                value is not None
-                and str(value).strip()
-                for value in row.values()
-            ):
-                continue
-
-            document = {}
-
-            for key, value in row.items():
-
-                if key is None:
-                    continue
-
-                document[key.strip()] = convert_value(value)
-
-            batch.append(document)
-
-            # Smaller batches reduce Atlas connection/load issues
-            if len(batch) >= BATCH_SIZE:
-
-                collection.insert_many(batch)
-
-                total_inserted += len(batch)
-
-                print(
-                    f"Inserted {total_inserted} documents..."
-                )
-
-                batch = []
-
-        # Insert remaining documents
-        if batch:
-
-            collection.insert_many(batch)
-
-            total_inserted += len(batch)
-
-    print("\nSUCCESS!")
-    print(f"Total inserted: {total_inserted}")
+FILES = [
+    "iot_reference_normalized.csv",
+    "iot_reference_quarantine.csv",
+]
 
 
-# ==================================================
-# RUN
-# ==================================================
+def main():
 
-if __name__ == "__main__":
+    if not database.ping():
+        print("ERROR: MongoDB is not reachable.")
+        print("Check MONGO_URI in BACKEND/.env")
+        return 1
 
-    files = [
-        "iot_reference_normalized.csv",
-        "iot_reference_quarantine.csv"
-    ]
+    failed = 0
 
-    for filename in files:
+    for filename in FILES:
+
+        file_path = DATA_FOLDER / filename
+
+        if not file_path.exists():
+            print(f"\nSKIPPED: {filename} is not in {DATA_FOLDER}")
+            continue
 
         try:
-            import_csv(filename)
+            import_csv(file_path)
 
-        except Exception as e:
-
+        except Exception as error:
+            failed += 1
             print("\nFAILED!")
             print(f"File: {filename}")
-            print(f"Reason: {e}")
+            print(f"Reason: {error}")
 
     print("\nIMPORT RETRY COMPLETED")
+
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,16 +1,56 @@
-import os
+"""
+The MongoDB connection.
 
-from dotenv import load_dotenv
+`db` is imported by value in a few places (`from database import db`), so it
+is created once at import time and never rebound in production. The test
+harness rebinds `database.db` and reloads its consumers - see
+tests/mongo_harness.py.
+
+Connection settings come from config.settings rather than os.getenv, so an
+unset MONGO_URI resolves to an explicit localhost default instead of
+MongoClient(None), which silently did the same thing without saying so.
+"""
+
+import logging
+
 from pymongo import MongoClient
 
-load_dotenv()
+from config import settings
 
-MONGO_URI = os.getenv("MONGO_URI")
-DB_NAME = os.getenv("DB_NAME", "traceveda")
+
+logger = logging.getLogger(__name__)
+
 
 client = MongoClient(
-    MONGO_URI,
-    serverSelectionTimeoutMS=5000
+    settings.mongo_uri,
+    serverSelectionTimeoutMS=settings.mongo_timeout_ms,
+    tz_aware=True
 )
 
-db = client[DB_NAME]
+db = client[settings.db_name]
+
+
+def ping():
+    """
+    True when the server answers. Never raises.
+
+    Used by /api/health, which must return a body describing the outage
+    rather than propagating a connection error.
+    """
+
+    try:
+        db.command("ping")
+        return True
+
+    except Exception as error:
+        logger.warning("MongoDB ping failed: %s", error)
+        return False
+
+
+def close():
+    """Release the connection pool at shutdown."""
+
+    try:
+        client.close()
+    except Exception:
+        logger.exception("Error while closing the MongoDB client")

@@ -32,17 +32,135 @@ MEDICINE BATCH
    QR
 ```
 
+## 0. Conventions
+
+Base URL: `http://localhost:8000`
+
+**Every endpoint below requires a bearer token** except the two marked
+PUBLIC. Send it on every request:
+
+```http
+Authorization: Bearer <access_token>
+```
+
+| Status | Meaning |
+|---|---|
+| 200 | OK |
+| 201 | Created (all POSTs) |
+| 400 | The request is valid but the business rule refuses it |
+| 401 | No credentials, or credentials that are not valid |
+| 403 | Valid credentials belonging to a role that may not do this |
+| 404 | No such record |
+| 409 | Conflict — the record already exists |
+| 422 | The request body failed validation |
+
+Errors are always `{"detail": "..."}`.
+
+List endpoints accept `?limit=` and `?offset=` and return
+`{ "...": [...], "count": <returned>, "total": <in the collection> }`.
+
+
 ## 1. Authentication
 
+```http
 POST /api/auth/login
+```
+
+Request:
+
+```json
+{ "username": "regulator", "password": "..." }
+```
+
+Response:
+
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIs...",
+  "token_type": "bearer",
+  "expires_at": 1756598400,
+  "username": "regulator",
+  "role": "regulator",
+  "full_name": "Ministry of AYUSH"
+}
+```
+
+`401` for a bad username *or* a bad password — the same message for both, so
+the endpoint cannot be used to discover which usernames exist.
+
+```http
 GET /api/auth/me
+```
+
+```json
+{
+  "username": "regulator",
+  "role": "regulator",
+  "full_name": "Ministry of AYUSH",
+  "organisation_id": null
+}
+```
+
+```http
+GET /api/auth/roles                                            PUBLIC
+```
+
+Roles: `farmer`, `processor`, `lab`, `logistics`, `manufacturer`,
+`regulator`, `admin`. Create the demo accounts with
+`python seed_users.py`.
+
+### Which role may write what
+
+| Endpoint | Role |
+|---|---|
+| `POST /api/batches/raw` | farmer |
+| `POST /api/batches/processing` | processor |
+| `POST /api/batches/relationships` | processor |
+| `POST /api/lab/tests` | lab |
+| `POST /api/medicine` | manufacturer |
+| `POST /api/transport/events` | logistics |
+| `POST /api/storage/events` | logistics |
+| `POST /api/iot/readings` | logistics, or `X-Device-Key` |
+| `POST /api/blockchain/events` | regulator |
+| `PATCH /api/consumer/reports/{id}/status` | regulator |
+
+`admin` is admitted everywhere.
+
+### IoT device ingest
+
+An ESP32 node authenticates with a shared key instead of a token:
+
+```http
+POST /api/iot/readings
+X-Device-Key: <TRACEVEDA_DEVICE_API_KEY>
+```
 
 
 ## 2. Plants
 
-GET /api/plants
-GET /api/plants/{plant_id}
+Botanical reference data (2,300 rows from the BSI/NMPB dataset). Read-only,
+any signed-in account.
+
+```http
+GET /api/plants?limit=&offset=
 GET /api/plants/search?name={name}
+GET /api/plants/{plant_id}
+```
+
+`search` is a case-insensitive substring match across `common_name`,
+`scientific_name` and `vernacular_names`. The term is regex-escaped, so
+punctuation in a name - "Abelmoschus esculentus (L.) Moench" - matches as
+text rather than as pattern syntax.
+
+```json
+{
+  "plant_id": "PLANT-0002",
+  "scientific_name": "Withania somnifera (L.) Dunal",
+  "common_name": "Ashwagandha",
+  "family": "SOLANACEAE",
+  "medicinal_system": "Ayurveda"
+}
+```
 
 
 ## 3. Create Raw Material Batch
@@ -323,16 +441,106 @@ Response:
 
 ## 18. Consumer Reports
 
-POST /api/consumer/reports
+```http
+POST /api/consumer/reports                              PUBLIC
+```
 
-GET /api/consumer/reports/{medicine_batch_id}
+Request. `report_status` is NOT accepted - a new report always opens as
+`OPEN`, so one cannot be filed already resolved:
+
+```json
+{
+  "medicine_batch_id": "MED-2026-001",
+  "qr_id": "QR-2026-001",
+  "reported_at": "2026-08-29T09:00:00",
+  "issue_type": "headache",
+  "symptoms": "Headache after consumption",
+  "description": "Reported by a consumer"
+}
+```
+
+`404` if that batch id and QR id do not belong together. One lookup, one
+message: separate errors would let an anonymous caller confirm which batch
+ids exist.
+
+```http
+GET   /api/consumer/reports/{report_id}                 any signed-in account
+GET   /api/consumer/reports/batch/{medicine_batch_id}   any signed-in account
+PATCH /api/consumer/reports/{report_id}/status          regulator
+```
+
+The status update takes a body, not a query parameter:
+
+```json
+{ "status": "UNDER_INVESTIGATION" }
+```
+
+Allowed: `OPEN`, `UNDER_INVESTIGATION`, `RESOLVED`, `DISMISSED`, `CLOSED`.
+Anything else is `422`.
 
 
 ## 19. Investigations
 
-POST /api/investigations
+A regulator's side of the consumer-report loop. All four require the
+`regulator` role.
 
-GET /api/investigations/{investigation_id}
+```http
+POST  /api/investigations
+GET   /api/investigations?status=OPEN
+GET   /api/investigations/{investigation_id}
+PATCH /api/investigations/{investigation_id}/close
+```
+
+Opening one sets the linked report to `UNDER_INVESTIGATION`:
+
+```json
+{
+  "report_id": "RPT-2026-001",
+  "auditor_id": "AUD-001",
+  "suspected_stage": "TRANSPORT",
+  "evidence_summary": "IoT custody gap under review."
+}
+```
+
+`409` if that report already has an investigation that is not closed.
+
+Closing one records the outcome and sets the report to `RESOLVED`:
+
+```json
+{
+  "root_cause": "NO_TRACEABILITY_ANOMALY_FOUND",
+  "action_taken": "CONTINUE_MONITORING"
+}
+```
+
+
+## 19a. Listings and health
+
+```http
+GET /api/batches/raw?limit=&offset=          any signed-in account
+GET /api/batches/processing?limit=&offset=   any signed-in account
+GET /api/medicine?limit=&offset=             any signed-in account
+GET /api/blockchain/events?limit=&offset=    any signed-in account
+GET /api/investigations?status=              regulator
+
+GET /                                        PUBLIC
+GET /api/health                              PUBLIC
+```
+
+`GET /api/health` also reports whether the deployment is configured with real
+secrets:
+
+```json
+{
+  "status": "healthy",
+  "database": "connected",
+  "version": "1.1.0",
+  "hardened": false
+}
+```
+
+`"hardened": false` means TRACEVEDA_JWT_SECRET or TRACEVEDA_DEVICE_API_KEY is
+still running on a generated development value.
 
 
 ## 20. Blockchain

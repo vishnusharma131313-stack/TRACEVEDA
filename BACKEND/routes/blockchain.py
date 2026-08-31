@@ -1,7 +1,10 @@
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel, Field
 
+from database import db
+from dependencies import require_authenticated, require_roles
 from services import blockchain_service
+from services.accounts import REGULATOR
 
 
 router = APIRouter(
@@ -15,10 +18,10 @@ router = APIRouter(
 # =========================
 
 class BlockchainEventRequest(BaseModel):
-    event_type: str
-    entity_type: str
-    entity_id: str
-    data: dict
+    event_type: str = Field(min_length=1, max_length=64)
+    entity_type: str = Field(min_length=1, max_length=32)
+    entity_id: str = Field(min_length=1, max_length=64)
+    data: dict = Field(default_factory=dict)
 
 
 # =========================
@@ -26,10 +29,20 @@ class BlockchainEventRequest(BaseModel):
 # =========================
 # Manual / admin anchoring. Batch, lab, medicine and critical IoT events
 # anchor themselves - see services/blockchain_service.safe_anchor.
+#
+# Restricted to regulators and administrators. Hash-chain integrity proves
+# that nobody edited history; it says nothing about who was entitled to
+# append to it, so appending has to be an authorised act in its own right.
 # =========================
 
-@router.post("/events")
-def create_blockchain_event(data: BlockchainEventRequest):
+@router.post("/events", status_code=201)
+def create_blockchain_event(
+    data: BlockchainEventRequest,
+    user: dict = Depends(require_roles(REGULATOR)),
+):
+
+    payload = dict(data.data)
+    payload["recorded_by"] = user["username"]
 
     try:
 
@@ -37,7 +50,14 @@ def create_blockchain_event(data: BlockchainEventRequest):
             data.event_type,
             data.entity_type,
             data.entity_id,
-            data.data
+            payload
+        )
+
+    except blockchain_service.ChainIntegrityError as error:
+
+        raise HTTPException(
+            status_code=409,
+            detail=f"Chain is inconsistent, refusing to append: {error}"
         )
 
     except Exception as error:
@@ -60,9 +80,34 @@ def create_blockchain_event(data: BlockchainEventRequest):
 # =========================
 
 @router.get("/verify-chain")
-def verify_blockchain_chain():
+def verify_blockchain_chain(user: dict = Depends(require_authenticated)):
 
     return blockchain_service.verify_chain()
+
+
+# =========================
+# LIST ALL BLOCKCHAIN EVENTS
+# =========================
+
+@router.get("/events")
+def list_blockchain_events(
+    limit: int = Query(default=500, ge=1, le=2000),
+    offset: int = Query(default=0, ge=0),
+    user: dict = Depends(require_authenticated),
+):
+
+    events = list(
+        db.blockchain_events.find({}, {"_id": 0})
+        .sort("sequence", -1)
+        .skip(offset)
+        .limit(limit)
+    )
+
+    return {
+        "events": events,
+        "count": len(events),
+        "total": db.blockchain_events.count_documents({})
+    }
 
 
 # =========================
@@ -70,7 +115,10 @@ def verify_blockchain_chain():
 # =========================
 
 @router.get("/batch/{entity_id}")
-def get_blockchain_trail(entity_id: str):
+def get_blockchain_trail(
+    entity_id: str,
+    user: dict = Depends(require_authenticated),
+):
 
     events = blockchain_service.get_events_for_entity(entity_id)
 
@@ -86,7 +134,10 @@ def get_blockchain_trail(entity_id: str):
 # =========================
 
 @router.get("/events/{transaction_id}")
-def get_blockchain_event(transaction_id: str):
+def get_blockchain_event(
+    transaction_id: str,
+    user: dict = Depends(require_authenticated),
+):
 
     event = blockchain_service.get_event(transaction_id)
 
@@ -104,7 +155,10 @@ def get_blockchain_event(transaction_id: str):
 # =========================
 
 @router.get("/verify/{transaction_id}")
-def verify_blockchain_event(transaction_id: str):
+def verify_blockchain_event(
+    transaction_id: str,
+    user: dict = Depends(require_authenticated),
+):
 
     result = blockchain_service.verify_event(transaction_id)
 

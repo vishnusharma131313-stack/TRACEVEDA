@@ -227,14 +227,17 @@ inside one service — the supply-chain routes stay exactly as they are.
 
 ### Verified by tests
 
-The blockchain layer ships with **17 automated tests**, running against an
-in-memory MongoDB so no database server is required:
+The backend ships with **86 automated tests**, running against an in-memory
+MongoDB so no database server is required:
 
 - Full supply-chain flow, asserting every step anchors and the chain verifies
 - **50-thread concurrency stress test** proving the chain stays valid and
   linear under simultaneous writes
 - Tamper-detection coverage for edited, deleted and re-hashed events
 - Seed-data migration verified against the real 375-event dataset
+- Every write and internal read endpoint asserted to reject anonymous callers
+- Forged, unsigned (`alg: none`) and expired tokens all rejected
+- The full demo replayed end to end against the real ~14,000-document dataset
 
 ```bash
 cd BACKEND
@@ -243,21 +246,102 @@ python -m pytest tests/ -q
 
 ---
 
+## Security Model
+
+### Authentication
+
+Every endpoint except the two public consumer routes requires a bearer token.
+
+```http
+POST /api/auth/login     {"username": "...", "password": "..."}  ->  token
+GET  /api/auth/me        the caller's own account
+GET  /api/auth/roles     the role vocabulary (public)
+```
+
+Tokens are short-lived HS256 JWTs carrying the user's role. The algorithm is
+pinned to a single value, so an unsigned `alg: none` token — the classic JWT
+forgery — is rejected rather than trusted. Passwords are stored only as
+PBKDF2-HMAC-SHA256 hashes at 600,000 iterations; the plaintext is never
+written or logged.
+
+The role in the token is a hint. `dependencies.get_current_user` re-reads the
+account from the database on every request, so **deactivating a user or
+changing their role takes effect on their next call**, not whenever their
+token happens to expire.
+
+### Authorisation
+
+Roles are enforced server-side, per endpoint:
+
+| Endpoint | Role |
+|---|---|
+| `POST /api/batches/raw` | farmer |
+| `POST /api/batches/processing`, `/relationships` | processor |
+| `POST /api/lab/tests` | lab |
+| `POST /api/medicine` | manufacturer |
+| `POST /api/transport/events`, `/api/storage/events` | logistics |
+| `POST /api/iot/readings` | logistics, **or** a node with `X-Device-Key` |
+| `POST /api/blockchain/events` | regulator |
+| `PATCH /api/consumer/reports/{id}/status` | regulator |
+| all internal reads | any signed-in account |
+
+`admin` is admitted everywhere. The distinction between **401** (no valid
+credentials) and **403** (valid credentials, wrong role) is kept, because
+collapsing them makes a misconfigured account indistinguishable from an
+expired token.
+
+### Deliberately public
+
+Two routes take no credentials, and that is a decision rather than an
+oversight — a shopper holding a suspect pack has no account:
+
+```http
+GET  /api/verify/{qr_id}      scan a QR code
+POST /api/consumer/reports    file an adverse-event report
+```
+
+The QR lookup returns provenance only: no quantities, no operator names, no
+manufacturer internals. A report can only be filed against a real batch/QR
+pair, always opens as `OPEN`, and only a regulator can move it on.
+
+### IoT nodes
+
+The ESP32 nodes cannot hold a rotating token, so they authenticate with a
+shared key sent as `X-Device-Key`, compared in constant time. Set
+`TRACEVEDA_DEVICE_API_KEY` in `BACKEND/.env` and flash the same value into
+both sketches under `HARDWARE/`.
+
+### What this does and does not prove
+
+The hash chain proves that **nobody edited history**. It says nothing about
+who was entitled to write an entry in the first place — that is what the role
+checks above are for. Both are needed: integrity without authorisation just
+means a forged record is tamper-evidently forged.
+
+---
+
 ## Backend Structure
 
 ```text
 BACKEND/
 │
-├── main.py
-├── database.py
-├── import_csv.py
-├── migrate_seed_blockchain_events.py
+├── main.py                            app, CORS, lifespan
+├── config.py                          all settings, read from .env once
+├── database.py                        the MongoDB client
+├── dependencies.py                    require_roles / device-key auth
+├── .env.example                       copy to .env
+│
+├── import_csv.py                      load the dataset (+ indexes, counters)
+├── retry_iot_import.py                re-import just the IoT reference CSVs
+├── migrate_seed_blockchain_events.py  put seeded ledger rows on the chain
+├── seed_users.py                      create one account per role
 ├── requirements.txt
 │
 ├── models/
 │   └── schemas.py
 │
 ├── routes/
+│   ├── auth.py                        login / me / roles
 │   ├── batches.py
 │   ├── blockchain.py
 │   ├── consumer.py
@@ -269,10 +353,17 @@ BACKEND/
 │   └── transport.py
 │
 ├── services/
-│   └── blockchain_service.py
+│   ├── accounts.py                    users and the role vocabulary
+│   ├── blockchain_service.py          the hash chain
+│   ├── ids.py                         atomic, collision-free identifiers
+│   ├── indexes.py                     index definitions
+│   └── security.py                    password hashing, JWT
 │
 ├── tests/
 │   ├── mongo_harness.py
+│   ├── test_auth.py                   authn/authz over real HTTP
+│   ├── test_data_integrity.py         ids, seed-data compatibility
+│   ├── test_seed_dataset_e2e.py       the whole demo on the real dataset
 │   ├── test_blockchain_integration.py
 │   ├── test_blockchain_concurrency.py
 │   └── test_seed_migration.py
@@ -287,13 +378,15 @@ BACKEND/
 ```bash
 cd BACKEND
 pip install -r requirements.txt
+cp .env.example .env        # then set MONGO_URI and the two secrets
 ```
 
-Load the dataset and prepare the ledger:
+Load the dataset, prepare the ledger, and create the accounts:
 
 ```bash
-python import_csv.py                       # load the master dataset
-python migrate_seed_blockchain_events.py   # prepare the seeded ledger history
+python import_csv.py                       # dataset + indexes + id counters
+python migrate_seed_blockchain_events.py   # seeded ledger history onto the chain
+python seed_users.py                       # one account per role
 ```
 
 Run the API:
@@ -301,6 +394,10 @@ Run the API:
 ```bash
 uvicorn main:app --reload
 ```
+
+`GET /api/health` reports `"hardened": false` while either secret is still
+running on a generated development value, so there is never any doubt about
+which configuration is in front of you.
 
 Confirm the ledger is healthy:
 
