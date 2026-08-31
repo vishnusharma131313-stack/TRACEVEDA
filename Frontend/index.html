@@ -4789,7 +4789,6 @@ tbody tr:hover{
 
 </div>
 
-
 <!-- =====================================================
      REPORTS
 ===================================================== -->
@@ -4821,26 +4820,20 @@ tbody tr:hover{
                     <th>Issue</th>
                     <th>Description</th>
                     <th>Time</th>
+                    <th>Status</th>
                 </tr>
 
             </thead>
 
-            <tbody>
+
+            <!-- REAL REPORTS WILL LOAD HERE -->
+
+            <tbody id="consumerReportsTable">
 
                 <tr>
-                    <td class="mono">REP-1024</td>
-                    <td class="mono">MED-2026-044</td>
-                    <td>Broken Seal</td>
-                    <td>Outer seal appears disturbed</td>
-                    <td>10:15 AM</td>
-                </tr>
-
-                <tr>
-                    <td class="mono">REP-1025</td>
-                    <td class="mono">MED-2026-043</td>
-                    <td>Packaging</td>
-                    <td>Minor package deformation</td>
-                    <td>09:22 AM</td>
+                    <td colspan="6" style="text-align:center;">
+                        Loading reports...
+                    </td>
                 </tr>
 
             </tbody>
@@ -4850,7 +4843,6 @@ tbody tr:hover{
     </div>
 
 </div>
-
 
 <!-- =====================================================
      LAB WORKSPACE
@@ -5959,6 +5951,9 @@ function openRole(role, panel = null){
 
 
     console.log("Opening panel:", firstPanel);
+    if (firstPanel === "auditor-reports") {
+    loadConsumerReports();
+}
 
 
     // Open role-specific panel
@@ -6026,15 +6021,21 @@ function switchPanel(name){
         console.error("Panel not found:", name);
     }
 
+// If IoT Evidence is opened and a batch ID is already entered,
+// refresh its live backend data.
+if(name === "auditor-iot"){
+    const iotInput = document.getElementById("iotBatchId");
 
-    // If IoT Evidence is opened and a batch ID is already entered,
-    // refresh its live backend data.
-    if(name === "auditor-iot"){
-        const iotInput = document.getElementById("iotBatchId");
-        if(iotInput && iotInput.value.trim()){
-            loadIoTEvidence();
-        }
+    if(iotInput && iotInput.value.trim()){
+        loadIoTEvidence();
     }
+}
+
+
+// Load real consumer reports from MongoDB
+if(name === "auditor-reports"){
+    loadConsumerReports();
+}
 
     // Update active sidebar item
     document.querySelectorAll(".sidebar-item").forEach(item => {
@@ -7792,8 +7793,63 @@ async function apiRequest(path, options = {}) {
     }
 
     return data;
-}
+}async function loadConsumerReports() {
+    const tbody = document.querySelector("#auditor-reports tbody");
 
+    if (!tbody) {
+        console.error("Consumer reports table body not found");
+        return;
+    }
+
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="5">Loading reports...</td>
+        </tr>
+    `;
+
+    try {
+        console.log("Fetching consumer reports...");
+
+        const data = await apiRequest("/api/consumer/reports?limit=200", {
+            method: "GET"
+        });
+
+        console.log("Consumer reports received:", data);
+
+        const reports = data.reports || [];
+
+        if (reports.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5">No consumer reports found.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = reports.map(report => `
+            <tr>
+                <td class="mono">${report.report_id || "-"}</td>
+                <td class="mono">${report.medicine_batch_id || "-"}</td>
+                <td>${report.issue_type || "-"}</td>
+                <td>${report.description || report.symptoms || "-"}</td>
+                <td>${report.reported_at || "-"}</td>
+            </tr>
+        `).join("");
+
+    } catch (error) {
+
+        console.error("Failed to load consumer reports:", error);
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    Failed to load reports: ${error.message}
+                </td>
+            </tr>
+        `;
+    }
+}
 /* ---------------- IOT ---------------- */
 loadIoTEvidence = async function () {
     const input = document.getElementById("iotBatchId");
