@@ -5513,19 +5513,81 @@ tbody tr:hover{
             </div>
 
 
+            <!-- ISSUE TYPE -->
+
+            <div class="form-group">
+
+                <label for="consumerIssueType">
+                    Issue Type
+                </label>
+
+                <select
+                    id="consumerIssueType"
+                    class="input"
+                    required
+                >
+
+                    <option value="">
+                        Select issue type
+                    </option>
+
+                    <option value="Side Effect">
+                        Side Effect
+                    </option>
+
+                    <option value="Suspected Counterfeit">
+                        Suspected Counterfeit
+                    </option>
+
+                    <option value="Product Quality">
+                        Product Quality
+                    </option>
+
+                    <option value="Packaging Problem">
+                        Packaging Problem
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SYMPTOMS -->
+
+            <div class="form-group">
+
+                <label for="consumerSymptoms">
+                    Symptoms / Problem
+                </label>
+
+                <textarea
+                    id="consumerSymptoms"
+                    class="input"
+                    rows="4"
+                    placeholder="Describe symptoms or the problem experienced..."
+                    required
+                ></textarea>
+
+            </div>
+
+
             <!-- DESCRIPTION -->
 
             <div class="form-group">
 
                 <label for="consumerReportDescription">
-                    Description
+                    Detailed Description
                 </label>
 
                 <textarea
                     id="consumerReportDescription"
                     class="input"
                     rows="7"
-                    placeholder="Describe the problem you encountered..."
+                    placeholder="Provide additional details about the problem..."
                     required
                 ></textarea>
 
@@ -7824,47 +7886,182 @@ submitManufacturer = async function () {
         alert(`Medicine registration failed: ${error.message}`);
     }
 };
-
 /* ---------------- CONSUMER QR VERIFY ---------------- */
 verifyMedicine = async function () {
-    const batch = document.getElementById("consumerBatch")?.value.trim();
-    if (!batch) return alert("Enter a valid medicine batch ID or QR ID.");
+
+    const qrId = document
+        .getElementById("consumerBatch")
+        ?.value
+        .trim();
+
+    if (!qrId) {
+        return alert("Enter a valid medicine batch ID or QR ID.");
+    }
 
     try {
-        const data = await apiRequest(`/api/verify/${encodeURIComponent(batch)}`, { method: "GET" });
-        const result = document.getElementById("consumerResult");
-        const verifiedBatch = document.getElementById("verifiedBatch");
-        if (verifiedBatch) verifiedBatch.textContent = data?.medicine_batch_id || data?.batch_id || batch;
-        if (result) {
-            result.style.display = "block";
-            result.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-    } catch (error) {
-        alert(`Verification failed: ${error.message}`);
-    }
-};
 
+        const data = await apiRequest(
+            `/api/verify/${encodeURIComponent(qrId)}`,
+            {
+                method: "GET"
+            }
+        );
+
+        /*
+         * Save the QR ID for the Consumer Report form.
+         */
+        sessionStorage.setItem(
+            "traceveda_qr_id",
+            qrId
+        );
+
+
+        const result =
+            document.getElementById("consumerResult");
+
+        const verifiedBatch =
+            document.getElementById("verifiedBatch");
+
+
+        const medicineBatchId =
+            data?.medicine_batch_id ||
+            data?.batch_id;
+
+
+        if (verifiedBatch) {
+
+            verifiedBatch.textContent =
+                medicineBatchId || qrId;
+
+        }
+
+
+        /*
+         * Automatically fill the report form with
+         * the verified medicine batch.
+         */
+        const reportBatch =
+            document.getElementById(
+                "consumerReportBatch"
+            );
+
+        if (
+            reportBatch &&
+            medicineBatchId
+        ) {
+
+            reportBatch.value =
+                medicineBatchId;
+
+        }
+
+
+        if (result) {
+
+            result.style.display = "block";
+
+            result.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    }
+
+    catch (error) {
+
+        alert(
+            `Verification failed: ${error.message}`
+        );
+
+    }
+
+};
 /* ---------------- CONSUMER REPORT ---------------- */
 submitConsumerReport = async function (event) {
     event?.preventDefault();
-    const batch = document.getElementById("consumerReportBatch")?.value.trim();
-    const description = document.getElementById("consumerReportDescription")?.value.trim();
+
+    const batch = document
+        .getElementById("consumerReportBatch")
+        ?.value
+        .trim();
+
+    const description = document
+        .getElementById("consumerReportDescription")
+        ?.value
+        .trim();
+
+    const issueType = document
+        .getElementById("consumerIssueType")
+        ?.value
+        .trim();
+
+    const symptoms = document
+        .getElementById("consumerSymptoms")
+        ?.value
+        .trim();
+
     const message = document.getElementById("consumerReportMessage");
 
-    if (!batch || !description) {
-        if (message) { message.className = "auth-message error"; message.textContent = "Please complete all fields."; }
+    /*
+     * QR ID must belong to the medicine batch.
+     *
+     * First try sessionStorage, then localStorage.
+     * The QR verification code should save the scanned QR ID here.
+     */
+    const qrId =
+        sessionStorage.getItem("traceveda_qr_id") ||
+        localStorage.getItem("traceveda_qr_id");
+
+    if (!batch || !issueType || !symptoms || !description) {
+        if (message) {
+            message.className = "auth-message error";
+            message.textContent = "Please complete all fields.";
+        }
+        return;
+    }
+
+    if (!qrId) {
+        if (message) {
+            message.className = "auth-message error";
+            message.textContent =
+                "Please verify the medicine QR code before submitting a report.";
+        }
         return;
     }
 
     try {
         await apiRequest("/api/consumer/reports", {
             method: "POST",
-            body: JSON.stringify({ medicine_batch_id: batch, description })
+
+            body: JSON.stringify({
+                medicine_batch_id: batch,
+                qr_id: qrId,
+                reported_at: new Date().toISOString(),
+                issue_type: issueType,
+                symptoms: symptoms,
+                description: description,
+                is_synthetic: false
+            })
         });
-        if (message) { message.className = "auth-message success"; message.textContent = "Your medicine report has been submitted successfully."; }
+
+        if (message) {
+            message.className = "auth-message success";
+            message.textContent =
+                "Your medicine report has been submitted successfully.";
+        }
+
         document.getElementById("consumerReportForm")?.reset();
+
     } catch (error) {
-        if (message) { message.className = "auth-message error"; message.textContent = `Report submission failed: ${error.message}`; }
+
+        if (message) {
+            message.className = "auth-message error";
+            message.textContent =
+                `Report submission failed: ${error.message}`;
+        }
+
     }
 };
 
