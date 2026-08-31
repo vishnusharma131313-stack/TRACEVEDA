@@ -4599,89 +4599,76 @@ tbody tr:hover{
 <div class="panel" id="auditor-iot">
 
     <div class="panel-header">
-
-        <h2 class="panel-title">
-            IoT Telemetry & Device Ledger
-        </h2>
-
+        <h2 class="panel-title">IoT Telemetry & Device Ledger</h2>
         <p class="panel-subtitle">
-            Live physical evidence captured by registered sensor devices.
+            Live physical evidence loaded from the TraceVeda backend and MongoDB.
         </p>
+    </div>
 
+    <div class="card" style="margin-bottom:20px;">
+        <div class="card-title">Load Batch IoT Evidence</div>
+
+        <div style="display:flex;gap:12px;align-items:end;flex-wrap:wrap;">
+            <div class="form-group" style="flex:1;min-width:240px;margin-bottom:0;">
+                <label for="iotBatchId">Batch ID</label>
+                <input
+                    type="text"
+                    id="iotBatchId"
+                    class="input mono"
+                    placeholder="Example: ASH-2026-001"
+                >
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="loadIoTEvidence()"
+            >
+                <i class="fa-solid fa-wifi"></i>
+                Load IoT Evidence
+            </button>
+        </div>
+
+        <div
+            id="iotMessage"
+            class="auth-message"
+            style="margin-top:15px;"
+        ></div>
     </div>
 
 
     <div class="sensor-grid">
 
         <div class="sensor">
-
-            <div class="sensor-label">
-                Load Cell HX711
+            <div class="sensor-label">Load Cell HX711</div>
+            <div class="sensor-value" id="iotWeightValue">—</div>
+            <div class="sensor-status" id="iotWeightStatus">
+                Waiting for batch data
             </div>
-
-            <div class="sensor-value">
-                5.01 kg
-            </div>
-
-            <div class="sensor-status">
-                <i class="fa fa-circle-check"></i>
-                Stable Weight
-            </div>
-
         </div>
 
-
         <div class="sensor">
-
-            <div class="sensor-label">
-                Limit Switch
+            <div class="sensor-label">Limit Switch</div>
+            <div class="sensor-value" id="iotDoorValue">—</div>
+            <div class="sensor-status" id="iotDoorStatus">
+                Waiting for batch data
             </div>
-
-            <div class="sensor-value">
-                CLOSED
-            </div>
-
-            <div class="sensor-status">
-                <i class="fa fa-circle-check"></i>
-                Seal Intact
-            </div>
-
         </div>
 
-
         <div class="sensor">
-
-            <div class="sensor-label">
-                BH1750 Lux
+            <div class="sensor-label">BH1750 Lux</div>
+            <div class="sensor-value" id="iotLightValue">—</div>
+            <div class="sensor-status" id="iotLightStatus">
+                Waiting for batch data
             </div>
-
-            <div class="sensor-value">
-                0.2 lx
-            </div>
-
-            <div class="sensor-status">
-                <i class="fa fa-circle-check"></i>
-                Dark Environment
-            </div>
-
         </div>
 
-
         <div class="sensor">
-
-            <div class="sensor-label">
-                MPU6050
+            <div class="sensor-label">MPU6050 Motion</div>
+            <div class="sensor-value" id="iotMotionValue">—</div>
+            <div class="sensor-status" id="iotMotionStatus">
+                Waiting for batch data
             </div>
-
-            <div class="sensor-value">
-                Normal
-            </div>
-
-            <div class="sensor-status">
-                <i class="fa fa-circle-check"></i>
-                Stable
-            </div>
-
         </div>
 
     </div>
@@ -4695,9 +4682,7 @@ tbody tr:hover{
         <table>
 
             <thead>
-
                 <tr>
-
                     <th>Timestamp</th>
                     <th>Device</th>
                     <th>Weight</th>
@@ -4705,78 +4690,15 @@ tbody tr:hover{
                     <th>Light</th>
                     <th>Motion</th>
                     <th>Integrity</th>
-
                 </tr>
-
             </thead>
 
-            <tbody>
-
+            <tbody id="iotReadingsBody">
                 <tr>
-
-                    <td>14:32:15</td>
-
-                    <td class="mono">
-                        IOT-001
+                    <td colspan="7" style="text-align:center;">
+                        Enter a batch ID and load IoT evidence.
                     </td>
-
-                    <td style="color:var(--danger)">
-                        4.18 kg
-                    </td>
-
-                    <td style="color:var(--danger)">
-                        OPEN
-                    </td>
-
-                    <td style="color:var(--warning)">
-                        1850 lux
-                    </td>
-
-                    <td>
-                        Shock 3.2g
-                    </td>
-
-                    <td>
-                        <span class="badge badge-danger">
-                            BREACH
-                        </span>
-                    </td>
-
                 </tr>
-
-
-                <tr>
-
-                    <td>14:32:00</td>
-
-                    <td class="mono">
-                        IOT-001
-                    </td>
-
-                    <td>
-                        5.00 kg
-                    </td>
-
-                    <td>
-                        CLOSED
-                    </td>
-
-                    <td>
-                        0.2 lux
-                    </td>
-
-                    <td>
-                        Normal
-                    </td>
-
-                    <td>
-                        <span class="badge badge-success">
-                            NORMAL
-                        </span>
-                    </td>
-
-                </tr>
-
             </tbody>
 
         </table>
@@ -5696,6 +5618,215 @@ const roleMenus = {
    ROLE SWITCH
 ========================================================= */
 
+
+const API_BASE_URL = "https://traceveda.onrender.com";
+
+/* =========================================================
+   IOT EVIDENCE
+========================================================= */
+
+function setIoTMessage(message, type = "info") {
+    const box = document.getElementById("iotMessage");
+    if (!box) return;
+
+    box.textContent = message;
+    box.style.display = message ? "block" : "none";
+
+    if (type === "error") {
+        box.style.color = "var(--danger)";
+    } else if (type === "success") {
+        box.style.color = "var(--success)";
+    } else {
+        box.style.color = "var(--text)";
+    }
+}
+
+function iotValue(value, suffix = "") {
+    if (value === null || value === undefined || value === "") return "—";
+    return `${value}${suffix}`;
+}
+
+function latestIoTReading(readings, field) {
+    for (let i = readings.length - 1; i >= 0; i--) {
+        const value = readings[i]?.[field];
+        if (value !== null && value !== undefined && value !== "") {
+            return readings[i];
+        }
+    }
+    return null;
+}
+
+function formatIoTTimestamp(value) {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    return date.toLocaleString();
+}
+
+function getMotionText(reading) {
+    if (!reading) return "—";
+
+    if (reading.shock_detected === true) {
+        const parts = ["Shock"];
+        if (reading.accel_x_g !== null && reading.accel_x_g !== undefined) {
+            parts.push(`${reading.accel_x_g}g`);
+        }
+        return parts.join(" ");
+    }
+
+    if (reading.tilt_angle_deg !== null && reading.tilt_angle_deg !== undefined) {
+        return `Tilt ${reading.tilt_angle_deg}°`;
+    }
+
+    const accel = [
+        reading.accel_x_g,
+        reading.accel_y_g,
+        reading.accel_z_g
+    ].filter(v => v !== null && v !== undefined);
+
+    return accel.length ? `Accel ${accel.join(", ")}g` : "Normal";
+}
+
+function renderIoTReadings(readings, alerts) {
+    const latest = readings.length ? readings[readings.length - 1] : null;
+
+    const weightReading = latestIoTReading(readings, "weight_kg");
+    const doorReading = latestIoTReading(readings, "switch_status");
+    const lightReading = latestIoTReading(readings, "light_intensity_lux");
+    const motionReading = readings.length ? readings[readings.length - 1] : null;
+
+    document.getElementById("iotWeightValue").textContent =
+        weightReading ? iotValue(weightReading.weight_kg, " kg") : "—";
+    document.getElementById("iotWeightStatus").textContent =
+        weightReading ? `Latest reading • ${formatIoTTimestamp(weightReading.timestamp)}` : "No weight reading";
+
+    document.getElementById("iotDoorValue").textContent =
+        doorReading ? String(doorReading.switch_status).toUpperCase() : "—";
+    document.getElementById("iotDoorStatus").textContent =
+        doorReading ? `Latest switch reading • ${formatIoTTimestamp(doorReading.timestamp)}` : "No switch reading";
+
+    document.getElementById("iotLightValue").textContent =
+        lightReading ? iotValue(lightReading.light_intensity_lux, " lx") : "—";
+    document.getElementById("iotLightStatus").textContent =
+        lightReading ? `Latest light reading • ${formatIoTTimestamp(lightReading.timestamp)}` : "No light reading";
+
+    document.getElementById("iotMotionValue").textContent =
+        getMotionText(motionReading);
+    document.getElementById("iotMotionStatus").textContent =
+        motionReading ? `Latest motion data • ${formatIoTTimestamp(motionReading.timestamp)}` : "No motion reading";
+
+    const body = document.getElementById("iotReadingsBody");
+    body.innerHTML = "";
+
+    if (!readings.length) {
+        body.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align:center;">
+                    No IoT readings were found for this batch.
+                </td>
+            </tr>`;
+        return;
+    }
+
+    const sortedReadings = [...readings].sort((a, b) =>
+        new Date(b.timestamp) - new Date(a.timestamp)
+    );
+
+    sortedReadings.forEach(reading => {
+        const matchingAlerts = alerts.filter(alert => {
+            const alertSensor = alert.sensor_id;
+            const sameSensor = !alertSensor || alertSensor === reading.sensor_id;
+            return sameSensor;
+        });
+
+        const hasCritical = matchingAlerts.some(alert =>
+            String(alert.severity || "").toUpperCase() === "CRITICAL"
+        );
+
+        const integrity = reading.alert_status ||
+            (hasCritical ? "BREACH" :
+            (matchingAlerts.length ? "ALERT" : "NORMAL"));
+
+        const badgeClass =
+            ["BREACH", "CRITICAL", "ALERT"].includes(String(integrity).toUpperCase())
+                ? "badge-danger"
+                : "badge-success";
+
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${formatIoTTimestamp(reading.timestamp)}</td>
+            <td class="mono">${reading.sensor_id || "—"}</td>
+            <td>${iotValue(reading.weight_kg, " kg")}</td>
+            <td>${reading.switch_status ? String(reading.switch_status).toUpperCase() : "—"}</td>
+            <td>${iotValue(reading.light_intensity_lux, " lux")}</td>
+            <td>${getMotionText(reading)}</td>
+            <td><span class="badge ${badgeClass}">${integrity}</span></td>
+        `;
+
+        body.appendChild(tr);
+    });
+}
+
+async function loadIoTEvidence() {
+    const input = document.getElementById("iotBatchId");
+    const batchId = input ? input.value.trim() : "";
+
+    if (!batchId) {
+        setIoTMessage("Please enter a batch ID.", "error");
+        return;
+    }
+
+    setIoTMessage("Loading IoT evidence from MongoDB...");
+
+    try {
+        const encodedBatchId = encodeURIComponent(batchId);
+
+        const [readingsResponse, alertsResponse] = await Promise.all([
+            fetch(`${API_BASE_URL}/api/iot/readings/${encodedBatchId}`),
+            fetch(`${API_BASE_URL}/api/iot/alerts/${encodedBatchId}`)
+        ]);
+
+        const readingsData = await readingsResponse.json();
+
+        let alertsData = { alerts: [] };
+        try {
+            alertsData = await alertsResponse.json();
+        } catch (_) {}
+
+        if (!readingsResponse.ok) {
+            throw new Error(readingsData.detail || "Unable to load IoT readings.");
+        }
+
+        const readings = Array.isArray(readingsData.readings)
+            ? readingsData.readings
+            : [];
+
+        const alerts = Array.isArray(alertsData.alerts)
+            ? alertsData.alerts
+            : [];
+
+        renderIoTReadings(readings, alerts);
+
+        if (readings.length) {
+            setIoTMessage(
+                `Loaded ${readings.length} IoT reading(s) for ${batchId}.`,
+                "success"
+            );
+        } else {
+            setIoTMessage(
+                `No IoT readings are currently stored in MongoDB for ${batchId}.`,
+                "info"
+            );
+        }
+
+    } catch (error) {
+        console.error("IoT loading error:", error);
+        renderIoTReadings([], []);
+        setIoTMessage(`IoT evidence failed to load: ${error.message}`, "error");
+    }
+}
+
 let currentRole = "auditor";
 
 
@@ -5833,6 +5964,15 @@ function switchPanel(name){
         console.error("Panel not found:", name);
     }
 
+
+    // If IoT Evidence is opened and a batch ID is already entered,
+    // refresh its live backend data.
+    if(name === "auditor-iot"){
+        const iotInput = document.getElementById("iotBatchId");
+        if(iotInput && iotInput.value.trim()){
+            loadIoTEvidence();
+        }
+    }
 
     // Update active sidebar item
     document.querySelectorAll(".sidebar-item").forEach(item => {
