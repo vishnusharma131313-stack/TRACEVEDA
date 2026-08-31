@@ -53,3 +53,39 @@ def get_current_user():
     return {
         "message": "Authentication endpoint available"
     }
+    # =========================
+# SIGN UP
+# =========================
+
+class SignupRequest(BaseModel):
+    username: str
+    password: str
+    role: str
+    full_name: str | None = None
+
+
+@router.post("/signup")
+def signup(data: SignupRequest):
+
+    from services.accounts import create_user
+
+    try:
+        user = create_user(
+            username=data.username,
+            password=data.password,
+            role=data.role,
+            full_name=data.full_name
+        )
+
+        return {
+            "status": "SUCCESS",
+            "message": "Account created successfully",
+            "user": user
+        }
+
+    except ValueError as error:
+
+        raise HTTPException(
+            status_code=400,
+            detail=str(error)
+        )
