@@ -7895,24 +7895,31 @@ verifyMedicine = async function () {
         .trim();
 
     if (!qrId) {
-        return alert("Enter a valid medicine batch ID or QR ID.");
+        return alert("Enter a valid QR ID.");
     }
 
     try {
 
         const data = await apiRequest(
             `/api/verify/${encodeURIComponent(qrId)}`,
-            {
-                method: "GET"
-            }
+            { method: "GET" }
         );
 
-        /*
-         * Save the QR ID for the Consumer Report form.
-         */
+        // IMPORTANT: API can return 200 even when QR is invalid
+        if (!data?.verified) {
+
+            sessionStorage.removeItem("traceveda_qr_id");
+
+            return alert(
+                data?.message || "Invalid QR code."
+            );
+        }
+
+
+        // Save only after successful verification
         sessionStorage.setItem(
             "traceveda_qr_id",
-            qrId
+            data?.qr_id || qrId
         );
 
 
@@ -7922,37 +7929,23 @@ verifyMedicine = async function () {
         const verifiedBatch =
             document.getElementById("verifiedBatch");
 
-
         const medicineBatchId =
             data?.medicine_batch_id ||
             data?.batch_id;
 
 
         if (verifiedBatch) {
-
             verifiedBatch.textContent =
-                medicineBatchId || qrId;
-
+                medicineBatchId || "Verified";
         }
 
 
-        /*
-         * Automatically fill the report form with
-         * the verified medicine batch.
-         */
+        // Auto-fill report form
         const reportBatch =
-            document.getElementById(
-                "consumerReportBatch"
-            );
+            document.getElementById("consumerReportBatch");
 
-        if (
-            reportBatch &&
-            medicineBatchId
-        ) {
-
-            reportBatch.value =
-                medicineBatchId;
-
+        if (reportBatch && medicineBatchId) {
+            reportBatch.value = medicineBatchId;
         }
 
 
@@ -7967,17 +7960,16 @@ verifyMedicine = async function () {
 
         }
 
-    }
+    } catch (error) {
 
-    catch (error) {
+        sessionStorage.removeItem("traceveda_qr_id");
 
         alert(
             `Verification failed: ${error.message}`
         );
-
     }
-
 };
+
 /* ---------------- CONSUMER REPORT ---------------- */
 submitConsumerReport = async function (event) {
     event?.preventDefault();
