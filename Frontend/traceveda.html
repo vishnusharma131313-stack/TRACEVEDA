@@ -7096,11 +7096,18 @@ document
                    SAVE USER
                 ------------------------------------------ */
 
+                const sessionUser = data.user || {
+                    username: data.username,
+                    role: data.role,
+                    full_name: data.full_name,
+                    organisation_id: data.organisation_id
+                };
+
                 localStorage.setItem(
 
                     "traceveda_user",
 
-                    JSON.stringify(data.user)
+                    JSON.stringify(sessionUser)
 
                 );
 
@@ -7152,7 +7159,8 @@ document
 
                     closeAuthModal();
 
-                    openRole(selectedAuthRole);
+                    const backendUiRole = data.role === "regulator" ? "auditor" : data.role;
+                    openRole(backendUiRole || selectedAuthRole);
 
                 }, 500);
 
@@ -7680,6 +7688,243 @@ document.addEventListener(
 
 );
 
+
+
+/* =========================================================
+   TRACEVEDA BACKEND INTEGRATION BRIDGE
+   Uses the same backend contract as src/api/client.js
+========================================================= */
+
+const TRACEVEDA_API = "https://traceveda.onrender.com";
+
+function getTraceVedaToken() {
+    return localStorage.getItem("traceveda_token");
+}
+
+async function apiRequest(path, options = {}) {
+    const headers = {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+    };
+
+    const token = getTraceVedaToken();
+    if (token) headers.Authorization = `Bearer ${token}`;
+
+    const response = await fetch(`${TRACEVEDA_API}${path}`, {
+        ...options,
+        headers
+    });
+
+    let data = null;
+    try { data = await response.json(); } catch (_) {}
+
+    if (!response.ok) {
+        if (response.status === 401) {
+            localStorage.removeItem("traceveda_token");
+            localStorage.removeItem("traceveda_user");
+        }
+        const detail = Array.isArray(data?.detail)
+            ? data.detail.map(x => x?.msg || String(x)).join(" · ")
+            : data?.detail;
+        throw new Error(detail || `Request failed (${response.status})`);
+    }
+
+    return data;
+}
+
+/* ---------------- IOT ---------------- */
+loadIoTEvidence = async function () {
+    const input = document.getElementById("iotBatchId");
+    const batchId = input?.value.trim();
+    if (!batchId) return setIoTMessage("Please enter a batch ID.", "error");
+
+    setIoTMessage("Loading IoT evidence from TraceVeda...");
+    try {
+        const id = encodeURIComponent(batchId);
+        const [readingsData, alertsData] = await Promise.all([
+            apiRequest(`/api/iot/readings/${id}`),
+            apiRequest(`/api/iot/alerts/${id}`).catch(() => ({ alerts: [] }))
+        ]);
+        const readings = Array.isArray(readingsData?.readings) ? readingsData.readings : [];
+        const alerts = Array.isArray(alertsData?.alerts) ? alertsData.alerts : [];
+        renderIoTReadings(readings, alerts);
+        setIoTMessage(readings.length ? `Loaded ${readings.length} IoT reading(s) for ${batchId}.` : `No IoT readings found for ${batchId}.`, readings.length ? "success" : "info");
+    } catch (error) {
+        renderIoTReadings([], []);
+        setIoTMessage(`IoT evidence failed to load: ${error.message}`, "error");
+    }
+};
+
+/* ---------------- LAB ---------------- */
+submitLab = async function () {
+    const batch = document.getElementById("labBatch")?.value.trim();
+    const cert = document.getElementById("labCert")?.value.trim();
+    const purity = document.getElementById("labPurity")?.value.trim();
+    const lead = document.getElementById("labLead")?.value.trim();
+    const verdict = document.getElementById("labVerdict")?.value;
+
+    if (!batch) return alert("Please enter a processing batch ID.");
+
+    try {
+        const data = await apiRequest("/api/lab/tests", {
+            method: "POST",
+            body: JSON.stringify({
+                batch_id: batch,
+                lab_id: cert || "LAB-001",
+                test_stage: "PRE_MANUFACTURING",
+                test_type: "QUALITY_TEST",
+                test_parameters: { purity, lead },
+                result: verdict
+            })
+        });
+
+        const table = document.getElementById("labHistory");
+        if (table) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${new Date().toLocaleDateString()}</td><td class="mono">${data?.batch_id || batch}</td><td>${purity || "—"}</td><td>${lead || "—"}</td><td><span class="badge ${String(verdict).toUpperCase()==="PASS" ? "badge-success" : "badge-danger"}">${verdict}</span></td><td class="mono">${data?.blockchain_tx || data?.transaction_id || "—"}</td>`;
+            table.prepend(row);
+        }
+        alert("✓ Laboratory certification submitted and stored successfully.");
+    } catch (error) {
+        alert(`Laboratory submission failed: ${error.message}`);
+    }
+};
+
+/* ---------------- MANUFACTURER / MEDICINE ---------------- */
+submitManufacturer = async function () {
+    const batch = document.getElementById("mfgBatch")?.value.trim();
+    const source = document.getElementById("mfgSource")?.value.trim();
+    const product = document.getElementById("mfgProduct")?.value.trim();
+    if (!batch || !source || !product) return alert("Please complete all manufacturer fields.");
+
+    const today = new Date();
+    const expiry = new Date(today); expiry.setFullYear(expiry.getFullYear() + 2);
+    const date = d => d.toISOString().slice(0, 10);
+
+    try {
+        const data = await apiRequest("/api/medicine", {
+            method: "POST",
+            body: JSON.stringify({
+                medicine_batch_id: batch,
+                processing_batch_id: source,
+                product_name: product,
+                manufacturing_date: date(today),
+                expiry_date: date(expiry)
+            })
+        });
+
+        const table = document.getElementById("mfgHistory");
+        if (table) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td class="mono">${data?.medicine_batch_id || data?.batch_id || batch}</td><td>${product}</td><td class="mono">${source}</td><td>${date(today)}</td><td><span class="badge badge-success">REGISTERED</span></td>`;
+            table.prepend(row);
+        }
+        alert("✓ Medicine batch successfully registered in TraceVeda.");
+    } catch (error) {
+        alert(`Medicine registration failed: ${error.message}`);
+    }
+};
+
+/* ---------------- CONSUMER QR VERIFY ---------------- */
+verifyMedicine = async function () {
+    const batch = document.getElementById("consumerBatch")?.value.trim();
+    if (!batch) return alert("Enter a valid medicine batch ID or QR ID.");
+
+    try {
+        const data = await apiRequest(`/api/verify/${encodeURIComponent(batch)}`, { method: "GET" });
+        const result = document.getElementById("consumerResult");
+        const verifiedBatch = document.getElementById("verifiedBatch");
+        if (verifiedBatch) verifiedBatch.textContent = data?.medicine_batch_id || data?.batch_id || batch;
+        if (result) {
+            result.style.display = "block";
+            result.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    } catch (error) {
+        alert(`Verification failed: ${error.message}`);
+    }
+};
+
+/* ---------------- CONSUMER REPORT ---------------- */
+submitConsumerReport = async function (event) {
+    event?.preventDefault();
+    const batch = document.getElementById("consumerReportBatch")?.value.trim();
+    const description = document.getElementById("consumerReportDescription")?.value.trim();
+    const message = document.getElementById("consumerReportMessage");
+
+    if (!batch || !description) {
+        if (message) { message.className = "auth-message error"; message.textContent = "Please complete all fields."; }
+        return;
+    }
+
+    try {
+        await apiRequest("/api/consumer/reports", {
+            method: "POST",
+            body: JSON.stringify({ medicine_batch_id: batch, description })
+        });
+        if (message) { message.className = "auth-message success"; message.textContent = "Your medicine report has been submitted successfully."; }
+        document.getElementById("consumerReportForm")?.reset();
+    } catch (error) {
+        if (message) { message.className = "auth-message error"; message.textContent = `Report submission failed: ${error.message}`; }
+    }
+};
+
+/* ---------------- TRACEABILITY ---------------- */
+runTrace = async function () {
+    const id = document.getElementById("traceInput")?.value.trim();
+    if (!id) return alert("Please enter a medicine batch ID.");
+
+    try {
+        const data = await apiRequest(`/api/trace/reverse/${encodeURIComponent(id)}`, { method: "GET" });
+        const result = document.getElementById("traceResult");
+        const batch = document.getElementById("traceBatch");
+        if (batch) batch.textContent = data?.medicine_batch?.medicine_batch_id || data?.medicine_batch?.batch_id || id;
+        if (result) {
+            result.style.display = "block";
+            result.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        window.tracevedaTraceData = data;
+    } catch (error) {
+        alert(`Trace lookup failed: ${error.message}`);
+    }
+};
+
+/* Keep login token and authenticated role consistent with backend response. */
+(function syncExistingSession() {
+    try {
+        const raw = localStorage.getItem("traceveda_user");
+        if (raw) {
+            const user = JSON.parse(raw);
+            if (user?.role && !currentRole) currentRole = user.role;
+        }
+    } catch (_) {}
+})();
+
+
+/* =========================================================
+   FINAL API CONTRACT HELPERS
+   Mirrors src/api/client.js from the React frontend.
+========================================================= */
+window.TraceVedaAPI = {
+    auth: {
+        me: () => apiRequest('/api/auth/me'),
+        roles: () => apiRequest('/api/auth/roles')
+    },
+    batches: {
+        raw: () => apiRequest('/api/batches/raw'),
+        processing: () => apiRequest('/api/batches/processing')
+    },
+    blockchain: {
+        events: () => apiRequest('/api/blockchain/events'),
+        verifyChain: () => apiRequest('/api/blockchain/verify-chain')
+    },
+    trace: {
+        reverse: id => apiRequest(`/api/trace/reverse/${encodeURIComponent(id)}`),
+        forward: id => apiRequest(`/api/trace/forward/${encodeURIComponent(id)}`),
+        impact: id => apiRequest(`/api/trace/impact/${encodeURIComponent(id)}`)
+    },
+    transport: { get: id => apiRequest(`/api/transport/${encodeURIComponent(id)}`) },
+    storage: { get: id => apiRequest(`/api/storage/${encodeURIComponent(id)}`) }
+};
 </script>
 
 </body>
