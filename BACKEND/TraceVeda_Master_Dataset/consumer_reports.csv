@@ -1,21 +1,21 @@
-report_id,medicine_batch_id,qr_id,reported_at,issue_type,symptoms,description,report_status,is_synthetic
-RPT-2026-001,MED-2026-004,QR-2026-004,2026-06-22T08:00:00,headache,Headache reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-002,MED-2026-007,QR-2026-007,2026-06-23T08:00:00,rash,Rash reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-003,MED-2026-010,QR-2026-010,2026-06-24T08:00:00,stomach discomfort,Stomach discomfort reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-004,MED-2026-013,QR-2026-013,2026-06-25T08:00:00,nausea,Nausea reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-005,MED-2026-016,QR-2026-016,2026-06-26T08:00:00,headache,Headache reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-006,MED-2026-006,QR-2026-006,2026-06-27T08:00:00,rash,Rash reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-007,MED-2026-022,QR-2026-022,2026-06-28T08:00:00,stomach discomfort,Stomach discomfort reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-008,MED-2026-025,QR-2026-025,2026-06-29T08:00:00,nausea,Nausea reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-009,MED-2026-019,QR-2026-019,2026-06-30T08:00:00,headache,Headache reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-010,MED-2026-031,QR-2026-031,2026-07-01T08:00:00,rash,Rash reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-011,MED-2026-034,QR-2026-034,2026-07-02T08:00:00,stomach discomfort,Stomach discomfort reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-012,MED-2026-037,QR-2026-037,2026-07-03T08:00:00,nausea,Nausea reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-013,MED-2026-040,QR-2026-040,2026-07-04T08:00:00,headache,Headache reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-014,MED-2026-001,QR-2026-001,2026-07-05T08:00:00,rash,Rash reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-015,MED-2026-004,QR-2026-004,2026-07-06T08:00:00,stomach discomfort,Stomach discomfort reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-016,MED-2026-007,QR-2026-007,2026-07-07T08:00:00,nausea,Nausea reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-017,MED-2026-010,QR-2026-010,2026-07-08T08:00:00,headache,Headache reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-018,MED-2026-013,QR-2026-013,2026-07-09T08:00:00,rash,Rash reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-019,MED-2026-016,QR-2026-016,2026-07-10T08:00:00,stomach discomfort,Stomach discomfort reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
-RPT-2026-020,MED-2026-019,QR-2026-019,2026-07-11T08:00:00,nausea,Nausea reported after consumption.,Consumer-reported event; causality not established.,OPEN,True
+report_id,medicine_batch_id,qr_id,reported_at,issue_type,symptoms,description,report_status
+RPT-2026-001,MED-2026-004,QR-2026-004,2026-06-22T08:00:00,headache,Headache reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-002,MED-2026-007,QR-2026-007,2026-06-23T08:00:00,rash,Rash reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-003,MED-2026-010,QR-2026-010,2026-06-24T08:00:00,stomach discomfort,Stomach discomfort reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-004,MED-2026-013,QR-2026-013,2026-06-25T08:00:00,nausea,Nausea reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-005,MED-2026-016,QR-2026-016,2026-06-26T08:00:00,headache,Headache reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-006,MED-2026-006,QR-2026-006,2026-06-27T08:00:00,rash,Rash reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-007,MED-2026-022,QR-2026-022,2026-06-28T08:00:00,stomach discomfort,Stomach discomfort reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-008,MED-2026-025,QR-2026-025,2026-06-29T08:00:00,nausea,Nausea reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-009,MED-2026-019,QR-2026-019,2026-06-30T08:00:00,headache,Headache reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-010,MED-2026-031,QR-2026-031,2026-07-01T08:00:00,rash,Rash reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-011,MED-2026-034,QR-2026-034,2026-07-02T08:00:00,stomach discomfort,Stomach discomfort reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-012,MED-2026-037,QR-2026-037,2026-07-03T08:00:00,nausea,Nausea reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-013,MED-2026-040,QR-2026-040,2026-07-04T08:00:00,headache,Headache reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-014,MED-2026-001,QR-2026-001,2026-07-05T08:00:00,rash,Rash reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-015,MED-2026-004,QR-2026-004,2026-07-06T08:00:00,stomach discomfort,Stomach discomfort reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-016,MED-2026-007,QR-2026-007,2026-07-07T08:00:00,nausea,Nausea reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-017,MED-2026-010,QR-2026-010,2026-07-08T08:00:00,headache,Headache reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-018,MED-2026-013,QR-2026-013,2026-07-09T08:00:00,rash,Rash reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-019,MED-2026-016,QR-2026-016,2026-07-10T08:00:00,stomach discomfort,Stomach discomfort reported after consumption.,Consumer-reported event; causality not established.,OPEN
+RPT-2026-020,MED-2026-019,QR-2026-019,2026-07-11T08:00:00,nausea,Nausea reported after consumption.,Consumer-reported event; causality not established.,OPEN

@@ -1,961 +1,961 @@
-sno,botanical,family,api_sanskrit,trade_name,habit,source,parts_used,med_sys_tag,page
-1,Abelmoschus esculentus (L.) Moench; [= Hibiscus esculentus L.],MALVACEAE,,Bhendi,Shrub,C,Fruit (Seed),AFU,1
-2,Abelmoschus ficulneus (L.) Wight & Arn.; [= Hibiscus ficulneus L.],MALVACEAE,,Kattu vendai,Shrub,W,Fruit (Seed),AF,1
-3,Abelmoschus moschatus Medik.; [= Hibiscus abelmoschus L.],MALVACEAE,Kasturilatika,"Muskdana,; Latakasturi",Shrub,C/W,Fruit (Seed),AFU,1
-4,Abies pindrow (Royle ex D.Don) Royle,PINACEAE,,"Granthiparna,; Talisa",Tree,W,Leaf,A,1
-5,Abies spectabilis (D.Don) Spach; [ = Abies webbiana Wall. ex D.Don],PINACEAE,Talisa,Talispatra,Tree,W,Leaf,A,1
-6,Abrus precatorius L.,FABACEAE,Gunja,"Chirmati,; Chinnoti,; Gundumani",Climber,W,"Root,; Fruit (Seed)",AFHSTU,1
-7,Abutilon indicum (L.) Sweet; subsp. guineense (Schumach.) Borss.; var. indica Benth.,MALVACEAE,Atibala,Tutti,Shrub,W,"Leaf, Root",AFSTU,1
-8,Acacia caesia (L.) Willd.,MIMOSACEAE,Khadira,"Incha, Indu,; Singapore; pattai",Shrub,W,Bark (Stem),AF,1
-9,Acacia catechu (L.f.) Willd.,MIMOSACEAE,,Katha,Tree,W,"Bark (Stem),; Wood; (Heartwood)",AFSTU,1
-10,Acacia chundra (Roxb. ex Rottler) Willd.,MIMOSACEAE,Names,Khadir,Tree,W,Wood,ATag **,1
-11,Acacia farnesiana (L.) Willd.,MIMOSACEAE,,Irmed,Tree,C,Bark (Stem),AFS,2
-12,Acacia nilotica (L.) Willd. ex Delile; subsp. indica (Benth.) Brenan; [ = A. arabica (Lam.) Willd.; var. indica Benth.],MIMOSACEAE,Babbula,"Babul, Keekar",Tree,W/C,"Gum, Bark; (Stem)",AS,2
-13,Acacia sinuata (Lour.) Merr.; [ = A. concinna (Willd.) DC.],MIMOSACEAE,,Chikakai; (Shikakai),Climber,W,Fruit,AF,2
-14,Acalypha fruticosa Forssk.,EUPHORBIACEAE,,Cinni,Shrub,W,Leaf,FS,2
-15,Acalypha indica L.,EUPHORBIACEAE,,"Khokali,; Arishtamanjari",Herb,W,Whole Plant,AFHS,2
-16,Achillea millefolium L.,ASTERACEAE,,Brinjasif,Herb,C/W,Fruit (Seed),HSUW,2
-17,Achyranthes aspera L.,AMARANTHACEAE,Apamarga,Apamarga,Herb,W,"Leaf, Fruit; (Seed),; Whole Plant",AFHSTU,2
-18,Achyranthes bidentata Blume,AMARANTHACEAE,,Apamarga,Herb,W,Whole Plant,AF,2
-19,Aconitum balfourii Stapf,RANUNCULACEAE,,Vatsnabha,Herb,W,Root,A,2
-20,Aconitum bisma (Ham.) Rapaics,RANUNCULACEAE,,Bikhma,Herb,W,Root,AF,2
-21,Aconitum chasmanthum Stapf,RANUNCULACEAE,Vatsanabha,Vatsnabha,Herb,W,Root,AH,2
-22,Aconitum deinorrhizum Stapf,RANUNCULACEAE,,Vatsnabha,Herb,W,Root,A,2
-23,Aconitum falconeri Stapf,RANUNCULACEAE,,Vatsnabha,Herb,W,Root,A,2
-24,Aconitum ferox Wall. ex Ser.,RANUNCULACEAE,,"Vachhnag, Atis",Herb,W,Root,AFHSU,2
-25,Aconitum heterophyllum Wall. ex Royle,RANUNCULACEAE,Ativisa,"Atis, Aconite,; Ativish",Herb,W,Root (Tuber),AFSTU,2
-26,Aconitum laciniatum Stapf,RANUNCULACEAE,,Kalo Bikhmo,Herb,W,Root,F,2
-27,Aconitum spicatum (Bruhl) Stapf,RANUNCULACEAE,,Bish,Herb,W,Root,F,2
-28,Aconitum violaceum Jacq. ex Stapf,RANUNCULACEAE,,Mitha Telia,Herb,W,Root,F,2
-29,Acorus calamus L.,ARACEAE,Vaca; Names,"Vach, Vaj,; Calamus roots,; Vekhand",Herb,C/W,Root; (Rhizome),AFSTUWTag **,2
-30,Actiniopteris dichotoma Mett.,ACTINIOPTERI-; DACEAE,,Mayurpankhi,Herb,W,Whole Plant,AS,3
-31,Adansonia digitata L.,BOMBACACEAE,,Gorakimli,Tree,C,Fruit,AFSU,3
-32,Adenanthera pavonina L.,MIMOSACEAE,,"Kamboji,; Tamaraka",Tree,C/W,Wood; (Heartwood),AFS,3
-33,Adenia hondala (Gaertn.) W.J. de Wilde,PASSIFLORACEAE,,Vidari,Climber,W,Root (Tubers) AF,,3
-34,Adhatoda beddomei C.B.Clarke; [= Justicia beddomei (C.B.Clarke),ACANTHACEAE,,Vasa,Shrub,W,Leaf,A,3
-35,Adhatoda zeylanica Medik.; [ = A. vasica Nees; Justicia adhatoda L.],ACANTHACEAE,Vasa,Adusa,Shrub,W/C,Leaf,AFHS,3
-36,Adiantum capillus-veneris L.,ADIANTACEAE,,"Hanraj,; Parshoshan",Herb,W,"Whole Plant,; Leaf",FU,3
-37,Adiantum philippense L.f.; [ = A. lunulatum Burm.],ADIANTACEAE,Hamsapadi,Hansraj,Herb,W,Whole Plant,AF,3
-38,Adiantum venustum D.Don.,ADIANTACEAE,,Hansraj,Herb,W,Whole Plant,F,3
-39,Aegle marmelos (L.) Correa,RUTACEAE,Bilva,"Bael, Belgiri,; Bilva, Vilvam",Tree,C/W,"Leaf, Fruit,; Bark (Root,; Stem)",AFHSTU,3
-40,Aerva lanata (L.) Juss.,AMARANTHACEAE,Pattura,Cheroola,Herb,W,Whole Plant,AFS,3
-41,Aesculus indica (Wall. ex Cambess),HIPPOCASTANA-; CEAE,,"Indian Horse; Chesnut,; Bankhor; pangar",Tree,C/W,"Fruit (Fruit,; Seed)",F,3
-42,Ageratum conyzoides L.,ASTERACEAE,,"Visamustih,; Goat weed,; Visadodi",Herb,W,Whole Plant,AFS,3
-43,Aglaia elaeagnoidea (A.Juss.) Benth.,MELIACEAE,Names,Priyangu,Tree,W,Fruit,AFTag **,3
-44,Aglaia odorata Lour.,MELIACEAE,,"Pishthparni,; Pithavan",Tree,C,Leaf,F,4
-45,Ailanthus excelsa Roxb.,SIMAROUBACEAE,Araluka,Aralu,Tree,C/W,Root,AFS,4
-46,Ailanthus triphysa (Dennst.) Alston,SIMAROUBACEAE,,Guggula Dhup,Tree,C/W,Bark (Stem),AF,4
-47,Ainsliaea aptera DC.,ASTERACEAE,,Sathjalani,Herb,W,Root,F,4
-48,Ajuga bracteosa Benth.,LAMIACEAE,,Nilkanti,Herb,W,Whole Plant,F,4
-49,Alangium salvifolium (L.f.) Wang.,ALANGIACEAE,Ankolah,"Ankodah,; Dirghakilaka",Tree,W,"Leaf, Root",AFST,4
-50,Albizia amara (Roxb.) Boivin,MIMOSACEAE,,Krishnasirish,Tree,W,Leaf,AFS,4
-51,Albizia lebbeck (L.) Benth.,MIMOSACEAE,Sirisa,"Vaakaveru,; Shirish",Tree,C/W,"Leaf, Bark; (Stem)",AFSU,4
-52,Albizia marginata Merr.,MIMOSACEAE,,Sirisah,Tree,W,Bark (Stem),A,4
-53,Albizia odoratissima (L.f.) Benth.,MIMOSACEAE,,Sirisa,Tree,C/W,Bark (Stem),AFS,4
-54,Alhagi pseudalhagi (M.Bieb.) Desv.,FABACEAE,Yavasaka,"Durlabha,; Yavasaka",Shrub,W,Whole Plant,ASTU,4
-55,Allium ampeloprasum L.,LILIACEAE,,"Leek,; Levant garlic",Herb,C,Root; (Bulb),FW,4
-56,Allium cepa L.,LILIACEAE,,Onion,Herb,C,Root (Bulb),AFHS-TUW,4
-57,Allium sativum L.,LILIACEAE,Lasuna,"Lasan,; Velathulli",Herb,C,Root,AFHS-TUW,4
-58,Allium stracheyi Baker,LILIACEAE,,Jambu,Herb,W,Root,A,4
-59,Aloe barbadensis Mill.; [ = A. vera (L.) Burm.f.],LILIACEAE,Kanyasara,"Ghikanvar,; Kumari",Herb,C/W,Leaf,AFSTUW,4
-60,Alpinia calcarata (Haw.) Roscoe,ZINGIBERACEAE,,"Chittaratha,; Aratha",Herb,C,Root; (Rhizome),A,4
-61,Alpinia galanga (L.) Willd.,ZINGIBERACEAE,Kulanjan; Names,"Kulinjan,; Rasnamool,; Koshtakulinjan",Herb,C/W,Root; (Rhizome),AFSUTag **,4
-62,Alpinia officinarum Hance,ZINGIBERACEAE,,Khulinjan,Herb,I,Root; (Rhizome),ASU,5
-63,Alstonia scholaris (L.) R.Br.,APOCYNACEAE,Saptaparna,Saptaparnachal; (Satveen),Tree,W,Bark (Stem),AFHSTU,5
-64,Alstonia venenata R.Br.,APOCYNACEAE,,"Anadana,; Raja - adana",Shrub,W,"Bark (Stem),; Fruit",AF,5
-65,Alternanthera sessilis (L.) R.Br. ex DC.,AMARANTHACEAE,Matsyaki,Ponnanganni,Herb,W,Whole Plant,AFST,5
-66,Althaea officinalis L.,MALVACEAE,Khatmi,"Khatmi,; Resha-Khatami,; Shilaras",Herb,C/W,Root,AFSU,5
-67,Altingia excelsa Noronha,ALTINGIACEAE,,Silaras,Tree,C/W,Resin,AFSU,5
-68,Amaranthus paniculatus L.,AMARANTHACEAE,,"Chaulai,; Ramdana",Herb,C,Fruit (Seed),AS,5
-69,Amaranthus spinosus L.,AMARANTHACEAE,,"Cholai,; Bhandira",Herb,W,Root,AFST,5
-70,Amaranthus tricolor L.; [ = A. gangeticus L.; A. mangostanus L.],AMARANTHACEAE,Ramasitalika,"Lal sag,; Alpamarisa",Herb,C,Fruit (Seed),AS,5
-71,Ambroma augusta (L.) L.f.,STERCULIACEAE,,Ulatkambal,Shrub,C/W,Root (Tuber),AFH,5
-72,Ammannia baccifera L.,LYTHRACEAE,,Kurand ghas,Herb,W,Whole Plant,AS,5
-73,Ammi majus L.,APIACEAE,,Ammi,Herb,C,Fruit,FW,5
-74,Amomum aromaticum Roxb.,ZINGIBERACEAE,,"Bengal; cardamom,; Brhdela",Herb,W,Fruit,A,5
-75,Amomum kepulaga Sprague,ZINGIBERACEAE,,Elachi,Herb,I,Fruit (Seed),F,5
-76,Amomum subulatum Roxb.,ZINGIBERACEAE,Sthulaela; Names,Elachi Badi,Herb,C/W,Fruit (Seed); Tag **,AFSTU,5
-77,Amorphophallus dubius Blume,ARACEAE,,Surom (subs.) Herb,W,Root,F,,6
-78,Amorphophallus paeoniifolius (Dennst.),ARACEAE,Surana,"Arsghna, Herb; Surankand,; Zaminkand",C/W,Root (Corm),AFSU,,6
-79,Amorphophallus sylvaticus (Roxb.),ARACEAE,,Tubers Herb,W,Root (Tuber),AFS,,6
-80,Anacardium occidentale L.,ANACARDIACEAE,,Kaju Tree,C,"Bark (Stem),",AFHS,,6
-81,Anacyclus pyrethrum (L.) Cass.,ASTERACEAE,Akarakarabha,Akarkara Herb,I,"Stem, Root",ASU,,6
-82,Anamirta cocculus (L.) Wight & Arn.,MENISPERMACEAE,,Rakthala Climber,W,"Fruit, Resin",AFHSUW,,6
-83,Anchusa strigosa Labill.,BORAGINACEAE,,Gaozaban Herb; (subs.),I,"Leaf, Fruit",A,,6
-84,Andrographis paniculata (Burm.f.),ACANTHACEAE,,Kalmegh Herb,W/C,Whole Plant,AFHSUW,,6
-85,Anethum graveolens L.; [ = A.sowa Roxb. ex Flem.],APIACEAE,Satahva,Sowa Herb,C,"Fruit (Seed),",AF,,6
-86,Angelica archangelica L.,APIACEAE,Canda,"Conda, Angelica Herb",W,Root,AW,,6
-87,Angelica glauca Edgew.,APIACEAE,Corakah,"Chuara, Choru Herb",W,Root,AT,,6
-88,Anisomeles malabarica (L.) R.Br. ex Sims,LAMIACEAE,,Karimthumpa Shrub,W,Root,AFS,,6
-89,Anodendron paniculatum A.DC.,APOCYNACEAE,,"Sarakkodi, Climber; Kavali",W,Whole Plant,F,,6
-90,Anogeissus latifolia (Roxb. ex DC.),COMBRETACEAE,,Dhawada Tree,W,Gum,AFSTU,,6
-91,Anthemis nobilis L.,ASTERACEAE,Names,"Babuna, Herb; Gulbabuna",C/W,"Flower, Leaf",HSU,Tag **,6
-92,Anthocephalus cadamba (Roxb.)Miq.,RUBIACEAE,Kadamba,Kadam,Tree,C/W,"Bark (Stem),; Root",AS,7
-93,Aphanamixis polystachya (Wall.) Parker; [ = Amoora rohituka (Roxb.) Wight,MELIACEAE,,"Rakta Rohida,; Rohitak",Tree,C/W,Bark (Stem),AHS,7
-94,Aphananthe cuspidata (Blume) Planch.,ULMACEAE,,Peenari,Tree,W,"Bark (Stem),; Gum",F,7
-95,Apium graveolens L.,APIACEAE,,"Ajmoda, Celery",Herb,C/W,Fruit,AHSTU,7
-96,Aquilaria agallocha Roxb.,THYMELAEACEAE,Agaru,"Agar kala, Akil",Tree,I/W,"Bark (Stem),; Wood; (Heartwood)",AFSTU,7
-97,Arctium lappa L.,ASTERACEAE,,Phaggarmul,Herb,W,Fruit,FH,7
-98,Areca catechu L.,ARECACEAE,Puga,Supari,Tree,C,"Fruit, Root",AFHS-TUW,7
-99,Argemone mexicana L.,PAPAVERACEAE,,"Brhami Dandi,; Kusme Beeja",Herb,W,"Fruit (Seed),; Stem",AFHSU,7
-100,Argyreia speciosa (L.f.) Sweet; [ = A. nervosa (Burm.f.) Bojer],CONVOLVULACEAE,Bastantri,"Samudraphal,; Samundra Sokh",Shrub,W,"Root, Fruit; (Seed),; Whole Plant",ASTU,7
-101,Aristolochia bracteolata Lam.,ARISTOLOCHIACEAE,,Kidamari,Herb,W,"Root, Fruit; (Seed), Whole; Plant",AFS,7
-102,Aristolochia indica L.,ARISTOLOCHIACEAE,Isvari,Ishwar mool,Climber,W,"Fruit, Root,; Stem",AFSTU,7
-103,Aristolochia rotunda L,ARISTOLOCHIACEAE,,Zarawand,Climber,W,Root,FU,7
-104,Aristolochia tagala Cham.,ARISTOLOCHIACEAE,,Aadutheen-; dapalai,Climber,W,Root,F,7
-105,Arnebia benthamii (Wall. ex G.Don),BORAGINACEAE,,Gauzaban,Herb,W,"Root,; Whole Plant",A,7
-106,Arnebia euchroma (Royle) I.M.Johnst.,BORAGINACEAE,Names,Gaozaban,Herb,W,Root,FTag **,7
-107,Arnebia nobilis Rech.f.,BORAGINACEAE,,Ratan jyothi /; Ratan jot,Herb,I,Root,FU,8
-108,Artabotrys hexapetalus (L.f.) Bhandari,ANNONACEAE,,"Harichampa,; Madanmast",Shrub,C/W,Fruit,AF,8
-109,Artemisia absinthium L.,ASTERACEAE,,Afsanteen,Shrub,W,Whole Plant,AHSUW,8
-110,Artemisia maritima L. ex Hook.f.,ASTERACEAE,,"Ajavayana,; Chauhara, Cina",Herb,W,"Fruit (Seed),; Whole Plant",AHW,8
-111,Artemisia nilagirica (C.B.Clarke) Pamp.,ASTERACEAE,,Thavanam,Herb,W,"Flower,; Whole Plant",AF,8
-112,Artemisia pallens Wall. ex DC.,ASTERACEAE,,Davna,Herb,C,"Leaf, Flower",FS,8
-113,Artemisia parviflora Roxb. ex D.Don,ASTERACEAE,,Pati,Shrub,W,Whole Plant,F,8
-114,Artocarpus heterophyllus Lam.,MORACEAE,,"Kathal, Panasa Tree",,C/W,Fruit,AFS,8
-115,Arundo donax L.,POACEAE,,"Dhamana,; Baranal, Nala",Shrub,W,Root; (Rhizome),AHS,8
-116,Asparagus adscendens Roxb.,LILIACEAE,,"Musali; safed,; Satawar",Climber,W,Root,ASU,8
-117,Asparagus racemosus Willd.,LILIACEAE,Satavari,"Shatavari,; Satawar",Climber,W/C,Root,AFSTU,8
-118,Asparagus sarmentosus L.,LILIACEAE,,"Satawa; ri,; Shakak; ul",Climber,W,Root,ASU,8
-119,Atalantia monophylla (L.) DC.,RUTACEAE,,Kurandubeeja,Tree,W,Fruit,AFS,8
-120,Atropa acuminata Royle ex Lindl.,SOLANACEAE,,Jharka,Herb,C/W,Leaf,FU,8
-121,Atropa belladonna L.,SOLANACEAE,,Belladona,Herb,I,Root,AHSUW,8
-122,Atylosia goensis (Dalzell) Dalzell,FABACEAE,,Katttupaayar,Climber,I/C,Root,AF,8
-123,Atylosia scarabeoides (L.) Benth.,FABACEAE,,Ban kulatha,Climber,W,Root,F,8
-124,Azadirachta indica A.Juss.,MELIACEAE,Nimba,Neem,Tree,C/W,"Fruit (Fruit,; Seed), Flower,; Leaf, Bark; (Stem); Tag **",AFHSTU,8
-125,Azima tetracantha Lam.,SALVADORACEAE,"Kanta-gur-; kamai,; Kantangur,; Kundali",Shrub,W,"Leaf, Bark",AFS,,9
-126,Bacopa monnieri (L.) Wettst.,SCROPHULARIACEAE Brahmi,"Brahmi, Jal; Nirbrahmi",Herb,W/C,Whole Plant,AFHS,,9
-127,Balanites aegyptiaca (L.) Delile,BALANITACEAE,"Hingan,; Hingol,; Ingua",Tree,W,Semi-Ripe,AFTU,,9
-128,Balanophora fungosa J.R.Forst.,BALANOPHORACEAE,Thippali,Herb,W,Whole Plant,S,,9
-129,Baliospermum montanum (Willd.),EUPHORBIACEAE Danti,"Dantimool,; Nagadanti",Shrub,W,Root,AFSTU,,9
-130,Bambusa arundinacea (Retz.) Willd.,BAMBUSEACEAE,"Bansalochan,; Tabashir",Tree,W,Leaf,AFSU,,9
-131,Bandeiraea simplicifolia (M.Vahl ex,CAESALPINIACEAE,-,Climber,I,Fruit (Seed),W,,9
-132,Barleria cristata L.,ACANTHACEAE,"Raktapushpa,; Sweta; Saireyaka",Shrub,W,Whole Plant,AST,,9
-133,Barleria prionitis L.,ACANTHACEAE Sahacara,Vajradanti,Shrub,C/W,Whole Plant,AFS,,9
-134,Barleria strigosa Willd.,ACANTHACEAE Nilajhint,"Bala, Dasi,; Amli",Shrub,W,Whole Plant,AST,,9
-135,Barringtonia acutangula (L.) Gaertn.,BARINGTONIACEAE Nicula,Samudraphal,Tree,W,Fruit,AFSTU,,9
-136,Barringtonia racemosa (L.) Spreng.,BARINGTONIACEAE,Samuthira; palam,Tree,W,Fruit (Seed),AFS,,9
-137,Basella alba L.,BASELLACEAE,"Pasalai,; Vasalacheera; pacha; Names",Climber,C,Whole Plant,AF,Tag **,9
-138,Bauhinia malabarica Roxb.,CAESALPINIACEAE,,"Amlosa,; Asmantaka",Tree,W,Bark (Stem),AS,10
-139,Bauhinia purpurea L.,CAESALPINIACEAE,,Sonachal,Tree,C/W,Bark (Stem),AFST,10
-140,Bauhinia racemosa Lam.,CAESALPINIACEAE,,Kachnar,Tree,W,"Leaf,; Bark (Stem)",ASU,10
-141,Bauhinia tomentosa L.,CAESALPINIACEAE,,"Kachnar,; Kanchana",Shrub,W,Root,AFS,10
-142,Bauhinia vahlii Wight & Arn.,CAESALPINIACEAE,,Adda,Climber,W,Leaf,AF,10
-143,Bauhinia variegata L.,CAESALPINIACEAE,Kancanara,Kachnar,Tree,C/W,Bark (Stem),AFS,10
-144,Benincasa hispida (Thunb.) Cogn.,CUCURBITACEAE,Kusmanda,Kumpalan; ga pacha,Climber,C,Fruit,AFSTU,10
-145,Berberis aristata DC.,BERBERIDACEAE,Daruharidra,"Daruhal; di,; Rasnaja; n,",Shrub,W,"Root,; Bark (Root)",AFSTU,10
-146,Berberis asiatica Roxb.,BERBERIDACEAE,,"Daru; Zarisuk; haldi,; Rasout",Shrub,W,Root,AFU,10
-147,Berberis chitria Lindl.,BERBERIDACEAE,,Daruhal; di/; Rasaut,Shrub,W,Root,AF,10
-148,Berberis lycium Royle,BERBERIDACEAE,,"Dar-hald,; Chitra",Shrub,W,Root,AU,10
-149,Berberis tinctoria Lesch.,BERBERIDACEAE,,Daruhal; di/; Rasaut,Shrub,W,Root,F,10
-150,Berberis umbellata Wall. ex G.Don,BERBERIDACEAE,,Daruhal; di/; Rasaut,Shrub,W,Root,F,10
-151,Bergenia ciliata (Haw.) Sternb.,SAXIFRAGACEAE,Pasanabhedha,Pashnabheda,Herb,W,Root,A,10
-152,Bergenia stracheyi (Hook.f. &,SAXIFRAGACEAE,,Pashnabheda,Herb,W,"Root, Leaf",A,10
-153,Betula utilis D.Don,BETULACEAE,Bhurjah,Bhojpatra,Tree,W,Bark (Stem),AST,10
-154,Biophytum sensitivum (L.) DC.,OXALIDACEAE,,Mukkutti,Herb,W,Whole Plant,AFS,10
-155,Bistorta amplexicaulis (D.Don) Greene,POLYGONACEAE,Names,Anjubar,Herb,W,Root,FTag **,10
-156,Bixa orellana L.,BIXACEAE,,"Sindhuri,; Latkan dana,; Annato",Shrub,C,Fruit (Seed),AFHS,11
-157,Blepharis edulis auct. non (Forssk.) Pers.; [ = B.persica (Burm.f.) O.Kuntze.],ACANTHACEAE,Utingana,Uttangan,Herb,I,Fruit (Seed),AU,11
-158,Boerhavia diffusa L.,NYCTAGINACEAE,"Punarnava; rakta,; Raktapunarnava","Punarnava; raktha,",Herb,W,"Root,; Whole Plant",AFHSU,11
-159,Boerhavia repanda Willd.,NYCTAGINACEAE,,"Cattaranai,; Varakanputu",Herb,W,"Root,; Whole Plant",S,11
-160,Bombax ceiba L.; [ = B. malabaricum DC.],BOMBACACEAE,Salmali,Mochras,Tree,W,"Exudate Of; Bark (Stem),; Flower, Root",AFS,11
-161,Borassus flabellifer L.,ARECACEAE,Tala,"Palmyra palm,; Tad",Tree,C/W,"Fruit, Stem",AFSTU,11
-162,Borreria hispida (L.) Schum.; [ = Spermacoce hispida L.],RUBIACEAE,,Thaarthaaval,Herb,W,"Fruit (Seed),; Whole Plant",AF,11
-163,Boswellia carteri Birdw.,BURSERACEAE,,Sali guggul,Tree,I,Oleo-Gum; Resin,F,11
-164,Boswellia frereana Birdw.,BURSERACEAE,,African elemi,Tree,I,Oleo-Gum; Resin,F,11
-165,Boswellia serrata Roxb.,BURSERACEAE,Kunduru,"Kandur,; Guggul, Dupa",Tree,W,Oleo-Gum; Resin,ASU,11
-166,Brassica alba (L.) Rabenh,BRASSICACEAE,,"Safed rai,; Kadugu",Herb,C,Fruit (Seed),AHSU,11
-167,Brassica juncea (L.) Czern.,BRASSICACEAE,,"Kaduku,; Sasuve Bili",Herb,C,Fruit (Seed),AFS,11
-168,Briedelia montana (Roxb.) Willd.,EUPHORBIACEAE,,"Gondni, Geia",Tree,W,Wood; (Heartwood),AF,11
-169,Buchanania lanzan Spreng.,ANACARDIACEAE,Priyala; Names,Chironji,Tree,W,Fruit (Seed),AFSTUTag **,11
-170,Bunium persicum (Boiss.) B.Fedtsch.,APIACEAE,,"Kala-zirah,; Shah-zirah",Herb,C/W,Fruit,AF,12
-171,Butea monosperma (Lam.) Taub.; [ = B. frondosa Willd.],FABACEAE,"Palasa,; Palasah","Palash, Tesu; phool, Lac",Tree,W,"Bark (Stem),; Flower, Root,; Fruit (Seed),; Wood, Gum",AFSTU,12
-172,Butea superba Willd.,FABACEAE,,"Phul kesu,; Tesu phool",Climber,W,Flower,AFS,12
-173,Caccinia crassifolia (Vent.) C.Koch,BORAGINACEAE,,Gaozaban,Climber,I,"Leaf, Flower",F,12
-174,Cadaba fruticosa (L.) Druce; [ = C. indica Lam.],CAPPARACEAE,,"Kodham,; Pulika",Shrub,W,Leaf,FS,12
-175,Caesalpinia bonduc (L.) Roxb.,CAESALPINIACEAE,Latakaranja,"Sagargota,; Gatran,; Nataphal",Shrub,W,Fruit (Seed),AFHS,12
-176,Caesalpinia digyna Rottler.,CAESALPINIACEAE,,"Teripods,; Teri Beej",Climber,W,Fruit,A,12
-177,Caesalpinia pulcherrima (L.) Sw.,CAESALPINIACEAE,,"Gultora,; Krishnachura,; Peacock flower",Shrub,C,Root,AFS,12
-178,Caesalpinia sappan L.,CAESALPINIACEAE,Pattanga,Pathimugam,Tree,C,Wood; (Heartwood),AFSU,12
-179,Cajanus cajan (L.) Millsp.,FABACEAE,Adhaki,"Arhar, Tur",Shrub,C,Fruit (Seed),AFST,12
-180,Calamus rotang L.,ARECACEAE,,"Pirapan; Kizhangu, Bet",Shrub,W,"Root, Fruit; (Seed)",AFSU,12
-181,Callicarpa macrophylla Vahl,VERBENACEAE,Priyangu,Priyangu,Tree,W,"Flower,; Fruit (Seed)",AT,12
-182,Calophyllum apetalum Willd.,CLUSIACEAE,,Cherupunna,Tree,W,Fruit,FS,12
-183,Calophyllum inophyllum L.,CLUSIACEAE,Names,Punnappoovu,Tree,C/W,"Flower, Fruit",AFSTag **,12
-184,Calotropis gigantea (L.) R.Br.,ASCLEPIADACEAE,,Erukkin veru,Shrub,W,"Flower,; Bark (Root),; Stem",AFHSTU,13
-185,Calotropis procera (Aiton) W.T.Aiton,ASCLEPIADACEAE,Arka,Akada Phool,Shrub,W,"Flower,; Bark (Root)",AFSTU,13
-186,Calycopteris floribunda (Roxb.) Poir.,COMBRETACEAE,Pullani,Pullaaniyila,Climber,W,"Fruit, Leaf",AF,13
-187,Canarium strictum Roxb.,BURSERACEAE,,"Dhoop,; Raldhoop",Tree,W,"Resin, Wood",AFS,13
-188,Canella alba Murray,CANELLACEAE,,Kiliyuram; pattai,Tree,I,Bark (Stem),F,13
-189,Cannabis sativa L.,CANNABINACEAE,Vijaya,"Maya, Bhang",Shrub,C/W,"Fruit (Seed),; Whole Plant",AFHS-TUW,13
-190,Canscora decussata Schult. & Schult.f.,GENTIANACEAE,,"Shankhuli,; Nakuli,; Shankahpuspi",Herb,W,Whole Plant,ASU,13
-191,Capparis divaricata Lam.,CAPPARACEAE,,Turatti,Tree,W,Leaf,S,13
-192,Capparis moonii Wight,CAPPARACEAE,,Rudanti,Climber,W,Fruit,A,13
-193,Capparis roxburghii DC.,CAPPARACEAE,,Rudanti (Subs.),Shrub,W,Fruit,A,13
-194,Capparis sepiaria L.,CAPPARACEAE,,Karungurai,Shrub,W,Bark (Stem),AFS,13
-195,Capparis spinosa L.,CAPPARACEAE,Himsra,Kanther,Shrub,W,Fruit,AU,13
-196,Capparis zeylanica L. [ = C.horrida L.],CAPPARACEAE,Vyaghranakha,Sivappu Boomi; Sakkarai; Kizhangu,Climber,W,Root,AFS,13
-197,Cardiospermum halicacabum L.,SAPINDACEAE,Karnasphota,Mudakkathan,Climber,W,"Root, Fruit; (Seed), Whole; Plant",AFHSU,13
-198,Carduus nutans L.,ASTERACEAE,,"Musk thistle,; Scotch thistle",Herb,W,Root,F,13
-199,Careya arborea Roxb.,LECYTHIDACEAE,Kumbhikah; Names,"Vaaikumbha,; Kumbhiphoo",Tree,W,"Flower, Fruit,; Bark (Stem)",AFSTag **,13
-200,Carica papaya L.,CARICACEAE,,"Papaya, Papita",Tree,C,"Bark (Stem),; Leaf",AFHSUW,14
-201,Carissa carandas L.,APOCYNACEAE,"Karamarda,; Karinkara","Christ’s thorn,; Karanda",Shrub,W/C,Fruit,AFS,14
-202,Carthamus tinctorius L.,ASTERACEAE,,Kusum phool,Shrub,C,Fruit (Seed),AFSTU,14
-203,Carum carvi L.,APIACEAE,Krsnajiraka,"Shahjeera,; Kalazira",Herb,C/W,Fruit,AHSTU,14
-204,Carum strictocarpum C.B.Clarke,APIACEAE,,Kalzira (Subs.),Herb,W,Fruit,F,14
-205,Casearia esculenta Roxb.,FLACOURTIACEAE,,Saptarangi,Shrub,W,Root,A,14
-206,Cassia absus L.,CAESALPINIACEAE,,Chaksoo,Herb,W,"Fruit (Seed),; Root",AFSTU,14
-207,Cassia alata L.; [ = Senna alata (L.) Roxb.],CAESALPINIACEAE,,"Dadmurdan; , Dat-ka-; pat",Shrub,C/W,"Leaf, Root,; Fruit",AFS,14
-208,Cassia angustifolia Vahl; [ = C. senna L.; Senna alexandrina,CAESALPINIACEAE,Svarnapatri,"Sona patta,; Sonamukhi,; Senna",Herb,C,"Leaf, Fruit; (Fruit, Seed)",AHSUW,14
-209,Cassia auriculata L.; [ = Senna auriculata (L.) Roxb.],CAESALPINIACEAE,,Avarai,Shrub,W,"Bark (Stem),; Leaf, Flower,; Fruit (Seed)",AFS,14
-210,Cassia fistula L.,CAESALPINIACEAE,Aragvadha,"Amalthasphali,; Sonari chal",Tree,W/C,"Flower, Fruit; (Seed), Bark; (Stem)",AFSTU,14
-211,Cassia obtusifolia L.; [ = Senna obtusifolia (L.) H.S.Irwin,CAESALPINIACEAE,,"Panevar, Taga",Shrub,C/W,Fruit,A,14
-212,Cassia occidentalis L.; [ = Senna occidentalis (L.) Link],CAESALPINIACEAE,,"Kasondi,; Kasmardah",Herb,W,"Fruit (Seed),; Leaf",AFST,14
-213,"Cassia siamea Lam.; [ = Senna siamea (Lam.) H.S,Irwin",CAESALPINIACEAE,Names,Kassod,Tree,C,Leaf,FSTag **,14
-214,Cassia sophera L.; [ = Senna sophera (L.) Roxb.],CAESALPINIACEAE,,"Kasodi,; Ponthakaram",Shrub,W,Whole Plant,AFHS,15
-215,Cassia tora L.; [ = Senna tora (L.) Roxb.],CAESALPINIACEAE,Prapunnada,"Chakoda Beeja,; Pawad,; Chankuda",Herb,W,"Fruit (Seed),; Root",AFSTU,15
-216,Cassytha filiformis L.,CASSYTHACEAE,,"Astimu,; Akash Bel",Climber,W,Whole Plant,AFS,15
-217,Catharanthus roseus (L.) G.Don; [ = Vinca rosea L.],APOCYNACEAE,,"Sadabahar,; Vinca rosea",Herb,C,"Leaf, Root",AFW,15
-218,Catunaregum spinosa (Thunb.) Tirveng.; [= Xeromphis spinosa (Thunb.) Keay ],RUBIACEAE,Madana,"Mainphal,; Maggare",Shrub,W,Fruit,A,15
-219,Cayratia carnosa (Wall.) Gagnep.,VITACEAE,,"Amal ved,; Amal bel, Gutt",Climber,W,Bark (Stem),AF,15
-220,Cayratia pedata (Lam.) A.Juss.,VITACEAE,,"Suvaha,; Gummatige",Climber,W,Whole Plant,AFS,15
-221,Cedrus deodara (Roxb.) G.Don,PINACEAE,Devadaru,Devdar,Tree,W,Wood,AFSTU,15
-222,Ceiba pentandra (L.) Gaertn.; [ = Eriodendron pentandrum (L.) Kurz],BOMBACACEAE,,Safed semal,Tree,C,Fruit,AFSU,15
-223,Celastrus paniculatus Willd.,CELASTRACEAE,Jyotismati,"Malkangani,; Jyothismathi,; Bavanthi beeja",Climber,W,Fruit (Seed),AFSTU,15
-224,Celtis philippensis Blanco,ULMACEAE,,Kakamushti; (Subs.),Tree,W,Wood,FS,15
-225,Centaurea behen L.,ASTERACEAE,,Behmen Safed,Herb,I,Root,FU,15
-226,Centella asiatica (L.) Urb.,APIACEAE,Mandukaparni,"Brahmi,; Brahmi booti",Herb,C/W,"Leaf,; Whole Plant",AFHSTW,15
-227,Centratherum anthelminticum (L.),ASTERACEAE,Vanyajiraka; Names,Kali zeeri,Herb,W,"Fruit; (Fruit, Seed)",AHSUTag **,15
-228,Cephaelis ipecacuanha (Brot.) A.Rich.; [= Psychotria ipecacuanha (Brot.),RUBIACEAE,,Ipecacuanha,Shrub,C,Root,HSUW,16
-229,Chaerophyllum villosum Wall. ex DC.,APIACEAE,,Mithi patis,Herb,W,Root,F,16
-230,Chlorophytum arundinaceum Baker,LILIACEAE,,Safed musali,Herb,C/W,Root,AFTU,16
-231,Chlorophytum borivilianum Santapau,LILIACEAE,,Safed musali,Herb,C/W,Root,F,16
-232,Chlorophytum tuberosum Baker,LILIACEAE,,Safed musali,Herb,W/C,Root,AS,16
-233,Chonemorpha fragrans (Moon) Alston,APOCYNACEAE,,Murva,Climber,W,Root,AF,16
-234,Chrozophora prostrata Dalzell,EUPHORBIACEAE,,Neelkanthi,Herb,W,Whole Plant,AU,16
-235,Chrysanthemum cinerariifolium,ASTERACEAE,,Pyrethrum,Herb,C,Flower,FW,16
-236,Cichorium endivia L.,ASTERACEAE,,"Kasini, Endive",Herb,C,Fruit (Seed),A,16
-237,Cichorium intybus L.,ASTERACEAE,,Kasani,Herb,C/W,"Flower,; Leaf, Root,; Fruit (Seed)",AFHSUW,16
-238,Cinchona ledgeriana Bern.,RUBIACEAE,,Cinchona,Tree,I,Bark (Stem),FW,16
-239,Cinchona officinalis L.,RUBIACEAE,,Cinchona bark,Tree,I,Bark (Stem),AHU,16
-240,Cinnamomum camphora (L.) Presl,LAURACEAE,,Kapur,Tree,C,"Stem, Root; (Root-; Crystals)",AFHS-TUW,16
-241,Cinnamomum cassia Nees ex Blume,LAURACEAE,,Dalchini,Tree,I,Bark (Stem),ASTU,16
-242,Cinnamomum glaucenscens (Nees),LAURACEAE,,Sugandhakabila,Tree,W,Fruit,F,16
-243,Cinnamomum macrocarpum Hook.f.,LAURACEAE,,Lavang,Tree,W,Leaf,AFS,16
-244,Cinnamomum malabathrum (Lam.),LAURACEAE,Names,"Dalchini,; Tejpatta",Tree,W,Bark (Stem),F**,16
-245,Cinnamomum sulphuratum Nees,LAURACEAE,,"Dalchini,; Tejpatta",Tree,W,Bark (Stem),F,17
-246,Cinnamomum tamala (Buch.-Ham.),LAURACEAE,Tvakapatra,"Tamal patra,; Tejpatra",Tree,W,"Fruit, Leaf,; Bark (Stem)",AFSTU,17
-247,Cinnamomum verum J.Presl; [= C. zeylanicum Blume],LAURACEAE,Tvak,Dalchini,Tree,C,"Bark (Stem),; Leaf",AFH,17
-248,Cinnamomum wightii Meisn.,LAURACEAE,,"Dalchini,; Tejpatta",Tree,W,Bark (Stem),AS,17
-249,Cipadessa baccifera (Roth) Miq.,MELIACEAE,,Adusoge soppu,Shrub,W,Leaf,FS,17
-250,Cissampelos pareira L.; var. hirsuta (Ham. ex DC.) Forman,MENISPERMACEAE,Patha,Pahad mool,Climber,W,Root,AFHSTUW,17
-251,Cissus quadrangularis L.,VITACEAE,Asthisamhrta,Pirandai,Climber,W,Stem,AFS,17
-252,Citrullus colocynthis (L.) Schrad.,CUCURBITACEAE,Indravaruni,"Indrayan,; Indravaruni",Climber,W,"Fruit, Root",AFHSTU,17
-253,Citrullus lanatus (Thunb.) Matsumara,CUCURBITACEAE,,"Terbuz,; water melon",Climber,C,Root,AH,17
-254,Citrus acida Pers.,RUTACEAE,,Limbu,Tree,C,Fruit,S,17
-255,Citrus aurantifolia (Christm. &,RUTACEAE,,Limbu,Tree,C,"Flower, Fruit; (Fruit, Rind)",AFSU,17
-256,Citrus aurantium L.,RUTACEAE,,Narangi,Tree,C,Fruit,AFSU,17
-257,Citrus bergamia Risso.,RUTACEAE,,"Limbu chaal,; Jambeeram",Tree,C/W,Fruit,AU,17
-258,Citrus limon (L.) Burm.f.,RUTACEAE,Nimbu,Lemon,Tree,C,Fruit,AFHTUW,17
-259,Citrus medica L.,RUTACEAE,Bijapura,"Matunga,; Mahnimbu",Tree,W,Fruit,ASU,17
-260,Citrus reticulata Blanco,RUTACEAE,,Santra,Tree,C,Fruit,ATU,17
-261,Clausena dentata (Willd.) Roem.,RUTACEAE,,Mahasindur,Shrub,W,Root,FS,17
-262,Cleistanthus collinus (Roxb.) Benth.,EUPHORBIACEAE,Names,"Kutaja, Garbar",Tree,W,"Bark (Stem),; Fruit; **",AS,17
-263,Clematis gouriana Roxb. ex DC.,RANUNCULACEAE,,Morvel Climber,W,Whole Plant,A,,18
-264,Clematis triloba Heyne,RANUNCULACEAE,,Morvel Climber,W,Whole Plant,AFU,,18
-265,Cleome gynandra L.; [= Gynandropsis pentaphylla (L.) DC.],CLEOMACEAE,Ajagandha,"Cat whiskers, Herb; Ridhi",W,Whole Plant,AFST,,18
-266,Cleome viscosa L.,CLEOMACEAE,,Nai kadugu Herb,W,"Root,",AFSU,,18
-267,Clerodendrum indicum (L.) Kuntze,VERBENACEAE,,Bharangi Shrub,W/C,Root,AF,,18
-268,Clerodendrum inerme (L.) Gaertn.,VERBENACEAE,,"Nir-Notsjil, Shrub; Sangan-; Kuppi,; Agnimanth",C/W,Whole Plant,AFS,,18
-269,Clerodendrum phlomidis L.f.,LAMIACEAE,Agnimantha,Arnimul Shrub,W,"Leaf, Root",AFSU,,18
-270,Clerodendrum serratum (L.) Moon,VERBENACEAE,Bharangi,Bharangi Shrub,W,Bark (Root),AFSTU,,18
-271,Clitoria ternatea L.,FABACEAE,Aparajita,Kajli Climber,C/W,Root,AFSTU,,18
-272,Coccinia grandis (L.) Voigt; [ = C. indica W. & A.],CUCURBITACEAE,Bimbi,"Bhrngaraj, Climber; Bimb",C/W,Whole Plant,AHS,,18
-273,Cocculus hirsutus (L.) Theob.,MENISPERMACEAE,,Vasanvel Climber,W,Leaf,AFSU,,18
-274,Cochlospermum religiosum (L.) Alston,COCHLOSPERMA-; CEAE,,Katira Tree,W/C,Gum,AFSU,,18
-275,Cocos nucifera L.,ARECACEAE,Narikela,Nariyal Tree,C,Flower,AFSTU,,18
-276,Coffea arabica L.,RUBIACEAE,,Coffee Shrub,C,Fruit (Seed),AFHSUW,,18
-277,Coffea travancorensis Wight & Arn.,RUBIACEAE,,"Katu-mulla, Shrub; Tsjeru-",W,Root,F,,18
-278,Coix lacryma-jobi L.,POACEAE,Gavedhuka,"Sankhlu, Dabhir Herb",W,Fruit,AFSU,,18
-279,Colchicum luteum Baker,LILIACEAE,,Suranjan Herb,W,"Root,",ASU,,18
-280,Coleus zeylanicus (Benth.) Cramer,LAMIACEAE,,Valakah Herb,W,Whole Plant,A,,18
-281,Combretum decandrum Roxb. non Jacq.,COMBRETACEAE,Names,Korakukundi Climber,W,Fruit (Seed),F,**,18
-282,Commiphora caudata (Wight & Arn.),BURSERACEAE,,"Kiluvai,; Kondamavu",Tree,W,Bark (Stem),FS,19
-283,Commiphora myrrha (T.Nees) Engl.,BURSERACEAE,,Hirabol,Tree,I,Oleo-Gum; Resin,ATU,19
-284,Commiphora wightii (Arn.) Bhandari; [ = C. mukul (Hook. ex Stocks) Engl.],BURSERACEAE,Guggulu,"Guggul, Guggulu",Shrub,I/W,"Oleo-Gum; Resin, Stem,; Root",A,19
-285,Convolvulus arvensis L.,CONVOLVULACEAE,,Chandvel; (Prasarni),Climber,C/W,Leaf,AHSU,19
-286,Convolvulus microphyllus Sieb.,CONVOLVULACEAE,Sankhapuspi,Shankapushpi,Herb,W,"Flower,; Whole Plant",A,19
-287,Convolvulus scammonia L.,CONVOLVULACEAE,,Saqmunia,Climber,I,Gum Resin,HSU,19
-288,Coptis teeta Wall.,RANUNCULACEAE,,Mamira,Herb,C/W,Root,ASU,19
-289,Corallocarpus epigaeus (Rottl. & Willd.),CUCURBITACEAE,,"Akasgaddah,; Patalagaruda",Climber,W,Root,AST,19
-290,Corchorus depressus Stocks,TILIACEAE,,Bahuphali,Herb,W,Aerial Parts,AU,19
-291,Corchorus trilocularis L.,TILIACEAE,,Arenukam,Shrub,W,Whole Plant,A,19
-292,Cordia dichotoma G.Forst.,CORDIACEAE,,Lasora,Tree,W/C,Fruit,AFSU,19
-293,Cordia monoica Roxb.; var. wallichii (G.Don) C.B.Clarke,CORDIACEAE,,Narivari,Tree,W,Bark (Stem),FS,19
-294,Cordia wallichii G.Don; [= Cordia obliqua Willd.; var. wallichii (G.Don) C.B.Clarke ],CORDIACEAE,Names,Sapistan,Tree,W,Fruit,FTag **,19
-295,Cordyceps sinensis (Berk.) Saac,CLAVICIPITACEAE,,Yarsa Gomba,Herb,W,Whole Plant,F,20
-296,Coriandrum sativum L.,APIACEAE,Dhanyaka,"Dhaniya,; Dhana",Herb,C,"Fruit, Leaf",AFSTU,20
-297,Corylus jacquemontii Decne.,BETULACEAE,,Findak (Subs.),Tree,W,Fruit,F,20
-298,Coscinium fenestratum (Gaertn.) Colebr.,MENISPERMACEAE,Kaliyaka,"Maramanjal,; Daruharidra",Climber,W,Stem,AFST,20
-299,Costus speciosus (J.Konig) Sm.,COSTACEAE,Kebuka,"Kustha,; Koshtum, Kuth",Shrub,W,Root,AFSU,20
-300,Crataegus oxyacantha L.,ROSACEAE,,Hawthorn,Tree,C/W,"Fruit, Flower",FH,20
-301,Crataeva religiosa G.Forst.; [ = C. nurvula Buch. - Ham.],CAPPARACEAE,Varuna,"Varun chhal,; Varunah",Tree,W/C,"Bark (Stem),; Leaf, Fruit; (Seed)",AFS,20
-302,Crocus sativus L.,IRIDACEAE,Kunkuma,Kesar,Herb,C,Flower; (Stigma &; upper Style),AFHSTU,20
-303,Crotalaria juncea L.,FABACEAE,Sana,"Dhanahari,; Patashan, Sann",Herb,C/W,Fruit (Seed),AFSU,20
-304,Crotalaria verrucosa L.,FABACEAE,,"Banshana,; San, Sanpushpi",Herb,W,Fruit (Seed),AFS,20
-305,Croton oblongifolius Roxb.,EUPHORBIACEAE,,Bhutankusha,Tree,W,Bark (Root),AFST,20
-306,Croton tiglium L.,EUPHORBIACEAE,Jayapala,"Jamlghota,; Japala",Tree,C,Fruit (Seed),AFHSTU,20
-307,Cryptocoryne spiralis (Retz.),ARACEAE,,Natti - ati -; Vasa,Herb,W,Root,FS,20
-308,Cryptolepis buchananii R.Br. ex,PERIPLOCACEAE,Krsnasariva,"Medaksinghi,; Sariva",Climber,W,Root,AFS,20
-309,Cucumis melo L.,CUCURBITACEAE,Ervaru,"Kakadi beej,; Magaj Kharbuja",Climber,C/W,Fruit (Seed),AFSTU,20
-310,Cucumis sativus L.,CUCURBITACEAE,Trapusam; Names,Beej Kheera,Climber,C,"Fruit; (Fruit, Seed)",AFSTU**,20
-311,Cucumis trigonus Roxb.,CUCURBITACEAE,,Jangli-Indrayan,Climber,C,"Fruit (Fruit,; Seed), Stem",AFS,21
-312,Cucurbita maxima Duch.,CUCURBITACEAE,,Pumpkin,Climber,C,Fruit,AFSU,21
-313,Cucurbita moschata (Lam.),CUCURBITACEAE,,"Kaddu, Kumrah",Climber,C,Fruit (Seed),FSU,21
-314,Cuminum cyminum L.,APIACEAE,Svetajiraka,"Jeera,; Shahjeera",Herb,C,Fruit,AFSTU,21
-315,Curculigo orchioides Gaertn.,HYPOXIDACEAE,Talamuli,"Kali; musali,; Musli",Herb,W,Root,AFSTU,21
-316,Curcuma amada Roxb.,ZINGIBERACEAE,Amra Haridra,Amba haldi; shiya,Herb,C/W,Root; (Rhizome),AFSU,21
-317,Curcuma angustifolia Roxb.,ZINGIBERACEAE,,Tikhur,Herb,C/W,Root; (Rhizome),AFSU,21
-318,Curcuma aromatica Salisb.,ZINGIBERACEAE,,"Kasturi; manjal,; arishna,",Herb,C/W,Root; (Rhizome),AFSU,21
-319,Curcuma caesia Roxb.,ZINGIBERACEAE,,"Nar-; Kapu-kachri; kachura,; Kala-haldi",Herb,W,Root; (Rhizome),F,21
-320,Curcuma longa L.,ZINGIBERACEAE,Haridra,"Arishna, Haldi,; Kari manjal",Herb,C,"Root; (Rhizome,; Tuber)",AFHSTU,21
-321,Curcuma zerumbet Roxb.; [= C. zedoaria (Christm.) Roscoe],ZINGIBERACEAE,Karcura,"Kachur,; Kachari",Herb,C/W,"Root; (Rhizome),; Stem",T,21
-322,Cuscuta reflexa Roxb.,CONVOLVULACEAE,,"Aftimoon,; Tukhme-; Kasus",Climber,W,"Fruit (Seed),; Whole Plant",AFSU,21
-323,Cyathula prostrata (L.) Blume,AMARANTHACEAE,,Kadalaavanakkin; veru,Herb,W,Root,AF,21
-324,Cycas circinalis L.,CYCADACEAE,Names,Madhana; kama poo,Tree,W,"Flower, Pith",AFS**,21
-325,Cyclea peltata (Lam.) Hook.f. &,MENISPERMACEAE,,Paada kizhangu,Climber,W,Root,AFS,22
-326,Cymbopogon citratus (DC.) Stapf,POACEAE,Kattrna,"Serai, Rohisha",Herb,C/W,"Root,; Whole Plant",AFSU,22
-327,Cymbopogon flexuosus (Nees,POACEAE,,Lemon grass,Herb,W,Whole Plant,F,22
-328,Cymbopogon martinii (Roxb.) Wats,POACEAE,Rohisa,Ginger grass,Herb,W,Root,AST,22
-329,Cynodon dactylon (L.) Pers.,POACEAE,Durva,"Durva, Karuka",Herb,C,Whole Plant,AFHSTU,22
-330,Cyperus esculentus L.,CYPERACEAE,,Musta,Herb,W,Root,AU,22
-331,Cyperus rotundus L.,CYPERACEAE,Musta,"Nagarmotha,; Mustha",Herb,W,Root,ASTU,22
-332,Cyperus scariosus R.Br.,CYPERACEAE,,Nagarmotha,Herb,W,Root,AFSU,22
-333,Dactylorhiza hatagirea (D.Don.) Soo,ORCHIDACEAE,,Salampanja,Herb,W,Root,AFSTU,22
-334,Dalbergia latifolia Roxb.,FABACEAE,,Kala Sheeshan,Tree,W,Bark (Stem),AFS,22
-335,Dalbergia sissoo DC.,FABACEAE,Simsapa,Shisham,Tree,C/W,Wood; (Heartwood),ASTU,22
-336,Datura arborea L.,SOLANACEAE,,"Datura,; Umathi",Shrub,I,Whole Plant,H,22
-337,Datura innoxia Mill.,SOLANACEAE,,Datura,Herb,W,"Leaf,; Flower,; Fruit (Seed)",A,22
-338,Datura metel L.,SOLANACEAE,Dhattura,Duttura,Herb,W,"Leaf,; Flowering or; Fruiting; Tops, Fruit; (Seed)",ASW,22
-339,Datura stramonium L.,SOLANACEAE,,"Datura,; Umathi",Herb,W,"Leaf, Fruit; (Seed), Stem",AFHSU,22
-340,Daucus carota L. var. sativa DC.,APIACEAE,,Gaajar Beej,Herb,C,Fruit (Seed),AFSU,22
-341,Decalepis hamiltonii Wight & Arn.,PERIPLOCACEAE,,Magali,Climber,W,Root,AFS,22
-342,Delonix elata (L.) Gamble,CAESALPINIACEAE,Names,Sanchal,Tree,C,Leaf,AFS**,22
-343,Delphinium denudatum Wall. ex,RANUNCULACEAE,,"Jadwar,; Jadavar kath,; Nirbishi",Herb,W,Root; (Tuber),AU,23
-344,Dendrobium nobile Lindl.,ORCHIDACEAE,,-,Herb,W,Whole Plant,F,23
-345,Dendrophthoe falcata (L.F) Blume,LORANTHACEAE,Vanda,Bandaka,Shrub,W,"Stem,; Whole Plant",AF,23
-346,Derris scandens (Roxb.) Benth.,FABACEAE,,Gonj,Climber,W,Whole Plant,FS,23
-347,Desmodium gangeticum (L.) DC.,FABACEAE,Salaparni,"Salparni,; Prasniparni",Herb,W,"Root,; Whole Plant",AFHSTU,23
-348,Desmodium pulchellum (L.) Benth.,FABACEAE,,"Lodhra, Kheri",Shrub,W,Root,A,23
-349,Desmodium triflorum (L.) DC.,FABACEAE,,Hamsapapdi,Herb,W,Whole Plant,AFS,23
-350,Desmostachya bipinnata (L.) Stapf,POACEAE,Kusa,Dharbha,Herb,W,Root,ASTU,23
-351,Dichrostachys cinerea (L.) Wight & Arn. MIMOSACEAE,,,Virtuli,Shrub,W,"Stem, Leaf",AFST,23
-352,Didymocarpus pedicellata R.Br.,GESNERIACEAE,,"Shilapushpi,; Pathar phori,; Pasanphodi",Herb,W,Root,A,23
-353,Dillenia pentagyna Roxb.,DILLENIACEAE,,Nagkesaram,Tree,W,"Fruit, Flower",AFS,23
-354,Dioscorea alata L.,DIOSCOREACEAE,,Sewalli kodi,Climber,C/W,"Root, Stem",AFS,23
-355,Dioscorea bulbifera L.,DIOSCOREACEAE,Varahi,Varahi kand,Climber,C/W,Root,AFSTU,23
-356,Dioscorea deltoidea Wall. ex Griseb.,DIOSCOREACEAE,,Shingli mingli,Climber,C/W,Root,FW,23
-357,Dioscorea oppositifolia L.,DIOSCOREACEAE,,Sarpahya,Climber,W,Root,AFS,23
-358,Dioscorea pentaphylla L.,DIOSCOREACEAE,,Kanta alu,Climber,W,"Root, Stem",AFS,23
-359,Diospyros buxifolia (Blume) Hiern,EBENACEAE,,Elichevian,Tree,W,Fruit,F,23
-360,Diospyros ebenum Koenig,EBENACEAE,,Abnus,Tree,W,Wood,FSU,23
-361,Diospyros lotus L.,EBENACEAE,,Amlok,Tree,W,Fruit,F,23
-362,Diospyros melanoxylon Roxb.,EBENACEAE,Names,Tendu,Tree,W,Leaf,AFSUTag **,23
-363,Diplocyclos palmatus (L.) C.Jeffrey,CUCURBITACEAE,,Shivling beej,Climber,W,Fruit (Seed),AFS,24
-364,Dodonaea angustifolia (L.f.) Benth.,SAPINDACEAE,,"Aliar,; jangli-anar",Shrub,W,Leaf,F,24
-365,Dolichos biflorus L.; [= Macrotyloma uniflorum (Lam.),FABACEAE,Kulattha,"Kulthi, Muthira",Herb,C,Fruit (Seed),AFSTU,24
-366,Dorema ammoniacum D.Don,APIACEAE,,Ushaq,Herb,I,Gum,AHU,24
-367,Drosera peltata Smith,DROSERACEAE,,Drosera,Herb,W,Whole Plant,FS,24
-368,Dryobalanops aromatica Gaertn.,DIPTEROCARPA-; CEAE,,Baraas; (Bhimseni; kapoor),Tree,I,Exudate,A,24
-369,Dryopteris filix-mas (L.) Schott,DRYOPTERIDACEAE,,"Shield fern,; Hirvi",Herb,W,Root,HS,24
-370,Drypetes roxburghii (Wall.) Hurus.; [= Putranjiva roxburghii Wall.],EUPHORBIACEAE,,Putrjivak,Tree,C/W,"Bark (Stem),; Fruit",AFS,24
-371,Dysoxylum malabaricum Bedd. ex Hiern,MELIACEAE,,Vellakil,Tree,W,Wood; (Heartwood),AFS,24
-372,Ecbolium viride (Forssk.) Alston; [= E. linneanum Kurz],ACANTHACEAE,,"Udajati,; Sahacarah",Herb,W,Flower,AF,24
-373,Echinops echinatus Roxb.,ASTERACEAE,,Utkanta,Herb,W,Whole Plant,AFSU,24
-374,Eclipta prostrata (L.) L.; [= E. alba Hassk.],ASTERACEAE,Bhrngaraja,Bhringaraj,Herb,W,Whole Plant,AFS,24
-375,Elaeocarpus sphaericus (Gaertn.) K.Schum.; [ = E. ganitrus Roxb.],ELAEOCARPACEAE,Rudraksa; Names,Rudraksh,Tree,C/W,Fruit,AF**,24
-376,Elephantopus scaber L.,ASTERACEAE,,Gjihiva,Herb,W,Whole Plant,AFS,25
-377,Elettaria cardamomum Maton,ZINGIBERACEAE,Suksmaila,"Elachi Chhoti,; Ilaychi",Herb,C/W,"Fruit; (Fruit, Seed)",A,25
-378,Eleutherococcus senticosus,ARALIACEAE,,Ginseng,Shrub,I,Root,W,25
-379,Embelia ribes Burm.f.,MYRSINACEAE,Vidanga,"Vaividang,; Vidanga",Climber,W,Fruit,AFHSTU,25
-380,Embelia tsjeriam-cottam (Roem.,MYRSINACEAE,,Vaividang,Shrub,W,Fruit,AF,25
-381,Emblica officinalis Gaertn.; [= Phyllanthus emblica L.],EUPHORBIACEAE,Amalaki,"Amla, Anwala",Tree,W/C,"Fruit (Seed,; Fresh/Dry; Fruit in Sugar; Solution)",AFSTU,25
-382,Emilia sonchifolia (L.) DC.,ASTERACEAE,,Muyalcheviyan,Herb,W,Whole Plant,AFS,25
-383,Enicostemma axillare (Lam.) Raynal; [ = E. littorale non Blume;,GENTIANACEAE,,Mamejava,Herb,W,Whole Plant,AFS,25
-384,Entada pursaetha DC.; [= E. rheedii Spreng.;,MIMOSACEAE,Names,Yaanai; Kazharchi; Kaai,Climber,W,Fruit (Seed),F**,25
-385,Ephedra equisetina Bunge,EPHEDRACEAE,,Somalatha; (Subs.),Shrub,W,"Stem, Leaf,; Flower, Fruit",F,26
-386,Ephedra gerardiana Wall. ex J.A. Mey,EPHEDRACEAE,,Somalatha,Shrub,W,Whole Plant,AH,26
-387,Ephedra intermedia Schr. & Mey,EPHEDRACEAE,,Somalatha,Shrub,W,"Stem, Leaf,; Flower, Fruit",F,26
-388,Ephedra sinica Stapf,EPHEDRACEAE,,Ephedra,Shrub,W,"Stem, Leaf,; Fruit (Fruit,; Seed)",F,26
-389,Equisetum arvense L.,EQUISETACEAE,,"Bottle brush,; Horse tail",Herb,W,Whole Plant,FW,26
-390,Erythrina suberosa Roxb.,FABACEAE,,"Pangra,; Vellaimurukku",Tree,W,Bark (Stem),FS,26
-391,Erythrina variegata L.; [= E. indica Lam.],FABACEAE,Paribhadra,Murikkila,Tree,C/W,"Leaf,; Bark (Stem)",AFST,26
-392,Eucalyptus citriodora Hook.,MYRTACEAE,,Eucalyptus,Tree,C,Leaf,F,26
-393,Eucalyptus globulus Labill,MYRTACEAE,Tailaparnah,Eucalyptus,Tree,C,"Bark (Stem),; Leaf",AFHSW,26
-394,Eulaliopsis binata (Retz.) C.E.Hubb.,POACEAE,,Bal vaja,Herb,W,Whole Plant,A,26
-395,Eulophia campestris Wall. ex Lindl.,ORCHIDACEAE,,Salam mishri,Herb,W,Root; (Rhizome),AU,26
-396,Euphorbia antiquorum L.,EUPHORBIACEAE,Names,Kallippalaveru,Tree,W,Stem,AFSU**,26
-397,Euphorbia hirta L.,EUPHORBIACEAE,Dugdhika,"Dudhi, Dudhika",Herb,W,Whole Plant,AFSU,27
-398,Euphorbia neriifolia L.,EUPHORBIACEAE,Snuhi,"Pattankisend,; Nanda",Shrub,C/W,"Exudate,; Latex, Leaf",AFSTU,27
-399,Euphorbia nivulia Buch.-Ham.,EUPHORBIACEAE,,Sehunda,Tree,W,Stem,AFS,27
-400,Euphorbia thymifolia L.,EUPHORBIACEAE,,Choti - Dudhi,Herb,W,Whole Plant,AFU,27
-401,Euphorbia tirucalli L.,EUPHORBIACEAE,,Modu kalli,Shrub,C,Whole Plant,AFSU,27
-402,Euphorbia tortilis Rottler ex Ainslie,EUPHORBIACEAE,,"Tirugakalli,; Vajratunda",Shrub,W,Stem,AS,27
-403,Euryale ferox Salisb. ex K.D.Koenig,NYMPHAEACEAE,,Phoolmakhana,Herb,C/W,Fruit (Seed),ASU,27
-404,Evolvulus alsinoides (L.) L.,CONVOLVULACEAE,,"Shankhavali,; Shankhpush",Herb,W,Whole Plant,AFSTU,27
-405,Excoecaria agallocha L.,EUPHORBIACEAE,,"Agaru, Tejbala",Tree,W,Bark (Stem),AFS,27
-406,Fagonia cretica L.,ZYGOPHYLLACEAE,Dhanvayasah,Dhamasa,Herb,W,Whole Plant,ATU,27
-407,Ferula assa-foetida L.,APIACEAE,,"Hingu, Hing",Shrub,I,Oleo-Gum; Resin,AFHSU,27
-408,Ferula foetida (Bunge) Regel.,APIACEAE,Hingu,Hing hira; (Baandani),Shrub,I,Oleo-Gum; Resin,ASTU,27
-409,Ferula jaeschkeana Vatke,APIACEAE,Hingupatri,"Hingupatri,",Shrub,W,Oleo-Gum; Resin,A,27
-410,Ferula narthex Boiss.,APIACEAE,,Sahasravedhi,Herb,W,Root,AFHU,27
-411,Ficus arnottiana (Miq.) Miq.,MORACEAE,Nandi,Kallaltholi,Tree,W,Bark (Stem),AFS,27
-412,Ficus benghalensis L.,MORACEAE,"Nayagrodha; jata, Nyagrodha","Vadachhal,; Vatathwak",Tree,W/C,Bark (Stem),AFHSTU,27
-413,Ficus carica L.,MORACEAE,Names,"Anjeer,; Anjoora",Tree,C,"Bark (Stem),; Root (Aerial",AFSU**,27
-414,Ficus gibbosa Blume,MORACEAE,,Ithitholi,Tree,W,Bark (Stem),FS,28
-415,Ficus mollis Vahl,MORACEAE,,Kaaduatthi,Tree,W,Fruit,F,28
-416,Ficus racemosa L.,MORACEAE,Udumbara,"Umbar chal,; Lakh pipal",Tree,C/W,Aerial Root,AFSTU,28
-417,Ficus religiosa L.,MORACEAE,Asvattha,"Lakh pipal,; Arayaalin tholi",Tree,C/W,"Bark (Stem),; Leaf",AFHSTU,28
-418,Ficus tsiela Roxb. ex Buch.-Ham.,MORACEAE,,Plaksha,Tree,W,Stembark,AFS,28
-419,Ficus tsjakela Burm.f.,MORACEAE,,"Pilkhan,; Kapitanah",Tree,W,"Bark (Stem),; Exudate",A,28
-420,Flacourtia indica (Burm.f.) Merr.,FLACOURTIACEAE,Sruvavrksa,Kattar,Shrub,W,Root,AFST,28
-421,Flacourtia jangomas (Lour.) Raeusch.,FLACOURTIACEAE,,"Talish pattar,; Brahmi; Talispatar",Tree,W,Leaf,AS,28
-422,Flemingia chappar Buch.-Ham.,FABACEAE,,Salpan (Subs.),Shrub,W,Root,F,28
-423,Flemingia grahamiana Wight & Arn.,FABACEAE,,Warrus/ Varus,Herb,W,Fruit,F,28
-424,Flemingia macrophylla (Willd.),FABACEAE,,Varrus / Varus,Shrub,W,Fruit,AF,28
-425,Flemingia semialata Roxb. ex,FABACEAE,,Salpan (Subs.),Herb,W/C,Root,F,28
-426,Flickingeria fugax (Rchb.f.) Seidenf.,ORCHIDACEAE,,Jivanti,Herb,W,Root,F,28
-427,Flickingeria macraei (Lindl.) Seidenf.; [ = Ephemerantha macraei (Lindl.),ORCHIDACEAE,,Jivanti,Herb,W,Whole Plant,AF,28
-428,Flickingeria nodosa (Dalz.) Seidenf.; [= Dendrobium macraei,ORCHIDACEAE,,Jivanti,Herb,W,Whole Plant,AF,28
-429,Flueggea microcarpa Blume,EUPHORBIACEAE,Names,"Dalme, Patali",Shrub,W,Leaf,ATag **,28
-430,Foeniculum vulgare Gaertn.,APIACEAE,Misreya,"Badiyan; Khatal, Saunf; (Variyali)",Herb,C,"Fruit (Fruit,; Seed)",AFSTUW,29
-431,Fritillaria roylei Hook.,LILIACEAE,Ksirakakoli,Kakoli,Herb,W,Root (Bulb),A,29
-432,Fumaria indica (Hauskn.) Pugsley; [ = F. parviflora Lam.],FUMARIACEAE,Parpata,Shahtara,Herb,W,Whole Plant,A,29
-433,Fumaria officinalis L.,FUMARIACEAE,,"Pittapapdo; ghas, Pitpapra",Herb,I,Whole Plant,AFU,29
-434,Garcinia gummi-gutta (L.) N.Robson; [ = G. cambogia (Gaertn.) Desr.],CLUSIACEAE,,"Kokam,; Kodampuli",Tree,C/W,"Fruit, Resin",A,29
-435,Garcinia indica (Dup.) Choisy,CLUSIACEAE,,"Kokam,; Cambogie",Tree,W/C,"Fruit; (Fruit, Peel)",AT,29
-436,Garcinia morella (Gaertn.) Desr.,CLUSIACEAE,,Kadukaai puli,Tree,W,"Fruit, Resin",AFHSTU,29
-437,Garcinia pedunculata Roxb. ex,CLUSIACEAE,,Amlavetasa,Tree,W,Fruit,AT,29
-438,Gardenia gummifera L.f.,RUBIACEAE,,"Dekamalli,; Dikamali",Tree,W,Resin,AFSTU,29
-439,Gardenia resinifera Roth,RUBIACEAE,,Dikamali,Tree,W,Gum,AS,29
-440,Garuga pinnata Roxb.,BURSERACEAE,,"Ghoghar,; Kharpat",Tree,W,"Oleo-Gum-; Resin, Root",AFST,29
-441,Gentiana kurroo Royle,GENTIANACEAE,,"Trahimaan,; Kadu, Katuki",Herb,W,"Root,; Whole Plant",ATU,29
-442,Geophila reniformis D.Don; [ = G. repens (L.) I.M.Johnst],RUBIACEAE,Names,Kakamaci,Herb,W,Root,FTag **,29
-443,Girardinia heterophylla Decne.; [ = G. diversifolia (Link) Friis],URTICACEAE,,"Gaddanelli,; Anachoriyan",Herb,W,Bark (Stem),F,30
-444,Givotia rottleriformis Griff. ex Wight,EUPHORBIACEAE,,Polki,Tree,W,Bark (Stem),FS,30
-445,Glinus lotoides L.,AIZOACEAE,,Gandhi-Buti,Herb,W,Whole Plant,AS,30
-446,Glinus oppositifolius (L.) A.DC.,AIZOACEAE,,Ushnasundara,Herb,W,Whole Plant,AFS,30
-447,Gloriosa superba L.,LILIACEAE,Langali,Kalihari,Climber,C/W,"Fruit (Seed),; Root",AFSTU,30
-448,Glossocardia bosvallea (L.f.) DC.,ASTERACEAE,,Parpataka,Herb,W,Whole Plant,A,30
-449,Glycosmis arborea (Roxb.) DC.,RUTACEAE,,"Potali,; Kupilah",Shrub,W,Root,A,30
-450,Glycyrrhiza glabra L.,FABACEAE,Yasti,"Mulathi,; Jeshtimadhu,; Gulegafis",Shrub,I,Root,AFSTUW,30
-451,Glycyrrhiza uralensis DC.,FABACEAE,,"Mulathi,; Jeshtimadhu,; Gulegafis",Shrub,I,Root,F,30
-452,Gmelina arborea Roxb.,LAMIACEAE,Gambhari,"Ghambar chal,; Shivan; (Ghambari); (Chal)",Tree,W/C,Bark (Root),AFST,30
-453,Gmelina asiatica L.,VERBENACEAE,,Kapas Beej,Shrub,W,Bark (Root),AFS,30
-454,Gossypium arboreum L.,MALVACEAE,,Kapas,Shrub,C,Flower,AFSU,30
-455,Gossypium herbaceum L.,MALVACEAE,Karpasa,Kapas,Shrub,C,Fruit (Seed),AFHSTU,30
-456,Gossypium hirsutum L.,MALVACEAE,,Kapas,Shrub,C,Fruit; (Fruit Coat),ASW,30
-457,Gouania microcarpa DC.,RHAMNACEAE,Names,Sinhanbali,Climber,W,Leaf,F**,30
-458,Grewia elastica Royle; [= Grewia asiatica L. var. vestita Mast.],TILIACEAE,,Phalsa chhaal,Tree,C/W,Bark (Stem),A,31
-460,Grewia microcos L.,TILIACEAE,,Asolin,Shrub,W,Leaf,F,31
-459,Grewia subinaequalis DC.; [ = Grewia asiatica Mast. var. asiatica],TILIACEAE,,-,Tree,W,Bark (Stem),AFSTU,31
-461,Gymnema sylvestre R.Br. ex Schult.,ASCLEPIADACEAE,Mesarngi,"Gudmar,; Sirukurinja",Climber,W,Leaf,AFHSTU,31
-462,Habenaria edgeworthii Hook.f.,ORCHIDACEAE,Riddhi,Riddhi,Herb,W,Root (Tuber),A,31
-463,Hedychium acuminatum Roscoe,ZINGIBERACEAE,,Kantapalci,Herb,W,Root; (Rhizome),F,31
-464,Hedychium coronarium J.Konig,ZINGIBERACEAE,,"Garland; flower,; Common; Ginger Lily",Herb,W,Flower,S,31
-465,Hedychium spicatum Sm.; [ = Oldenlandia corymbosa L.],ZINGIBERACEAE,Sati,Kapoor kachri,Herb,W,Root,AFTU,31
-466,Hedyotis corymbosa (L.) Lam.,RUBIACEAE,,Pitpapra,Herb,W,Whole Plant,AF,31
-467,Hedyotis herbacea L.,RUBIACEAE,,Pippapada,Herb,W,Whole Plant,AFH,31
-468,Hedyotis puberula (G.Don) Arn.; [ = Oldenlandia umbellata L.],RUBIACEAE,,Impural,Herb,W,Whole Plant,AF,31
-469,Helianthus annuus L.,ASTERACEAE,,Sunflower,Shrub,C,Fruit (Seed),AHSU,31
-470,Helicteres isora L.,STERCULIACEAE,,"Murudshing; ,; Marodphali",Shrub,W,Fruit,AFSU,31
-471,Heliotropium indicum L.,BORAGINACEAE,,Thekkada,Herb,W,Root,AFSU,31
-472,Helleborus niger L.,RANUNCULACEAE,,Katuka Rohini,Herb,I,Root,AFHSU,31
-473,Hemidesmus indicus (L.) R.Br.,PERIPLOCACEAE,Sveta sariva; Names,"Anatmool,; Sariwa,",Climber,W,Root,AFSTUTag **,31
-474,Hemionitis arifolia (Burm.) Moore,HEMIONITIDACEAE,,"Akhukarni,; Pattsjivi-; Maravara",Herb,W,Leaf,AF,32
-475,Heracleum candolleanum (Wight &,APIACEAE,,Kattumalli; (Subs.),Herb,W,Fruit (Seed),F,32
-476,Heracleum lanatum Michx.,APIACEAE,,Krandel,Herb,C/W,Whole Plant,F,32
-477,Heracleum rigens DC.,APIACEAE,,Cittrelam,Herb,W,Fruit (Seed),FS,32
-478,Hibiscus rosa-sinensis L.,MALVACEAE,,"Jashwanti,; Jaswand, Japa",Shrub,C,Flower,AFSU,32
-479,Hibiscus surattensis L.,MALVACEAE,,Ranbhindi,Shrub,W,"Stem, Leaf",FS,32
-480,Hibiscus tiliaceus L.,MALVACEAE,,Parutti,Herb,W,Root,AFS,32
-481,Hippophae rhamnoides L.,ELAEAGNACEAE,,Sea Buckthorn,Shrub,W,Fruit,F,32
-482,Hippophae salicifolia D.Don,ELAEAGNACEAE,,Sea Buckthorn,Shrub,C/W,Fruit,F,32
-483,Holarrhena pubescens (Buch.-Ham.),APOCYNACEAE,"Indrayava,; Kutaja","Inderjao; Kadwa,; Kudacha; l, Kutja",Shrub,W,"Fruit (Seed),; Bark (Stem)",AFH,32
-484,Holoptelea integrifolia (Roxb.) Planch.,ULMACEAE,Cirabilva,Aavitholi,Tree,W,Bark (Stem),AFS,32
-485,Holostemma ada-kodien Schult.; [ = H. annulare (Roxb.) K.Schum.;,ASCLEPIADACEAE,Names,Jeevanti,Climber,W,"Root; (Tuber),",AFTag **,32
-486,Homonoia riparia Lour.,EUPHORBIACEAE,,"Serna,; Pashanbheda; ka",Shrub,W,Root,AS,33
-487,Hordeum vulgare L.,POACEAE,Yava,Jaw,Herb,C,Fruit (Seed),AFSTU,33
-488,Hugonia mystax L.,LINACEAE,,Kamsamrah,Shrub,W,Root,AFS,33
-489,Hybanthus enneaspermus (L.f.),VIOLACEAE,,"Ratanpurus,; Padmacarini",Herb,W,Whole Plant,AFS,33
-490,Hydnocarpus kurzii (King) Warb.,FLACOURTIACEAE,,"Nirati,; Chaulmoogra",Tree,W,Fruit (Seed),AFS,33
-491,Hydnocarpus pentandrus,FLACOURTIACEAE,,Marotti,Tree,W,Fruit (Seed),AFS,33
-492,Hydrocotyle javanica Thunb.,APIACEAE,,Brahma; manduki,Herb,W,Whole Plant,F,33
-493,Hygrophila schulli (Buch.-Ham.); [= H. auriculata (Schumach.) Heine;,ACANTHACEAE,Kokilaksa,Tal makhana,Herb,W,"Root,; Fruit (Seed),; Whole Plant",AF,33
-494,Hygroryza aristata (Retz.),POACEAE,,Janli dal,Herb,W,Root,AF,33
-495,Hymenodictyon excelsum (Roxb.) Wall.,RUBIACEAE,,Kuthan,Tree,W,Bark (Stem),AF,33
-496,Hyoscyamus muticus L.,SOLANACEAE,,Parasikaya,Herb,I,Fruit (Seed),A,33
-497,Hyoscyamus niger L.,SOLANACEAE,Parasi-; kayavani,Khursani; Ajwain,Herb,C/W,Fruit (Seed),AHSUW,33
-498,Hypericum perforatum L.,HYPERICACEAE,,St. John’s; wart,Herb,W,Flower,HW,33
-499,Hyssopus officinalis L.,LAMIACEAE,Names,"Zoofa, Jupha",Shrub,C/W,"Fruit (Seed),; Whole Plant",FUTag **,33
-500,Ichnocarpus frutescens (L.) W.T.Aiton,APOCYNACEAE,,"Dudhi, Sariva",Climber,W,Root,AFST,34
-501,Illicium griffithii Hook.f. & Thomson,MAGNOLIACEAE,,Star; Anise; (Subs.),Tree,W,Fruit,AS,34
-502,Illicium verum Hook.f.,MAGNOLIACEAE,,Star Anise,Tree,I,Fruit,AS,34
-503,Imperata cylindrica (L.) Raeusch.,POACEAE,Darbha,Thatch grass,Herb,W,Root,AFS,34
-504,Indigofera tinctoria L.,FABACEAE,Nili,"Akika, Avuri",Shrub,C,"Fruit, Leaf,; Root",AFHSTU,34
-505,Inula racemosa Hook.f.,ASTERACEAE,Puskara,"Pushkarmool,; Pokharmool",Herb,C,Root,AFT,34
-506,Inula royleana DC.,ASTERACEAE,,Pushkarmool,Herb,W,Root,A,34
-507,Ipomoea mauritiana Jacq.; [ = I. digitata L.],CONVOLVULACEAE,Kshiravidari,Palmudhukkan; kizhangu,Climber,W,"Stem, Root; (Tuber),",AF,34
-508,Ipomoea nil (L.) Roth,CONVOLVULACEAE,,Kaladana,Climber,W,Fruit (Seed),AFS,34
-509,Ipomoea obscura Ker-Gawl.,CONVOLVULACEAE,,Laksmana,Climber,W,Whole Plant,AFS,34
-510,Ipomoea pes-caprae (L.) R.Br.; [ = I. biloba Forssk.],CONVOLVULACEAE,,Dopatilata,Climber,W,"Root,; Whole Plant",AFS,34
-511,Ipomoea pes-tigridis L.,CONVOLVULACEAE,,Pulichuvadan,Climber,W,Whole Plant,AFS,34
-512,Ipomoea petaloidea Choisy,CONVOLVULACEAE,,Vrddhadaru,Herb,W,Root,F,34
-513,Ipomoea reptans Poir.,CONVOLVULACEAE,,Kalashaka,Herb,C/W,Leaf,A,34
-514,Ipomoea sepiaria Roxb.,CONVOLVULACEAE,,Thiruthaali,Climber,W,Whole Plant,AFS,34
-515,Iris germanica L.,IRIDACEAE,,Puskaramulam Herb,,W,Root,AHTU,34
-516,Ixora coccinea L.,RUBIACEAE,,Thechippoovu,Shrub,W,Root,AFS,34
-517,Jasminum angustifolium (L.) Thunb.,OLEACEAE,,Ban-mallika,Climber,C/W,"Flower, Root",AFS,34
-518,Jasminum grandiflorum L.,OLEACEAE,Names,Chameliphool,Climber,C/W,"Flower,; Leaf, Root",AFSTUTag **,34
-519,Jasminum officinale L.,OLEACEAE,Jati,Ban chameli,Climber,C/W,Flower,AFHU,35
-520,Jasminum sambac (L.) Aiton,OLEACEAE,,"Mallika,; Mogra",Climber,C/W,Flower,AFSTU,35
-521,Jatropha curcas L.,EUPHORBIACEAE,,Nepalam seed,Shrub,C,"Bark (Stem),; Fruit (Seed),; Whole Plant",AFHSU,35
-522,Juglans regia L.,JUGLANDACEAE,Aksoda,Akhrot,Tree,C/W,"Bark (Stem),; Fruit (Seed)",AFHSTU,35
-523,Juniperus communis L.,CUPRESSACEAE,Hapusa,Hauber,Tree,W,Fruit,AHTUW,35
-524,Juniperus macropoda Boiss.,CUPRESSACEAE,,Hapusa,Tree,W,Mature Fruit,A,35
-525,Jurinea macrocephala DC.; [ = J. dolomiaea Boiss.],ASTERACEAE,,Dhoop,Herb,W,Root,AF,35
-526,Justicia gendarussa Burm.f.; [ = Gendarussa vulgaris Nees],ACANTHACEAE,,Nilanirgundi,Shrub,C/W,"Leaf, Root",AFSU,35
-527,Kaempferia galanga L.,ZINGIBERACEAE,,"Kachora,; Narkachur,; Kapoor Kachri; No 1",Herb,C,Root,AFS,35
-528,Kaempferia rotunda L.,ZINGIBERACEAE,,Bhuichampa,Herb,C,Root; (Rhizome),AFS,35
-529,Kalanchoe laciniata (L.) DC.,CRASSULACEAE,,Hemsagara,Herb,W,Leaf,AS,35
-530,Kedrostis rostrata (Rottler) Cogn.,CUCURBITACEAE,,Arunkovai,Climber,W,Whole Plant,FS,35
-531,Lagenaria siceraria (Molina) Standley,CUCURBITACEAE,Tumbini,Bottlegourd,Climber,C,"Fruit, Leaf",AFSTU,35
-532,Lagerstroemia speciosa (L.) Pers.,LYTHRACEAE,Names,Jarul,Tree,W,Bark (Stem),AFTag **,35
-533,Lagotis glauca Gaertn.,SCROPHULARIACEAE,,Kutki; (Adulterant),Herb,W,Root,F,36
-534,Lallemantia royleana (Wall. ex,LAMIACEAE,,Tukhm; e-; Balanga,Herb,C/W,Fruit (Seed),FU,36
-535,Lannea coromandelica (Houtt.) Merr.,ANACARDIACEAE,,Jingini,Tree,C/W,Bark (Stem),AF,36
-536,Lantana camara L.,VERBENACEAE,,Lantana,Shrub,W,Leaf,A,36
-537,Lathyrus sativus L.,FABACEAE,,"Lakh, Khesari",Climber,C,Fruit (Seed),AHU,36
-538,Laurus nobilis L.,LAURACEAE,,Hub-ul-ghar,Tree,I,Fruit,FU,36
-539,Lavandula stoechas L.,LAMIACEAE,,Ustakuthus,Herb,W,Flower,U,36
-540,Lawsonia inermis L.,LYTHRACEAE,Madaynati,"Henna,; Mehndi",Shrub,C,Leaf,AFSTU,36
-541,Lepidium sativum L.,BRASSICACEAE,Candrasura,"Kurassaan; i, Halam",Herb,W,"Leaf, Root,; Fruit (Seed)",AFSU,36
-542,Leptadenia reticulata (Retz.),ASCELPIADACEAE,,Jivanti,Climber,W,"Root, Stem,; Whole Plant",AFST,36
-543,Leucas aspera (Willd.) Link,LAMIACEAE,Dronapuspi,"Dronpushpi,; Dharanpushpi",Herb,W,"Root, Leaf,; Flower",AFHS,36
-544,Lilium polyphyllum D.Don,LILIACEAE,Kakoli,Kakoli,Herb,W,Root,A,36
-545,Limonia acidissima L.; [ = Feronia elephantum Correa;,RUTACEAE,Kapittha,Wood apple,Tree,C/W,"Fruit,; Whole Plant",AFSU,36
-546,Linum usitatissimum L.,LINACEAE,Atasi,Alsi,Herb,C,Fruit (Seed),AFHSTUW,36
-547,Litsea glutinosa (Lour.) C.B.Rob.; [ = L. chinensis Lam.],LAURACEAE,Medasakah,"Menda Lakadi,; Naramamidi,; Maidachal",Tree,W,"Leaf, Bark; (Stem)",AFS,36
-548,Lobelia nicotianaefolia Roth ex,LOBELIACEAE,,Lobelia leaves,Shrub,W,Leaf,AFS,36
-549,Lodoicea maldivica (J.F.Gmel.),ARECACEAE,Aklari,Dariai narial,Tree,I,Fruit,AFU,36
-550,Luffa acutangula (L.) Roxb.,CUCURBITACEAE,Kosataki; Names,Tori,Climber,C,"Leaf, Fruit; (Fruit, Seed)",AFHSTUTag **,36
-551,Luffa aegyptiaca Mill.,CUCURBITACEAE,,Ghia- tori,Climber,C,Fruit,AFU,37
-552,Luffa echinata Roxb.,CUCURBITACEAE,,Loofah,Climber,W,Fruit (Seed),AFHST,37
-553,Luvunga scandens (Roxb.) Buch.-Ham.,RUTACEAE,,Sugandh-; kokila,Shrub,W,Fruit,A,37
-554,Lycopodium clavatum L.,LYCOPODIACEAE,,Foxtail,Herb,W,Whole Plant,FH,37
-555,Lygodium flexuosum (L.) Sw.,LYGODIACEAE,,Tsjeru-Valli-; Panna,Climber,W,"Spores, Root",F,37
-556,Madhuca indica J.F.Gmel.; [ = Bassia latifolia Roxb.],SAPOTACEAE,Madhuka,Madhuka,Tree,W,Flower,AFST,37
-557,Madhuca longifolia (J.Konig ex L.),SAPOTACEAE,,Mahua phool,Tree,C/W,"Flower,; Wood; (Heartwood),; Fruit; (Seed/Kernel",AFS,37
-558,Mahonia leschenaultia (Wall. ex,BERBERIDACEAE,,Daruharidra,Shrub,W,Root,F,37
-559,Malaxis acuminata D.Don,ORCHIDACEAE,Jivakah,Jivak,Herb,W,Root,A,37
-560,Malaxis muscifera (Lindl.) Kuntze,ORCHIDACEAE,,Rsabhakah,Herb,W,Root (Tuber),A,37
-561,Mallotus philippensis (Lam.) Mull.-Arg.,EUPHORBIACEAE,Kampilla,Kameela,Tree,W,Fruit (Glands),AFHSU,37
-562,Malva sylvestris L.,MALVACEAE,,"Khawaj; i,; Khubaj",Herb,C/W,Fruit,FU,37
-563,Mammea suriga (Buch.-Ham.,CLUSIACEAE,,Nagakesr(subs.; i; ),Tree,W,Flower,AF,37
-564,Mangifera indica L.,ANACARDIACEAE,Amra,Aamba,Tree,C/W,Fruit,AFHSTU,37
-565,Mappia foetida (Wight) Miers; [ = Nothapodytes nimmoniana,ICACINACEAE,,Ghanera,Tree,W,Root,W,37
-566,Maranta arundinacea L.,MARANTACEAE,,Citalapattiri,Herb,C,Root,AFS,37
-567,Marsdenia roylei Wight,ASCLEPIADACEAE,,Murva,Climber,W,Root,A,37
-568,Marsdenia tenacissima (Roxb.) Moon,ASCELPIADACEAE,Murva; Names,Nishod sufed,Climber,W,Stem,A**,37
-569,Marsdenia volubilis (L.f.) T.Cooke; [ = Wattakaka volubilis (L.f.) Stapf;,ASCELPIADACEAE,,Murva,Climber,W,"Leaf, Root",A,38
-570,Marsilea quadrifolia L.,MARSILEACEAE,,Cupatiya,Herb,W,Whole Plant,AS,38
-571,Martynia annua L.,PEDALIACEAE,Kakanasika,Kaknasa,Herb,W,Fruit,AFS,38
-572,Maytenus emarginata (Willd.),CELASTRACEAE,,Kattangi,Shrub,W,Leaf,F,38
-573,Meconopsis aculeata Royle,PAPAVERACEAE,,Kunda,Herb,W,Root,F,38
-574,Medicago sativa L.,FABACEAE,,Alfalfa,Herb,C,Leaf,AHUW,38
-575,Melastoma malabathricum L.,MELASTOMATACEAE,,"Palore,; Nakkukaruppa; n",Shrub,W,"Leaf,; Flower, Fruit",AFS,38
-576,Melia azedarach L.,MELIACEAE,Mahanimba,Bakayan phal,Tree,W/C,"Fruit, Leaf,; Bark (Stem)",AFSTU,38
-577,Melocanna bambusoides Trin.,POACEAE,,Bansalochan,Tree,W,Siliceous; Deposition; On Culms,F,38
-578,Mentha aquatica L.,LAMIACEAE,,Watermint,Herb,I,Whole Plant,F,38
-579,Mentha arvensis L.,LAMIACEAE,,"Pudina,; Podina pati",Herb,C,Whole Plant,AFSUW,38
-580,Mentha piperita L.,LAMIACEAE,,"Menthol,; Peppermint",Herb,C,Leaf,HUW,38
-581,Mentha viridis (L. ) L.,LAMIACEAE,Pudinah,Pudino,Herb,C,Whole Plant,F,38
-582,Merremia emarginata (Burm.f.),CONVOLVULACEAE,,"Underkarni,; Mooshkarni",Herb,W,Whole Plant,AS,38
-583,Merremia hederacea (Burm.f.) Hallier f.,CONVOLVULACEAE,,Kudici-Valli,Climber,W,Whole Plant,FS,38
-584,Merremia tridentata (L.) Hallier f.,CONVOLVULACEAE,,Prasarani,Herb,W,Whole Plant,AFS,38
-585,Merremia umbellata (L.) Hallier f.,CONVOLVULACEAE,Names,Jalap (Subs.),Climber,C,Root,FTag **,38
-586,Mesua ferrea L.; [= M. nagassarium (Burm.f.) Kosterm.],CLUSIACEAE,Nagakesar,"Nagakesari,; Nagkeshar",Tree,W,Flower; (Anthers),AFHSTU,39
-587,Michelia champaca L.,MAGNOLIACEAE,Champaka,Champaka,Tree,C/W,Flower,AFST,39
-588,Micromeria biflora (Buch.-Ham. ex,LAMIACEAE,,Indian Wild; Thyme,Herb,W,Whole Plant,F,39
-589,Mimosa pudica L.,MIMOSACEAE,Lajjalu,"Lajwanti,; Lajjalu",Herb,W,"Fruit (Seed),; Whole Plant",AFST,39
-590,Mimusops elengi L.,SAPOTACEAE,,Bakul,Tree,W/C,"Bark (Stem),; Flower",AFSTU,39
-591,Mirabilis jalapa L.,NYCTAGINACEAE,,Gulabash,Herb,C/W,Whole Plant,AFSU,39
-592,Mitragyna parvifolia (Roxb.) Korth.,RUBIACEAE,,Kadamb,Tree,C/W,Leaf,AFS,39
-593,Mollugo cerviana Ser.,MOLLUGINACEAE,,Parpata,Herb,W,Whole Plant,AFS,39
-594,Mollugo pentaphylla L.,MOLLUGINACEAE,,Turapoondu,Herb,W,Whole Plant,FS,39
-595,Momordica charantia L.,CUCURBITACEAE,Karavallaka,Karela,Climber,C,"Fruit, Leaf",AFSTU,39
-596,Momordica dioica Roxb. ex Willd.,CUCURBITACEAE,Karkasa,Jangli-Kareli,Climber,W/C,"Root, Fruit",AFS,39
-597,Monochoria hastaefolia C.Presl.,PONTEDERIACEAE,,Karinkuvalum,Herb,W,Whole Plant,A,39
-598,Monochoria vaginalis (Burm.f.) C.Presl.,PONTEDERIACEAE,,Kolai,Herb,W,Root,AFS,39
-599,Morchella esculenta Pers.,HELVELLACEAE,,Guchhi,Herb,W,Fruiting Body,F,39
-600,Morinda citrifolia L.,RUBIACEAE,,Canary wood,Tree,W,Fruit,AFS,39
-601,Morinda pubescens J.E.Sm.; [= M. coreia Buch.-Ham.;,RUBIACEAE,,Manjanatthi,Tree,W,Root,AFS,39
-602,Moringa concanensis Nimmo ex,MORINGACEAE,Names,Kadvo saragvo Tree,,W,Bark (Stem),AST**,39
-603,Moringa oleifera Lam.,MORINGACEAE,Sigru,Sahenjana; chaal,Tree,C/W,"Fruit (Fruit,; Seed), Leaf,; Root, Bark; (Stem)",AFSTU,40
-604,Morus alba L.,MORACEAE,,Toot,Tree,C,Bark (Stem),AFSU,40
-605,Mucuna pruriens (L.) DC.; [= M.prurita Hook.],FABACEAE,Atmagupta,"Kavach beej,; Kaunch beej",Climber,W/C,"Root, Fruit; (Fruit, Seed)",AFHSTU,40
-606,Mucuna utilis Wall. ex Wight; [= M. cochinchinensis Cheval],FABACEAE,,"Kavach beej,; Kaunch (Subs.)",Climber,C,Fruit (Seed),F,40
-607,Mukia maderaspatana (L.) M.Roem.; [= Melothria maderaspatana (L.) Cogn.],CUCURBITACEAE,,Mucukkai,Climber,W,"Leaf, Root,; Fruit (Seed)",AFS,40
-608,Murraya koenigii (L.) Spreng.,RUTACEAE,,Kariveppila,Tree,C/W,Leaf,AFS,40
-609,Musa sapientum L.,MUSACEAE,,Kadali,Herb,W,Flower,ASU,40
-610,Mussaenda frondosa L.,RUBIACEAE,,Sribati,Shrub,W,Leaf,AFS,40
-611,Myrica esculenta Buch.-Ham. ex D.Don; [ = M. nagi auct. non Thunb.],MYRICACEAE,Katphala,"Katphala,; Kaiphal",Tree,W,"Bark (Stem),; Fruit",AFSTU,40
-612,Myristica dactyloides auct. non Gaertn.,MYRISTICACEAE,,"Jaiphal,; Javatri,; Nutmeg",Tree,W,"Fruit; (Aril/ Mace,; Kernel)",AS,40
-613,Myristica fragrans Houtt.,MYRISTICACEAE,Jatiphala,Jatipatre,Tree,C,Fruit,AFHSTUW,40
-614,Myristica malabarica Lam.,MYRISTICACEAE,,Rampatri,Tree,W,"Bark (Stem),; Fruit, Seed",AFS,40
-615,Myrsine africana L.,MYRSINACEAE,,"Chapra,; Vidanga",Tree,W,Fruit,AU,40
-616,Myrsine capitellata Wall.,MYRSINACEAE,,Vidanga (Subs.) Shrub,,W,Fruit,F,40
-617,Myxopyrum serratulum A.W.Hill,OLEACEAE,,Chathuravalli,Shrub,W,Root,AF,40
-618,Nardostachys jatamansi (D.Don) DC.,VALERIANACEAE,Jatamansi; Names,"Balchad,; Jatamansi",Herb,W,Root; (Rhizome),ATag **,40
-619,Naringi crenulata (Roxb.) Nicolson,RUTACEAE,,Kadunimba,Tree,W,Fruit,AF,41
-620,Nelumbo nucifera Gaertn.,NELUMBONACEAE,Kamala,Kamal phul,Herb,W/C,"Root (Bulb),; Fruit, Flower,; Fruit (Seed)",AFSTU,41
-621,Nepeta cataria L.,LAMIACEAE,,Badranjboya,Herb,C/W,Fruit,FUW,41
-622,Nepeta hindostana (B.Heyne ex,LAMIACEAE,,Badranjboya,Herb,W,Whole Plant,FU,41
-623,Nerium oleander L.; [ = N. indicum Mill.],APOCYNACEAE,Karavira,"Oleander,; Kaner",Shrub,W/C,Root,AFH,41
-624,Nervilia aragoana Gaudich.,ORCHIDACEAE,,Sthalapadma,Herb,W,Root,A,41
-625,Nervilia plicata (Andrews) Schltr.,ORCHIDACEAE,,Padmacarini,Herb,W,Leaf,AF,41
-626,Nicotiana tabacum L.,SOLANACEAE,,Tambaku,Herb,C,Leaf,AFHSU,41
-627,Nigella sativa L.,RANUNCULACEAE,Upakuncika,"Jeera (Black),; Kalongi",Herb,C,Fruit (Seed),AFSU,41
-628,Nilgirianthus ciliatus (Nees) Bremek.; [= Strobilanthes ciliatus Nees],ACANTHACEAE,,"Kurinji, Karvi",Shrub,W,Root,A,41
-629,Nilgirianthus heyneanus (Nees) Bremek.,ACANTHACEAE,,Kurinji (Subs.),Shrub,W,"Leaf, Flower,; Fruit",F,41
-630,Nyctanthes arbor-tristis L.,OLEACEAE,,Paruatak pan,Tree,C/W,Leaf,AFHS,41
-631,Nymphaea alba L.,NYMPHAEACEAE,Kumuda,"Neel kamal,; Neelofar",Herb,W,Flower,ASTU,41
-632,Nymphaea nouchali Burm.f.,NYMPHAEACEAE,,Niloth phal,Herb,W/C,Flower (Red),AFS,41
-633,Nymphaea stellata Willd.,NYMPHAEACEAE,Utpala,Nilofar,Herb,W,Flower,AFST,41
-634,Ocimum americanum L.,LAMIACEAE,Names,"Kali tulsi,; Bantulsi",Herb,W,"Whole Plant,; Leaf, Flower; **",AFHS,41
-635,Ocimum basilicum L.,LAMIACEAE,,"Sweet basil, Herb; Kali tulsi,; Bantulsi",C/W,"Leaf, Whole",A,,42
-636,Ocimum gratissimum L.,LAMIACEAE,,Ram tulasi Shrub,C/W,Whole Plant,AFHSU,,42
-637,Ocimum kilimandscharicum Gurke,LAMIACEAE,,Karpoora Shrub; tulasi,C,Whole Plant,A,,42
-638,Ocimum tenuiflorum L.; [= O. sanctum L.],LAMIACEAE,Tulasi,Tulasi Herb,C,"Leaf, Fruit",AFHS,,42
-639,Olea dioica Roxb.,OLEACEAE,,"Koli, Itala, Tree; Edala",W,Bark (Stem),FS,,42
-640,Onosma bracteatum Wall.,BORAGINACEAE,Gojihva,Gule-Gazbaan Herb,I/W,"Flower, Leaf",ASU,,42
-641,Onosma echioides L.,BORAGINACEAE,,Ratanjot Herb,W,Root,AU,,42
-642,Onosma hispidum Wall. ex G.Don,BORAGINACEAE,,Ratan jot Herb,W,Root,F,,42
-643,Operculina turpethum (L.) J.Silva Manso; [= Merremia turpethum (L.) Shah & Bhat],CONVOLVULACEAE,Trivrta,Nishoth Climber,W,"Root, Stem",AFHSTU,,42
-644,Orchis mascula (L.) L.,ORCHIDACEAE,,Salam misri Herb,I,Root,FSU,,42
-645,Origanum majorana L.,LAMIACEAE,,"Gandhira, Herb; Sweet; Marjoram",C,Whole Plant,AHSU,,42
-646,Oroxylum indicum (L.) Benth. ex Kurz,BIGNONIACEAE,Syonaka,"Tetuchaal, Arlu Tree",W,Bark,AFSTU,,42
-647,Orthosiphon glabratus Benth.,LAMIACEAE,,Pratanika Herb,W,Whole Plant,F,,42
-648,Oryza sativa L.,POACEAE,Sali,"Aval, Herb; Akki,; Thavidu",C,Fruit (Grains),AFSTU,,42
-649,Oxalis corniculata L.,OXALIDACEAE,Cangeri; Names,Puliyaarila Herb,W,"Whole Plant,",AFSU,**,42
-650,Pachygone ovata (Poir.) Miers ex,MENISPERMACEAE,,"Kadukkod; i, Pedda; Dusar tree",Climber,W,Leaf,F,43
-651,Paederia foetida L.,RUBIACEAE,Prasarini,Prasaarani,Climber,W,"Root,; Whole Plant",A,43
-652,Paederia scandens (Lour.) Merr.,RUBIACEAE,,Prasaarani,Shrub,W,Whole Plant,F,43
-653,Paeonia emodi Wall. ex Royle,PAEONIACEAE,,Ud saleev,Shrub,W,Root,AU,43
-654,Panax ginseng C.A.Mey.,ARALIACEAE,,Ginseng,Herb,I,Root,W,43
-655,Panax pseudoginseng Wall.,ARALIACEAE,,Ginseng,Herb,W,Root,FHW,43
-656,Pandanus fascicularis Lam.,PANDANACEAE,Ketaki,"Kewada,; Ketaki",Shrub,W,"Flower, Stem",AF,43
-657,Papaver somniferum L.,PAPAVERACEAE,Khaskhasa,"Postdan; a,; Khaskh",Herb,C,"Fruit (Seed),; Seed Coat",AFHSUW,43
-658,Paris polyphylla Sm.,MELANTHIACEAE,,"Daiswa; as; paris,; Svetavaca",Herb,W,Root,A,43
-659,Parmelia kamstchadalis Ach.,PARMELIACEAE,,Chadela; Dagadphool; (Subs.),Herb,W,Fruit; (Fruiting; Thallus),F,43
-660,Parmelia perforata Ach.,PARMELIACEAE,,Chadela; Dagadphool; (Subs.),Herb,W,Fruiting; Thallus,AU,43
-661,Parmelia perlata (Huds.) Ach.,PARMELIACEAE,Saileya,Chadela; Dagadphool; (Subs.),Herb,W,Fruiting; Thallus,ASTU,43
-662,Passiflora foetida L.,PASSIFLORACEAE,,Foul passiflora Climber,,W,Whole Plant,AFS,43
-663,Passiflora incarnata L.,PASSIFLORACEAE,,Passion flower Climber,,C/W,"Flower, Stem",HW,43
-664,Pavonia odorata Willd.,MALVACEAE,,"Moramasi,; Sugandhabala",Herb,W,"Fruit, Root,; Stem",AFST,43
-665,Pavonia zeylanica (L.) Cav.,MALVACEAE,,Sitranmuttiver Herb,,C/W,Root,AFS,43
-666,Pedalium murex L.,PEDALIACEAE,,Gokhru bada,Herb,W,"Fruit, Root,; Stem",AFSU,43
-667,Peganum harmala L.,ZYGOPHYLLACEAE,Names,Harmal,Herb,W,Fruit (Seed),AFSU**,43
-668,Pentapetes phoenicea L.,STERCULIACEAE,,"Dopohoria,; Pushparakta",Herb,C/W,Flower,AFS,44
-669,Pergularia daemia (Forssk.) Choiv.,ASCLEPIADACEAE,,Atrilal,Climber,W,Leaf,AFS,44
-670,Pericampylus glaucus (Lam.) Merr.,MENISPERMACEAE,,Barakkanta,Climber,W,Root,F,44
-671,Peristrophe bicalyculata (Retz.) Nees,ACANTHACEAE,Kakajangha,Atrilal,Herb,W,Whole Plant,F,44
-672,Peucedanum grande (Dalzell &,APIACEAE,,Baphli,Herb,W,Fruit,AU,44
-673,Phoenix dactylifera L.; var. pedunculata Becc.,ARECACEAE,Kharjura,Khajur,Tree,C,Fruit,AFSU,44
-674,Phoenix loureirii Kunth; [= P. humilis Royle; var. pedunculata Becc.],ARECACEAE,,Sitreechu,Tree,W,Fruit,S,44
-675,Phoenix pusilla Gaertn.; [= P. farinifera Roxb.],ARECACEAE,,Chitteenth,Shrub,W,Root,AF,44
-676,Phoenix sylvestris (L.) Roxb.,ARECACEAE,,Khajur,Tree,C/W,Root; (Tuber/Pith),AFST,44
-677,Phyla nodiflora (L.) Greene,VERBENACEAE,Jalapippali,"Chota-okra,; Jalpippali",Herb,W,Whole Plant,AFS,44
-678,Phyllanthus amarus Schumach. & Thonn.; [= P. fraternus Webst.],EUPHORBIACEAE,Tamalaki,Bhumiamla,Herb,W/C,Whole Plant,AFS,44
-679,Phyllanthus debilis Klein ex Willd.,EUPHORBIACEAE,,Bhumiamla,Herb,W,Whole Plant,F,44
-680,Phyllanthus maderaspatensis L.,EUPHORBIACEAE,,Kanocha,Herb,W,"Fruit (Seed),; Whole Plant",AFSU,44
-681,Phyllanthus reticulatus Poir.; [ = Kirganelia reticulata (Poir.) Baill.],EUPHORBIACEAE,Names,Buinowla,Shrub,W,Root,AFS**,44
-682,Phyllanthus urinaria L.,EUPHORBIACEAE,,Lal-Bhuin-; Anvalah,Herb,W,Whole Plant,AS,45
-683,Phyllanthus virgatus G.Forst.,EUPHORBIACEAE,,Niruri,Herb,W,Whole Plant,F,45
-684,Phyllostachys bambusoides Sieb. & Zucc.,POACEAE,,Banslochan; (Subs.),Herb,W,Exudate,F,45
-685,Physalis minima L.,SOLANACEAE,,"Tulatipati,; Tankari",Herb,W,"Leaf,; Whole Plant",AFST,45
-686,Physochlaina praealta (Decne.) Miers,SOLANACEAE,,"Lal tang,; Bajar; Bang",Herb,W,Whole Plant,F,45
-687,Picrasma quassioides (D.Don) Benn.,SIMAROUBACEAE,,"Bharangi,; Kadavi",Tree,W,Bark (Stem),AU,45
-688,Picrorhiza kurroa Royle ex Benth.,SCROPHULARIACEAE,Katuka,Kutaki,Herb,W,Root,AFSTU,45
-689,Picrorhiza scrophulariiflora Pennell,SCROPHULARIACEAE,,Kutki,Herb,W,Root; (Rhizome),A,45
-690,Pimpinella anisum L.,APIACEAE,Anisuna,"Ajamoda,; Badiyan; Khathayi",Herb,C/W,Fruit,AHSUW,45
-691,Pinus roxburghii Sarg.,PINACEAE,Sarala,Gandabiroja,Tree,W,"Oleo-Resin,; Root",AFSTU,45
-692,Piper betle L.,PIPERACEAE,Nagavalli,Betle,Climber,C,Leaf,AFSTU,45
-693,Piper chaba Hunter; [= P. retrofractum Vahl.],PIPERACEAE,Cavya,"Kabab; chini,; Chavya,; Gajpippal",Climber,I,"Fruit, Stem",ATU,45
-694,Piper cubeba L.f.,PIPERACEAE,Kankola,Tailed pepper,Climber,I,Fruit,AFHSTUW,45
-695,Piper longum L.,PIPERACEAE,"Pippalimula,","Pipal, Thippili,; Pippali",Shrub,W/C,"Root, Fruit",AFSTU,45
-696,Piper nigrum L.,PIPERACEAE,Marica,"Pipal Gol,; Kalimirch",Climber,C/W,"Stem, Fruit",AFHSTU,45
-697,Piper peepuloides Roxb.,PIPERACEAE,Names,Pippali (Subs.),Climber,W,Fruit,F**,45
-698,Piper wallichii (Miq.) Han.-Mazz.; var. integerrima Brandis,PIPERACEAE,,Renukbeej; (Nagodbee; j),Climber,W,"Fruit; (Fruit, Seed)",AF,46
-699,Pistacia integerrima Stew. ex Brand.; [= P. chinensis Bunge; var. integerrima Brandis],PISTACIACEAE,,Kakarsinghi,Tree,W,Galls,A,46
-700,Pistacia lentiscus L.,PISTACIACEAE,Rumimastagi,"Rumimasta; gi, Mastangi",Shrub,I,Gum,ASU,46
-701,Pistacia vera L.,PISTACIACEAE,,Magaj; Pista; Irani,Shrub,I,Fruit (Seed),AU,46
-702,Plantago lanceolata L.,PLANTAGINACEAE,,"Baltanga,; English; plantain",Herb,W,Fruit (Seed),AU,46
-703,Plantago major L.,PLANTAGINACEAE,,Lahuriya,Herb,W,Fruit (Seed),AHSU,46
-704,Plantago ovata Forssk.,PLANTAGINACEAE,,Isabgol,Herb,C,"Fruit (Seed,; Seed Husk)",AFSUW,46
-705,Plectranthus amboinicus (Lour.) Spreng.,LAMIACEAE,,Patharcur,Shrub,C,"Fruit, Root",A,46
-706,Plectranthus barbatus Andrews; [= Coleus forskohlii (Poir.) Briq.],LAMIACEAE,Gandira,Gandhira,Herb,C/W,Root,AF,46
-707,Plectranthus vettiveroides (Jacob),LAMIACEAE,,Vettiver,Herb,C,Root,AS,46
-708,Pleurospermum angelicoides (DC.),APIACEAE,,-,Herb,W,"Leaf, Flower,; Fruit",F,46
-709,Pluchea lanceolata (DC.) Oliv. & Hiern,ASTERACEAE,Rasna,Rasna,Herb,W,"Leaf, Root",AFT,46
-710,Plumbago indica L.,PLUMBAGINACEAE,,Chitrak,Herb,C/W,Root,AFS,46
-711,Plumbago zeylanica L.,PLUMBAGINACEAE,Citraka,Chitrak,Herb,W,Root,AFSTU,46
-712,Podophyllum hexandrum Royle; [= P. emodi Wall. ex Honig.],BERBERIDACEAE,,"Bankakri,; Vanatrapu; si",Herb,W,"Fruit, Root",A,46
-713,Pogostemon cablin (Blanco) Benth.,LAMIACEAE,Names,Patchouli,Herb,C,Leaf; **,A,46
-714,Pogostemon heyneanus Benth.,LAMIACEAE,,Patchouli Herb,W/C,Whole Plant,AFS,,47
-715,Polyalthia longifolia (Sonn.) Thwaites,ANNONACEAE,,Ashok (Subs.) Tree,C,Bark (Stem),AFS,,47
-716,Polygonatum cirrhifolium (Wall.) Royle,LILIACEAE,Mahameda,Meda-m-meda Herb,W,Root,A,,47
-717,Polygonatum multiflorum (L.) All.,LILIACEAE,,Solomnons Herb; seal,W,Root,F,,47
-718,Polygonatum verticillatum (L.) All.,LILIACEAE,,Meda-m-meda Herb,W,Root,AT,,47
-719,Polygonum alatum Buch.-Ham.,POLYGONACEAE,,Chonakappulu Herb,W,Whole Plant,F,,47
-720,Polygonum aviculare L.,POLYGONACEAE,,Anjabar Herb,W,"Fruit (Seed),",AU,,47
-721,Polygonum glabrum Willd.,POLYGONACEAE,,Raktha rohitha Herb,W,Root,FS,,47
-722,Polygonum punctatum Buch.-Ham.,POLYGONACEAE,,Kangani- Herb; machan-; pillu,W,Whole Plant,H,,47
-723,Polygonum viviparum L.,POLYGONACEAE,,"Unjwar, Anjbar Herb",W,Root,F,,47
-724,Polypodium vulgare L.,POLYPODIACEAE,,Bisphaiz Herb,W,Root,FU,,47
-725,Pongamia pinnata (L.) Pierre; [= P. glabra Vent.; Derris indica,FABACEAE,Karanja,"Honge beej, Tree; Karanji,; pongum; seed",C/W,"Bark (Stem),",AF,,47
-726,Portulaca oleracea L.,PORTULACACEAE,Kozuppa,Lonika Herb,W,"Fruit (Seed),",AFSU,,47
-727,Potentilla nepalensis Hook.,ROSACEAE,,Dori ghas Herb,W,Root,A,,47
-728,Pothos scandens L.,ARACEAE,,Bendarli Climber,W,Leaf,F,,47
-729,Premna corymbosa Rottl. & Willd.,VERBENACEAE,,Arni Shrub,W,"Root,",FS,,47
-730,Premna flavescens Ham.,VERBENACEAE,,Arnimool Tree,W,Bark (Root),F,,47
-731,Premna latifolia Roxb.,VERBENACEAE,Names,Bakar Tree,W,"Root,",A,**,47
-732,Premna serratifolia L.; [= P.integrifolia L.],VERBENACEAE,,Arnimool/; Agnimantha,Shrub,W,Root,AFS,48
-733,Premna tomentosa Willd.,VERBENACEAE,,Sonachal,Tree,W,Bark (Stem),FS,48
-734,Prosopis cineraria (L.) Druce,MIMOSACEAE,,"Jhand,; Chonkar",Tree,W,Stem,AF,48
-735,Prunus armeniaca L.,ROSACEAE,,Chuli,Tree,C,Fruit (Seed),AUFTW,48
-736,Prunus avium (L.) L.,ROSACEAE,Elavalukam,"Wild cherry,; Aileya",Tree,W,Fruit,A,48
-737,Prunus cerasoides D.Don,ROSACEAE,Padmaka,Padamkasht,Tree,C/W,"Flower,; Stem, Bark; (Stem)",AFT,48
-738,Prunus dulcis (Mill.) D.A.Webb.,ROSACEAE,,"Badam,; Magaj; badam",Tree,C,"Bark (Stem),; Fruit, Oil",AFH,48
-739,Prunus mahaleb L.,ROSACEAE,,"Mahaleb,; Priyangu",Tree,C,Fruit,AU,48
-740,Pseudarthria viscida (L.) Wight & Arn.,FABACEAE,,Moovila,Shrub,W,"Leaf, Root",AFS,48
-741,Psidium guajava L.,MYRTACEAE,,Gujava,Tree,C,Leaf,FU,48
-742,Psoralea corylifolia L.,FABACEAE,Bakuchi,"Bawachi,; Bavanchi",Herb,W,"Fruit, Root",AFHSTU,48
-743,Pterocarpus marsupium Roxb.,FABACEAE,Asana,"Damul-; akhwain,; Vijaysar",Tree,W,"Wood; (Heartwood),; Bark (Stem),; Resin,; Fruit (Seed)",AFHSTU,48
-744,Pterocarpus santalinus L.f.,FABACEAE,Raktacandana,"Raktachandana; , Lal chandan",Tree,W,Wood; (Heartwood),AFSTU,48
-745,Pueraria lobata (Willd.) Ohwi,FABACEAE,,"Mudgapar; ni,; Surpaparni",Climber,C/W,"Root,; Whole Plant",A,48
-746,Pueraria tuberosa (Roxb. ex Willd.) DC.,FABACEAE,"Vidari,; Vidarikanda; Names","Vidhari kand,; Vidari,; Patal Kumbha",Climber,W,Root (Tuber),AFTU**,48
-747,Punica granatum L. var. granatum,PUNICACEAE,Dadima,"Dadam chal,; Anaar",Shrub,C/W,"Flower, Fruit; (Fruit, Seed)",AFHSTU,49
-748,Punica granatum L. var. nana Pers.,PUNICACEAE,,Anaar,Shrub,C,Flower,F,49
-749,Pyrus cydonia L.,ROSACEAE,,Bee dana,Tree,C,Fruit (Seed),F,49
-750,Quercus infectoria G.Olivier,FAGACEAE,Mayakku,Majuphal,Tree,I,Gall,AFSUW,49
-751,Rauvolfia densiflora (Wall.),APOCYNACEAE,,"Sarpagandh; a, Pagal; Buti",Shrub,W,Root,F,49
-752,Rauvolfia micrantha Hook.f.,APOCYNACEAE,,"Sarpagandh; a, Pagal; Buti",Shrub,W,Root,F,49
-753,Rauvolfia serpentina (L.) Benth. ex Kurz,APOCYNACEAE,Sarpagandha,"Sarpagandh; a, Pagal; Buti",Shrub,W/C,Root,AFHSTUW,49
-754,Rauvolfia tetraphylla L.,APOCYNACEAE,,Barachandrika,Shrub,C/W,Root,F,49
-755,Rhaphidophora pertusa (Roxb.) Schott; [= R. laciniata (Burm.f.) Merr.;,ARACEAE,,Ganeshkanda,Climber,C/W,Whole Plant,AFS,49
-756,Rheum australe D.Don; [= R. emodi Wall. ex Meissn.],POLYGONACEAE,,Revan chini,Herb,W,Root; (Rhizome),A,49
-757,Rheum moorcroftianum Royle,POLYGONACEAE,,"Revand-chini,; Amlaparni",Herb,W,Root; (Rhizome),A,49
-758,Rheum palmatum L.,POLYGONACEAE,,Revand-chini,Herb,W,Root; (Rhizome),ASUW,49
-759,Rheum spiciforme Royle,POLYGONACEAE,,Amlaparni,Herb,W,Root; (Rhizome),A,49
-760,Rheum webbianum Royle,POLYGONACEAE,,Revand-chini,Herb,W,Root; (Rhizome),AU,49
-761,Rhinacanthus nasutus (L.) Kurz,ACANTHACEAE,Names,"Juyiparni,; Vitamallik; ai",Shrub,C/W,"Leaf, Root",AFS**,49
-762,Rhododendron anthopogon D.Don,ERICACEAE,,Talisapatra,Shrub,W,Leaf,A,50
-763,Rhododendron campanulatum D.Don.,ERICACEAE,,Cherailu,Shrub,W,"Leaf, Wood",F,50
-764,Rhododendron lepidotum Wall.,ERICACEAE,,Talisa (Subs.),Shrub,W,Leaf,F,50
-765,Rhus succedanea L.,ANACARDIACEAE,,Karkataka; shringi,Tree,W,"Fruit, Galls",ASTU,50
-766,Ricinus communis L.,EUPHORBIACEAE,Eranda,Arand,Shrub,C/W,"Leaf,; Fruit (Seed),; Root",AFHSTUW,50
-767,Rosa alba L.,ROSACEAE,,Gulseoti,Shrub,C,Flower,AFSU,50
-768,Rosa centifolia L.,ROSACEAE,Satapatrika,Gulab,Shrub,C,Flower,AFSU,50
-769,Rosa damascena Mill.,ROSACEAE,,"Gulab,; Rose flowers",Shrub,C,"Flower,; Petals, Oils",AFHSU,50
-770,Rosa indica L.,ROSACEAE,,Gulab,Shrub,C,Flower,FS,50
-771,Roscoea alpina Royle,ZINGIBERACEAE,,Kshirkakoli,Herb,W,Root,F,50
-772,Roscoea purpurea Sm.,ZINGIBERACEAE,,Kshirkakoli,Herb,W,Root,F,50
-773,Rosmarinus officinalis L.,LAMIACEAE,,Rosemary,Shrub,I,"Flower, Oil",FHW,50
-774,Rotula aquatica Lour.,LYTHRACEAE,,Pasanbheda,Herb,W,Root,AF,50
-775,Rourea santaloides Wight & Arn.,CONNARACEAE,,Varadara,Climber,W,Root,F,50
-776,Rubia cordifolia L.,RUBIACEAE,Manjistha,"Majith,; Manjist; ha",Climber,W,Root,AFSTU,50
-777,Rubia sikkimensis Kurz,RUBIACEAE,,"Naga; madder,; Moyum",Climber,W,Root,F,50
-778,Rumex nepalensis Spreng.,POLYGONACEAE,,Yellow dock; (Subs.),Herb,W,Root,AHUW,50
-779,Ruta graveolens L.,RUTACEAE,,Sadab,Herb,C,"Fruit (Seed),; Whole Plant",AFHSUW,50
-780,Saccharum munja Roxb.,POACEAE,,Amaveru,Herb,W,Root,AT,50
-781,Saccharum officinarum L.,POACEAE,Iksu,Karumbu,Herb,C,Stem,AFHSTU,50
-782,Saccharum spontaneum L.,POACEAE,Kasa,Kusha,Herb,W,Root,AFSTU,50
-783,Salacia chinensis L.,CELASTRACEAE,Names,Courondi,Climber,W,Root,AFS**,50
-784,Salacia oblonga Wall. ex Wight & Arn.,CELASTRACEAE,,Kadalainjil,Climber,W,Wood,FS,51
-785,Salacia reticulata Wight,CELASTRACEAE,,Pitila,Shrub,W,"Bark (Stem),; Root",AF,51
-786,Salix tetrasperma Roxb.,SALICACEAE,,Indian willow,Tree,W,Bark (Stem),AFSU,51
-787,Salvadora oleoides Decne.,SALVADORACEAE,,Pilu,Tree,W,Fruit,AFU,51
-788,Salvadora persica L.,SALVADORACEAE,Piluh,Goni,Tree,W,Bark (Stem),AFSU,51
-789,Salvia aegyptiaca L.,LAMIACEAE,,Balangoo,Herb,W,Fruit (Seed),AU,51
-790,Salvia haematodes L.,LAMIACEAE,,Behman,Herb,I,Fruit (Seed),FU,51
-791,Salvia moorcroftiana Wall. ex Benth.,LAMIACEAE,,"Tuk; marian,; Tuth",Herb,W,"Leaf,; Fruit (Seed)",F,51
-792,Salvia plebeia R.Br.,LAMIACEAE,,Kachora,Herb,W,Fruit (Seed),AS,51
-793,Salvia sclarea L.,LAMIACEAE,,Behman safed,Herb,I,Fruit (Seed),U,51
-794,Santalum album L.,SANTALACEAE,Svetacandana,Chandan,Tree,W,Wood; (Heartwood),AFHSTUW,51
-795,Sapindus emarginatus Vahl.,SAPINDACEAE,,"Reetha,; Soapnut",Tree,W/C,"Bark (Stem),; Fruit, Leaf",AFU,51
-796,Sapindus mukorossi Gaertn.,SAPINDACEAE,,Aretha mota,Tree,C/W,Fruit,A,51
-797,Saraca asoca (Roxb.) W.J.de Wilde,CAESALPINIACEAE,Ashoka,Ashoka,Tree,W,Bark (Stem),AFHS,51
-798,Sarcostemma viminale (L.) R.Br.; [ = S. acidum (Roxb.) Voigt],ASCLEPIADACEAE,,"Soma,; Somalatha",Climber,W,Whole Plant,A,51
-800,Saussurea costus (Falc.) Lipsch.; [ = S. lappa (Decne.) Sch.Bip.],ASTERACEAE,Kustha,"Kuth, Uplet",Herb,C/W,"Root, Stem",AFSTU,51
-799,Saussurea hypoleuca Spreng. ex DC.,ASTERACEAE,,Kuth (Subs.),Herb,W,Root,F,51
-801,Schizachyrium exile (Hochot.) Stapf,POACEAE,,Sprkka,Herb,W,Whole Plant,A,51
-802,Schleichera oleosa (Lour.) Oken,SAPINDACEAE,,Kusum beeja,Tree,W,Fruit (Seed),AFS,51
-803,Schrebera swietenoides Roxb.,OLEACEAE,Names,Ghanti phal,Tree,W,"Bark (Stem),; Fruit",AFSTTag **,51
-804,Scindapsus officinalis (Roxb.) Schott.,ARACEAE,Gajapippali,Gaj pipal,Climber,W,Fruit,AFSTU,52
-805,Securinega leucopyrus (Willd.) Mull.-Arg.; [= Flueggea leucopyrus Willd.],EUPHORBIACEAE,,"Hartho,; Bhuriphali",Shrub,W,"Leaf, Fruit",AFS,52
-806,Selinum candollei DC.,APIACEAE,Mura,Mura,Herb,W,Root,A,52
-807,Selinum vaginatum (Edgew.) C.B.Clarke,APIACEAE,,Butkesh,Herb,W,Root; (Rhizome),F,52
-808,Semecarpus anacardium L.f.,ANACARDIACEAE,Bhallataka,"Balave,; Bhilavan,; Bhilawa,; Marking nuts",Tree,W,"Fruit, Root,; Fruit (Seed)",AFHSTU,52
-809,Senna italica Mill.; [ = Cassia italica (Mill.) Lam. ex Andr.;,CAESALPINIACEAE,,Nila aavaarai,Herb,W,"Leaf, Fruit",AFH,52
-810,Sesamum orientale L.; [= S. indicum L.],PEDALIACEAE,Tila,Til,Herb,C,Fruit (Seed),AS,52
-811,Sesbania grandiflora (L.) Poir.,FABACEAE,Itkata,Agase,Tree,C,Fruit (Seed),AFSTU,52
-812,Sesbania speciosa Taub.,FABACEAE,,Seemai agathi,Tree,W/C,Whole Plant,F,52
-813,Seseli diffusum (Roxb. ex Sm.) Santapau,APIACEAE,,"Kirmani,; Ajwain",Herb,W,Fruit,A,52
-814,Setaria italica (L.) Beauv,POACEAE,Names,Kangni,Herb,C,Fruit (Seed),AFSTU**,52
-815,Shorea robusta Gaertn.,DIPTEROCARPACEAE,,Raal,Tree,C/W,"Resinous; Exudate,; Bark (Stem),; Fruit (Seed)",AFSTU,53
-816,Sida acuta Burm.f.,MALVACEAE,,Bala,Herb,W,"Root,; Whole Plant",AFS,53
-817,Sida cordifolia L.,MALVACEAE,,Bala,Herb,W,"Root,; Fruit (Seed),; Whole Plant",AFST,53
-818,Sida rhombifolia L.,MALVACEAE,Mahabala,Bala,Herb,W,"Root,; Fruit (Seed),; Whole Plant",AFS,53
-819,Silybum marianum (L.) Gaertn.,ASTERACEAE,,Milk thistle,Herb,C/W,Fruit (Seed),HW,53
-820,Simmondsia chinensis (Link),SIMMONDSIACEAE,,Jojoba,Shrub,C,Fruit,W,53
-821,Sinapis alba L.,BRASSICACEAE,,"Safedrai,; Yellow; mustard",Herb,C/W,Fruit (Seed),AHS,53
-822,Sisymbrium irio L.,BRASSICACEAE,Khubkalan,Khubkalan,Herb,W,Fruit (Seed),AU,53
-823,Skimmia laureola (DC.) Zucc. ex Walp.,RUTACEAE,,"Ner, Patrang,; Barru",Shrub,W,Leaf,F,53
-824,Smilax aspera L.,SMILACACEAE,,Chopchi; ni; (Subs.),Climber,W,Root,AH,53
-825,Smilax china L.,SMILACACEAE,Madhusnuhi,Chobchini,Climber,I,Root,ASU,53
-826,Smilax glabra Roxb.,SMILACACEAE,,"Chobchini,; Lokhandi",Climber,W,Root,A,53
-827,Smilax zeylanica L.,SMILACACEAE,,Chopchi; ni; (Subs.),Climber,W,Root,AFS,53
-828,Solanum anguivi Lam.; [= S. indicum auct. non L.;,SOLANACEAE,Brhati,Katheli-badhi,Shrub,W,Root,AS,53
-829,Solanum melongena L.,SOLANACEAE,Names,Baingan,Herb,C,"Fruit, Leaf",AFSU**,53
-830,Solanum nigrum L.,SOLANACEAE,Kakamaci,"Makoi,; Kakamachi",Herb,W,"Fruit, Root,; Whole Plant",AFHSTU,54
-831,Solanum torvum Sw.,SOLANACEAE,,Padarchunda,Shrub,C/W,"Fruit, Root",AFS,54
-832,Solanum trilobatum L.,SOLANACEAE,,Alarka,Climber,W,Root,AFS,54
-833,Solanum virginianum L.; [= S. surattense Burm.f.;,SOLANACEAE,Kantakari,Kateli,Herb,W,"Fruit, Root,; Whole Plant",AH,54
-834,Soymida febrifuga (Roxb.) A.Juss.,MELIACEAE,,Rohan,Tree,W,Fruit,AFSTU,54
-835,Spatholobus roxburghii Benth.,FABACEAE,,Mula,Climber,W,Bark (Stem),FS,54
-836,Spermacoce articularis L.f.,RUBIACEAE,,Tukah,Herb,W,"Fruit (Seed),; Whole Plant",A,54
-837,Sphaeranthus africanus L.,ASTERACEAE,,Mundi,Herb,W,Flower,A,54
-838,Sphaeranthus amaranthoides Burm.,ASTERACEAE,,Cevayam,Herb,W,Flower,FS,54
-839,Sphaeranthus indicus L.; var. oleracea C.B.Clarke,ASTERACEAE,Munditika,Gorak mundi,Herb,W,Flower,AFSTU,54
-840,Spilanthes oleracea L.; [= S. acmella Murr. var. oleracea,ASTERACEAE,,"Akarkara,; Sarahattik; a, Vana-; mugali",Herb,C/W,"Flower, Root",A,54
-841,Spondias pinnata (L.f.) Kurz,ANACARDIACEAE,Amrata,Amate,Tree,W,Bark (Stem),AFSTU,54
-842,Stephania glabra (Roxb.) Miers,MENISPERMACEAE,,"Patha,; Rajapat",Climber,W,Root,A,54
-843,Sterculia foetida L.,STERCULIACEAE,Names,"Janlibada; m, Java",Tree,W/C,"Fruit, Wood",AFSTag **,54
-844,Sterculia urens Roxb.,STERCULIACEAE,,"Karaya,; Kateera",Tree,W,Gum,AFSW,55
-845,Stereospermum chelonoides (L.f.) DC.; [= S. suaveolens (Roxb.) DC.],BIGNONIACEAE,Patalai,Patala,Tree,W,Root,AFS,55
-846,Stereospermum colais (Buch.-Ham.; [= S. personatum (Hassk.) Chatterjee],BIGNONIACEAE,,Patala,Tree,W,Root,AF,55
-847,Streblus asper Lour.,MORACEAE,Sakhotaka,Bajradanti,Tree,W,Root,AFS,55
-848,Strophanthus wightianus Wight,APOCYNACEAE,,Naithal; kizhangu,Climber,W,Root,F,55
-849,Strychnos nux-blanda A.W.Hill,LOGANIACEAE,,"Kuchla,; Itti beeja; (Subs.)",Tree,W,Fruit (Seed),F,55
-850,Strychnos nux-vomica L.,LOGANIACEAE,Visamusti,"Kuchla,; Itti; beeja",Tree,W,"Fruit (Seed),; Stem Or Bark",AFHSTUW,55
-851,Strychnos potatorum L.f.,LOGANIACEAE,Kataka,"Nirmali,; Cleaning; nuts",Tree,W,Fruit (Seed),AFSTU,55
-852,Stylocoryna lucens (Hook.f.) Gamble; [= Tarenna alpestris (Wight) N.P.Balakr.],RUBIACEAE,,Paphanals,Shrub,W,Root,A,55
-853,Swertia alata (Royle ex D.Don),GENTIANACEAE,,Kiratatikta,Herb,W,Whole Plant,A,55
-854,Swertia angustifolia Ham.,GENTIANACEAE,,Chiraeta; shireen,Herb,W,Whole Plant,AU,55
-855,Swertia chirayita (Roxb. ex,GENTIANACEAE,Kiratatikta,Chiraiyata,Herb,W/C,Whole Plant,AFH,55
-856,Symplocos cochinchinensis S.Moore,SYMPLOCACEAE,,Lodhra,Tree,W,Bark (Stem),AFS,55
-857,Symplocos paniculata (Thunb.) Miq.,SYMPLOCACEAE,Names,"Lodhra,",Tree,W,Bark (Stem),AUTag **,55
-858,Symplocos racemosa Roxb.,SYMPLOCACEAE,Lodhra,Pathani lodh,Tree,W,Bark (Stem),AFSTU,56
-859,Syzygium aromaticum (L.) Merr.,MYRTACEAE,Lavanga,"Laung, Cloves",Tree,C,"Dried Flower; (Bud), Leaf,; Stem",AFSTUW,56
-860,Syzygium caryophyllatum (L.) Alston; [= Eugenia caryophyllaea Wight],MYRTACEAE,,"Clove, Lavang Tree",,W,"Stem, Flower; (Bud)",AFSU,56
-861,Syzygium cumini (L.) Skeels,MYRTACEAE,Jambu,Jamun,Tree,W/C,"Flower (Bud),; Fruit (Fruit,; Seed), Fruit,; Bark (Stem)",AFHSTU,56
-862,Tabernaemontana divaricata (L.); [= Ervatamia coronaria (Jacq.) Stapf],APOCYNACEAE,,Candni,Shrub,C,Root,AF,56
-863,Tacca aspera Roxb.; [= T. integrifolia Ker Gawl.],TACCACEAE,,Varahikand,Herb,W,Root (Tuber),A,56
-864,Tagetes erecta L.,ASTERACEAE,,"African; Marygold,; Genda,; Sandu",Herb,C,Flower,AFS,56
-865,Tagetes minuta L.,ASTERACEAE,,Stinking roger,Herb,C/W,Flower,F,56
-866,Tamarindus indica L.,CAESALPINIACEAE,Cinca,Imli,Tree,C/W,"Fruit, Leaf,; Bark (Stem),; Fruit (Seed)",AFSTU,56
-867,Tamarix indica Roxb.,TAMARICACEAE,,Jhan,Shrub,W,Bark (Stem),AFU,56
-868,Tanacetum vulgare L.,ASTERACEAE,,Tansy,Herb,I,Flower,HW,56
-869,Taraxacum officinale F.H.Wigg.,ASTERACEAE,,"Kanphul,; Dudhal",Herb,C/W,Root; (Rhizome),AFHW,56
-870,Taxus wallichiana Zucc.; [= T. baccata L.],TAXACEAE,Sthauneya; Names,Talispatra,Tree,W/C,Leaf,AFWTag **,56
-871,Tecomella undulata (Sm.) Seem.,BIGNONIACEAE,,Rohitaka,Shrub,W,Bark (Stem),AT,57
-872,Tectona grandis L.f.,VERBENACEAE,Saka,Teak,Tree,C/W,Root,AFSTU,57
-873,Tephrosia purpurea (L.) Pers.,FABACEAE,,"Sarad foka,; Sarpankha",Herb,W,"Leaf, Root,; Fruit (Seed)",AFSU,57
-874,Teramnus labialis (L.f.) Spreng.,FABACEAE,Masaparni,Masparni,Climber,W,Whole Plant,AFST,57
-875,Terminalia arjuna (Roxb. ex DC.),COMBRETACEAE,Arjuna,Arjun,Tree,W/C,"Fruit (Seed),; Bark (Stem)",AFHSTU,57
-876,Terminalia bellirica (Gaertn.) Roxb.,COMBRETACEAE,Bibhitaka,"Behda,; Bibhitaki",Tree,W/C,Fruit,AFSU,57
-877,Terminalia chebula Retz.,COMBRETACEAE,Haritaki,"Harda, Himaj",Tree,W,"Fruit, Galls",AFHSTU,57
-878,Terminalia crenulata Roth,COMBRETACEAE,,Asan,Tree,W,Bark (Stem),AF,57
-879,Terminalia paniculata Roth,COMBRETACEAE,,Vanmaruthu,Tree,W,Bark (Stem),AFS,57
-880,Terminalia tomentosa (Roxb. ex DC.); [= T. alata Heyne ex Roth],COMBRETACEAE,,Asan,Tree,W,Bark (Stem),AST,57
-881,Thalictrum foliolosum DC.,RANUNCULACEAE,,Mamira,Herb,W,Root,AFS,57
-882,Thespesia populnea (L.) Sol. ex Correa,MALVACEAE,Kapitan,Phalisa-Chhal,Tree,C,Bark (Stem),AFSU,57
-883,Thymus serpyllum L.,LAMIACEAE,,"Ban; Ajwain,; Satar Farsi",Herb,W,Whole Plant,AHU,57
-884,Tiliacora acuminata (Poir.) Miers ex,MENISPERMACEAE,,"Kappatiga,; Bagamushada",Climber,C/W,Leaf,FS,57
-885,Tinospora cordifolia (Willd.) Miers,MENISPERMACEAE,Guduci,"Giloy, Galo,; Amrithaballi",Climber,W,Stem,AFHSTU,57
-886,Tinospora crispa (L.),MENISPERMACEAE,,"Giloy, Galo,; Amrithaballi",Climber,W,Stem,F,57
-887,Tinospora sinensis (Lour.) Merr.; [= T. malabarica (Lam.) Hook.f. &,MENISPERMACEAE,Names,Amrata,Climber,W,Stem,AFSTag **,57
-888,Toddalia asiatica (L.) Lam.,RUTACEAE,,Janglikalimirch Shrub,,W,Root,AFS,58
-889,Toona ciliata M.Roem.; [= Cedrela toona Roxb.],MELIACEAE,Tuni,Thooniya-; noikam,Tree,W,Bark (Stem),F,58
-890,Trachyspermum ammi (L.) Sprague,APIACEAE,Yavani,"Ajmo,; Ajwayan",Herb,C,Fruit,AFSTU,58
-891,Trachyspermum roxburghianum,APIACEAE,,Sath Ajwain,Herb,W,Fruit,AFSU,58
-892,Tragia involucrata L.,EUPHORBIACEAE,Vrscikalli,Barhanta,Climber,W,Root,AFS,58
-893,Trapa natans L.,TRAPACEAE,Srngataka,Singhada,Herb,C/W,Fruit,A,58
-894,Trianthema decandra L.; [= Zaleya decandra (L.) Burm.f.],AIZOACEAE,,Saaranai ver,Herb,W,Root,AS,58
-895,Trianthema portulacastrum L.,AIZOACEAE,Varsabhu,Lalsabuni,Herb,W,Root,AFS,58
-896,Tribulus alatus Del.,ZYGOPHYLLACEAE,,Gokhru kalan,Herb,W,"Fruit, Stem",FU,58
-897,Tribulus lanuginosus L.,ZYGOPHYLLACEAE,,Gokhru,Herb,W,Fruit,AU,58
-898,Tribulus rajasthanensis M.M.Bhandari,ZYGOPHYLLACEAE,,Gokhru (Subs.) Herb,,W,Fruit,AU,58
-899,"Tribulus subramanyamii P.Singh,",ZYGOPHYLLACEAE,,Gokhru (Subs.) Herb,,W,Fruit,AU,58
-900,Tribulus terrestris L.,ZYGOPHYLLACEAE,Goksura,"Gokhru,; Gokshu; ra",Herb,W,Fruit,AFHSTU,58
-901,Trichodesma zeylanicum (Burm.f.) R.Br.,BORAGINACEAE,,Dhadhona,Herb,W,Whole Plant,AFS,58
-902,Trichopus zeylanicus Gaertn.,DIOSCOREACEAE,,Arogyapacha,Herb,W,Root,F,58
-903,Trichosanthes anguina L.,CUCURBITACEAE,,Snakegourd,Climber,C,Stem,AST,58
-904,Trichosanthes cordata Roxb.,CUCURBITACEAE,,Vidari,Climber,W,Stem Root; (Tuber),A,58
-905,Trichosanthes cucumerina L.,CUCURBITACEAE,,Patol; panchang,Climber,W,Whole Plant,AFS,58
-906,Trichosanthes dioica Roxb.,CUCURBITACEAE,,Patol; (Kadu Parval),Climber,C,"Root, Leaf",AFHST,58
-907,Trichosanthes lobata Roxb.,CUCURBITACEAE,Names,"Patola,; Tiktapatola",Climber,W,Leaf,ATag **,58
-908,Trichosanthes tricuspidata Lour.; [= T. bracteata (Lam.) Voigt ],CUCURBITACEAE,Visala,"Indrayan,; Mahakal",Climber,W,Root,AFS,59
-909,Tridax procumbens L.,ASTERACEAE,,Jayanti,Herb,W,Whole Plant,AFS,59
-910,Trigonella corniculata (L.) L.,FABACEAE,,Kasuri Methi,Herb,W/C,Whole Plant,AUS,59
-911,Trigonella foenum-graecum L.,FABACEAE,Methi,Methi,Herb,C,Fruit (Seed),AFSUW,59
-912,Tulipa stellata Hook.,LILIACEAE,,Meethi; Suranjan,Herb,W,Whole Plant,F,59
-913,Tylophora indica (Burm.f.) Merr.; [= T. asthmatica (L.f.) Wight & Arn.],ASCLEPIADACEAE,,"Antamul,; Country; Ipecacuahna",Climber,W,Root,AFHS,59
-914,"Typha elephantina Grah., non Roxb.; [= T. australis K.Schum. & Thonn.]",TYPHACEAE,Potagala,Anaikkorai,Herb,W,Root,AFS,59
-915,Typhonium trilobatum (L.) Schott,ARACEAE,,Karunai; kizhangu,Herb,W,Root,FS,59
-916,Uncaria gambier Thwaites,RUBIACEAE,,Kath,Climber,I,Bark (Stem),AS,59
-917,Uraria lagopodioides (L.) DC.,FABACEAE,,Kalasi,Herb,W,Leaf,AFSU,59
-918,Uraria picta (Jacq.) DC.,FABACEAE,Prsniparni,Prshniparni,Herb,W,Root,AFST,59
-919,Uraria rufescens (DC.) Schindl.,FABACEAE,,Kalasi (Subs.),Herb,W,Root,AF,59
-920,Urginea indica (Roxb) Kunth. [=,LILIACEAE,,"Janglipyaz,; White; squills",Herb,W,Root,ASU,59
-921,Urtica dioica L.; var. sublobata (Roxb.) Verdc.,URTICACEAE,,Nettle,Herb,W,Leaf,AHW,59
-922,Valeriana hardwickii Wall.,VALERIANACEAE,,"Tagar-ganth,; Nihani",Herb,W,"Root,; Fruit (Seed)",AU,59
-923,Valeriana jatamansi Jones; [= V. wallichii DC.],VALERIANACEAE,Tagara,"Musakbal; a, Tagar",Herb,W,"Root,; Whole Plant",AF,59
-924,Valeriana pyrolaefolia Decne.,VALERIANACEAE,Names,Mushkaba; la (Subs.),Herb,W,Root,ATag **,59
-925,Vanda tessellata (Roxb.) Hook. ex G.Don,ORCHIDACEAE,,Rasna,Herb,W,Root,AFSU,60
-926,Vateria indica L.,DIPTEROCARPACEAE,Saraja,"Mandadhup; a, Dupa",Tree,C/W,Root,AFSU,60
-927,Ventilago madraspatana Gaertn.,RHAMNACEAE,,Pitti,Climber,W,"Root, Stem",AFS,60
-928,Vernonia cinerea (L.) Less.; [= V. conyzoides DC.],ASTERACEAE,Sahadevi,Dandotpala,Herb,W,"Leaf, Root,; Fruit (Seed)",AFSTU,60
-929,Vetiveria zizanioides (L.) Nash,POACEAE,Usira,"Lavancha,; Khas,; Vettiver",Herb,W/C,Root,AFHSTU,60
-930,Vigna mungo (L.) Hepper; [= Phaseolus mungo L.],FABACEAE,,Urd,Herb,C,Fruit (Seed),AFS,60
-931,Vigna radiata (L.) R.Wilczek; [= Phaseolus radiatus L.],FABACEAE,,Masha,Herb,C,"Root, Fruit; (Seed)",AF,60
-932,Vigna sublobata (Roxb.) Babu & Sharma; [= V. radiata (L.) Wilez; var. sublobata (Roxb.) Verdc.],FABACEAE,,Masaparni,Herb,C,"Root,; Fruit (Seed)",AS,60
-933,Vigna vexillata (L.) A.Rich.,FABACEAE,,Kattupayar,Herb,W,Root,A,60
-934,Viola canescens Wall.,VIOLACEAE,,Banafasha,Herb,W,Flower,F,60
-935,Viola cinerea Boiss.,VIOLACEAE,,Banafasha; phool,Herb,W,"Flower, Leaf,; Whole Plant",A,60
-936,Viola odorata L.,VIOLACEAE,,Banafasha,Herb,W/C,Flower,AFHU,60
-937,Viola pilosa Bi.,VIOLACEAE,,Banafasha,Herb,W,Flower,AF,60
-938,Vitex agnus-castus L.,VERBENACEAE,,Chaste tree,Shrub,I,Fruit,HU,60
-939,Vitex altissima L.f.,VERBENACEAE,Names,Myrole,Tree,W,Whole Plant,FSTag **,60
-940,Vitex negundo L.,VERBENACEAE,"Nirgundi,; Renuka",Neergundi,Shrub,W/C,"Fruit, Leaf,; Root, Fruit; (Seed)",AFSTU,61
-941,Vitis vinifera L.,VITACEAE,Draksa,Draksh,Climber,C,Fruit,AFSTU,61
-942,Walsura trifoliata (A.Juss.) Harms,MELIACEAE,,Valsura,Tree,W,Whole Plant,FS,61
-943,Wedelia chinensis (Osbeck) Merr.; [ = W. calendulacea (L.) Less.],ASTERACEAE,,Bhangra,Herb,C/W,Leaf,AF,61
-944,Withania coagulans Dunal,SOLANACEAE,,Paneer- dodi,Shrub,W,Fruit,AU,61
-945,Withania somnifera (L.) Dunal,SOLANACEAE,Asvagandha,"Ashwagandha,; Asgandha",Shrub,C/W,"Root,; Whole Plant",AFHSTU,61
-946,Woodfordia fruticosa (L.) Kurz,LYTHRACEAE,Dhataki,"Dhaiphool,; Dhavadiphool",Shrub,W,"Bark (Stem),; Flower",AFSTU,61
-947,Wrightia arborea (Dennst.) Mabb.,APOCYNACEAE,,Kutajah,Tree,W,"Fruit (Seed),; Bark (Stem)",AF,61
-948,Wrightia tinctoria (Roxb.) R.Br.,APOCYNACEAE,,Indrajau,Tree,C/W,"Leaf,; Fruit (Seed),; Bark (Stem)",AFHSU,61
-949,Xylia xylocarpa (Roxb.) Taub.,MIMOSACEAE,,Trumullu,Tree,W,Bark (Stem),AF,61
-950,Zanthoxylum acanthopodium DC.,RUTACEAE,,"Kabab; Khandan,; Tummad",Shrub,W,Fruit,ASU,61
-951,Zanthoxylum armatum DC.,RUTACEAE,"Tejovati,; Tumburu",Tejbal,Shrub,W,Fruit,A,61
-952,Zanthoxylum nitidum (Roxb.) DC.,RUTACEAE,,Kumkumada,Shrub,W,Bark (Stem),F,61
-953,Zanthoxylum rhetsa (Roxb.) DC.,RUTACEAE,,"Tejbal,; Triphala",Tree,W,"Fruit, Flower",AFS,61
-954,Zea mays L.,POACEAE,Names,Maize,Herb,C,Fruit (Seed); Tag **,AFHSUW,61
-955,Zehneria umbellata (Klein) Thwaites,CUCURBITACEAE,,Karuvikkilann Climber,W,Root,FS,,62
-956,Zingiber officinale Roscoe,ZINGIBERACEAE,"Sunthi,; Ardraka","Soonth, Sonth Herb",C,"Root,",AFSU,,62
-957,Zingiber zerumbet (L.) Roscoe ex Sm.,ZINGIBERACEAE,,Narkachur Herb,C/W,Fruit,AFSU,,62
-958,Ziziphus jujuba (L.) Gaertn.; [= Z. mauritiana Lam.],RHAMNACEAE,Kola,Ber Tree,C/W,Fruit,AFSTU,,62
-959,Ziziphus sativa Gaertn.; [= Z. jujuba Mill.; Z. vulgaris Lam.],RHAMNACEAE,,Unnab Tree,W,Fruit,AFU,,62
-960,Ziziphus xylopyrus (Retz.) Willd.,RHAMNACEAE,Ghonta,Ghontaphala Shrub,W,Fruit,AFS,,62
+botanical,family,trade_name,source,med_sys_tag
+Abelmoschus esculentus (L.) Moench; [= Hibiscus esculentus L.],MALVACEAE,Bhendi,C,AFU
+Abelmoschus ficulneus (L.) Wight & Arn.; [= Hibiscus ficulneus L.],MALVACEAE,Kattu vendai,W,AF
+Abelmoschus moschatus Medik.; [= Hibiscus abelmoschus L.],MALVACEAE,"Muskdana,; Latakasturi",C/W,AFU
+Abies pindrow (Royle ex D.Don) Royle,PINACEAE,"Granthiparna,; Talisa",W,A
+Abies spectabilis (D.Don) Spach; [ = Abies webbiana Wall. ex D.Don],PINACEAE,Talispatra,W,A
+Abrus precatorius L.,FABACEAE,"Chirmati,; Chinnoti,; Gundumani",W,AFHSTU
+Abutilon indicum (L.) Sweet; subsp. guineense (Schumach.) Borss.; var. indica Benth.,MALVACEAE,Tutti,W,AFSTU
+Acacia caesia (L.) Willd.,MIMOSACEAE,"Incha, Indu,; Singapore; pattai",W,AF
+Acacia catechu (L.f.) Willd.,MIMOSACEAE,Katha,W,AFSTU
+Acacia chundra (Roxb. ex Rottler) Willd.,MIMOSACEAE,Khadir,W,ATag **
+Acacia farnesiana (L.) Willd.,MIMOSACEAE,Irmed,C,AFS
+Acacia nilotica (L.) Willd. ex Delile; subsp. indica (Benth.) Brenan; [ = A. arabica (Lam.) Willd.; var. indica Benth.],MIMOSACEAE,"Babul, Keekar",W/C,AS
+Acacia sinuata (Lour.) Merr.; [ = A. concinna (Willd.) DC.],MIMOSACEAE,Chikakai; (Shikakai),W,AF
+Acalypha fruticosa Forssk.,EUPHORBIACEAE,Cinni,W,FS
+Acalypha indica L.,EUPHORBIACEAE,"Khokali,; Arishtamanjari",W,AFHS
+Achillea millefolium L.,ASTERACEAE,Brinjasif,C/W,HSUW
+Achyranthes aspera L.,AMARANTHACEAE,Apamarga,W,AFHSTU
+Achyranthes bidentata Blume,AMARANTHACEAE,Apamarga,W,AF
+Aconitum balfourii Stapf,RANUNCULACEAE,Vatsnabha,W,A
+Aconitum bisma (Ham.) Rapaics,RANUNCULACEAE,Bikhma,W,AF
+Aconitum chasmanthum Stapf,RANUNCULACEAE,Vatsnabha,W,AH
+Aconitum deinorrhizum Stapf,RANUNCULACEAE,Vatsnabha,W,A
+Aconitum falconeri Stapf,RANUNCULACEAE,Vatsnabha,W,A
+Aconitum ferox Wall. ex Ser.,RANUNCULACEAE,"Vachhnag, Atis",W,AFHSU
+Aconitum heterophyllum Wall. ex Royle,RANUNCULACEAE,"Atis, Aconite,; Ativish",W,AFSTU
+Aconitum laciniatum Stapf,RANUNCULACEAE,Kalo Bikhmo,W,F
+Aconitum spicatum (Bruhl) Stapf,RANUNCULACEAE,Bish,W,F
+Aconitum violaceum Jacq. ex Stapf,RANUNCULACEAE,Mitha Telia,W,F
+Acorus calamus L.,ARACEAE,"Vach, Vaj,; Calamus roots,; Vekhand",C/W,AFSTUWTag **
+Actiniopteris dichotoma Mett.,ACTINIOPTERI-; DACEAE,Mayurpankhi,W,AS
+Adansonia digitata L.,BOMBACACEAE,Gorakimli,C,AFSU
+Adenanthera pavonina L.,MIMOSACEAE,"Kamboji,; Tamaraka",C/W,AFS
+Adenia hondala (Gaertn.) W.J. de Wilde,PASSIFLORACEAE,Vidari,W,
+Adhatoda beddomei C.B.Clarke; [= Justicia beddomei (C.B.Clarke),ACANTHACEAE,Vasa,W,A
+Adhatoda zeylanica Medik.; [ = A. vasica Nees; Justicia adhatoda L.],ACANTHACEAE,Adusa,W/C,AFHS
+Adiantum capillus-veneris L.,ADIANTACEAE,"Hanraj,; Parshoshan",W,FU
+Adiantum philippense L.f.; [ = A. lunulatum Burm.],ADIANTACEAE,Hansraj,W,AF
+Adiantum venustum D.Don.,ADIANTACEAE,Hansraj,W,F
+Aegle marmelos (L.) Correa,RUTACEAE,"Bael, Belgiri,; Bilva, Vilvam",C/W,AFHSTU
+Aerva lanata (L.) Juss.,AMARANTHACEAE,Cheroola,W,AFS
+Aesculus indica (Wall. ex Cambess),HIPPOCASTANA-; CEAE,"Indian Horse; Chesnut,; Bankhor; pangar",C/W,F
+Ageratum conyzoides L.,ASTERACEAE,"Visamustih,; Goat weed,; Visadodi",W,AFS
+Aglaia elaeagnoidea (A.Juss.) Benth.,MELIACEAE,Priyangu,W,AFTag **
+Aglaia odorata Lour.,MELIACEAE,"Pishthparni,; Pithavan",C,F
+Ailanthus excelsa Roxb.,SIMAROUBACEAE,Aralu,C/W,AFS
+Ailanthus triphysa (Dennst.) Alston,SIMAROUBACEAE,Guggula Dhup,C/W,AF
+Ainsliaea aptera DC.,ASTERACEAE,Sathjalani,W,F
+Ajuga bracteosa Benth.,LAMIACEAE,Nilkanti,W,F
+Alangium salvifolium (L.f.) Wang.,ALANGIACEAE,"Ankodah,; Dirghakilaka",W,AFST
+Albizia amara (Roxb.) Boivin,MIMOSACEAE,Krishnasirish,W,AFS
+Albizia lebbeck (L.) Benth.,MIMOSACEAE,"Vaakaveru,; Shirish",C/W,AFSU
+Albizia marginata Merr.,MIMOSACEAE,Sirisah,W,A
+Albizia odoratissima (L.f.) Benth.,MIMOSACEAE,Sirisa,C/W,AFS
+Alhagi pseudalhagi (M.Bieb.) Desv.,FABACEAE,"Durlabha,; Yavasaka",W,ASTU
+Allium ampeloprasum L.,LILIACEAE,"Leek,; Levant garlic",C,FW
+Allium cepa L.,LILIACEAE,Onion,C,AFHS-TUW
+Allium sativum L.,LILIACEAE,"Lasan,; Velathulli",C,AFHS-TUW
+Allium stracheyi Baker,LILIACEAE,Jambu,W,A
+Aloe barbadensis Mill.; [ = A. vera (L.) Burm.f.],LILIACEAE,"Ghikanvar,; Kumari",C/W,AFSTUW
+Alpinia calcarata (Haw.) Roscoe,ZINGIBERACEAE,"Chittaratha,; Aratha",C,A
+Alpinia galanga (L.) Willd.,ZINGIBERACEAE,"Kulinjan,; Rasnamool,; Koshtakulinjan",C/W,AFSUTag **
+Alpinia officinarum Hance,ZINGIBERACEAE,Khulinjan,I,ASU
+Alstonia scholaris (L.) R.Br.,APOCYNACEAE,Saptaparnachal; (Satveen),W,AFHSTU
+Alstonia venenata R.Br.,APOCYNACEAE,"Anadana,; Raja - adana",W,AF
+Alternanthera sessilis (L.) R.Br. ex DC.,AMARANTHACEAE,Ponnanganni,W,AFST
+Althaea officinalis L.,MALVACEAE,"Khatmi,; Resha-Khatami,; Shilaras",C/W,AFSU
+Altingia excelsa Noronha,ALTINGIACEAE,Silaras,C/W,AFSU
+Amaranthus paniculatus L.,AMARANTHACEAE,"Chaulai,; Ramdana",C,AS
+Amaranthus spinosus L.,AMARANTHACEAE,"Cholai,; Bhandira",W,AFST
+Amaranthus tricolor L.; [ = A. gangeticus L.; A. mangostanus L.],AMARANTHACEAE,"Lal sag,; Alpamarisa",C,AS
+Ambroma augusta (L.) L.f.,STERCULIACEAE,Ulatkambal,C/W,AFH
+Ammannia baccifera L.,LYTHRACEAE,Kurand ghas,W,AS
+Ammi majus L.,APIACEAE,Ammi,C,FW
+Amomum aromaticum Roxb.,ZINGIBERACEAE,"Bengal; cardamom,; Brhdela",W,A
+Amomum kepulaga Sprague,ZINGIBERACEAE,Elachi,I,F
+Amomum subulatum Roxb.,ZINGIBERACEAE,Elachi Badi,C/W,AFSTU
+Amorphophallus dubius Blume,ARACEAE,Surom (subs.) Herb,Root,
+Amorphophallus paeoniifolius (Dennst.),ARACEAE,"Arsghna, Herb; Surankand,; Zaminkand",Root (Corm),
+Amorphophallus sylvaticus (Roxb.),ARACEAE,Tubers Herb,Root (Tuber),
+Anacardium occidentale L.,ANACARDIACEAE,Kaju Tree,"Bark (Stem),",
+Anacyclus pyrethrum (L.) Cass.,ASTERACEAE,Akarkara Herb,"Stem, Root",
+Anamirta cocculus (L.) Wight & Arn.,MENISPERMACEAE,Rakthala Climber,"Fruit, Resin",
+Anchusa strigosa Labill.,BORAGINACEAE,Gaozaban Herb; (subs.),"Leaf, Fruit",
+Andrographis paniculata (Burm.f.),ACANTHACEAE,Kalmegh Herb,Whole Plant,
+Anethum graveolens L.; [ = A.sowa Roxb. ex Flem.],APIACEAE,Sowa Herb,"Fruit (Seed),",
+Angelica archangelica L.,APIACEAE,"Conda, Angelica Herb",Root,
+Angelica glauca Edgew.,APIACEAE,"Chuara, Choru Herb",Root,
+Anisomeles malabarica (L.) R.Br. ex Sims,LAMIACEAE,Karimthumpa Shrub,Root,
+Anodendron paniculatum A.DC.,APOCYNACEAE,"Sarakkodi, Climber; Kavali",Whole Plant,
+Anogeissus latifolia (Roxb. ex DC.),COMBRETACEAE,Dhawada Tree,Gum,
+Anthemis nobilis L.,ASTERACEAE,"Babuna, Herb; Gulbabuna","Flower, Leaf",Tag **
+Anthocephalus cadamba (Roxb.)Miq.,RUBIACEAE,Kadam,C/W,AS
+Aphanamixis polystachya (Wall.) Parker; [ = Amoora rohituka (Roxb.) Wight,MELIACEAE,"Rakta Rohida,; Rohitak",C/W,AHS
+Aphananthe cuspidata (Blume) Planch.,ULMACEAE,Peenari,W,F
+Apium graveolens L.,APIACEAE,"Ajmoda, Celery",C/W,AHSTU
+Aquilaria agallocha Roxb.,THYMELAEACEAE,"Agar kala, Akil",I/W,AFSTU
+Arctium lappa L.,ASTERACEAE,Phaggarmul,W,FH
+Areca catechu L.,ARECACEAE,Supari,C,AFHS-TUW
+Argemone mexicana L.,PAPAVERACEAE,"Brhami Dandi,; Kusme Beeja",W,AFHSU
+Argyreia speciosa (L.f.) Sweet; [ = A. nervosa (Burm.f.) Bojer],CONVOLVULACEAE,"Samudraphal,; Samundra Sokh",W,ASTU
+Aristolochia bracteolata Lam.,ARISTOLOCHIACEAE,Kidamari,W,AFS
+Aristolochia indica L.,ARISTOLOCHIACEAE,Ishwar mool,W,AFSTU
+Aristolochia rotunda L,ARISTOLOCHIACEAE,Zarawand,W,FU
+Aristolochia tagala Cham.,ARISTOLOCHIACEAE,Aadutheen-; dapalai,W,F
+Arnebia benthamii (Wall. ex G.Don),BORAGINACEAE,Gauzaban,W,A
+Arnebia euchroma (Royle) I.M.Johnst.,BORAGINACEAE,Gaozaban,W,FTag **
+Arnebia nobilis Rech.f.,BORAGINACEAE,Ratan jyothi /; Ratan jot,I,FU
+Artabotrys hexapetalus (L.f.) Bhandari,ANNONACEAE,"Harichampa,; Madanmast",C/W,AF
+Artemisia absinthium L.,ASTERACEAE,Afsanteen,W,AHSUW
+Artemisia maritima L. ex Hook.f.,ASTERACEAE,"Ajavayana,; Chauhara, Cina",W,AHW
+Artemisia nilagirica (C.B.Clarke) Pamp.,ASTERACEAE,Thavanam,W,AF
+Artemisia pallens Wall. ex DC.,ASTERACEAE,Davna,C,FS
+Artemisia parviflora Roxb. ex D.Don,ASTERACEAE,Pati,W,F
+Artocarpus heterophyllus Lam.,MORACEAE,"Kathal, Panasa Tree",C/W,AFS
+Arundo donax L.,POACEAE,"Dhamana,; Baranal, Nala",W,AHS
+Asparagus adscendens Roxb.,LILIACEAE,"Musali; safed,; Satawar",W,ASU
+Asparagus racemosus Willd.,LILIACEAE,"Shatavari,; Satawar",W/C,AFSTU
+Asparagus sarmentosus L.,LILIACEAE,"Satawa; ri,; Shakak; ul",W,ASU
+Atalantia monophylla (L.) DC.,RUTACEAE,Kurandubeeja,W,AFS
+Atropa acuminata Royle ex Lindl.,SOLANACEAE,Jharka,C/W,FU
+Atropa belladonna L.,SOLANACEAE,Belladona,I,AHSUW
+Atylosia goensis (Dalzell) Dalzell,FABACEAE,Katttupaayar,I/C,AF
+Atylosia scarabeoides (L.) Benth.,FABACEAE,Ban kulatha,W,F
+Azadirachta indica A.Juss.,MELIACEAE,Neem,C/W,AFHSTU
+Azima tetracantha Lam.,SALVADORACEAE,Shrub,"Leaf, Bark",
+Bacopa monnieri (L.) Wettst.,SCROPHULARIACEAE Brahmi,Herb,Whole Plant,
+Balanites aegyptiaca (L.) Delile,BALANITACEAE,Tree,Semi-Ripe,
+Balanophora fungosa J.R.Forst.,BALANOPHORACEAE,Herb,Whole Plant,
+Baliospermum montanum (Willd.),EUPHORBIACEAE Danti,Shrub,Root,
+Bambusa arundinacea (Retz.) Willd.,BAMBUSEACEAE,Tree,Leaf,
+Bandeiraea simplicifolia (M.Vahl ex,CAESALPINIACEAE,Climber,Fruit (Seed),
+Barleria cristata L.,ACANTHACEAE,Shrub,Whole Plant,
+Barleria prionitis L.,ACANTHACEAE Sahacara,Shrub,Whole Plant,
+Barleria strigosa Willd.,ACANTHACEAE Nilajhint,Shrub,Whole Plant,
+Barringtonia acutangula (L.) Gaertn.,BARINGTONIACEAE Nicula,Tree,Fruit,
+Barringtonia racemosa (L.) Spreng.,BARINGTONIACEAE,Tree,Fruit (Seed),
+Basella alba L.,BASELLACEAE,Climber,Whole Plant,Tag **
+Bauhinia malabarica Roxb.,CAESALPINIACEAE,"Amlosa,; Asmantaka",W,AS
+Bauhinia purpurea L.,CAESALPINIACEAE,Sonachal,C/W,AFST
+Bauhinia racemosa Lam.,CAESALPINIACEAE,Kachnar,W,ASU
+Bauhinia tomentosa L.,CAESALPINIACEAE,"Kachnar,; Kanchana",W,AFS
+Bauhinia vahlii Wight & Arn.,CAESALPINIACEAE,Adda,W,AF
+Bauhinia variegata L.,CAESALPINIACEAE,Kachnar,C/W,AFS
+Benincasa hispida (Thunb.) Cogn.,CUCURBITACEAE,Kumpalan; ga pacha,C,AFSTU
+Berberis aristata DC.,BERBERIDACEAE,"Daruhal; di,; Rasnaja; n,",W,AFSTU
+Berberis asiatica Roxb.,BERBERIDACEAE,"Daru; Zarisuk; haldi,; Rasout",W,AFU
+Berberis chitria Lindl.,BERBERIDACEAE,Daruhal; di/; Rasaut,W,AF
+Berberis lycium Royle,BERBERIDACEAE,"Dar-hald,; Chitra",W,AU
+Berberis tinctoria Lesch.,BERBERIDACEAE,Daruhal; di/; Rasaut,W,F
+Berberis umbellata Wall. ex G.Don,BERBERIDACEAE,Daruhal; di/; Rasaut,W,F
+Bergenia ciliata (Haw.) Sternb.,SAXIFRAGACEAE,Pashnabheda,W,A
+Bergenia stracheyi (Hook.f. &,SAXIFRAGACEAE,Pashnabheda,W,A
+Betula utilis D.Don,BETULACEAE,Bhojpatra,W,AST
+Biophytum sensitivum (L.) DC.,OXALIDACEAE,Mukkutti,W,AFS
+Bistorta amplexicaulis (D.Don) Greene,POLYGONACEAE,Anjubar,W,FTag **
+Bixa orellana L.,BIXACEAE,"Sindhuri,; Latkan dana,; Annato",C,AFHS
+Blepharis edulis auct. non (Forssk.) Pers.; [ = B.persica (Burm.f.) O.Kuntze.],ACANTHACEAE,Uttangan,I,AU
+Boerhavia diffusa L.,NYCTAGINACEAE,"Punarnava; raktha,",W,AFHSU
+Boerhavia repanda Willd.,NYCTAGINACEAE,"Cattaranai,; Varakanputu",W,S
+Bombax ceiba L.; [ = B. malabaricum DC.],BOMBACACEAE,Mochras,W,AFS
+Borassus flabellifer L.,ARECACEAE,"Palmyra palm,; Tad",C/W,AFSTU
+Borreria hispida (L.) Schum.; [ = Spermacoce hispida L.],RUBIACEAE,Thaarthaaval,W,AF
+Boswellia carteri Birdw.,BURSERACEAE,Sali guggul,I,F
+Boswellia frereana Birdw.,BURSERACEAE,African elemi,I,F
+Boswellia serrata Roxb.,BURSERACEAE,"Kandur,; Guggul, Dupa",W,ASU
+Brassica alba (L.) Rabenh,BRASSICACEAE,"Safed rai,; Kadugu",C,AHSU
+Brassica juncea (L.) Czern.,BRASSICACEAE,"Kaduku,; Sasuve Bili",C,AFS
+Briedelia montana (Roxb.) Willd.,EUPHORBIACEAE,"Gondni, Geia",W,AF
+Buchanania lanzan Spreng.,ANACARDIACEAE,Chironji,W,AFSTUTag **
+Bunium persicum (Boiss.) B.Fedtsch.,APIACEAE,"Kala-zirah,; Shah-zirah",C/W,AF
+Butea monosperma (Lam.) Taub.; [ = B. frondosa Willd.],FABACEAE,"Palash, Tesu; phool, Lac",W,AFSTU
+Butea superba Willd.,FABACEAE,"Phul kesu,; Tesu phool",W,AFS
+Caccinia crassifolia (Vent.) C.Koch,BORAGINACEAE,Gaozaban,I,F
+Cadaba fruticosa (L.) Druce; [ = C. indica Lam.],CAPPARACEAE,"Kodham,; Pulika",W,FS
+Caesalpinia bonduc (L.) Roxb.,CAESALPINIACEAE,"Sagargota,; Gatran,; Nataphal",W,AFHS
+Caesalpinia digyna Rottler.,CAESALPINIACEAE,"Teripods,; Teri Beej",W,A
+Caesalpinia pulcherrima (L.) Sw.,CAESALPINIACEAE,"Gultora,; Krishnachura,; Peacock flower",C,AFS
+Caesalpinia sappan L.,CAESALPINIACEAE,Pathimugam,C,AFSU
+Cajanus cajan (L.) Millsp.,FABACEAE,"Arhar, Tur",C,AFST
+Calamus rotang L.,ARECACEAE,"Pirapan; Kizhangu, Bet",W,AFSU
+Callicarpa macrophylla Vahl,VERBENACEAE,Priyangu,W,AT
+Calophyllum apetalum Willd.,CLUSIACEAE,Cherupunna,W,FS
+Calophyllum inophyllum L.,CLUSIACEAE,Punnappoovu,C/W,AFSTag **
+Calotropis gigantea (L.) R.Br.,ASCLEPIADACEAE,Erukkin veru,W,AFHSTU
+Calotropis procera (Aiton) W.T.Aiton,ASCLEPIADACEAE,Akada Phool,W,AFSTU
+Calycopteris floribunda (Roxb.) Poir.,COMBRETACEAE,Pullaaniyila,W,AF
+Canarium strictum Roxb.,BURSERACEAE,"Dhoop,; Raldhoop",W,AFS
+Canella alba Murray,CANELLACEAE,Kiliyuram; pattai,I,F
+Cannabis sativa L.,CANNABINACEAE,"Maya, Bhang",C/W,AFHS-TUW
+Canscora decussata Schult. & Schult.f.,GENTIANACEAE,"Shankhuli,; Nakuli,; Shankahpuspi",W,ASU
+Capparis divaricata Lam.,CAPPARACEAE,Turatti,W,S
+Capparis moonii Wight,CAPPARACEAE,Rudanti,W,A
+Capparis roxburghii DC.,CAPPARACEAE,Rudanti (Subs.),W,A
+Capparis sepiaria L.,CAPPARACEAE,Karungurai,W,AFS
+Capparis spinosa L.,CAPPARACEAE,Kanther,W,AU
+Capparis zeylanica L. [ = C.horrida L.],CAPPARACEAE,Sivappu Boomi; Sakkarai; Kizhangu,W,AFS
+Cardiospermum halicacabum L.,SAPINDACEAE,Mudakkathan,W,AFHSU
+Carduus nutans L.,ASTERACEAE,"Musk thistle,; Scotch thistle",W,F
+Careya arborea Roxb.,LECYTHIDACEAE,"Vaaikumbha,; Kumbhiphoo",W,AFSTag **
+Carica papaya L.,CARICACEAE,"Papaya, Papita",C,AFHSUW
+Carissa carandas L.,APOCYNACEAE,"Christ’s thorn,; Karanda",W/C,AFS
+Carthamus tinctorius L.,ASTERACEAE,Kusum phool,C,AFSTU
+Carum carvi L.,APIACEAE,"Shahjeera,; Kalazira",C/W,AHSTU
+Carum strictocarpum C.B.Clarke,APIACEAE,Kalzira (Subs.),W,F
+Casearia esculenta Roxb.,FLACOURTIACEAE,Saptarangi,W,A
+Cassia absus L.,CAESALPINIACEAE,Chaksoo,W,AFSTU
+Cassia alata L.; [ = Senna alata (L.) Roxb.],CAESALPINIACEAE,"Dadmurdan; , Dat-ka-; pat",C/W,AFS
+Cassia angustifolia Vahl; [ = C. senna L.; Senna alexandrina,CAESALPINIACEAE,"Sona patta,; Sonamukhi,; Senna",C,AHSUW
+Cassia auriculata L.; [ = Senna auriculata (L.) Roxb.],CAESALPINIACEAE,Avarai,W,AFS
+Cassia fistula L.,CAESALPINIACEAE,"Amalthasphali,; Sonari chal",W/C,AFSTU
+Cassia obtusifolia L.; [ = Senna obtusifolia (L.) H.S.Irwin,CAESALPINIACEAE,"Panevar, Taga",C/W,A
+Cassia occidentalis L.; [ = Senna occidentalis (L.) Link],CAESALPINIACEAE,"Kasondi,; Kasmardah",W,AFST
+"Cassia siamea Lam.; [ = Senna siamea (Lam.) H.S,Irwin",CAESALPINIACEAE,Kassod,C,FSTag **
+Cassia sophera L.; [ = Senna sophera (L.) Roxb.],CAESALPINIACEAE,"Kasodi,; Ponthakaram",W,AFHS
+Cassia tora L.; [ = Senna tora (L.) Roxb.],CAESALPINIACEAE,"Chakoda Beeja,; Pawad,; Chankuda",W,AFSTU
+Cassytha filiformis L.,CASSYTHACEAE,"Astimu,; Akash Bel",W,AFS
+Catharanthus roseus (L.) G.Don; [ = Vinca rosea L.],APOCYNACEAE,"Sadabahar,; Vinca rosea",C,AFW
+Catunaregum spinosa (Thunb.) Tirveng.; [= Xeromphis spinosa (Thunb.) Keay ],RUBIACEAE,"Mainphal,; Maggare",W,A
+Cayratia carnosa (Wall.) Gagnep.,VITACEAE,"Amal ved,; Amal bel, Gutt",W,AF
+Cayratia pedata (Lam.) A.Juss.,VITACEAE,"Suvaha,; Gummatige",W,AFS
+Cedrus deodara (Roxb.) G.Don,PINACEAE,Devdar,W,AFSTU
+Ceiba pentandra (L.) Gaertn.; [ = Eriodendron pentandrum (L.) Kurz],BOMBACACEAE,Safed semal,C,AFSU
+Celastrus paniculatus Willd.,CELASTRACEAE,"Malkangani,; Jyothismathi,; Bavanthi beeja",W,AFSTU
+Celtis philippensis Blanco,ULMACEAE,Kakamushti; (Subs.),W,FS
+Centaurea behen L.,ASTERACEAE,Behmen Safed,I,FU
+Centella asiatica (L.) Urb.,APIACEAE,"Brahmi,; Brahmi booti",C/W,AFHSTW
+Centratherum anthelminticum (L.),ASTERACEAE,Kali zeeri,W,AHSUTag **
+Cephaelis ipecacuanha (Brot.) A.Rich.; [= Psychotria ipecacuanha (Brot.),RUBIACEAE,Ipecacuanha,C,HSUW
+Chaerophyllum villosum Wall. ex DC.,APIACEAE,Mithi patis,W,F
+Chlorophytum arundinaceum Baker,LILIACEAE,Safed musali,C/W,AFTU
+Chlorophytum borivilianum Santapau,LILIACEAE,Safed musali,C/W,F
+Chlorophytum tuberosum Baker,LILIACEAE,Safed musali,W/C,AS
+Chonemorpha fragrans (Moon) Alston,APOCYNACEAE,Murva,W,AF
+Chrozophora prostrata Dalzell,EUPHORBIACEAE,Neelkanthi,W,AU
+Chrysanthemum cinerariifolium,ASTERACEAE,Pyrethrum,C,FW
+Cichorium endivia L.,ASTERACEAE,"Kasini, Endive",C,A
+Cichorium intybus L.,ASTERACEAE,Kasani,C/W,AFHSUW
+Cinchona ledgeriana Bern.,RUBIACEAE,Cinchona,I,FW
+Cinchona officinalis L.,RUBIACEAE,Cinchona bark,I,AHU
+Cinnamomum camphora (L.) Presl,LAURACEAE,Kapur,C,AFHS-TUW
+Cinnamomum cassia Nees ex Blume,LAURACEAE,Dalchini,I,ASTU
+Cinnamomum glaucenscens (Nees),LAURACEAE,Sugandhakabila,W,F
+Cinnamomum macrocarpum Hook.f.,LAURACEAE,Lavang,W,AFS
+Cinnamomum malabathrum (Lam.),LAURACEAE,"Dalchini,; Tejpatta",W,F**
+Cinnamomum sulphuratum Nees,LAURACEAE,"Dalchini,; Tejpatta",W,F
+Cinnamomum tamala (Buch.-Ham.),LAURACEAE,"Tamal patra,; Tejpatra",W,AFSTU
+Cinnamomum verum J.Presl; [= C. zeylanicum Blume],LAURACEAE,Dalchini,C,AFH
+Cinnamomum wightii Meisn.,LAURACEAE,"Dalchini,; Tejpatta",W,AS
+Cipadessa baccifera (Roth) Miq.,MELIACEAE,Adusoge soppu,W,FS
+Cissampelos pareira L.; var. hirsuta (Ham. ex DC.) Forman,MENISPERMACEAE,Pahad mool,W,AFHSTUW
+Cissus quadrangularis L.,VITACEAE,Pirandai,W,AFS
+Citrullus colocynthis (L.) Schrad.,CUCURBITACEAE,"Indrayan,; Indravaruni",W,AFHSTU
+Citrullus lanatus (Thunb.) Matsumara,CUCURBITACEAE,"Terbuz,; water melon",C,AH
+Citrus acida Pers.,RUTACEAE,Limbu,C,S
+Citrus aurantifolia (Christm. &,RUTACEAE,Limbu,C,AFSU
+Citrus aurantium L.,RUTACEAE,Narangi,C,AFSU
+Citrus bergamia Risso.,RUTACEAE,"Limbu chaal,; Jambeeram",C/W,AU
+Citrus limon (L.) Burm.f.,RUTACEAE,Lemon,C,AFHTUW
+Citrus medica L.,RUTACEAE,"Matunga,; Mahnimbu",W,ASU
+Citrus reticulata Blanco,RUTACEAE,Santra,C,ATU
+Clausena dentata (Willd.) Roem.,RUTACEAE,Mahasindur,W,FS
+Cleistanthus collinus (Roxb.) Benth.,EUPHORBIACEAE,"Kutaja, Garbar",W,AS
+Clematis gouriana Roxb. ex DC.,RANUNCULACEAE,Morvel Climber,Whole Plant,
+Clematis triloba Heyne,RANUNCULACEAE,Morvel Climber,Whole Plant,
+Cleome gynandra L.; [= Gynandropsis pentaphylla (L.) DC.],CLEOMACEAE,"Cat whiskers, Herb; Ridhi",Whole Plant,
+Cleome viscosa L.,CLEOMACEAE,Nai kadugu Herb,"Root,",
+Clerodendrum indicum (L.) Kuntze,VERBENACEAE,Bharangi Shrub,Root,
+Clerodendrum inerme (L.) Gaertn.,VERBENACEAE,"Nir-Notsjil, Shrub; Sangan-; Kuppi,; Agnimanth",Whole Plant,
+Clerodendrum phlomidis L.f.,LAMIACEAE,Arnimul Shrub,"Leaf, Root",
+Clerodendrum serratum (L.) Moon,VERBENACEAE,Bharangi Shrub,Bark (Root),
+Clitoria ternatea L.,FABACEAE,Kajli Climber,Root,
+Coccinia grandis (L.) Voigt; [ = C. indica W. & A.],CUCURBITACEAE,"Bhrngaraj, Climber; Bimb",Whole Plant,
+Cocculus hirsutus (L.) Theob.,MENISPERMACEAE,Vasanvel Climber,Leaf,
+Cochlospermum religiosum (L.) Alston,COCHLOSPERMA-; CEAE,Katira Tree,Gum,
+Cocos nucifera L.,ARECACEAE,Nariyal Tree,Flower,
+Coffea arabica L.,RUBIACEAE,Coffee Shrub,Fruit (Seed),
+Coffea travancorensis Wight & Arn.,RUBIACEAE,"Katu-mulla, Shrub; Tsjeru-",Root,
+Coix lacryma-jobi L.,POACEAE,"Sankhlu, Dabhir Herb",Fruit,
+Colchicum luteum Baker,LILIACEAE,Suranjan Herb,"Root,",
+Coleus zeylanicus (Benth.) Cramer,LAMIACEAE,Valakah Herb,Whole Plant,
+Combretum decandrum Roxb. non Jacq.,COMBRETACEAE,Korakukundi Climber,Fruit (Seed),**
+Commiphora caudata (Wight & Arn.),BURSERACEAE,"Kiluvai,; Kondamavu",W,FS
+Commiphora myrrha (T.Nees) Engl.,BURSERACEAE,Hirabol,I,ATU
+Commiphora wightii (Arn.) Bhandari; [ = C. mukul (Hook. ex Stocks) Engl.],BURSERACEAE,"Guggul, Guggulu",I/W,A
+Convolvulus arvensis L.,CONVOLVULACEAE,Chandvel; (Prasarni),C/W,AHSU
+Convolvulus microphyllus Sieb.,CONVOLVULACEAE,Shankapushpi,W,A
+Convolvulus scammonia L.,CONVOLVULACEAE,Saqmunia,I,HSU
+Coptis teeta Wall.,RANUNCULACEAE,Mamira,C/W,ASU
+Corallocarpus epigaeus (Rottl. & Willd.),CUCURBITACEAE,"Akasgaddah,; Patalagaruda",W,AST
+Corchorus depressus Stocks,TILIACEAE,Bahuphali,W,AU
+Corchorus trilocularis L.,TILIACEAE,Arenukam,W,A
+Cordia dichotoma G.Forst.,CORDIACEAE,Lasora,W/C,AFSU
+Cordia monoica Roxb.; var. wallichii (G.Don) C.B.Clarke,CORDIACEAE,Narivari,W,FS
+Cordia wallichii G.Don; [= Cordia obliqua Willd.; var. wallichii (G.Don) C.B.Clarke ],CORDIACEAE,Sapistan,W,FTag **
+Cordyceps sinensis (Berk.) Saac,CLAVICIPITACEAE,Yarsa Gomba,W,F
+Coriandrum sativum L.,APIACEAE,"Dhaniya,; Dhana",C,AFSTU
+Corylus jacquemontii Decne.,BETULACEAE,Findak (Subs.),W,F
+Coscinium fenestratum (Gaertn.) Colebr.,MENISPERMACEAE,"Maramanjal,; Daruharidra",W,AFST
+Costus speciosus (J.Konig) Sm.,COSTACEAE,"Kustha,; Koshtum, Kuth",W,AFSU
+Crataegus oxyacantha L.,ROSACEAE,Hawthorn,C/W,FH
+Crataeva religiosa G.Forst.; [ = C. nurvula Buch. - Ham.],CAPPARACEAE,"Varun chhal,; Varunah",W/C,AFS
+Crocus sativus L.,IRIDACEAE,Kesar,C,AFHSTU
+Crotalaria juncea L.,FABACEAE,"Dhanahari,; Patashan, Sann",C/W,AFSU
+Crotalaria verrucosa L.,FABACEAE,"Banshana,; San, Sanpushpi",W,AFS
+Croton oblongifolius Roxb.,EUPHORBIACEAE,Bhutankusha,W,AFST
+Croton tiglium L.,EUPHORBIACEAE,"Jamlghota,; Japala",C,AFHSTU
+Cryptocoryne spiralis (Retz.),ARACEAE,Natti - ati -; Vasa,W,FS
+Cryptolepis buchananii R.Br. ex,PERIPLOCACEAE,"Medaksinghi,; Sariva",W,AFS
+Cucumis melo L.,CUCURBITACEAE,"Kakadi beej,; Magaj Kharbuja",C/W,AFSTU
+Cucumis sativus L.,CUCURBITACEAE,Beej Kheera,C,AFSTU**
+Cucumis trigonus Roxb.,CUCURBITACEAE,Jangli-Indrayan,C,AFS
+Cucurbita maxima Duch.,CUCURBITACEAE,Pumpkin,C,AFSU
+Cucurbita moschata (Lam.),CUCURBITACEAE,"Kaddu, Kumrah",C,FSU
+Cuminum cyminum L.,APIACEAE,"Jeera,; Shahjeera",C,AFSTU
+Curculigo orchioides Gaertn.,HYPOXIDACEAE,"Kali; musali,; Musli",W,AFSTU
+Curcuma amada Roxb.,ZINGIBERACEAE,Amba haldi; shiya,C/W,AFSU
+Curcuma angustifolia Roxb.,ZINGIBERACEAE,Tikhur,C/W,AFSU
+Curcuma aromatica Salisb.,ZINGIBERACEAE,"Kasturi; manjal,; arishna,",C/W,AFSU
+Curcuma caesia Roxb.,ZINGIBERACEAE,"Nar-; Kapu-kachri; kachura,; Kala-haldi",W,F
+Curcuma longa L.,ZINGIBERACEAE,"Arishna, Haldi,; Kari manjal",C,AFHSTU
+Curcuma zerumbet Roxb.; [= C. zedoaria (Christm.) Roscoe],ZINGIBERACEAE,"Kachur,; Kachari",C/W,T
+Cuscuta reflexa Roxb.,CONVOLVULACEAE,"Aftimoon,; Tukhme-; Kasus",W,AFSU
+Cyathula prostrata (L.) Blume,AMARANTHACEAE,Kadalaavanakkin; veru,W,AF
+Cycas circinalis L.,CYCADACEAE,Madhana; kama poo,W,AFS**
+Cyclea peltata (Lam.) Hook.f. &,MENISPERMACEAE,Paada kizhangu,W,AFS
+Cymbopogon citratus (DC.) Stapf,POACEAE,"Serai, Rohisha",C/W,AFSU
+Cymbopogon flexuosus (Nees,POACEAE,Lemon grass,W,F
+Cymbopogon martinii (Roxb.) Wats,POACEAE,Ginger grass,W,AST
+Cynodon dactylon (L.) Pers.,POACEAE,"Durva, Karuka",C,AFHSTU
+Cyperus esculentus L.,CYPERACEAE,Musta,W,AU
+Cyperus rotundus L.,CYPERACEAE,"Nagarmotha,; Mustha",W,ASTU
+Cyperus scariosus R.Br.,CYPERACEAE,Nagarmotha,W,AFSU
+Dactylorhiza hatagirea (D.Don.) Soo,ORCHIDACEAE,Salampanja,W,AFSTU
+Dalbergia latifolia Roxb.,FABACEAE,Kala Sheeshan,W,AFS
+Dalbergia sissoo DC.,FABACEAE,Shisham,C/W,ASTU
+Datura arborea L.,SOLANACEAE,"Datura,; Umathi",I,H
+Datura innoxia Mill.,SOLANACEAE,Datura,W,A
+Datura metel L.,SOLANACEAE,Duttura,W,ASW
+Datura stramonium L.,SOLANACEAE,"Datura,; Umathi",W,AFHSU
+Daucus carota L. var. sativa DC.,APIACEAE,Gaajar Beej,C,AFSU
+Decalepis hamiltonii Wight & Arn.,PERIPLOCACEAE,Magali,W,AFS
+Delonix elata (L.) Gamble,CAESALPINIACEAE,Sanchal,C,AFS**
+Delphinium denudatum Wall. ex,RANUNCULACEAE,"Jadwar,; Jadavar kath,; Nirbishi",W,AU
+Dendrobium nobile Lindl.,ORCHIDACEAE,-,W,F
+Dendrophthoe falcata (L.F) Blume,LORANTHACEAE,Bandaka,W,AF
+Derris scandens (Roxb.) Benth.,FABACEAE,Gonj,W,FS
+Desmodium gangeticum (L.) DC.,FABACEAE,"Salparni,; Prasniparni",W,AFHSTU
+Desmodium pulchellum (L.) Benth.,FABACEAE,"Lodhra, Kheri",W,A
+Desmodium triflorum (L.) DC.,FABACEAE,Hamsapapdi,W,AFS
+Desmostachya bipinnata (L.) Stapf,POACEAE,Dharbha,W,ASTU
+Dichrostachys cinerea (L.) Wight & Arn. MIMOSACEAE,,Virtuli,W,AFST
+Didymocarpus pedicellata R.Br.,GESNERIACEAE,"Shilapushpi,; Pathar phori,; Pasanphodi",W,A
+Dillenia pentagyna Roxb.,DILLENIACEAE,Nagkesaram,W,AFS
+Dioscorea alata L.,DIOSCOREACEAE,Sewalli kodi,C/W,AFS
+Dioscorea bulbifera L.,DIOSCOREACEAE,Varahi kand,C/W,AFSTU
+Dioscorea deltoidea Wall. ex Griseb.,DIOSCOREACEAE,Shingli mingli,C/W,FW
+Dioscorea oppositifolia L.,DIOSCOREACEAE,Sarpahya,W,AFS
+Dioscorea pentaphylla L.,DIOSCOREACEAE,Kanta alu,W,AFS
+Diospyros buxifolia (Blume) Hiern,EBENACEAE,Elichevian,W,F
+Diospyros ebenum Koenig,EBENACEAE,Abnus,W,FSU
+Diospyros lotus L.,EBENACEAE,Amlok,W,F
+Diospyros melanoxylon Roxb.,EBENACEAE,Tendu,W,AFSUTag **
+Diplocyclos palmatus (L.) C.Jeffrey,CUCURBITACEAE,Shivling beej,W,AFS
+Dodonaea angustifolia (L.f.) Benth.,SAPINDACEAE,"Aliar,; jangli-anar",W,F
+Dolichos biflorus L.; [= Macrotyloma uniflorum (Lam.),FABACEAE,"Kulthi, Muthira",C,AFSTU
+Dorema ammoniacum D.Don,APIACEAE,Ushaq,I,AHU
+Drosera peltata Smith,DROSERACEAE,Drosera,W,FS
+Dryobalanops aromatica Gaertn.,DIPTEROCARPA-; CEAE,Baraas; (Bhimseni; kapoor),I,A
+Dryopteris filix-mas (L.) Schott,DRYOPTERIDACEAE,"Shield fern,; Hirvi",W,HS
+Drypetes roxburghii (Wall.) Hurus.; [= Putranjiva roxburghii Wall.],EUPHORBIACEAE,Putrjivak,C/W,AFS
+Dysoxylum malabaricum Bedd. ex Hiern,MELIACEAE,Vellakil,W,AFS
+Ecbolium viride (Forssk.) Alston; [= E. linneanum Kurz],ACANTHACEAE,"Udajati,; Sahacarah",W,AF
+Echinops echinatus Roxb.,ASTERACEAE,Utkanta,W,AFSU
+Eclipta prostrata (L.) L.; [= E. alba Hassk.],ASTERACEAE,Bhringaraj,W,AFS
+Elaeocarpus sphaericus (Gaertn.) K.Schum.; [ = E. ganitrus Roxb.],ELAEOCARPACEAE,Rudraksh,C/W,AF**
+Elephantopus scaber L.,ASTERACEAE,Gjihiva,W,AFS
+Elettaria cardamomum Maton,ZINGIBERACEAE,"Elachi Chhoti,; Ilaychi",C/W,A
+Eleutherococcus senticosus,ARALIACEAE,Ginseng,I,W
+Embelia ribes Burm.f.,MYRSINACEAE,"Vaividang,; Vidanga",W,AFHSTU
+Embelia tsjeriam-cottam (Roem.,MYRSINACEAE,Vaividang,W,AF
+Emblica officinalis Gaertn.; [= Phyllanthus emblica L.],EUPHORBIACEAE,"Amla, Anwala",W/C,AFSTU
+Emilia sonchifolia (L.) DC.,ASTERACEAE,Muyalcheviyan,W,AFS
+Enicostemma axillare (Lam.) Raynal; [ = E. littorale non Blume;,GENTIANACEAE,Mamejava,W,AFS
+Entada pursaetha DC.; [= E. rheedii Spreng.;,MIMOSACEAE,Yaanai; Kazharchi; Kaai,W,F**
+Ephedra equisetina Bunge,EPHEDRACEAE,Somalatha; (Subs.),W,F
+Ephedra gerardiana Wall. ex J.A. Mey,EPHEDRACEAE,Somalatha,W,AH
+Ephedra intermedia Schr. & Mey,EPHEDRACEAE,Somalatha,W,F
+Ephedra sinica Stapf,EPHEDRACEAE,Ephedra,W,F
+Equisetum arvense L.,EQUISETACEAE,"Bottle brush,; Horse tail",W,FW
+Erythrina suberosa Roxb.,FABACEAE,"Pangra,; Vellaimurukku",W,FS
+Erythrina variegata L.; [= E. indica Lam.],FABACEAE,Murikkila,C/W,AFST
+Eucalyptus citriodora Hook.,MYRTACEAE,Eucalyptus,C,F
+Eucalyptus globulus Labill,MYRTACEAE,Eucalyptus,C,AFHSW
+Eulaliopsis binata (Retz.) C.E.Hubb.,POACEAE,Bal vaja,W,A
+Eulophia campestris Wall. ex Lindl.,ORCHIDACEAE,Salam mishri,W,AU
+Euphorbia antiquorum L.,EUPHORBIACEAE,Kallippalaveru,W,AFSU**
+Euphorbia hirta L.,EUPHORBIACEAE,"Dudhi, Dudhika",W,AFSU
+Euphorbia neriifolia L.,EUPHORBIACEAE,"Pattankisend,; Nanda",C/W,AFSTU
+Euphorbia nivulia Buch.-Ham.,EUPHORBIACEAE,Sehunda,W,AFS
+Euphorbia thymifolia L.,EUPHORBIACEAE,Choti - Dudhi,W,AFU
+Euphorbia tirucalli L.,EUPHORBIACEAE,Modu kalli,C,AFSU
+Euphorbia tortilis Rottler ex Ainslie,EUPHORBIACEAE,"Tirugakalli,; Vajratunda",W,AS
+Euryale ferox Salisb. ex K.D.Koenig,NYMPHAEACEAE,Phoolmakhana,C/W,ASU
+Evolvulus alsinoides (L.) L.,CONVOLVULACEAE,"Shankhavali,; Shankhpush",W,AFSTU
+Excoecaria agallocha L.,EUPHORBIACEAE,"Agaru, Tejbala",W,AFS
+Fagonia cretica L.,ZYGOPHYLLACEAE,Dhamasa,W,ATU
+Ferula assa-foetida L.,APIACEAE,"Hingu, Hing",I,AFHSU
+Ferula foetida (Bunge) Regel.,APIACEAE,Hing hira; (Baandani),I,ASTU
+Ferula jaeschkeana Vatke,APIACEAE,"Hingupatri,",W,A
+Ferula narthex Boiss.,APIACEAE,Sahasravedhi,W,AFHU
+Ficus arnottiana (Miq.) Miq.,MORACEAE,Kallaltholi,W,AFS
+Ficus benghalensis L.,MORACEAE,"Vadachhal,; Vatathwak",W/C,AFHSTU
+Ficus carica L.,MORACEAE,"Anjeer,; Anjoora",C,AFSU**
+Ficus gibbosa Blume,MORACEAE,Ithitholi,W,FS
+Ficus mollis Vahl,MORACEAE,Kaaduatthi,W,F
+Ficus racemosa L.,MORACEAE,"Umbar chal,; Lakh pipal",C/W,AFSTU
+Ficus religiosa L.,MORACEAE,"Lakh pipal,; Arayaalin tholi",C/W,AFHSTU
+Ficus tsiela Roxb. ex Buch.-Ham.,MORACEAE,Plaksha,W,AFS
+Ficus tsjakela Burm.f.,MORACEAE,"Pilkhan,; Kapitanah",W,A
+Flacourtia indica (Burm.f.) Merr.,FLACOURTIACEAE,Kattar,W,AFST
+Flacourtia jangomas (Lour.) Raeusch.,FLACOURTIACEAE,"Talish pattar,; Brahmi; Talispatar",W,AS
+Flemingia chappar Buch.-Ham.,FABACEAE,Salpan (Subs.),W,F
+Flemingia grahamiana Wight & Arn.,FABACEAE,Warrus/ Varus,W,F
+Flemingia macrophylla (Willd.),FABACEAE,Varrus / Varus,W,AF
+Flemingia semialata Roxb. ex,FABACEAE,Salpan (Subs.),W/C,F
+Flickingeria fugax (Rchb.f.) Seidenf.,ORCHIDACEAE,Jivanti,W,F
+Flickingeria macraei (Lindl.) Seidenf.; [ = Ephemerantha macraei (Lindl.),ORCHIDACEAE,Jivanti,W,AF
+Flickingeria nodosa (Dalz.) Seidenf.; [= Dendrobium macraei,ORCHIDACEAE,Jivanti,W,AF
+Flueggea microcarpa Blume,EUPHORBIACEAE,"Dalme, Patali",W,ATag **
+Foeniculum vulgare Gaertn.,APIACEAE,"Badiyan; Khatal, Saunf; (Variyali)",C,AFSTUW
+Fritillaria roylei Hook.,LILIACEAE,Kakoli,W,A
+Fumaria indica (Hauskn.) Pugsley; [ = F. parviflora Lam.],FUMARIACEAE,Shahtara,W,A
+Fumaria officinalis L.,FUMARIACEAE,"Pittapapdo; ghas, Pitpapra",I,AFU
+Garcinia gummi-gutta (L.) N.Robson; [ = G. cambogia (Gaertn.) Desr.],CLUSIACEAE,"Kokam,; Kodampuli",C/W,A
+Garcinia indica (Dup.) Choisy,CLUSIACEAE,"Kokam,; Cambogie",W/C,AT
+Garcinia morella (Gaertn.) Desr.,CLUSIACEAE,Kadukaai puli,W,AFHSTU
+Garcinia pedunculata Roxb. ex,CLUSIACEAE,Amlavetasa,W,AT
+Gardenia gummifera L.f.,RUBIACEAE,"Dekamalli,; Dikamali",W,AFSTU
+Gardenia resinifera Roth,RUBIACEAE,Dikamali,W,AS
+Garuga pinnata Roxb.,BURSERACEAE,"Ghoghar,; Kharpat",W,AFST
+Gentiana kurroo Royle,GENTIANACEAE,"Trahimaan,; Kadu, Katuki",W,ATU
+Geophila reniformis D.Don; [ = G. repens (L.) I.M.Johnst],RUBIACEAE,Kakamaci,W,FTag **
+Girardinia heterophylla Decne.; [ = G. diversifolia (Link) Friis],URTICACEAE,"Gaddanelli,; Anachoriyan",W,F
+Givotia rottleriformis Griff. ex Wight,EUPHORBIACEAE,Polki,W,FS
+Glinus lotoides L.,AIZOACEAE,Gandhi-Buti,W,AS
+Glinus oppositifolius (L.) A.DC.,AIZOACEAE,Ushnasundara,W,AFS
+Gloriosa superba L.,LILIACEAE,Kalihari,C/W,AFSTU
+Glossocardia bosvallea (L.f.) DC.,ASTERACEAE,Parpataka,W,A
+Glycosmis arborea (Roxb.) DC.,RUTACEAE,"Potali,; Kupilah",W,A
+Glycyrrhiza glabra L.,FABACEAE,"Mulathi,; Jeshtimadhu,; Gulegafis",I,AFSTUW
+Glycyrrhiza uralensis DC.,FABACEAE,"Mulathi,; Jeshtimadhu,; Gulegafis",I,F
+Gmelina arborea Roxb.,LAMIACEAE,"Ghambar chal,; Shivan; (Ghambari); (Chal)",W/C,AFST
+Gmelina asiatica L.,VERBENACEAE,Kapas Beej,W,AFS
+Gossypium arboreum L.,MALVACEAE,Kapas,C,AFSU
+Gossypium herbaceum L.,MALVACEAE,Kapas,C,AFHSTU
+Gossypium hirsutum L.,MALVACEAE,Kapas,C,ASW
+Gouania microcarpa DC.,RHAMNACEAE,Sinhanbali,W,F**
+Grewia elastica Royle; [= Grewia asiatica L. var. vestita Mast.],TILIACEAE,Phalsa chhaal,C/W,A
+Grewia microcos L.,TILIACEAE,Asolin,W,F
+Grewia subinaequalis DC.; [ = Grewia asiatica Mast. var. asiatica],TILIACEAE,-,W,AFSTU
+Gymnema sylvestre R.Br. ex Schult.,ASCLEPIADACEAE,"Gudmar,; Sirukurinja",W,AFHSTU
+Habenaria edgeworthii Hook.f.,ORCHIDACEAE,Riddhi,W,A
+Hedychium acuminatum Roscoe,ZINGIBERACEAE,Kantapalci,W,F
+Hedychium coronarium J.Konig,ZINGIBERACEAE,"Garland; flower,; Common; Ginger Lily",W,S
+Hedychium spicatum Sm.; [ = Oldenlandia corymbosa L.],ZINGIBERACEAE,Kapoor kachri,W,AFTU
+Hedyotis corymbosa (L.) Lam.,RUBIACEAE,Pitpapra,W,AF
+Hedyotis herbacea L.,RUBIACEAE,Pippapada,W,AFH
+Hedyotis puberula (G.Don) Arn.; [ = Oldenlandia umbellata L.],RUBIACEAE,Impural,W,AF
+Helianthus annuus L.,ASTERACEAE,Sunflower,C,AHSU
+Helicteres isora L.,STERCULIACEAE,"Murudshing; ,; Marodphali",W,AFSU
+Heliotropium indicum L.,BORAGINACEAE,Thekkada,W,AFSU
+Helleborus niger L.,RANUNCULACEAE,Katuka Rohini,I,AFHSU
+Hemidesmus indicus (L.) R.Br.,PERIPLOCACEAE,"Anatmool,; Sariwa,",W,AFSTUTag **
+Hemionitis arifolia (Burm.) Moore,HEMIONITIDACEAE,"Akhukarni,; Pattsjivi-; Maravara",W,AF
+Heracleum candolleanum (Wight &,APIACEAE,Kattumalli; (Subs.),W,F
+Heracleum lanatum Michx.,APIACEAE,Krandel,C/W,F
+Heracleum rigens DC.,APIACEAE,Cittrelam,W,FS
+Hibiscus rosa-sinensis L.,MALVACEAE,"Jashwanti,; Jaswand, Japa",C,AFSU
+Hibiscus surattensis L.,MALVACEAE,Ranbhindi,W,FS
+Hibiscus tiliaceus L.,MALVACEAE,Parutti,W,AFS
+Hippophae rhamnoides L.,ELAEAGNACEAE,Sea Buckthorn,W,F
+Hippophae salicifolia D.Don,ELAEAGNACEAE,Sea Buckthorn,C/W,F
+Holarrhena pubescens (Buch.-Ham.),APOCYNACEAE,"Inderjao; Kadwa,; Kudacha; l, Kutja",W,AFH
+Holoptelea integrifolia (Roxb.) Planch.,ULMACEAE,Aavitholi,W,AFS
+Holostemma ada-kodien Schult.; [ = H. annulare (Roxb.) K.Schum.;,ASCLEPIADACEAE,Jeevanti,W,AFTag **
+Homonoia riparia Lour.,EUPHORBIACEAE,"Serna,; Pashanbheda; ka",W,AS
+Hordeum vulgare L.,POACEAE,Jaw,C,AFSTU
+Hugonia mystax L.,LINACEAE,Kamsamrah,W,AFS
+Hybanthus enneaspermus (L.f.),VIOLACEAE,"Ratanpurus,; Padmacarini",W,AFS
+Hydnocarpus kurzii (King) Warb.,FLACOURTIACEAE,"Nirati,; Chaulmoogra",W,AFS
+Hydnocarpus pentandrus,FLACOURTIACEAE,Marotti,W,AFS
+Hydrocotyle javanica Thunb.,APIACEAE,Brahma; manduki,W,F
+Hygrophila schulli (Buch.-Ham.); [= H. auriculata (Schumach.) Heine;,ACANTHACEAE,Tal makhana,W,AF
+Hygroryza aristata (Retz.),POACEAE,Janli dal,W,AF
+Hymenodictyon excelsum (Roxb.) Wall.,RUBIACEAE,Kuthan,W,AF
+Hyoscyamus muticus L.,SOLANACEAE,Parasikaya,I,A
+Hyoscyamus niger L.,SOLANACEAE,Khursani; Ajwain,C/W,AHSUW
+Hypericum perforatum L.,HYPERICACEAE,St. John’s; wart,W,HW
+Hyssopus officinalis L.,LAMIACEAE,"Zoofa, Jupha",C/W,FUTag **
+Ichnocarpus frutescens (L.) W.T.Aiton,APOCYNACEAE,"Dudhi, Sariva",W,AFST
+Illicium griffithii Hook.f. & Thomson,MAGNOLIACEAE,Star; Anise; (Subs.),W,AS
+Illicium verum Hook.f.,MAGNOLIACEAE,Star Anise,I,AS
+Imperata cylindrica (L.) Raeusch.,POACEAE,Thatch grass,W,AFS
+Indigofera tinctoria L.,FABACEAE,"Akika, Avuri",C,AFHSTU
+Inula racemosa Hook.f.,ASTERACEAE,"Pushkarmool,; Pokharmool",C,AFT
+Inula royleana DC.,ASTERACEAE,Pushkarmool,W,A
+Ipomoea mauritiana Jacq.; [ = I. digitata L.],CONVOLVULACEAE,Palmudhukkan; kizhangu,W,AF
+Ipomoea nil (L.) Roth,CONVOLVULACEAE,Kaladana,W,AFS
+Ipomoea obscura Ker-Gawl.,CONVOLVULACEAE,Laksmana,W,AFS
+Ipomoea pes-caprae (L.) R.Br.; [ = I. biloba Forssk.],CONVOLVULACEAE,Dopatilata,W,AFS
+Ipomoea pes-tigridis L.,CONVOLVULACEAE,Pulichuvadan,W,AFS
+Ipomoea petaloidea Choisy,CONVOLVULACEAE,Vrddhadaru,W,F
+Ipomoea reptans Poir.,CONVOLVULACEAE,Kalashaka,C/W,A
+Ipomoea sepiaria Roxb.,CONVOLVULACEAE,Thiruthaali,W,AFS
+Iris germanica L.,IRIDACEAE,Puskaramulam Herb,W,AHTU
+Ixora coccinea L.,RUBIACEAE,Thechippoovu,W,AFS
+Jasminum angustifolium (L.) Thunb.,OLEACEAE,Ban-mallika,C/W,AFS
+Jasminum grandiflorum L.,OLEACEAE,Chameliphool,C/W,AFSTUTag **
+Jasminum officinale L.,OLEACEAE,Ban chameli,C/W,AFHU
+Jasminum sambac (L.) Aiton,OLEACEAE,"Mallika,; Mogra",C/W,AFSTU
+Jatropha curcas L.,EUPHORBIACEAE,Nepalam seed,C,AFHSU
+Juglans regia L.,JUGLANDACEAE,Akhrot,C/W,AFHSTU
+Juniperus communis L.,CUPRESSACEAE,Hauber,W,AHTUW
+Juniperus macropoda Boiss.,CUPRESSACEAE,Hapusa,W,A
+Jurinea macrocephala DC.; [ = J. dolomiaea Boiss.],ASTERACEAE,Dhoop,W,AF
+Justicia gendarussa Burm.f.; [ = Gendarussa vulgaris Nees],ACANTHACEAE,Nilanirgundi,C/W,AFSU
+Kaempferia galanga L.,ZINGIBERACEAE,"Kachora,; Narkachur,; Kapoor Kachri; No 1",C,AFS
+Kaempferia rotunda L.,ZINGIBERACEAE,Bhuichampa,C,AFS
+Kalanchoe laciniata (L.) DC.,CRASSULACEAE,Hemsagara,W,AS
+Kedrostis rostrata (Rottler) Cogn.,CUCURBITACEAE,Arunkovai,W,FS
+Lagenaria siceraria (Molina) Standley,CUCURBITACEAE,Bottlegourd,C,AFSTU
+Lagerstroemia speciosa (L.) Pers.,LYTHRACEAE,Jarul,W,AFTag **
+Lagotis glauca Gaertn.,SCROPHULARIACEAE,Kutki; (Adulterant),W,F
+Lallemantia royleana (Wall. ex,LAMIACEAE,Tukhm; e-; Balanga,C/W,FU
+Lannea coromandelica (Houtt.) Merr.,ANACARDIACEAE,Jingini,C/W,AF
+Lantana camara L.,VERBENACEAE,Lantana,W,A
+Lathyrus sativus L.,FABACEAE,"Lakh, Khesari",C,AHU
+Laurus nobilis L.,LAURACEAE,Hub-ul-ghar,I,FU
+Lavandula stoechas L.,LAMIACEAE,Ustakuthus,W,U
+Lawsonia inermis L.,LYTHRACEAE,"Henna,; Mehndi",C,AFSTU
+Lepidium sativum L.,BRASSICACEAE,"Kurassaan; i, Halam",W,AFSU
+Leptadenia reticulata (Retz.),ASCELPIADACEAE,Jivanti,W,AFST
+Leucas aspera (Willd.) Link,LAMIACEAE,"Dronpushpi,; Dharanpushpi",W,AFHS
+Lilium polyphyllum D.Don,LILIACEAE,Kakoli,W,A
+Limonia acidissima L.; [ = Feronia elephantum Correa;,RUTACEAE,Wood apple,C/W,AFSU
+Linum usitatissimum L.,LINACEAE,Alsi,C,AFHSTUW
+Litsea glutinosa (Lour.) C.B.Rob.; [ = L. chinensis Lam.],LAURACEAE,"Menda Lakadi,; Naramamidi,; Maidachal",W,AFS
+Lobelia nicotianaefolia Roth ex,LOBELIACEAE,Lobelia leaves,W,AFS
+Lodoicea maldivica (J.F.Gmel.),ARECACEAE,Dariai narial,I,AFU
+Luffa acutangula (L.) Roxb.,CUCURBITACEAE,Tori,C,AFHSTUTag **
+Luffa aegyptiaca Mill.,CUCURBITACEAE,Ghia- tori,C,AFU
+Luffa echinata Roxb.,CUCURBITACEAE,Loofah,W,AFHST
+Luvunga scandens (Roxb.) Buch.-Ham.,RUTACEAE,Sugandh-; kokila,W,A
+Lycopodium clavatum L.,LYCOPODIACEAE,Foxtail,W,FH
+Lygodium flexuosum (L.) Sw.,LYGODIACEAE,Tsjeru-Valli-; Panna,W,F
+Madhuca indica J.F.Gmel.; [ = Bassia latifolia Roxb.],SAPOTACEAE,Madhuka,W,AFST
+Madhuca longifolia (J.Konig ex L.),SAPOTACEAE,Mahua phool,C/W,AFS
+Mahonia leschenaultia (Wall. ex,BERBERIDACEAE,Daruharidra,W,F
+Malaxis acuminata D.Don,ORCHIDACEAE,Jivak,W,A
+Malaxis muscifera (Lindl.) Kuntze,ORCHIDACEAE,Rsabhakah,W,A
+Mallotus philippensis (Lam.) Mull.-Arg.,EUPHORBIACEAE,Kameela,W,AFHSU
+Malva sylvestris L.,MALVACEAE,"Khawaj; i,; Khubaj",C/W,FU
+Mammea suriga (Buch.-Ham.,CLUSIACEAE,Nagakesr(subs.; i; ),W,AF
+Mangifera indica L.,ANACARDIACEAE,Aamba,C/W,AFHSTU
+Mappia foetida (Wight) Miers; [ = Nothapodytes nimmoniana,ICACINACEAE,Ghanera,W,W
+Maranta arundinacea L.,MARANTACEAE,Citalapattiri,C,AFS
+Marsdenia roylei Wight,ASCLEPIADACEAE,Murva,W,A
+Marsdenia tenacissima (Roxb.) Moon,ASCELPIADACEAE,Nishod sufed,W,A**
+Marsdenia volubilis (L.f.) T.Cooke; [ = Wattakaka volubilis (L.f.) Stapf;,ASCELPIADACEAE,Murva,W,A
+Marsilea quadrifolia L.,MARSILEACEAE,Cupatiya,W,AS
+Martynia annua L.,PEDALIACEAE,Kaknasa,W,AFS
+Maytenus emarginata (Willd.),CELASTRACEAE,Kattangi,W,F
+Meconopsis aculeata Royle,PAPAVERACEAE,Kunda,W,F
+Medicago sativa L.,FABACEAE,Alfalfa,C,AHUW
+Melastoma malabathricum L.,MELASTOMATACEAE,"Palore,; Nakkukaruppa; n",W,AFS
+Melia azedarach L.,MELIACEAE,Bakayan phal,W/C,AFSTU
+Melocanna bambusoides Trin.,POACEAE,Bansalochan,W,F
+Mentha aquatica L.,LAMIACEAE,Watermint,I,F
+Mentha arvensis L.,LAMIACEAE,"Pudina,; Podina pati",C,AFSUW
+Mentha piperita L.,LAMIACEAE,"Menthol,; Peppermint",C,HUW
+Mentha viridis (L. ) L.,LAMIACEAE,Pudino,C,F
+Merremia emarginata (Burm.f.),CONVOLVULACEAE,"Underkarni,; Mooshkarni",W,AS
+Merremia hederacea (Burm.f.) Hallier f.,CONVOLVULACEAE,Kudici-Valli,W,FS
+Merremia tridentata (L.) Hallier f.,CONVOLVULACEAE,Prasarani,W,AFS
+Merremia umbellata (L.) Hallier f.,CONVOLVULACEAE,Jalap (Subs.),C,FTag **
+Mesua ferrea L.; [= M. nagassarium (Burm.f.) Kosterm.],CLUSIACEAE,"Nagakesari,; Nagkeshar",W,AFHSTU
+Michelia champaca L.,MAGNOLIACEAE,Champaka,C/W,AFST
+Micromeria biflora (Buch.-Ham. ex,LAMIACEAE,Indian Wild; Thyme,W,F
+Mimosa pudica L.,MIMOSACEAE,"Lajwanti,; Lajjalu",W,AFST
+Mimusops elengi L.,SAPOTACEAE,Bakul,W/C,AFSTU
+Mirabilis jalapa L.,NYCTAGINACEAE,Gulabash,C/W,AFSU
+Mitragyna parvifolia (Roxb.) Korth.,RUBIACEAE,Kadamb,C/W,AFS
+Mollugo cerviana Ser.,MOLLUGINACEAE,Parpata,W,AFS
+Mollugo pentaphylla L.,MOLLUGINACEAE,Turapoondu,W,FS
+Momordica charantia L.,CUCURBITACEAE,Karela,C,AFSTU
+Momordica dioica Roxb. ex Willd.,CUCURBITACEAE,Jangli-Kareli,W/C,AFS
+Monochoria hastaefolia C.Presl.,PONTEDERIACEAE,Karinkuvalum,W,A
+Monochoria vaginalis (Burm.f.) C.Presl.,PONTEDERIACEAE,Kolai,W,AFS
+Morchella esculenta Pers.,HELVELLACEAE,Guchhi,W,F
+Morinda citrifolia L.,RUBIACEAE,Canary wood,W,AFS
+Morinda pubescens J.E.Sm.; [= M. coreia Buch.-Ham.;,RUBIACEAE,Manjanatthi,W,AFS
+Moringa concanensis Nimmo ex,MORINGACEAE,Kadvo saragvo Tree,W,AST**
+Moringa oleifera Lam.,MORINGACEAE,Sahenjana; chaal,C/W,AFSTU
+Morus alba L.,MORACEAE,Toot,C,AFSU
+Mucuna pruriens (L.) DC.; [= M.prurita Hook.],FABACEAE,"Kavach beej,; Kaunch beej",W/C,AFHSTU
+Mucuna utilis Wall. ex Wight; [= M. cochinchinensis Cheval],FABACEAE,"Kavach beej,; Kaunch (Subs.)",C,F
+Mukia maderaspatana (L.) M.Roem.; [= Melothria maderaspatana (L.) Cogn.],CUCURBITACEAE,Mucukkai,W,AFS
+Murraya koenigii (L.) Spreng.,RUTACEAE,Kariveppila,C/W,AFS
+Musa sapientum L.,MUSACEAE,Kadali,W,ASU
+Mussaenda frondosa L.,RUBIACEAE,Sribati,W,AFS
+Myrica esculenta Buch.-Ham. ex D.Don; [ = M. nagi auct. non Thunb.],MYRICACEAE,"Katphala,; Kaiphal",W,AFSTU
+Myristica dactyloides auct. non Gaertn.,MYRISTICACEAE,"Jaiphal,; Javatri,; Nutmeg",W,AS
+Myristica fragrans Houtt.,MYRISTICACEAE,Jatipatre,C,AFHSTUW
+Myristica malabarica Lam.,MYRISTICACEAE,Rampatri,W,AFS
+Myrsine africana L.,MYRSINACEAE,"Chapra,; Vidanga",W,AU
+Myrsine capitellata Wall.,MYRSINACEAE,Vidanga (Subs.) Shrub,W,F
+Myxopyrum serratulum A.W.Hill,OLEACEAE,Chathuravalli,W,AF
+Nardostachys jatamansi (D.Don) DC.,VALERIANACEAE,"Balchad,; Jatamansi",W,ATag **
+Naringi crenulata (Roxb.) Nicolson,RUTACEAE,Kadunimba,W,AF
+Nelumbo nucifera Gaertn.,NELUMBONACEAE,Kamal phul,W/C,AFSTU
+Nepeta cataria L.,LAMIACEAE,Badranjboya,C/W,FUW
+Nepeta hindostana (B.Heyne ex,LAMIACEAE,Badranjboya,W,FU
+Nerium oleander L.; [ = N. indicum Mill.],APOCYNACEAE,"Oleander,; Kaner",W/C,AFH
+Nervilia aragoana Gaudich.,ORCHIDACEAE,Sthalapadma,W,A
+Nervilia plicata (Andrews) Schltr.,ORCHIDACEAE,Padmacarini,W,AF
+Nicotiana tabacum L.,SOLANACEAE,Tambaku,C,AFHSU
+Nigella sativa L.,RANUNCULACEAE,"Jeera (Black),; Kalongi",C,AFSU
+Nilgirianthus ciliatus (Nees) Bremek.; [= Strobilanthes ciliatus Nees],ACANTHACEAE,"Kurinji, Karvi",W,A
+Nilgirianthus heyneanus (Nees) Bremek.,ACANTHACEAE,Kurinji (Subs.),W,F
+Nyctanthes arbor-tristis L.,OLEACEAE,Paruatak pan,C/W,AFHS
+Nymphaea alba L.,NYMPHAEACEAE,"Neel kamal,; Neelofar",W,ASTU
+Nymphaea nouchali Burm.f.,NYMPHAEACEAE,Niloth phal,W/C,AFS
+Nymphaea stellata Willd.,NYMPHAEACEAE,Nilofar,W,AFST
+Ocimum americanum L.,LAMIACEAE,"Kali tulsi,; Bantulsi",W,AFHS
+Ocimum basilicum L.,LAMIACEAE,"Sweet basil, Herb; Kali tulsi,; Bantulsi","Leaf, Whole",
+Ocimum gratissimum L.,LAMIACEAE,Ram tulasi Shrub,Whole Plant,
+Ocimum kilimandscharicum Gurke,LAMIACEAE,Karpoora Shrub; tulasi,Whole Plant,
+Ocimum tenuiflorum L.; [= O. sanctum L.],LAMIACEAE,Tulasi Herb,"Leaf, Fruit",
+Olea dioica Roxb.,OLEACEAE,"Koli, Itala, Tree; Edala",Bark (Stem),
+Onosma bracteatum Wall.,BORAGINACEAE,Gule-Gazbaan Herb,"Flower, Leaf",
+Onosma echioides L.,BORAGINACEAE,Ratanjot Herb,Root,
+Onosma hispidum Wall. ex G.Don,BORAGINACEAE,Ratan jot Herb,Root,
+Operculina turpethum (L.) J.Silva Manso; [= Merremia turpethum (L.) Shah & Bhat],CONVOLVULACEAE,Nishoth Climber,"Root, Stem",
+Orchis mascula (L.) L.,ORCHIDACEAE,Salam misri Herb,Root,
+Origanum majorana L.,LAMIACEAE,"Gandhira, Herb; Sweet; Marjoram",Whole Plant,
+Oroxylum indicum (L.) Benth. ex Kurz,BIGNONIACEAE,"Tetuchaal, Arlu Tree",Bark,
+Orthosiphon glabratus Benth.,LAMIACEAE,Pratanika Herb,Whole Plant,
+Oryza sativa L.,POACEAE,"Aval, Herb; Akki,; Thavidu",Fruit (Grains),
+Oxalis corniculata L.,OXALIDACEAE,Puliyaarila Herb,"Whole Plant,",**
+Pachygone ovata (Poir.) Miers ex,MENISPERMACEAE,"Kadukkod; i, Pedda; Dusar tree",W,F
+Paederia foetida L.,RUBIACEAE,Prasaarani,W,A
+Paederia scandens (Lour.) Merr.,RUBIACEAE,Prasaarani,W,F
+Paeonia emodi Wall. ex Royle,PAEONIACEAE,Ud saleev,W,AU
+Panax ginseng C.A.Mey.,ARALIACEAE,Ginseng,I,W
+Panax pseudoginseng Wall.,ARALIACEAE,Ginseng,W,FHW
+Pandanus fascicularis Lam.,PANDANACEAE,"Kewada,; Ketaki",W,AF
+Papaver somniferum L.,PAPAVERACEAE,"Postdan; a,; Khaskh",C,AFHSUW
+Paris polyphylla Sm.,MELANTHIACEAE,"Daiswa; as; paris,; Svetavaca",W,A
+Parmelia kamstchadalis Ach.,PARMELIACEAE,Chadela; Dagadphool; (Subs.),W,F
+Parmelia perforata Ach.,PARMELIACEAE,Chadela; Dagadphool; (Subs.),W,AU
+Parmelia perlata (Huds.) Ach.,PARMELIACEAE,Chadela; Dagadphool; (Subs.),W,ASTU
+Passiflora foetida L.,PASSIFLORACEAE,Foul passiflora Climber,W,AFS
+Passiflora incarnata L.,PASSIFLORACEAE,Passion flower Climber,C/W,HW
+Pavonia odorata Willd.,MALVACEAE,"Moramasi,; Sugandhabala",W,AFST
+Pavonia zeylanica (L.) Cav.,MALVACEAE,Sitranmuttiver Herb,C/W,AFS
+Pedalium murex L.,PEDALIACEAE,Gokhru bada,W,AFSU
+Peganum harmala L.,ZYGOPHYLLACEAE,Harmal,W,AFSU**
+Pentapetes phoenicea L.,STERCULIACEAE,"Dopohoria,; Pushparakta",C/W,AFS
+Pergularia daemia (Forssk.) Choiv.,ASCLEPIADACEAE,Atrilal,W,AFS
+Pericampylus glaucus (Lam.) Merr.,MENISPERMACEAE,Barakkanta,W,F
+Peristrophe bicalyculata (Retz.) Nees,ACANTHACEAE,Atrilal,W,F
+Peucedanum grande (Dalzell &,APIACEAE,Baphli,W,AU
+Phoenix dactylifera L.; var. pedunculata Becc.,ARECACEAE,Khajur,C,AFSU
+Phoenix loureirii Kunth; [= P. humilis Royle; var. pedunculata Becc.],ARECACEAE,Sitreechu,W,S
+Phoenix pusilla Gaertn.; [= P. farinifera Roxb.],ARECACEAE,Chitteenth,W,AF
+Phoenix sylvestris (L.) Roxb.,ARECACEAE,Khajur,C/W,AFST
+Phyla nodiflora (L.) Greene,VERBENACEAE,"Chota-okra,; Jalpippali",W,AFS
+Phyllanthus amarus Schumach. & Thonn.; [= P. fraternus Webst.],EUPHORBIACEAE,Bhumiamla,W/C,AFS
+Phyllanthus debilis Klein ex Willd.,EUPHORBIACEAE,Bhumiamla,W,F
+Phyllanthus maderaspatensis L.,EUPHORBIACEAE,Kanocha,W,AFSU
+Phyllanthus reticulatus Poir.; [ = Kirganelia reticulata (Poir.) Baill.],EUPHORBIACEAE,Buinowla,W,AFS**
+Phyllanthus urinaria L.,EUPHORBIACEAE,Lal-Bhuin-; Anvalah,W,AS
+Phyllanthus virgatus G.Forst.,EUPHORBIACEAE,Niruri,W,F
+Phyllostachys bambusoides Sieb. & Zucc.,POACEAE,Banslochan; (Subs.),W,F
+Physalis minima L.,SOLANACEAE,"Tulatipati,; Tankari",W,AFST
+Physochlaina praealta (Decne.) Miers,SOLANACEAE,"Lal tang,; Bajar; Bang",W,F
+Picrasma quassioides (D.Don) Benn.,SIMAROUBACEAE,"Bharangi,; Kadavi",W,AU
+Picrorhiza kurroa Royle ex Benth.,SCROPHULARIACEAE,Kutaki,W,AFSTU
+Picrorhiza scrophulariiflora Pennell,SCROPHULARIACEAE,Kutki,W,A
+Pimpinella anisum L.,APIACEAE,"Ajamoda,; Badiyan; Khathayi",C/W,AHSUW
+Pinus roxburghii Sarg.,PINACEAE,Gandabiroja,W,AFSTU
+Piper betle L.,PIPERACEAE,Betle,C,AFSTU
+Piper chaba Hunter; [= P. retrofractum Vahl.],PIPERACEAE,"Kabab; chini,; Chavya,; Gajpippal",I,ATU
+Piper cubeba L.f.,PIPERACEAE,Tailed pepper,I,AFHSTUW
+Piper longum L.,PIPERACEAE,"Pipal, Thippili,; Pippali",W/C,AFSTU
+Piper nigrum L.,PIPERACEAE,"Pipal Gol,; Kalimirch",C/W,AFHSTU
+Piper peepuloides Roxb.,PIPERACEAE,Pippali (Subs.),W,F**
+Piper wallichii (Miq.) Han.-Mazz.; var. integerrima Brandis,PIPERACEAE,Renukbeej; (Nagodbee; j),W,AF
+Pistacia integerrima Stew. ex Brand.; [= P. chinensis Bunge; var. integerrima Brandis],PISTACIACEAE,Kakarsinghi,W,A
+Pistacia lentiscus L.,PISTACIACEAE,"Rumimasta; gi, Mastangi",I,ASU
+Pistacia vera L.,PISTACIACEAE,Magaj; Pista; Irani,I,AU
+Plantago lanceolata L.,PLANTAGINACEAE,"Baltanga,; English; plantain",W,AU
+Plantago major L.,PLANTAGINACEAE,Lahuriya,W,AHSU
+Plantago ovata Forssk.,PLANTAGINACEAE,Isabgol,C,AFSUW
+Plectranthus amboinicus (Lour.) Spreng.,LAMIACEAE,Patharcur,C,A
+Plectranthus barbatus Andrews; [= Coleus forskohlii (Poir.) Briq.],LAMIACEAE,Gandhira,C/W,AF
+Plectranthus vettiveroides (Jacob),LAMIACEAE,Vettiver,C,AS
+Pleurospermum angelicoides (DC.),APIACEAE,-,W,F
+Pluchea lanceolata (DC.) Oliv. & Hiern,ASTERACEAE,Rasna,W,AFT
+Plumbago indica L.,PLUMBAGINACEAE,Chitrak,C/W,AFS
+Plumbago zeylanica L.,PLUMBAGINACEAE,Chitrak,W,AFSTU
+Podophyllum hexandrum Royle; [= P. emodi Wall. ex Honig.],BERBERIDACEAE,"Bankakri,; Vanatrapu; si",W,A
+Pogostemon cablin (Blanco) Benth.,LAMIACEAE,Patchouli,C,A
+Pogostemon heyneanus Benth.,LAMIACEAE,Patchouli Herb,Whole Plant,
+Polyalthia longifolia (Sonn.) Thwaites,ANNONACEAE,Ashok (Subs.) Tree,Bark (Stem),
+Polygonatum cirrhifolium (Wall.) Royle,LILIACEAE,Meda-m-meda Herb,Root,
+Polygonatum multiflorum (L.) All.,LILIACEAE,Solomnons Herb; seal,Root,
+Polygonatum verticillatum (L.) All.,LILIACEAE,Meda-m-meda Herb,Root,
+Polygonum alatum Buch.-Ham.,POLYGONACEAE,Chonakappulu Herb,Whole Plant,
+Polygonum aviculare L.,POLYGONACEAE,Anjabar Herb,"Fruit (Seed),",
+Polygonum glabrum Willd.,POLYGONACEAE,Raktha rohitha Herb,Root,
+Polygonum punctatum Buch.-Ham.,POLYGONACEAE,Kangani- Herb; machan-; pillu,Whole Plant,
+Polygonum viviparum L.,POLYGONACEAE,"Unjwar, Anjbar Herb",Root,
+Polypodium vulgare L.,POLYPODIACEAE,Bisphaiz Herb,Root,
+Pongamia pinnata (L.) Pierre; [= P. glabra Vent.; Derris indica,FABACEAE,"Honge beej, Tree; Karanji,; pongum; seed","Bark (Stem),",
+Portulaca oleracea L.,PORTULACACEAE,Lonika Herb,"Fruit (Seed),",
+Potentilla nepalensis Hook.,ROSACEAE,Dori ghas Herb,Root,
+Pothos scandens L.,ARACEAE,Bendarli Climber,Leaf,
+Premna corymbosa Rottl. & Willd.,VERBENACEAE,Arni Shrub,"Root,",
+Premna flavescens Ham.,VERBENACEAE,Arnimool Tree,Bark (Root),
+Premna latifolia Roxb.,VERBENACEAE,Bakar Tree,"Root,",**
+Premna serratifolia L.; [= P.integrifolia L.],VERBENACEAE,Arnimool/; Agnimantha,W,AFS
+Premna tomentosa Willd.,VERBENACEAE,Sonachal,W,FS
+Prosopis cineraria (L.) Druce,MIMOSACEAE,"Jhand,; Chonkar",W,AF
+Prunus armeniaca L.,ROSACEAE,Chuli,C,AUFTW
+Prunus avium (L.) L.,ROSACEAE,"Wild cherry,; Aileya",W,A
+Prunus cerasoides D.Don,ROSACEAE,Padamkasht,C/W,AFT
+Prunus dulcis (Mill.) D.A.Webb.,ROSACEAE,"Badam,; Magaj; badam",C,AFH
+Prunus mahaleb L.,ROSACEAE,"Mahaleb,; Priyangu",C,AU
+Pseudarthria viscida (L.) Wight & Arn.,FABACEAE,Moovila,W,AFS
+Psidium guajava L.,MYRTACEAE,Gujava,C,FU
+Psoralea corylifolia L.,FABACEAE,"Bawachi,; Bavanchi",W,AFHSTU
+Pterocarpus marsupium Roxb.,FABACEAE,"Damul-; akhwain,; Vijaysar",W,AFHSTU
+Pterocarpus santalinus L.f.,FABACEAE,"Raktachandana; , Lal chandan",W,AFSTU
+Pueraria lobata (Willd.) Ohwi,FABACEAE,"Mudgapar; ni,; Surpaparni",C/W,A
+Pueraria tuberosa (Roxb. ex Willd.) DC.,FABACEAE,"Vidhari kand,; Vidari,; Patal Kumbha",W,AFTU**
+Punica granatum L. var. granatum,PUNICACEAE,"Dadam chal,; Anaar",C/W,AFHSTU
+Punica granatum L. var. nana Pers.,PUNICACEAE,Anaar,C,F
+Pyrus cydonia L.,ROSACEAE,Bee dana,C,F
+Quercus infectoria G.Olivier,FAGACEAE,Majuphal,I,AFSUW
+Rauvolfia densiflora (Wall.),APOCYNACEAE,"Sarpagandh; a, Pagal; Buti",W,F
+Rauvolfia micrantha Hook.f.,APOCYNACEAE,"Sarpagandh; a, Pagal; Buti",W,F
+Rauvolfia serpentina (L.) Benth. ex Kurz,APOCYNACEAE,"Sarpagandh; a, Pagal; Buti",W/C,AFHSTUW
+Rauvolfia tetraphylla L.,APOCYNACEAE,Barachandrika,C/W,F
+Rhaphidophora pertusa (Roxb.) Schott; [= R. laciniata (Burm.f.) Merr.;,ARACEAE,Ganeshkanda,C/W,AFS
+Rheum australe D.Don; [= R. emodi Wall. ex Meissn.],POLYGONACEAE,Revan chini,W,A
+Rheum moorcroftianum Royle,POLYGONACEAE,"Revand-chini,; Amlaparni",W,A
+Rheum palmatum L.,POLYGONACEAE,Revand-chini,W,ASUW
+Rheum spiciforme Royle,POLYGONACEAE,Amlaparni,W,A
+Rheum webbianum Royle,POLYGONACEAE,Revand-chini,W,AU
+Rhinacanthus nasutus (L.) Kurz,ACANTHACEAE,"Juyiparni,; Vitamallik; ai",C/W,AFS**
+Rhododendron anthopogon D.Don,ERICACEAE,Talisapatra,W,A
+Rhododendron campanulatum D.Don.,ERICACEAE,Cherailu,W,F
+Rhododendron lepidotum Wall.,ERICACEAE,Talisa (Subs.),W,F
+Rhus succedanea L.,ANACARDIACEAE,Karkataka; shringi,W,ASTU
+Ricinus communis L.,EUPHORBIACEAE,Arand,C/W,AFHSTUW
+Rosa alba L.,ROSACEAE,Gulseoti,C,AFSU
+Rosa centifolia L.,ROSACEAE,Gulab,C,AFSU
+Rosa damascena Mill.,ROSACEAE,"Gulab,; Rose flowers",C,AFHSU
+Rosa indica L.,ROSACEAE,Gulab,C,FS
+Roscoea alpina Royle,ZINGIBERACEAE,Kshirkakoli,W,F
+Roscoea purpurea Sm.,ZINGIBERACEAE,Kshirkakoli,W,F
+Rosmarinus officinalis L.,LAMIACEAE,Rosemary,I,FHW
+Rotula aquatica Lour.,LYTHRACEAE,Pasanbheda,W,AF
+Rourea santaloides Wight & Arn.,CONNARACEAE,Varadara,W,F
+Rubia cordifolia L.,RUBIACEAE,"Majith,; Manjist; ha",W,AFSTU
+Rubia sikkimensis Kurz,RUBIACEAE,"Naga; madder,; Moyum",W,F
+Rumex nepalensis Spreng.,POLYGONACEAE,Yellow dock; (Subs.),W,AHUW
+Ruta graveolens L.,RUTACEAE,Sadab,C,AFHSUW
+Saccharum munja Roxb.,POACEAE,Amaveru,W,AT
+Saccharum officinarum L.,POACEAE,Karumbu,C,AFHSTU
+Saccharum spontaneum L.,POACEAE,Kusha,W,AFSTU
+Salacia chinensis L.,CELASTRACEAE,Courondi,W,AFS**
+Salacia oblonga Wall. ex Wight & Arn.,CELASTRACEAE,Kadalainjil,W,FS
+Salacia reticulata Wight,CELASTRACEAE,Pitila,W,AF
+Salix tetrasperma Roxb.,SALICACEAE,Indian willow,W,AFSU
+Salvadora oleoides Decne.,SALVADORACEAE,Pilu,W,AFU
+Salvadora persica L.,SALVADORACEAE,Goni,W,AFSU
+Salvia aegyptiaca L.,LAMIACEAE,Balangoo,W,AU
+Salvia haematodes L.,LAMIACEAE,Behman,I,FU
+Salvia moorcroftiana Wall. ex Benth.,LAMIACEAE,"Tuk; marian,; Tuth",W,F
+Salvia plebeia R.Br.,LAMIACEAE,Kachora,W,AS
+Salvia sclarea L.,LAMIACEAE,Behman safed,I,U
+Santalum album L.,SANTALACEAE,Chandan,W,AFHSTUW
+Sapindus emarginatus Vahl.,SAPINDACEAE,"Reetha,; Soapnut",W/C,AFU
+Sapindus mukorossi Gaertn.,SAPINDACEAE,Aretha mota,C/W,A
+Saraca asoca (Roxb.) W.J.de Wilde,CAESALPINIACEAE,Ashoka,W,AFHS
+Sarcostemma viminale (L.) R.Br.; [ = S. acidum (Roxb.) Voigt],ASCLEPIADACEAE,"Soma,; Somalatha",W,A
+Saussurea costus (Falc.) Lipsch.; [ = S. lappa (Decne.) Sch.Bip.],ASTERACEAE,"Kuth, Uplet",C/W,AFSTU
+Saussurea hypoleuca Spreng. ex DC.,ASTERACEAE,Kuth (Subs.),W,F
+Schizachyrium exile (Hochot.) Stapf,POACEAE,Sprkka,W,A
+Schleichera oleosa (Lour.) Oken,SAPINDACEAE,Kusum beeja,W,AFS
+Schrebera swietenoides Roxb.,OLEACEAE,Ghanti phal,W,AFSTTag **
+Scindapsus officinalis (Roxb.) Schott.,ARACEAE,Gaj pipal,W,AFSTU
+Securinega leucopyrus (Willd.) Mull.-Arg.; [= Flueggea leucopyrus Willd.],EUPHORBIACEAE,"Hartho,; Bhuriphali",W,AFS
+Selinum candollei DC.,APIACEAE,Mura,W,A
+Selinum vaginatum (Edgew.) C.B.Clarke,APIACEAE,Butkesh,W,F
+Semecarpus anacardium L.f.,ANACARDIACEAE,"Balave,; Bhilavan,; Bhilawa,; Marking nuts",W,AFHSTU
+Senna italica Mill.; [ = Cassia italica (Mill.) Lam. ex Andr.;,CAESALPINIACEAE,Nila aavaarai,W,AFH
+Sesamum orientale L.; [= S. indicum L.],PEDALIACEAE,Til,C,AS
+Sesbania grandiflora (L.) Poir.,FABACEAE,Agase,C,AFSTU
+Sesbania speciosa Taub.,FABACEAE,Seemai agathi,W/C,F
+Seseli diffusum (Roxb. ex Sm.) Santapau,APIACEAE,"Kirmani,; Ajwain",W,A
+Setaria italica (L.) Beauv,POACEAE,Kangni,C,AFSTU**
+Shorea robusta Gaertn.,DIPTEROCARPACEAE,Raal,C/W,AFSTU
+Sida acuta Burm.f.,MALVACEAE,Bala,W,AFS
+Sida cordifolia L.,MALVACEAE,Bala,W,AFST
+Sida rhombifolia L.,MALVACEAE,Bala,W,AFS
+Silybum marianum (L.) Gaertn.,ASTERACEAE,Milk thistle,C/W,HW
+Simmondsia chinensis (Link),SIMMONDSIACEAE,Jojoba,C,W
+Sinapis alba L.,BRASSICACEAE,"Safedrai,; Yellow; mustard",C/W,AHS
+Sisymbrium irio L.,BRASSICACEAE,Khubkalan,W,AU
+Skimmia laureola (DC.) Zucc. ex Walp.,RUTACEAE,"Ner, Patrang,; Barru",W,F
+Smilax aspera L.,SMILACACEAE,Chopchi; ni; (Subs.),W,AH
+Smilax china L.,SMILACACEAE,Chobchini,I,ASU
+Smilax glabra Roxb.,SMILACACEAE,"Chobchini,; Lokhandi",W,A
+Smilax zeylanica L.,SMILACACEAE,Chopchi; ni; (Subs.),W,AFS
+Solanum anguivi Lam.; [= S. indicum auct. non L.;,SOLANACEAE,Katheli-badhi,W,AS
+Solanum melongena L.,SOLANACEAE,Baingan,C,AFSU**
+Solanum nigrum L.,SOLANACEAE,"Makoi,; Kakamachi",W,AFHSTU
+Solanum torvum Sw.,SOLANACEAE,Padarchunda,C/W,AFS
+Solanum trilobatum L.,SOLANACEAE,Alarka,W,AFS
+Solanum virginianum L.; [= S. surattense Burm.f.;,SOLANACEAE,Kateli,W,AH
+Soymida febrifuga (Roxb.) A.Juss.,MELIACEAE,Rohan,W,AFSTU
+Spatholobus roxburghii Benth.,FABACEAE,Mula,W,FS
+Spermacoce articularis L.f.,RUBIACEAE,Tukah,W,A
+Sphaeranthus africanus L.,ASTERACEAE,Mundi,W,A
+Sphaeranthus amaranthoides Burm.,ASTERACEAE,Cevayam,W,FS
+Sphaeranthus indicus L.; var. oleracea C.B.Clarke,ASTERACEAE,Gorak mundi,W,AFSTU
+Spilanthes oleracea L.; [= S. acmella Murr. var. oleracea,ASTERACEAE,"Akarkara,; Sarahattik; a, Vana-; mugali",C/W,A
+Spondias pinnata (L.f.) Kurz,ANACARDIACEAE,Amate,W,AFSTU
+Stephania glabra (Roxb.) Miers,MENISPERMACEAE,"Patha,; Rajapat",W,A
+Sterculia foetida L.,STERCULIACEAE,"Janlibada; m, Java",W/C,AFSTag **
+Sterculia urens Roxb.,STERCULIACEAE,"Karaya,; Kateera",W,AFSW
+Stereospermum chelonoides (L.f.) DC.; [= S. suaveolens (Roxb.) DC.],BIGNONIACEAE,Patala,W,AFS
+Stereospermum colais (Buch.-Ham.; [= S. personatum (Hassk.) Chatterjee],BIGNONIACEAE,Patala,W,AF
+Streblus asper Lour.,MORACEAE,Bajradanti,W,AFS
+Strophanthus wightianus Wight,APOCYNACEAE,Naithal; kizhangu,W,F
+Strychnos nux-blanda A.W.Hill,LOGANIACEAE,"Kuchla,; Itti beeja; (Subs.)",W,F
+Strychnos nux-vomica L.,LOGANIACEAE,"Kuchla,; Itti; beeja",W,AFHSTUW
+Strychnos potatorum L.f.,LOGANIACEAE,"Nirmali,; Cleaning; nuts",W,AFSTU
+Stylocoryna lucens (Hook.f.) Gamble; [= Tarenna alpestris (Wight) N.P.Balakr.],RUBIACEAE,Paphanals,W,A
+Swertia alata (Royle ex D.Don),GENTIANACEAE,Kiratatikta,W,A
+Swertia angustifolia Ham.,GENTIANACEAE,Chiraeta; shireen,W,AU
+Swertia chirayita (Roxb. ex,GENTIANACEAE,Chiraiyata,W/C,AFH
+Symplocos cochinchinensis S.Moore,SYMPLOCACEAE,Lodhra,W,AFS
+Symplocos paniculata (Thunb.) Miq.,SYMPLOCACEAE,"Lodhra,",W,AUTag **
+Symplocos racemosa Roxb.,SYMPLOCACEAE,Pathani lodh,W,AFSTU
+Syzygium aromaticum (L.) Merr.,MYRTACEAE,"Laung, Cloves",C,AFSTUW
+Syzygium caryophyllatum (L.) Alston; [= Eugenia caryophyllaea Wight],MYRTACEAE,"Clove, Lavang Tree",W,AFSU
+Syzygium cumini (L.) Skeels,MYRTACEAE,Jamun,W/C,AFHSTU
+Tabernaemontana divaricata (L.); [= Ervatamia coronaria (Jacq.) Stapf],APOCYNACEAE,Candni,C,AF
+Tacca aspera Roxb.; [= T. integrifolia Ker Gawl.],TACCACEAE,Varahikand,W,A
+Tagetes erecta L.,ASTERACEAE,"African; Marygold,; Genda,; Sandu",C,AFS
+Tagetes minuta L.,ASTERACEAE,Stinking roger,C/W,F
+Tamarindus indica L.,CAESALPINIACEAE,Imli,C/W,AFSTU
+Tamarix indica Roxb.,TAMARICACEAE,Jhan,W,AFU
+Tanacetum vulgare L.,ASTERACEAE,Tansy,I,HW
+Taraxacum officinale F.H.Wigg.,ASTERACEAE,"Kanphul,; Dudhal",C/W,AFHW
+Taxus wallichiana Zucc.; [= T. baccata L.],TAXACEAE,Talispatra,W/C,AFWTag **
+Tecomella undulata (Sm.) Seem.,BIGNONIACEAE,Rohitaka,W,AT
+Tectona grandis L.f.,VERBENACEAE,Teak,C/W,AFSTU
+Tephrosia purpurea (L.) Pers.,FABACEAE,"Sarad foka,; Sarpankha",W,AFSU
+Teramnus labialis (L.f.) Spreng.,FABACEAE,Masparni,W,AFST
+Terminalia arjuna (Roxb. ex DC.),COMBRETACEAE,Arjun,W/C,AFHSTU
+Terminalia bellirica (Gaertn.) Roxb.,COMBRETACEAE,"Behda,; Bibhitaki",W/C,AFSU
+Terminalia chebula Retz.,COMBRETACEAE,"Harda, Himaj",W,AFHSTU
+Terminalia crenulata Roth,COMBRETACEAE,Asan,W,AF
+Terminalia paniculata Roth,COMBRETACEAE,Vanmaruthu,W,AFS
+Terminalia tomentosa (Roxb. ex DC.); [= T. alata Heyne ex Roth],COMBRETACEAE,Asan,W,AST
+Thalictrum foliolosum DC.,RANUNCULACEAE,Mamira,W,AFS
+Thespesia populnea (L.) Sol. ex Correa,MALVACEAE,Phalisa-Chhal,C,AFSU
+Thymus serpyllum L.,LAMIACEAE,"Ban; Ajwain,; Satar Farsi",W,AHU
+Tiliacora acuminata (Poir.) Miers ex,MENISPERMACEAE,"Kappatiga,; Bagamushada",C/W,FS
+Tinospora cordifolia (Willd.) Miers,MENISPERMACEAE,"Giloy, Galo,; Amrithaballi",W,AFHSTU
+Tinospora crispa (L.),MENISPERMACEAE,"Giloy, Galo,; Amrithaballi",W,F
+Tinospora sinensis (Lour.) Merr.; [= T. malabarica (Lam.) Hook.f. &,MENISPERMACEAE,Amrata,W,AFSTag **
+Toddalia asiatica (L.) Lam.,RUTACEAE,Janglikalimirch Shrub,W,AFS
+Toona ciliata M.Roem.; [= Cedrela toona Roxb.],MELIACEAE,Thooniya-; noikam,W,F
+Trachyspermum ammi (L.) Sprague,APIACEAE,"Ajmo,; Ajwayan",C,AFSTU
+Trachyspermum roxburghianum,APIACEAE,Sath Ajwain,W,AFSU
+Tragia involucrata L.,EUPHORBIACEAE,Barhanta,W,AFS
+Trapa natans L.,TRAPACEAE,Singhada,C/W,A
+Trianthema decandra L.; [= Zaleya decandra (L.) Burm.f.],AIZOACEAE,Saaranai ver,W,AS
+Trianthema portulacastrum L.,AIZOACEAE,Lalsabuni,W,AFS
+Tribulus alatus Del.,ZYGOPHYLLACEAE,Gokhru kalan,W,FU
+Tribulus lanuginosus L.,ZYGOPHYLLACEAE,Gokhru,W,AU
+Tribulus rajasthanensis M.M.Bhandari,ZYGOPHYLLACEAE,Gokhru (Subs.) Herb,W,AU
+"Tribulus subramanyamii P.Singh,",ZYGOPHYLLACEAE,Gokhru (Subs.) Herb,W,AU
+Tribulus terrestris L.,ZYGOPHYLLACEAE,"Gokhru,; Gokshu; ra",W,AFHSTU
+Trichodesma zeylanicum (Burm.f.) R.Br.,BORAGINACEAE,Dhadhona,W,AFS
+Trichopus zeylanicus Gaertn.,DIOSCOREACEAE,Arogyapacha,W,F
+Trichosanthes anguina L.,CUCURBITACEAE,Snakegourd,C,AST
+Trichosanthes cordata Roxb.,CUCURBITACEAE,Vidari,W,A
+Trichosanthes cucumerina L.,CUCURBITACEAE,Patol; panchang,W,AFS
+Trichosanthes dioica Roxb.,CUCURBITACEAE,Patol; (Kadu Parval),C,AFHST
+Trichosanthes lobata Roxb.,CUCURBITACEAE,"Patola,; Tiktapatola",W,ATag **
+Trichosanthes tricuspidata Lour.; [= T. bracteata (Lam.) Voigt ],CUCURBITACEAE,"Indrayan,; Mahakal",W,AFS
+Tridax procumbens L.,ASTERACEAE,Jayanti,W,AFS
+Trigonella corniculata (L.) L.,FABACEAE,Kasuri Methi,W/C,AUS
+Trigonella foenum-graecum L.,FABACEAE,Methi,C,AFSUW
+Tulipa stellata Hook.,LILIACEAE,Meethi; Suranjan,W,F
+Tylophora indica (Burm.f.) Merr.; [= T. asthmatica (L.f.) Wight & Arn.],ASCLEPIADACEAE,"Antamul,; Country; Ipecacuahna",W,AFHS
+"Typha elephantina Grah., non Roxb.; [= T. australis K.Schum. & Thonn.]",TYPHACEAE,Anaikkorai,W,AFS
+Typhonium trilobatum (L.) Schott,ARACEAE,Karunai; kizhangu,W,FS
+Uncaria gambier Thwaites,RUBIACEAE,Kath,I,AS
+Uraria lagopodioides (L.) DC.,FABACEAE,Kalasi,W,AFSU
+Uraria picta (Jacq.) DC.,FABACEAE,Prshniparni,W,AFST
+Uraria rufescens (DC.) Schindl.,FABACEAE,Kalasi (Subs.),W,AF
+Urginea indica (Roxb) Kunth. [=,LILIACEAE,"Janglipyaz,; White; squills",W,ASU
+Urtica dioica L.; var. sublobata (Roxb.) Verdc.,URTICACEAE,Nettle,W,AHW
+Valeriana hardwickii Wall.,VALERIANACEAE,"Tagar-ganth,; Nihani",W,AU
+Valeriana jatamansi Jones; [= V. wallichii DC.],VALERIANACEAE,"Musakbal; a, Tagar",W,AF
+Valeriana pyrolaefolia Decne.,VALERIANACEAE,Mushkaba; la (Subs.),W,ATag **
+Vanda tessellata (Roxb.) Hook. ex G.Don,ORCHIDACEAE,Rasna,W,AFSU
+Vateria indica L.,DIPTEROCARPACEAE,"Mandadhup; a, Dupa",C/W,AFSU
+Ventilago madraspatana Gaertn.,RHAMNACEAE,Pitti,W,AFS
+Vernonia cinerea (L.) Less.; [= V. conyzoides DC.],ASTERACEAE,Dandotpala,W,AFSTU
+Vetiveria zizanioides (L.) Nash,POACEAE,"Lavancha,; Khas,; Vettiver",W/C,AFHSTU
+Vigna mungo (L.) Hepper; [= Phaseolus mungo L.],FABACEAE,Urd,C,AFS
+Vigna radiata (L.) R.Wilczek; [= Phaseolus radiatus L.],FABACEAE,Masha,C,AF
+Vigna sublobata (Roxb.) Babu & Sharma; [= V. radiata (L.) Wilez; var. sublobata (Roxb.) Verdc.],FABACEAE,Masaparni,C,AS
+Vigna vexillata (L.) A.Rich.,FABACEAE,Kattupayar,W,A
+Viola canescens Wall.,VIOLACEAE,Banafasha,W,F
+Viola cinerea Boiss.,VIOLACEAE,Banafasha; phool,W,A
+Viola odorata L.,VIOLACEAE,Banafasha,W/C,AFHU
+Viola pilosa Bi.,VIOLACEAE,Banafasha,W,AF
+Vitex agnus-castus L.,VERBENACEAE,Chaste tree,I,HU
+Vitex altissima L.f.,VERBENACEAE,Myrole,W,FSTag **
+Vitex negundo L.,VERBENACEAE,Neergundi,W/C,AFSTU
+Vitis vinifera L.,VITACEAE,Draksh,C,AFSTU
+Walsura trifoliata (A.Juss.) Harms,MELIACEAE,Valsura,W,FS
+Wedelia chinensis (Osbeck) Merr.; [ = W. calendulacea (L.) Less.],ASTERACEAE,Bhangra,C/W,AF
+Withania coagulans Dunal,SOLANACEAE,Paneer- dodi,W,AU
+Withania somnifera (L.) Dunal,SOLANACEAE,"Ashwagandha,; Asgandha",C/W,AFHSTU
+Woodfordia fruticosa (L.) Kurz,LYTHRACEAE,"Dhaiphool,; Dhavadiphool",W,AFSTU
+Wrightia arborea (Dennst.) Mabb.,APOCYNACEAE,Kutajah,W,AF
+Wrightia tinctoria (Roxb.) R.Br.,APOCYNACEAE,Indrajau,C/W,AFHSU
+Xylia xylocarpa (Roxb.) Taub.,MIMOSACEAE,Trumullu,W,AF
+Zanthoxylum acanthopodium DC.,RUTACEAE,"Kabab; Khandan,; Tummad",W,ASU
+Zanthoxylum armatum DC.,RUTACEAE,Tejbal,W,A
+Zanthoxylum nitidum (Roxb.) DC.,RUTACEAE,Kumkumada,W,F
+Zanthoxylum rhetsa (Roxb.) DC.,RUTACEAE,"Tejbal,; Triphala",W,AFS
+Zea mays L.,POACEAE,Maize,C,AFHSUW
+Zehneria umbellata (Klein) Thwaites,CUCURBITACEAE,Karuvikkilann Climber,Root,
+Zingiber officinale Roscoe,ZINGIBERACEAE,"Soonth, Sonth Herb","Root,",
+Zingiber zerumbet (L.) Roscoe ex Sm.,ZINGIBERACEAE,Narkachur Herb,Fruit,
+Ziziphus jujuba (L.) Gaertn.; [= Z. mauritiana Lam.],RHAMNACEAE,Ber Tree,Fruit,
+Ziziphus sativa Gaertn.; [= Z. jujuba Mill.; Z. vulgaris Lam.],RHAMNACEAE,Unnab Tree,Fruit,
+Ziziphus xylopyrus (Retz.) Willd.,RHAMNACEAE,Ghontaphala Shrub,Fruit,
