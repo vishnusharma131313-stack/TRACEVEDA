@@ -22,32 +22,35 @@
 // DHT22       -> IOT-DHT22-001
 // BH1750      -> IOT-BH1750-001
 // Limit       -> IOT-LIMIT-001
-// MPU-6500    -> IOT-MPU6050-001  (backend-registered ID)
 // HX711       -> IOT-HX711-001
 // GPS         -> IOT-GPS-001
 //
+// MPU-6500 has been completely removed.
+//
 // Data path:
 // Sensors -> RAM FIFO -> Backend
-//                    \-> LittleFS when offline/failure
+//                    -> LittleFS when offline/failure
 //
 // No new backend/API fields are introduced.
 // ======================================================
+
 
 // ======================================================
 // TRACEVEDA IDs
 // ======================================================
 
-// Use IDs that exist in the supplied master dataset/backend.
 const char* BATCH_ID = "ASH-2026-001";
 const char* TRANSPORT_ID = "TRN-RAW-0001";
 const char* DEVICE_ID = "ESP32-001";
+
 
 // ======================================================
 // BACKEND
 // ======================================================
 
-const char* BACKEND_URL = "http://YOUR_PC_IP:8000";
+const char* BACKEND_URL = "URL";
 const char* IOT_ENDPOINT = "/api/iot/readings";
+
 
 // ======================================================
 // DEVICE AUTHENTICATION
@@ -57,11 +60,7 @@ const char* IOT_ENDPOINT = "/api/iot/readings";
 // itself. Send it as the X-Device-Key header.
 //
 // The value must match TRACEVEDA_DEVICE_API_KEY in
-// BACKEND/.env. If that variable is unset the backend logs a
-// warning and accepts the development key below, so an
-// unconfigured demo still works - but set both for anything
-// reachable from outside your LAN.
-//
+// BACKEND/.env.
 // ======================================================
 
 const char* DEVICE_API_KEY = "traceveda-dev-device-key";
@@ -73,6 +72,7 @@ const char* DEVICE_API_KEY = "traceveda-dev-device-key";
 
 const char* ssid = "YOUR_WIFI_SSID";
 const char* password = "YOUR_WIFI_PASSWORD";
+
 
 // ======================================================
 // PINS
@@ -93,6 +93,7 @@ const char* password = "YOUR_WIFI_PASSWORD";
 #define HX711_DT 32
 #define HX711_SCK 33
 
+
 // ======================================================
 // LCD
 // ======================================================
@@ -104,7 +105,9 @@ const char* password = "YOUR_WIFI_PASSWORD";
 LiquidCrystal_I2C lcd(
   LCD_ADDRESS,
   LCD_COLUMNS,
-  LCD_ROWS);
+  LCD_ROWS
+);
+
 
 // ======================================================
 // SENSOR OBJECTS
@@ -118,34 +121,6 @@ TinyGPSPlus gps;
 
 HX711 scale;
 
-// ======================================================
-// MPU-6500
-// ======================================================
-
-#define MPU_ADDR 0x68
-#define PWR_MGMT_1 0x6B
-#define WHO_AM_I 0x75
-#define ACCEL_XOUT_H 0x3B
-
-float ax = 0.0;
-float ay = 0.0;
-float az = 0.0;
-
-float gx = 0.0;
-float gy = 0.0;
-float gz = 0.0;
-
-float tilt = 0.0;
-
-float accelOffsetX = 0.0;
-float accelOffsetY = 0.0;
-float accelOffsetZ = 0.0;
-
-float gyroOffsetX = 0.0;
-float gyroOffsetY = 0.0;
-float gyroOffsetZ = 0.0;
-
-bool mpuOK = false;
 
 // ======================================================
 // DHT / LIGHT / DOOR
@@ -157,6 +132,7 @@ float lux = 0.0;
 
 bool doorClosed = false;
 
+
 // ======================================================
 // HX711
 // ======================================================
@@ -166,36 +142,22 @@ const float HX711_CALIBRATION_FACTOR = 126.4576;
 float weightKg = 0.0;
 float previousWeightKg = 0.0;
 float weightChangeKg = 0.0;
+
 bool weightInitialized = false;
 bool hx711OK = false;
 
+
 // ======================================================
-// LOCAL ALERT / RED LED
-//
-// The physical LED is local. It does not require a new
-// backend field. It turns ON whenever a monitored value is
-// outside the project's active backend rule limits, or a
-// tamper/door/weight/shock condition is detected.
+// BACKEND-CONTROLLED RED LED STATE
 // ======================================================
 
-// Backend-controlled RED LED state
 bool redLedState = false;
 
-const float TEMP_MIN = 10.0;
-const float TEMP_MAX = 35.0;
-const float HUMIDITY_MIN = 20.0;
-const float HUMIDITY_MAX = 70.0;
-const float LIGHT_MAX = 1000.0;
-const float TILT_MAX = 45.0;
-
-// The supplied master examples use 2.0g as the shock reference.
-const float SHOCK_THRESHOLD_G = 2.0;
 
 // ======================================================
 // TIMERS
 // ======================================================
 
-unsigned long lastMPURead = 0;
 unsigned long lastDHTRead = 0;
 unsigned long lastLightRead = 0;
 unsigned long lastWeightRead = 0;
@@ -205,7 +167,6 @@ unsigned long lastLCDScreenChange = 0;
 unsigned long lastSerialOutput = 0;
 unsigned long lastWiFiCheck = 0;
 
-const unsigned long MPU_INTERVAL = 50;
 const unsigned long DHT_INTERVAL = 2000;
 const unsigned long LIGHT_INTERVAL = 500;
 const unsigned long WEIGHT_INTERVAL = 1000;
@@ -218,20 +179,30 @@ const unsigned long SCREEN_INTERVAL = 2000;
 const unsigned long SERIAL_INTERVAL = 1000;
 const unsigned long WIFI_INTERVAL = 5000;
 
-// Process buffered/current readings faster than they are generated.
 
 // ======================================================
 // LCD SCREENS
 // ======================================================
+//
+// 0 -> Temperature + Humidity
+// 1 -> Light
+// 2 -> GPS Latitude
+// 3 -> GPS Longitude
+// 4 -> GPS Fix / Satellites
+// 5 -> Weight
+// 6 -> Door
+//
 
 int currentScreen = 0;
-const int TOTAL_SCREENS = 9;
+const int TOTAL_SCREENS = 7;
+
 
 // ======================================================
 // RAM FIFO
 // ======================================================
 
 const int QUEUE_SIZE = 18;
+
 String payloadQueue[QUEUE_SIZE];
 
 int queueHead = 0;
@@ -240,8 +211,11 @@ int queueCount = 0;
 
 SemaphoreHandle_t queueMutex = nullptr;
 SemaphoreHandle_t fsMutex = nullptr;
+
 TaskHandle_t uploadTaskHandle = nullptr;
+
 const unsigned long UPLOAD_TASK_INTERVAL = 500;
+
 
 // ======================================================
 // LITTLEFS
@@ -249,7 +223,9 @@ const unsigned long UPLOAD_TASK_INTERVAL = 500;
 
 const char* BUFFER_FILE = "/truck_iot_buffer.txt";
 const char* REMAINING_FILE = "/truck_iot_remaining.txt";
+
 const size_t MAX_BUFFER_BYTES = 200 * 1024;
+
 
 // ======================================================
 // FORWARD DECLARATIONS
@@ -258,59 +234,102 @@ const size_t MAX_BUFFER_BYTES = 200 * 1024;
 bool sendPayload(const String& payload);
 void bufferPayload(const String& payload);
 
+
 // ======================================================
 // QUEUE
 // ======================================================
 
-bool enqueuePayload(const String& payload) {
+bool enqueuePayload(const String& payload)
+{
   bool full = false;
-  if (queueMutex != nullptr) xSemaphoreTake(queueMutex, portMAX_DELAY);
-  if (queueCount >= QUEUE_SIZE) full = true;
-  else {
+
+  if (queueMutex != nullptr)
+    xSemaphoreTake(queueMutex, portMAX_DELAY);
+
+  if (queueCount >= QUEUE_SIZE)
+  {
+    full = true;
+  }
+  else
+  {
     payloadQueue[queueTail] = payload;
+
     queueTail++;
-    if (queueTail >= QUEUE_SIZE) queueTail = 0;
+
+    if (queueTail >= QUEUE_SIZE)
+      queueTail = 0;
+
     queueCount++;
   }
-  if (queueMutex != nullptr) xSemaphoreGive(queueMutex);
-  if (full) {
+
+  if (queueMutex != nullptr)
+    xSemaphoreGive(queueMutex);
+
+  if (full)
+  {
     Serial.println("RAM queue FULL -> LittleFS");
+
     bufferPayload(payload);
+
     return false;
   }
+
   return true;
 }
 
-bool peekQueue(String& payload) {
+
+bool peekQueue(String& payload)
+{
   bool available = false;
-  if (queueMutex != nullptr) xSemaphoreTake(queueMutex, portMAX_DELAY);
-  if (queueCount > 0) {
+
+  if (queueMutex != nullptr)
+    xSemaphoreTake(queueMutex, portMAX_DELAY);
+
+  if (queueCount > 0)
+  {
     payload = payloadQueue[queueHead];
     available = true;
   }
-  if (queueMutex != nullptr) xSemaphoreGive(queueMutex);
+
+  if (queueMutex != nullptr)
+    xSemaphoreGive(queueMutex);
+
   return available;
 }
 
-void dequeuePayload() {
-  if (queueMutex != nullptr) xSemaphoreTake(queueMutex, portMAX_DELAY);
-  if (queueCount > 0) {
+
+void dequeuePayload()
+{
+  if (queueMutex != nullptr)
+    xSemaphoreTake(queueMutex, portMAX_DELAY);
+
+  if (queueCount > 0)
+  {
     payloadQueue[queueHead] = "";
+
     queueHead++;
-    if (queueHead >= QUEUE_SIZE) queueHead = 0;
+
+    if (queueHead >= QUEUE_SIZE)
+      queueHead = 0;
+
     queueCount--;
   }
-  if (queueMutex != nullptr) xSemaphoreGive(queueMutex);
+
+  if (queueMutex != nullptr)
+    xSemaphoreGive(queueMutex);
 }
+
 
 // ======================================================
 // TIMESTAMP
 // ======================================================
 
-String getTimestamp() {
+String getTimestamp()
+{
   time_t now = time(nullptr);
 
   struct tm timeinfo;
+
   localtime_r(&now, &timeinfo);
 
   char timestamp[32];
@@ -319,40 +338,53 @@ String getTimestamp() {
     timestamp,
     sizeof(timestamp),
     "%Y-%m-%dT%H:%M:%S",
-    &timeinfo);
+    &timeinfo
+  );
 
   return String(timestamp);
 }
 
+
 // ======================================================
-// WIFI
+// WI-FI
 // ======================================================
 
-void connectWiFi() {
+void connectWiFi()
+{
   Serial.println();
   Serial.println("================================");
   Serial.println("          WI-FI CONNECTION");
   Serial.println("================================");
 
   WiFi.mode(WIFI_STA);
+
   WiFi.begin(ssid, password);
 
   Serial.print("Connecting");
 
   int attempts = 0;
 
-  while (WiFi.status() != WL_CONNECTED && attempts < 30) {
+  while (
+    WiFi.status() != WL_CONNECTED &&
+    attempts < 30
+  )
+  {
     delay(500);
+
     Serial.print(".");
+
     attempts++;
   }
 
   Serial.println();
 
-  if (WiFi.status() == WL_CONNECTED) {
+  if (WiFi.status() == WL_CONNECTED)
+  {
     Serial.println("WiFi connected!");
+
     Serial.print("IP: ");
     Serial.println(WiFi.localIP());
+
     Serial.print("RSSI: ");
     Serial.print(WiFi.RSSI());
     Serial.println(" dBm");
@@ -361,275 +393,86 @@ void connectWiFi() {
       19800,
       0,
       "pool.ntp.org",
-      "time.nist.gov");
+      "time.nist.gov"
+    );
 
     Serial.println("NTP synchronization requested.");
-  } else {
-    Serial.println("WiFi connection FAILED. Continuing offline.");
+  }
+  else
+  {
+    Serial.println(
+      "WiFi connection FAILED. Continuing offline."
+    );
   }
 
   Serial.println("================================");
 }
 
-void checkWiFi() {
-  if (WiFi.status() == WL_CONNECTED) {
+
+void checkWiFi()
+{
+  if (WiFi.status() == WL_CONNECTED)
     return;
-  }
 
   WiFi.disconnect();
+
   WiFi.begin(ssid, password);
 }
 
-// ======================================================
-// MPU LOW-LEVEL
-// ======================================================
-
-void writeRegister(byte reg, byte value) {
-  Wire.beginTransmission(MPU_ADDR);
-  Wire.write(reg);
-  Wire.write(value);
-  Wire.endTransmission();
-}
-
-byte readRegister(byte reg) {
-  Wire.beginTransmission(MPU_ADDR);
-  Wire.write(reg);
-  Wire.endTransmission(false);
-
-  Wire.requestFrom(MPU_ADDR, 1);
-
-  if (Wire.available()) {
-    return Wire.read();
-  }
-
-  return 0xFF;
-}
-
-int16_t read16() {
-  return (int16_t)((Wire.read() << 8) | Wire.read());
-}
-
-bool readMPURaw(
-  int16_t& accelX,
-  int16_t& accelY,
-  int16_t& accelZ,
-  int16_t& temperatureRaw,
-  int16_t& gyroX,
-  int16_t& gyroY,
-  int16_t& gyroZ) {
-  Wire.beginTransmission(MPU_ADDR);
-  Wire.write(ACCEL_XOUT_H);
-  Wire.endTransmission(false);
-
-  if (Wire.requestFrom(MPU_ADDR, 14) != 14) {
-    return false;
-  }
-
-  accelX = read16();
-  accelY = read16();
-  accelZ = read16();
-  temperatureRaw = read16();
-  gyroX = read16();
-  gyroY = read16();
-  gyroZ = read16();
-
-  return true;
-}
-
-bool initializeMPU() {
-  byte deviceID = readRegister(WHO_AM_I);
-
-  Serial.print("MPU-6500 WHO_AM_I = 0x");
-  Serial.println(deviceID, HEX);
-
-  if (deviceID != 0x70) {
-    Serial.println("MPU-6500 NOT detected!");
-    return false;
-  }
-
-  writeRegister(PWR_MGMT_1, 0x00);
-  delay(100);
-
-  Serial.println("MPU-6500 initialized.");
-  return true;
-}
-
-void calibrateMPU() {
-  const int samples = 300;
-
-  long long sumAccelX = 0;
-  long long sumAccelY = 0;
-  long long sumAccelZ = 0;
-
-  long long sumGyroX = 0;
-  long long sumGyroY = 0;
-  long long sumGyroZ = 0;
-
-  int successfulSamples = 0;
-
-  Serial.println();
-  Serial.println("================================");
-  Serial.println("       MPU-6500 CALIBRATION");
-  Serial.println("================================");
-  Serial.println("Keep MPU STILL and LEVEL.");
-
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("TRACEVEDA TRUCK");
-  lcd.setCursor(0, 1);
-  lcd.print("Calibrating MPU");
-
-  delay(1000);
-
-  for (int i = 0; i < samples; i++) {
-    int16_t accelX, accelY, accelZ;
-    int16_t temperatureRaw;
-    int16_t gyroX, gyroY, gyroZ;
-
-    if (
-      readMPURaw(
-        accelX,
-        accelY,
-        accelZ,
-        temperatureRaw,
-        gyroX,
-        gyroY,
-        gyroZ)) {
-      sumAccelX += accelX;
-      sumAccelY += accelY;
-      sumAccelZ += accelZ;
-
-      sumGyroX += gyroX;
-      sumGyroY += gyroY;
-      sumGyroZ += gyroZ;
-
-      successfulSamples++;
-    }
-
-    delay(5);
-  }
-
-  if (successfulSamples == 0) {
-    Serial.println("MPU calibration FAILED!");
-    return;
-  }
-
-  float avgAccelX = (float)sumAccelX / successfulSamples;
-  float avgAccelY = (float)sumAccelY / successfulSamples;
-  float avgAccelZ = (float)sumAccelZ / successfulSamples;
-
-  float avgGyroX = (float)sumGyroX / successfulSamples;
-  float avgGyroY = (float)sumGyroY / successfulSamples;
-  float avgGyroZ = (float)sumGyroZ / successfulSamples;
-
-  accelOffsetX = avgAccelX;
-  accelOffsetY = avgAccelY;
-  accelOffsetZ = avgAccelZ - 16384.0;
-
-  gyroOffsetX = avgGyroX;
-  gyroOffsetY = avgGyroY;
-  gyroOffsetZ = avgGyroZ;
-
-  Serial.println("MPU calibration complete.");
-
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("TRACEVEDA TRUCK");
-  lcd.setCursor(0, 1);
-  lcd.print("MPU CALIBRATED");
-  delay(1200);
-}
-
-void readMPU() {
-  if (!mpuOK) {
-    return;
-  }
-
-  int16_t accelX, accelY, accelZ;
-  int16_t temperatureRaw;
-  int16_t gyroX, gyroY, gyroZ;
-
-  if (
-    !readMPURaw(
-      accelX,
-      accelY,
-      accelZ,
-      temperatureRaw,
-      gyroX,
-      gyroY,
-      gyroZ)) {
-    return;
-  }
-
-  float correctedAccelX = accelX - accelOffsetX;
-  float correctedAccelY = accelY - accelOffsetY;
-  float correctedAccelZ = accelZ - accelOffsetZ;
-
-  float correctedGyroX = gyroX - gyroOffsetX;
-  float correctedGyroY = gyroY - gyroOffsetY;
-  float correctedGyroZ = gyroZ - gyroOffsetZ;
-
-  // Backend expects acceleration in g.
-  ax = correctedAccelX / 16384.0;
-  ay = correctedAccelY / 16384.0;
-  az = correctedAccelZ / 16384.0;
-
-  // Backend expects gyro in degrees/second.
-  gx = correctedGyroX / 131.0;
-  gy = correctedGyroY / 131.0;
-  gz = correctedGyroZ / 131.0;
-
-  float horizontalAcceleration = sqrt(
-    (ax * ax) + (ay * ay));
-
-  tilt = atan2(
-           horizontalAcceleration,
-           az)
-         * 180.0 / PI;
-}
 
 // ======================================================
 // GPS
 // ======================================================
 
-void readGPS() {
-  while (GPS.available()) {
+void readGPS()
+{
+  while (GPS.available())
+  {
     gps.encode(GPS.read());
   }
 }
+
 
 // ======================================================
 // WEIGHT
 // ======================================================
 
-void readWeight() {
-  if (!hx711OK || !scale.is_ready()) {
+void readWeight()
+{
+  if (!hx711OK || !scale.is_ready())
     return;
-  }
 
   // HX711 calibration code returns grams.
   float newWeightGrams = scale.get_units(10);
 
-  if (!isfinite(newWeightGrams)) {
+  if (!isfinite(newWeightGrams))
     return;
-  }
 
   // Convert grams to kilograms.
   float newWeightKg =
     newWeightGrams / 1000.0;
 
   // Small negative values are treated as zero.
-  if (newWeightKg < 0 && newWeightKg > -0.05) {
+  if (
+    newWeightKg < 0 &&
+    newWeightKg > -0.05
+  )
+  {
     newWeightKg = 0;
   }
 
   weightKg = newWeightKg;
 
-  if (!weightInitialized) {
+  if (!weightInitialized)
+  {
     previousWeightKg = weightKg;
+
     weightChangeKg = 0.0;
+
     weightInitialized = true;
-  } else {
+  }
+  else
+  {
     weightChangeKg =
       weightKg - previousWeightKg;
 
@@ -637,22 +480,13 @@ void readWeight() {
   }
 }
 
-// ======================================================
-// LOCAL RED LED LOGIC
-// ======================================================
-
-bool shockDetected() {
-  float accelerationMagnitude = sqrt(
-    (ax * ax) + (ay * ay) + (az * az));
-
-  return accelerationMagnitude >= SHOCK_THRESHOLD_G;
-}
 
 // ======================================================
 // JSON HELPERS
 // ======================================================
 
-String commonPrefix(const char* sensorID) {
+String commonPrefix(const char* sensorID)
+{
   String json = "{";
 
   json += "\"batch_id\":\"";
@@ -674,46 +508,58 @@ String commonPrefix(const char* sensorID) {
   return json;
 }
 
+
 // ======================================================
 // DHT PAYLOAD
 // ======================================================
 
-String createDHTPayload() {
-  String json = commonPrefix("IOT-DHT22-001");
+String createDHTPayload()
+{
+  String json =
+    commonPrefix("IOT-DHT22-001");
 
-  if (!isnan(temperature)) {
+  if (!isnan(temperature))
+  {
     json += "\"temperature_c\":";
     json += String(temperature, 2);
     json += ",";
   }
 
-  if (!isnan(humidity)) {
+  if (!isnan(humidity))
+  {
     json += "\"humidity_percent\":";
     json += String(humidity, 2);
     json += ",";
   }
 
-  if (json.endsWith(",")) {
+  if (json.endsWith(","))
+  {
     json.remove(json.length() - 1);
   }
 
   json += "}";
+
   return json;
 }
+
 
 // ======================================================
 // BH1750 PAYLOAD
 // ======================================================
 
-String createLightPayload() {
-  String json = commonPrefix("IOT-BH1750-001");
+String createLightPayload()
+{
+  String json =
+    commonPrefix("IOT-BH1750-001");
 
   json += "\"light_intensity_lux\":";
   json += String(lux, 2);
 
   json += "}";
+
   return json;
 }
+
 
 // ======================================================
 // LIMIT SWITCH PAYLOAD
@@ -721,201 +567,257 @@ String createLightPayload() {
 // weight_change_kg is included as current cross-sensor
 // context so the backend's existing 2FA tamper rule can
 // evaluate gate + weight in one incoming reading.
-// No new API field is created; this field already exists.
+//
+// No new API field is created.
 // ======================================================
 
-String createDoorPayload() {
-  String json = commonPrefix("IOT-LIMIT-001");
+String createDoorPayload()
+{
+  String json =
+    commonPrefix("IOT-LIMIT-001");
 
   json += "\"switch_status\":\"";
-  json += doorClosed ? "CLOSED" : "OPEN";
+
+  json += doorClosed
+    ? "CLOSED"
+    : "OPEN";
+
   json += "\",";
 
   json += "\"weight_change_kg\":";
   json += String(weightChangeKg, 2);
 
   json += "}";
+
   return json;
 }
 
-// ======================================================
-// MPU PAYLOAD
-// ======================================================
-
-String createMPUPayload() {
-  String json = commonPrefix("IOT-MPU6050-001");
-
-  json += "\"accel_x_g\":";
-  json += String(ax, 4);
-  json += ",";
-
-  json += "\"accel_y_g\":";
-  json += String(ay, 4);
-  json += ",";
-
-  json += "\"accel_z_g\":";
-  json += String(az, 4);
-  json += ",";
-
-  json += "\"gyro_x_dps\":";
-  json += String(gx, 3);
-  json += ",";
-
-  json += "\"gyro_y_dps\":";
-  json += String(gy, 3);
-  json += ",";
-
-  json += "\"gyro_z_dps\":";
-  json += String(gz, 3);
-  json += ",";
-
-  json += "\"shock_detected\":";
-  json += shockDetected() ? "true" : "false";
-  json += ",";
-
-  json += "\"tilt_angle_deg\":";
-  json += String(tilt, 2);
-
-  json += "}";
-  return json;
-}
 
 // ======================================================
 // HX711 PAYLOAD
 // ======================================================
 
-String createWeightPayload() {
-  String json = commonPrefix("IOT-HX711-001");
+String createWeightPayload()
+{
+  String json =
+    commonPrefix("IOT-HX711-001");
 
   json += "\"weight_kg\":";
   json += String(weightKg, 3);
+
   json += ",";
 
   json += "\"weight_change_kg\":";
   json += String(weightChangeKg, 3);
 
   json += "}";
+
   return json;
 }
+
 
 // ======================================================
 // GPS PAYLOAD
 // ======================================================
 
-String createGPSPayload() {
-  String json = commonPrefix("IOT-GPS-001");
+String createGPSPayload()
+{
+  String json =
+    commonPrefix("IOT-GPS-001");
 
-  bool valid = gps.location.isValid();
+  bool valid =
+    gps.location.isValid();
 
   json += "\"gps_valid\":";
   json += valid ? "true" : "false";
+
   json += ",";
 
-  if (valid) {
+  if (valid)
+  {
     json += "\"latitude\":";
-    json += String(gps.location.lat(), 6);
+    json += String(
+      gps.location.lat(),
+      6
+    );
+
     json += ",";
 
     json += "\"longitude\":";
-    json += String(gps.location.lng(), 6);
-  } else {
+    json += String(
+      gps.location.lng(),
+      6
+    );
+  }
+  else
+  {
     json += "\"latitude\":null,";
     json += "\"longitude\":null";
   }
 
   json += "}";
+
   return json;
 }
+
 
 // ======================================================
 // LITTLEFS BUFFER
 // ======================================================
 
-bool bufferHasSpace(size_t payloadSize) {
+bool bufferHasSpace(size_t payloadSize)
+{
   size_t currentSize = 0;
 
-  if (LittleFS.exists(BUFFER_FILE)) {
-    File file = LittleFS.open(BUFFER_FILE, FILE_READ);
+  if (LittleFS.exists(BUFFER_FILE))
+  {
+    File file =
+      LittleFS.open(
+        BUFFER_FILE,
+        FILE_READ
+      );
 
-    if (file) {
+    if (file)
+    {
       currentSize = file.size();
+
       file.close();
     }
   }
 
   return (
-    currentSize + payloadSize + 2 <= MAX_BUFFER_BYTES);
+    currentSize +
+    payloadSize +
+    2 <=
+    MAX_BUFFER_BYTES
+  );
 }
 
-void bufferPayload(const String& payload) {
-  if (fsMutex != nullptr) xSemaphoreTake(fsMutex, portMAX_DELAY);
-  if (!bufferHasSpace(payload.length())) {
-    Serial.println("ERROR: LittleFS buffer FULL.");
-    if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
+
+void bufferPayload(const String& payload)
+{
+  if (fsMutex != nullptr)
+    xSemaphoreTake(
+      fsMutex,
+      portMAX_DELAY
+    );
+
+  if (!bufferHasSpace(payload.length()))
+  {
+    Serial.println(
+      "ERROR: LittleFS buffer FULL."
+    );
+
+    if (fsMutex != nullptr)
+      xSemaphoreGive(fsMutex);
+
     return;
   }
-  File file = LittleFS.open(BUFFER_FILE, FILE_APPEND);
-  if (!file) {
-    Serial.println("ERROR: Could not open LittleFS buffer.");
-    if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
+
+  File file =
+    LittleFS.open(
+      BUFFER_FILE,
+      FILE_APPEND
+    );
+
+  if (!file)
+  {
+    Serial.println(
+      "ERROR: Could not open LittleFS buffer."
+    );
+
+    if (fsMutex != nullptr)
+      xSemaphoreGive(fsMutex);
+
     return;
   }
+
   file.println(payload);
+
   file.close();
-  if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
+
+  if (fsMutex != nullptr)
+    xSemaphoreGive(fsMutex);
 }
+
 
 // ======================================================
 // APPLY BACKEND RED LED RESPONSE
 // ======================================================
 
-void applyBackendRedLED(const String& response) {
+void applyBackendRedLED(
+  const String& response
+)
+{
   // Backend response example:
   // {"status":"success","red_led":true}
 
-  if (response.indexOf("\"red_led\":true") >= 0 || response.indexOf("\"red_led\": true") >= 0) {
+  if (
+    response.indexOf(
+      "\"red_led\":true"
+    ) >= 0 ||
+    response.indexOf(
+      "\"red_led\": true"
+    ) >= 0
+  )
+  {
     redLedState = true;
 
     digitalWrite(
       RED_LED_PIN,
-      HIGH);
+      HIGH
+    );
 
     Serial.println(
-      "Backend RED LED = ON");
-  } else if (response.indexOf("\"red_led\":false") >= 0 || response.indexOf("\"red_led\": false") >= 0) {
+      "Backend RED LED = ON"
+    );
+  }
+  else if (
+    response.indexOf(
+      "\"red_led\":false"
+    ) >= 0 ||
+    response.indexOf(
+      "\"red_led\": false"
+    ) >= 0
+  )
+  {
     redLedState = false;
 
     digitalWrite(
       RED_LED_PIN,
-      LOW);
+      LOW
+    );
 
     Serial.println(
-      "Backend RED LED = OFF");
+      "Backend RED LED = OFF"
+    );
   }
 }
+
 
 // ======================================================
 // HTTP POST
 // ======================================================
 
-bool sendPayload(const String& payload) {
-  if (WiFi.status() != WL_CONNECTED) {
+bool sendPayload(const String& payload)
+{
+  if (WiFi.status() != WL_CONNECTED)
     return false;
-  }
 
   HTTPClient http;
 
   String url =
-    String(BACKEND_URL) + String(IOT_ENDPOINT);
+    String(BACKEND_URL) +
+    String(IOT_ENDPOINT);
 
   http.begin(url);
 
   http.addHeader(
     "Content-Type",
-    "application/json");
+    "application/json"
+  );
 
-  // Identifies this node to the backend. Without it the
-  // request is rejected with 401.
+  // Identifies this node to the backend.
   http.addHeader(
     "X-Device-Key",
     DEVICE_API_KEY
@@ -927,24 +829,26 @@ bool sendPayload(const String& payload) {
     http.POST(payload);
 
   bool success =
-    (httpCode >= 200 && httpCode < 300);
+    (
+      httpCode >= 200 &&
+      httpCode < 300
+    );
 
   Serial.print("HTTP: ");
   Serial.println(httpCode);
 
-  if (httpCode > 0) {
+  if (httpCode > 0)
+  {
     String response =
       http.getString();
 
     Serial.println(
-      "Backend response:");
+      "Backend response:"
+    );
 
     Serial.println(response);
 
-    // --------------------------------------------------
-    // BACKEND CONTROLS PHYSICAL RED LED
-    // --------------------------------------------------
-
+    // Backend controls physical RED LED.
     applyBackendRedLED(response);
   }
 
@@ -953,357 +857,710 @@ bool sendPayload(const String& payload) {
   return success;
 }
 
+
 // ======================================================
 // UPLOAD ONE LITTLEFS READING
 // ======================================================
 
-void uploadBufferedData() {
-  if (WiFi.status() != WL_CONNECTED) return;
+void uploadBufferedData()
+{
+  if (WiFi.status() != WL_CONNECTED)
+    return;
 
   String firstPayload;
   String oldRemaining;
 
-  if (fsMutex != nullptr) xSemaphoreTake(fsMutex, portMAX_DELAY);
-  if (!LittleFS.exists(BUFFER_FILE)) {
-    if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
+  if (fsMutex != nullptr)
+    xSemaphoreTake(
+      fsMutex,
+      portMAX_DELAY
+    );
+
+  if (!LittleFS.exists(BUFFER_FILE))
+  {
+    if (fsMutex != nullptr)
+      xSemaphoreGive(fsMutex);
+
     return;
   }
-  File file = LittleFS.open(BUFFER_FILE, FILE_READ);
-  if (!file) {
-    if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
+
+  File file =
+    LittleFS.open(
+      BUFFER_FILE,
+      FILE_READ
+    );
+
+  if (!file)
+  {
+    if (fsMutex != nullptr)
+      xSemaphoreGive(fsMutex);
+
     return;
   }
-  if (file.size() == 0) {
+
+  if (file.size() == 0)
+  {
     file.close();
+
     LittleFS.remove(BUFFER_FILE);
-    if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
+
+    if (fsMutex != nullptr)
+      xSemaphoreGive(fsMutex);
+
     return;
   }
-  firstPayload = file.readStringUntil('\n');
+
+  firstPayload =
+    file.readStringUntil('\n');
+
   firstPayload.trim();
-  while (file.available()) {
-    String line = file.readStringUntil('\n');
+
+  while (file.available())
+  {
+    String line =
+      file.readStringUntil('\n');
+
     line.trim();
-    if (line.length() > 0) {
+
+    if (line.length() > 0)
+    {
       oldRemaining += line;
       oldRemaining += '\n';
     }
   }
+
   file.close();
-  if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
 
-  if (firstPayload.length() == 0) return;
+  if (fsMutex != nullptr)
+    xSemaphoreGive(fsMutex);
 
-  // HTTPClient::POST() blocks, but this function runs only in UploadTask.
-  bool uploaded = sendPayload(firstPayload);
+  if (firstPayload.length() == 0)
+    return;
 
-  if (fsMutex != nullptr) xSemaphoreTake(fsMutex, portMAX_DELAY);
+  // HTTPClient::POST() blocks,
+  // but this function runs only in UploadTask.
+  bool uploaded =
+    sendPayload(firstPayload);
+
+  if (fsMutex != nullptr)
+    xSemaphoreTake(
+      fsMutex,
+      portMAX_DELAY
+    );
+
   String newlyAppended;
-  File current = LittleFS.open(BUFFER_FILE, FILE_READ);
-  if (current) {
-    while (current.available()) {
-      String line = current.readStringUntil('\n');
+
+  File current =
+    LittleFS.open(
+      BUFFER_FILE,
+      FILE_READ
+    );
+
+  if (current)
+  {
+    while (current.available())
+    {
+      String line =
+        current.readStringUntil('\n');
+
       line.trim();
-      if (line.length() > 0) {
+
+      if (line.length() > 0)
+      {
         newlyAppended += line;
         newlyAppended += '\n';
       }
     }
+
     current.close();
   }
-  File remaining = LittleFS.open(REMAINING_FILE, FILE_WRITE);
-  if (remaining) {
-    if (!uploaded) remaining.println(firstPayload);
+
+  File remaining =
+    LittleFS.open(
+      REMAINING_FILE,
+      FILE_WRITE
+    );
+
+  if (remaining)
+  {
+    if (!uploaded)
+      remaining.println(firstPayload);
+
     remaining.print(oldRemaining);
     remaining.print(newlyAppended);
-    remaining.close();
-    LittleFS.remove(BUFFER_FILE);
-    LittleFS.rename(REMAINING_FILE, BUFFER_FILE);
-  }
-  if (fsMutex != nullptr) xSemaphoreGive(fsMutex);
 
-  if (uploaded) Serial.println("Oldest buffered reading uploaded.");
-  else Serial.println("Buffered reading retained for retry.");
+    remaining.close();
+
+    LittleFS.remove(BUFFER_FILE);
+
+    LittleFS.rename(
+      REMAINING_FILE,
+      BUFFER_FILE
+    );
+  }
+
+  if (fsMutex != nullptr)
+    xSemaphoreGive(fsMutex);
+
+  if (uploaded)
+  {
+    Serial.println(
+      "Oldest buffered reading uploaded."
+    );
+  }
+  else
+  {
+    Serial.println(
+      "Buffered reading retained for retry."
+    );
+  }
 }
+
 
 // ======================================================
 // PROCESS ONE RAM READING
 // ======================================================
 
-void processQueue() {
+void processQueue()
+{
   String payload;
-  if (!peekQueue(payload)) return;
-  if (sendPayload(payload)) dequeuePayload();
-  else {
+
+  if (!peekQueue(payload))
+    return;
+
+  if (sendPayload(payload))
+  {
+    dequeuePayload();
+  }
+  else
+  {
     bufferPayload(payload);
+
     dequeuePayload();
   }
 }
+
 
 // ======================================================
 // QUEUE CURRENT SENSOR DATA
 // ======================================================
 
-void queueCurrentSensorData() {
-  if (!isnan(temperature) && !isnan(humidity)) {
-    enqueuePayload(createDHTPayload());
+void queueCurrentSensorData()
+{
+  // DHT22
+  if (
+    !isnan(temperature) &&
+    !isnan(humidity)
+  )
+  {
+    enqueuePayload(
+      createDHTPayload()
+    );
   }
 
-  enqueuePayload(createLightPayload());
-  enqueuePayload(createDoorPayload());
+  // BH1750
+  enqueuePayload(
+    createLightPayload()
+  );
 
-  if (mpuOK) {
-    enqueuePayload(createMPUPayload());
+  // Limit switch
+  enqueuePayload(
+    createDoorPayload()
+  );
+
+  // HX711
+  if (hx711OK)
+  {
+    enqueuePayload(
+      createWeightPayload()
+    );
   }
 
-  if (hx711OK) {
-    enqueuePayload(createWeightPayload());
-  }
-
-  enqueuePayload(createGPSPayload());
+  // GPS
+  enqueuePayload(
+    createGPSPayload()
+  );
 }
+
 
 // ======================================================
 // LCD
 // ======================================================
 
-void printLCDLine2(const char* text) {
+void printLCDLine2(
+  const char* text
+)
+{
   lcd.setCursor(0, 1);
+
   lcd.print(text);
 
-  int length = strlen(text);
+  int length =
+    strlen(text);
 
-  for (int i = length; i < 16; i++) {
+  for (
+    int i = length;
+    i < 16;
+    i++
+  )
+  {
     lcd.print(" ");
   }
 }
 
-void updateLCD() {
+
+void updateLCD()
+{
   lcd.setCursor(0, 0);
+
   lcd.print("TRACEVEDA TRUCK");
 
   char line[17];
 
-  switch (currentScreen) {
+  switch (currentScreen)
+  {
+    // ------------------------------------------
+    // SCREEN 0
+    // Temperature + Humidity
+    // ------------------------------------------
+
     case 0:
-      if (isnan(temperature) || isnan(humidity)) {
-        snprintf(line, sizeof(line), "T:ERR H:ERR");
-      } else {
+
+      if (
+        isnan(temperature) ||
+        isnan(humidity)
+      )
+      {
+        snprintf(
+          line,
+          sizeof(line),
+          "T:ERR H:ERR"
+        );
+      }
+      else
+      {
         snprintf(
           line,
           sizeof(line),
           "T:%4.1fC H:%4.1f%%",
           temperature,
-          humidity);
+          humidity
+        );
       }
+
       break;
+
+
+    // ------------------------------------------
+    // SCREEN 1
+    // Light
+    // ------------------------------------------
 
     case 1:
-      snprintf(line, sizeof(line), "Light:%5.0f lux", lux);
+
+      snprintf(
+        line,
+        sizeof(line),
+        "Light:%5.0f lux",
+        lux
+      );
+
       break;
+
+
+    // ------------------------------------------
+    // SCREEN 2
+    // GPS Latitude
+    // ------------------------------------------
 
     case 2:
+
+      if (gps.location.isValid())
       {
-        float magnitude = sqrt(
-          (ax * ax) + (ay * ay) + (az * az));
-
-        snprintf(
-          line,
-          sizeof(line),
-          "A:%5.2fg",
-          magnitude);
-        break;
-      }
-
-    case 3:
-      snprintf(line, sizeof(line), "Tilt:%5.1f deg", tilt);
-      break;
-
-    case 4:
-      if (gps.location.isValid()) {
         snprintf(
           line,
           sizeof(line),
           "Lat:%.6f",
-          gps.location.lat());
-      } else {
-        snprintf(line, sizeof(line), "GPS: NO FIX");
+          gps.location.lat()
+        );
       }
+      else
+      {
+        snprintf(
+          line,
+          sizeof(line),
+          "GPS: NO FIX"
+        );
+      }
+
       break;
 
-    case 5:
-      if (gps.location.isValid()) {
+
+    // ------------------------------------------
+    // SCREEN 3
+    // GPS Longitude
+    // ------------------------------------------
+
+    case 3:
+
+      if (gps.location.isValid())
+      {
         snprintf(
           line,
           sizeof(line),
           "Lon:%.6f",
-          gps.location.lng());
-      } else {
-        snprintf(line, sizeof(line), "GPS: NO FIX");
+          gps.location.lng()
+        );
       }
+      else
+      {
+        snprintf(
+          line,
+          sizeof(line),
+          "GPS: NO FIX"
+        );
+      }
+
       break;
 
-    case 6:
-      if (gps.location.isValid()) {
-        if (gps.satellites.isValid()) {
+
+    // ------------------------------------------
+    // SCREEN 4
+    // GPS Fix / Satellites
+    // ------------------------------------------
+
+    case 4:
+
+      if (gps.location.isValid())
+      {
+        if (gps.satellites.isValid())
+        {
           snprintf(
             line,
             sizeof(line),
             "GPS FIX S:%d",
-            gps.satellites.value());
-        } else {
-          snprintf(line, sizeof(line), "GPS: FIX");
+            gps.satellites.value()
+          );
         }
-      } else {
-        snprintf(line, sizeof(line), "GPS: NO FIX");
+        else
+        {
+          snprintf(
+            line,
+            sizeof(line),
+            "GPS: FIX"
+          );
+        }
       }
+      else
+      {
+        snprintf(
+          line,
+          sizeof(line),
+          "GPS: NO FIX"
+        );
+      }
+
       break;
 
-    case 7:
+
+    // ------------------------------------------
+    // SCREEN 5
+    // Weight
+    // ------------------------------------------
+
+    case 5:
+
       snprintf(
         line,
         sizeof(line),
         "W:%5.2fkg",
-        weightKg);
+        weightKg
+      );
+
       break;
 
-    case 8:
-      if (doorClosed) {
-        snprintf(line, sizeof(line), "Door: CLOSED");
-      } else {
-        snprintf(line, sizeof(line), "Door: OPEN");
+
+    // ------------------------------------------
+    // SCREEN 6
+    // Door
+    // ------------------------------------------
+
+    case 6:
+
+      if (doorClosed)
+      {
+        snprintf(
+          line,
+          sizeof(line),
+          "Door: CLOSED"
+        );
       }
+      else
+      {
+        snprintf(
+          line,
+          sizeof(line),
+          "Door: OPEN"
+        );
+      }
+
       break;
   }
 
   printLCDLine2(line);
 }
 
+
 // ======================================================
 // SERIAL
 // ======================================================
 
-void printSerialData() {
+void printSerialData()
+{
   Serial.println();
   Serial.println("================================");
   Serial.println("       TRACEVEDA TRUCK");
   Serial.println("================================");
 
-  if (!isnan(temperature) && !isnan(humidity)) {
+
+  // ------------------------------------------
+  // DHT22
+  // ------------------------------------------
+
+  if (
+    !isnan(temperature) &&
+    !isnan(humidity)
+  )
+  {
     Serial.print("Temperature: ");
-    Serial.print(temperature, 2);
+    Serial.print(
+      temperature,
+      2
+    );
     Serial.println(" C");
 
     Serial.print("Humidity: ");
-    Serial.print(humidity, 2);
+    Serial.print(
+      humidity,
+      2
+    );
     Serial.println(" %");
-  } else {
-    Serial.println("DHT22: READ ERROR");
+  }
+  else
+  {
+    Serial.println(
+      "DHT22: READ ERROR"
+    );
   }
 
+
+  // ------------------------------------------
+  // BH1750
+  // ------------------------------------------
+
   Serial.print("Light: ");
-  Serial.print(lux, 1);
+  Serial.print(
+    lux,
+    1
+  );
   Serial.println(" lux");
 
-  Serial.println();
-  Serial.println("MPU-6500:");
 
-  Serial.print("Accel g: X=");
-  Serial.print(ax, 3);
-  Serial.print(" Y=");
-  Serial.print(ay, 3);
-  Serial.print(" Z=");
-  Serial.println(az, 3);
-
-  Serial.print("Gyro dps: X=");
-  Serial.print(gx, 2);
-  Serial.print(" Y=");
-  Serial.print(gy, 2);
-  Serial.print(" Z=");
-  Serial.println(gz, 2);
-
-  Serial.print("Tilt: ");
-  Serial.print(tilt, 2);
-  Serial.println(" deg");
-
-  Serial.print("Shock: ");
-  Serial.println(shockDetected() ? "YES" : "NO");
+  // ------------------------------------------
+  // HX711
+  // ------------------------------------------
 
   Serial.println();
   Serial.println("HX711:");
 
   Serial.print("Weight: ");
-  Serial.print(weightKg, 3);
+  Serial.print(
+    weightKg,
+    3
+  );
   Serial.println(" kg");
 
   Serial.print("Weight change: ");
-  Serial.print(weightChangeKg, 3);
+  Serial.print(
+    weightChangeKg,
+    3
+  );
   Serial.println(" kg");
+
+
+  // ------------------------------------------
+  // GPS
+  // ------------------------------------------
 
   Serial.println();
   Serial.println("GPS:");
 
-  if (gps.location.isValid()) {
-    Serial.println("Fix: VALID");
+  if (gps.location.isValid())
+  {
+    Serial.println(
+      "Fix: VALID"
+    );
+
     Serial.print("Latitude: ");
-    Serial.println(gps.location.lat(), 6);
+    Serial.println(
+      gps.location.lat(),
+      6
+    );
+
     Serial.print("Longitude: ");
-    Serial.println(gps.location.lng(), 6);
-  } else {
-    Serial.println("Fix: INVALID");
+    Serial.println(
+      gps.location.lng(),
+      6
+    );
+
+    if (gps.satellites.isValid())
+    {
+      Serial.print("Satellites: ");
+      Serial.println(
+        gps.satellites.value()
+      );
+    }
+  }
+  else
+  {
+    Serial.println(
+      "Fix: INVALID"
+    );
   }
 
+
+  // ------------------------------------------
+  // Door
+  // ------------------------------------------
+
   Serial.print("Door: ");
-  Serial.println(doorClosed ? "CLOSED" : "OPEN");
+
+  Serial.println(
+    doorClosed
+      ? "CLOSED"
+      : "OPEN"
+  );
+
+
+  // ------------------------------------------
+  // Backend RED LED
+  // ------------------------------------------
 
   Serial.print("Red LED: ");
-  Serial.println(redLedState ? "ON" : "OFF");
+
+  Serial.println(
+    redLedState
+      ? "ON"
+      : "OFF"
+  );
+
+
+  // ------------------------------------------
+  // RAM QUEUE
+  // ------------------------------------------
 
   Serial.print("RAM queue: ");
   Serial.println(queueCount);
 
-  if (LittleFS.exists(BUFFER_FILE)) {
-    File file = LittleFS.open(BUFFER_FILE, FILE_READ);
 
-    if (file) {
-      Serial.print("LittleFS bytes: ");
-      Serial.println(file.size());
+  // ------------------------------------------
+  // LITTLEFS
+  // ------------------------------------------
+
+  if (LittleFS.exists(BUFFER_FILE))
+  {
+    File file =
+      LittleFS.open(
+        BUFFER_FILE,
+        FILE_READ
+      );
+
+    if (file)
+    {
+      Serial.print(
+        "LittleFS bytes: "
+      );
+
+      Serial.println(
+        file.size()
+      );
+
       file.close();
     }
-  } else {
-    Serial.println("LittleFS: EMPTY");
   }
+  else
+  {
+    Serial.println(
+      "LittleFS: EMPTY"
+    );
+  }
+
+
+  // ------------------------------------------
+  // WI-FI
+  // ------------------------------------------
 
   Serial.print("WiFi: ");
 
-  if (WiFi.status() == WL_CONNECTED) {
-    Serial.print("CONNECTED, IP=");
-    Serial.println(WiFi.localIP());
-  } else {
-    Serial.println("DISCONNECTED");
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    Serial.print(
+      "CONNECTED, IP="
+    );
+
+    Serial.println(
+      WiFi.localIP()
+    );
   }
+  else
+  {
+    Serial.println(
+      "DISCONNECTED"
+    );
+  }
+
 
   Serial.println("================================");
 }
 
+
 // ======================================================
-void uploadTask(void* parameter) {
+// UPLOAD TASK
+// ======================================================
+
+void uploadTask(void* parameter)
+{
   (void)parameter;
-  for (;;) {
+
+  for (;;)
+  {
     uploadBufferedData();
+
     processQueue();
-    vTaskDelay(pdMS_TO_TICKS(UPLOAD_TASK_INTERVAL));
+
+    vTaskDelay(
+      pdMS_TO_TICKS(
+        UPLOAD_TASK_INTERVAL
+      )
+    );
   }
 }
 
+
+// ======================================================
 // SETUP
 // ======================================================
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
 
-  queueMutex = xSemaphoreCreateMutex();
-  fsMutex = xSemaphoreCreateMutex();
+  queueMutex =
+    xSemaphoreCreateMutex();
+
+  fsMutex =
+    xSemaphoreCreateMutex();
+
   delay(1000);
 
   Serial.println();
@@ -1311,145 +1568,284 @@ void setup() {
   Serial.println("    TRACEVEDA TRUCK NODE FINAL");
   Serial.println("================================");
 
-  // I2C
-  Wire.begin(SDA_PIN, SCL_PIN);
 
+  // ====================================================
+  // I2C
+  // ====================================================
+
+  Wire.begin(
+    SDA_PIN,
+    SCL_PIN
+  );
+
+
+  // ====================================================
   // LCD
+  // ====================================================
+
   lcd.init();
+
   lcd.backlight();
+
   lcd.setCursor(0, 0);
   lcd.print("TRACEVEDA TRUCK");
+
   lcd.setCursor(0, 1);
   lcd.print("Starting...");
+
   delay(1200);
 
+
+  // ====================================================
   // DHT22
+  // ====================================================
+
   dht.begin();
 
-  // Limit switch
-  pinMode(LIMIT_SWITCH_PIN, INPUT_PULLUP);
 
-  // Red LED
-  pinMode(RED_LED_PIN, OUTPUT);
-  digitalWrite(RED_LED_PIN, LOW);
+  // ====================================================
+  // LIMIT SWITCH
+  // ====================================================
 
+  pinMode(
+    LIMIT_SWITCH_PIN,
+    INPUT_PULLUP
+  );
+
+
+  // ====================================================
+  // RED LED
+  // ====================================================
+
+  pinMode(
+    RED_LED_PIN,
+    OUTPUT
+  );
+
+  digitalWrite(
+    RED_LED_PIN,
+    LOW
+  );
+
+
+  // ====================================================
   // BH1750
+  // ====================================================
+
   if (
     lightMeter.begin(
-      BH1750::CONTINUOUS_HIGH_RES_MODE)) {
-    Serial.println("BH1750 detected.");
-  } else {
-    Serial.println("BH1750 NOT detected.");
+      BH1750::CONTINUOUS_HIGH_RES_MODE
+    )
+  )
+  {
+    Serial.println(
+      "BH1750 detected."
+    );
+  }
+  else
+  {
+    Serial.println(
+      "BH1750 NOT detected."
+    );
   }
 
-  // MPU
-  mpuOK = initializeMPU();
 
-  if (mpuOK) {
-    calibrateMPU();
-  }
-
+  // ====================================================
   // GPS
+  // ====================================================
+
   GPS.begin(
     9600,
     SERIAL_8N1,
     GPS_RX,
-    GPS_TX);
+    GPS_TX
+  );
 
-  Serial.println("GPS serial initialized.");
+  Serial.println(
+    "GPS serial initialized."
+  );
 
-  // ======================================================
+
+  // ====================================================
   // HX711
-  // ======================================================
+  // ====================================================
 
-  scale.begin(HX711_DT, HX711_SCK);
+  scale.begin(
+    HX711_DT,
+    HX711_SCK
+  );
 
-  // Give HX711 time to power up
+  // Give HX711 time to power up.
   delay(1000);
 
-  if (scale.is_ready()) {
-    Serial.println("HX711 detected.");
+  if (scale.is_ready())
+  {
+    Serial.println(
+      "HX711 detected."
+    );
 
-    // IMPORTANT:
-    // Same sequence as the verified calibration code.
-    // First tare with no calibration factor.
+    // Same verified calibration sequence.
     scale.set_scale();
+
     scale.tare(20);
 
-    // Now apply the verified calibration factor.
-    scale.set_scale(HX711_CALIBRATION_FACTOR);
+    scale.set_scale(
+      HX711_CALIBRATION_FACTOR
+    );
 
     hx711OK = true;
 
-    Serial.println("HX711 tare complete.");
-    Serial.print("HX711 calibration factor: ");
-    Serial.println(HX711_CALIBRATION_FACTOR, 4);
+    Serial.println(
+      "HX711 tare complete."
+    );
+
+    Serial.print(
+      "HX711 calibration factor: "
+    );
+
+    Serial.println(
+      HX711_CALIBRATION_FACTOR,
+      4
+    );
+
 
     // Initial weight reading
-    float initialWeight = scale.get_units(10);
+    float initialWeight =
+      scale.get_units(10);
 
-    if (isfinite(initialWeight)) {
-      weightKg = initialWeight / 1000.0;
+    if (isfinite(initialWeight))
+    {
+      weightKg =
+        initialWeight / 1000.0;
 
-      if (weightKg < 0 && weightKg > -0.05) {
+      if (
+        weightKg < 0 &&
+        weightKg > -0.05
+      )
+      {
         weightKg = 0;
       }
 
-      previousWeightKg = weightKg;
+      previousWeightKg =
+        weightKg;
+
       weightChangeKg = 0.0;
+
       weightInitialized = true;
     }
-  } else {
-    Serial.println("HX711 NOT detected.");
+  }
+  else
+  {
+    Serial.println(
+      "HX711 NOT detected."
+    );
   }
 
-  // LittleFS
-  if (LittleFS.begin(true)) {
-    Serial.println("LittleFS initialized.");
-  } else {
-    Serial.println("LittleFS initialization FAILED.");
+
+  // ====================================================
+  // LITTLEFS
+  // ====================================================
+
+  if (LittleFS.begin(true))
+  {
+    Serial.println(
+      "LittleFS initialized."
+    );
+  }
+  else
+  {
+    Serial.println(
+      "LittleFS initialization FAILED."
+    );
   }
 
-  // Wi-Fi + NTP
+
+  // ====================================================
+  // WI-FI + NTP
+  // ====================================================
+
   connectWiFi();
 
 
-  // Initial values
-  readMPU();
+  // ====================================================
+  // INITIAL VALUES
+  // ====================================================
+
   readGPS();
 
-  temperature = dht.readTemperature();
-  humidity = dht.readHumidity();
+  temperature =
+    dht.readTemperature();
 
-  float initialLux = lightMeter.readLightLevel();
-  if (initialLux >= 0) {
+  humidity =
+    dht.readHumidity();
+
+
+  float initialLux =
+    lightMeter.readLightLevel();
+
+  if (initialLux >= 0)
+  {
     lux = initialLux;
   }
 
-  doorClosed = (digitalRead(LIMIT_SWITCH_PIN) == HIGH);
+
+  doorClosed =
+    (
+      digitalRead(
+        LIMIT_SWITCH_PIN
+      ) == HIGH
+    );
+
 
   readWeight();
 
+
   digitalWrite(
     RED_LED_PIN,
-    LOW);
+    LOW
+  );
 
   redLedState = false;
 
+
   updateLCD();
 
-  unsigned long now = millis();
 
-  lastMPURead = now;
-  lastDHTRead = now - DHT_INTERVAL;
-  lastLightRead = now - LIGHT_INTERVAL;
-  lastWeightRead = now - WEIGHT_INTERVAL;
-  lastTelemetry = now - TELEMETRY_INTERVAL;
-  lastLCDUpdate = now - LCD_INTERVAL;
-  lastLCDScreenChange = now;
-  lastSerialOutput = now - SERIAL_INTERVAL;
-  lastWiFiCheck = now;
+  // ====================================================
+  // INITIAL TIMER VALUES
+  // ====================================================
 
+  unsigned long now =
+    millis();
+
+  lastDHTRead =
+    now - DHT_INTERVAL;
+
+  lastLightRead =
+    now - LIGHT_INTERVAL;
+
+  lastWeightRead =
+    now - WEIGHT_INTERVAL;
+
+  lastTelemetry =
+    now - TELEMETRY_INTERVAL;
+
+  lastLCDUpdate =
+    now - LCD_INTERVAL;
+
+  lastLCDScreenChange =
+    now;
+
+  lastSerialOutput =
+    now - SERIAL_INTERVAL;
+
+  lastWiFiCheck =
+    now;
+
+
+  // ====================================================
+  // UPLOAD TASK
+  // ====================================================
 
   xTaskCreatePinnedToCore(
     uploadTask,
@@ -1458,98 +1854,209 @@ void setup() {
     nullptr,
     1,
     &uploadTaskHandle,
-    0);
+    0
+  );
 
-  Serial.println("Truck Node initialized.");
+
+  Serial.println(
+    "Truck Node initialized."
+  );
 }
+
 
 // ======================================================
 // LOOP
 // ======================================================
 
-void loop() {
-  unsigned long now = millis();
+void loop()
+{
+  unsigned long now =
+    millis();
 
-  // GPS is read continuously.
+
+  // ====================================================
+  // GPS — READ CONTINUOUSLY
+  // ====================================================
+
   readGPS();
 
-  // Door state is read continuously.
-  doorClosed = (digitalRead(LIMIT_SWITCH_PIN) == HIGH);
 
-  // MPU
-  if (now - lastMPURead >= MPU_INTERVAL) {
-    lastMPURead = now;
-    readMPU();
-  }
+  // ====================================================
+  // DOOR — READ CONTINUOUSLY
+  // ====================================================
 
+  doorClosed =
+    (
+      digitalRead(
+        LIMIT_SWITCH_PIN
+      ) == HIGH
+    );
+
+
+  // ====================================================
   // DHT22
-  if (now - lastDHTRead >= DHT_INTERVAL) {
+  // ====================================================
+
+  if (
+    now - lastDHTRead >=
+    DHT_INTERVAL
+  )
+  {
     lastDHTRead = now;
 
-    float newTemperature = dht.readTemperature();
-    float newHumidity = dht.readHumidity();
+    float newTemperature =
+      dht.readTemperature();
 
-    if (!isnan(newTemperature)) {
-      temperature = newTemperature;
+    float newHumidity =
+      dht.readHumidity();
+
+    if (!isnan(newTemperature))
+    {
+      temperature =
+        newTemperature;
     }
 
-    if (!isnan(newHumidity)) {
-      humidity = newHumidity;
+    if (!isnan(newHumidity))
+    {
+      humidity =
+        newHumidity;
     }
   }
 
+
+  // ====================================================
   // BH1750
-  if (now - lastLightRead >= LIGHT_INTERVAL) {
+  // ====================================================
+
+  if (
+    now - lastLightRead >=
+    LIGHT_INTERVAL
+  )
+  {
     lastLightRead = now;
 
-    float newLux = lightMeter.readLightLevel();
+    float newLux =
+      lightMeter.readLightLevel();
 
-    if (newLux >= 0) {
+    if (newLux >= 0)
+    {
       lux = newLux;
     }
   }
 
+
+  // ====================================================
   // HX711
-  if (now - lastWeightRead >= WEIGHT_INTERVAL) {
+  // ====================================================
+
+  if (
+    now - lastWeightRead >=
+    WEIGHT_INTERVAL
+  )
+  {
     lastWeightRead = now;
+
     readWeight();
   }
 
-  // Create one reading per registered sensor at the telemetry interval.
-  if (now - lastTelemetry >= TELEMETRY_INTERVAL) {
+
+  // ====================================================
+  // TELEMETRY
+  // ====================================================
+  //
+  // One reading per registered physical sensor.
+  //
+  // DHT22
+  // BH1750
+  // LIMIT SWITCH
+  // HX711
+  // GPS
+  //
+  // MPU-6500 is no longer included.
+  // ====================================================
+
+  if (
+    now - lastTelemetry >=
+    TELEMETRY_INTERVAL
+  )
+  {
     lastTelemetry = now;
+
     queueCurrentSensorData();
 
     Serial.println();
-    Serial.println("Sensor set queued for backend.");
+
+    Serial.println(
+      "Sensor set queued for backend."
+    );
   }
 
-  // LCD rotation
-  if (now - lastLCDScreenChange >= SCREEN_INTERVAL) {
-    lastLCDScreenChange = now;
+
+  // ====================================================
+  // LCD ROTATION
+  // ====================================================
+
+  if (
+    now - lastLCDScreenChange >=
+    SCREEN_INTERVAL
+  )
+  {
+    lastLCDScreenChange =
+      now;
 
     currentScreen++;
 
-    if (currentScreen >= TOTAL_SCREENS) {
+    if (
+      currentScreen >=
+      TOTAL_SCREENS
+    )
+    {
       currentScreen = 0;
     }
   }
 
+
+  // ====================================================
   // LCD
-  if (now - lastLCDUpdate >= LCD_INTERVAL) {
+  // ====================================================
+
+  if (
+    now - lastLCDUpdate >=
+    LCD_INTERVAL
+  )
+  {
     lastLCDUpdate = now;
+
     updateLCD();
   }
 
-  // Wi-Fi
-  if (now - lastWiFiCheck >= WIFI_INTERVAL) {
+
+  // ====================================================
+  // WI-FI
+  // ====================================================
+
+  if (
+    now - lastWiFiCheck >=
+    WIFI_INTERVAL
+  )
+  {
     lastWiFiCheck = now;
+
     checkWiFi();
   }
 
-  // Serial
-  if (now - lastSerialOutput >= SERIAL_INTERVAL) {
+
+  // ====================================================
+  // SERIAL
+  // ====================================================
+
+  if (
+    now - lastSerialOutput >=
+    SERIAL_INTERVAL
+  )
+  {
     lastSerialOutput = now;
+
     printSerialData();
   }
 }
