@@ -61,13 +61,19 @@ const char* BACKEND_URL =
 const char* IOT_ENDPOINT =
   "/api/iot/readings";
 
+// ======================================================
+// DEVICE AUTHENTICATION
+// ======================================================
+
+const char* DEVICE_API_KEY =
+  "";
 
 // ======================================================
 // WI-FI
 // ======================================================
 
-const char* ssid = "";
-const char* password = "YOUR_WIFI_PASSWORD";
+const char* ssid = "WIFI_SSID";
+const char* password = "WIFI_PASSWORD";
 
 
 // ======================================================
@@ -835,6 +841,10 @@ bool sendPayload(
     "Content-Type",
     "application/json");
 
+  // Device authentication
+  http.addHeader(
+    "X-Device-Key",
+    DEVICE_API_KEY);
 
   http.setTimeout(
     HTTP_TIMEOUT);
