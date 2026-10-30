@@ -1,0 +1,36 @@
+TRACEVEDA FRONTEND DESIGN REFRESH
+=================================
+
+This package includes a presentation-only refresh of the existing HTML frontend.
+
+What changed
+------------
+- Added src/styles/traceveda-redesign.css and linked it after the existing stylesheet.
+- Reworked the visual language: enterprise typography, teal/ink palette, refined surfaces,
+  cards, tables, forms, badges, buttons, navigation and authentication modal.
+- Updated landing-page hero and supply-chain journey presentation.
+- Updated workspace shell and role sidebar styling.
+- Added responsive layouts for tablet and mobile, including horizontally scrollable role
+  navigation and data journeys where appropriate.
+- Added reduced-motion handling.
+
+What was deliberately left unchanged
+------------------------------------
+- Backend code, APIs, database operations and configuration.
+- HTML IDs and existing page/panel markup.
+- Existing inline onclick handlers and form IDs.
+- Existing role menus, role-specific pages and JavaScript event handlers.
+- Login, access requests, QR generation/scanning, IoT monitoring and blockchain flows.
+
+How to apply / run
+------------------
+1. Back up your current project.
+2. Replace the Frontend folder with the Frontend folder from this package.
+3. Keep your existing Backend/.env and Backend/venv if you are merging into an existing
+   local project. This package does not contain the backend environment file or venv.
+4. In the Frontend folder, run: npm install
+5. Run: npm run dev
+6. Open the Vite URL, normally http://localhost:5173.
+
+The redesign stylesheet is separate from traceveda.css, so it can be removed by deleting
+its link from index.html and the new CSS file if you need to revert the visual refresh.

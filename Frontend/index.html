@@ -16,6 +16,7 @@
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <link rel="stylesheet" href="/styles/traceveda.css">
+<link rel="stylesheet" href="/styles/traceveda-redesign.css">
 </head>
 
 <body>
@@ -166,12 +167,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
             Verify Medicine
         </a>
 
-        <a href="#why">
+        <a href="#how-it-works">
             How It Works
         </a>
 
-        <a href="#why">
+        <a href="#about">
             About Us
+        </a>
+
+        <a href="#why">
+            Features
         </a>
 
     </nav>
@@ -205,21 +210,49 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     </div>
 
 
-    <!-- WORKSPACE WELCOME -->
+    <!-- SIGNED-IN ROLE IDENTITY / PROFILE MENU -->
     <div
         class="workspace-header"
         id="workspaceHeader"
         style="display: none;"
     >
+        <div class="profile-control">
+            <button
+                class="profile-trigger workspace-profile-trigger"
+                id="profileTrigger"
+                type="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-controls="profileMenu"
+                onclick="toggleProfileMenu()"
+            >
+                <span class="workspace-header-avatar" aria-hidden="true">
+                    <span class="fa-solid fa-flask" id="workspaceRoleIcon" aria-hidden="true"></span>
+                </span>
+                <span class="profile-trigger-copy workspace-header-copy">
+                    <small class="workspace-header-role" id="workspaceRoleLabel">Laboratory workspace</small>
+                    <strong class="workspace-header-welcome">Welcome, <span id="workspaceGreetingName">User</span></strong>
+                    <span class="workspace-header-subtitle" id="workspaceGreetingSubtitle">Your TraceVeda workspace</span>
+                </span>
+                <i class="fa-solid fa-chevron-down profile-chevron"></i>
+            </button>
 
-        <i class="fa-solid fa-circle-check"></i>
-
-        <span id="workspaceWelcome">
-            Welcome to the workspace
-        </span>
-
+            <div class="profile-menu" id="profileMenu" role="menu">
+                <div class="profile-menu-head">
+                    <span class="profile-avatar profile-avatar-large" id="profileAvatarLarge">TV</span>
+                    <span>
+                        <strong id="profileMenuName">TraceVeda User</strong>
+                        <small id="profileMenuRole">Workspace</small>
+                    </span>
+                </div>
+                <div class="profile-menu-divider"></div>
+                <button type="button" role="menuitem" onclick="logoutTraceVeda()">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    Exit workspace
+                </button>
+            </div>
+        </div>
     </div>
-
 </header>
 
 
@@ -535,6 +568,70 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 </div>
 
 
+<!-- ABOUT TRACEVEDA -->
+<section class="about-section" id="about" aria-labelledby="aboutTitle">
+    <div class="section-shell about-grid">
+        <div class="about-copy">
+            <span class="section-kicker">About TraceVeda</span>
+            <h2 id="aboutTitle">A clearer picture of every medicine’s journey.</h2>
+            <p>TraceVeda brings supply-chain activity and supporting evidence into one connected view — from source and production to quality checks, storage and delivery.</p>
+            <p>It is designed to help participating organisations record important events, review product history and make verification easier for the people who handle or receive a medicine.</p>
+            <button class="text-link" type="button" onclick="openAuthModal('request')">Explore partner access <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="about-principles">
+            <article class="principle-card">
+                <span class="principle-number">01</span>
+                <div><strong>Connected records</strong><p>Keep key batch events and documents linked across the journey.</p></div>
+            </article>
+            <article class="principle-card">
+                <span class="principle-number">02</span>
+                <div><strong>Evidence at each stage</strong><p>Bring lab results, movement updates and monitoring data together.</p></div>
+            </article>
+            <article class="principle-card">
+                <span class="principle-number">03</span>
+                <div><strong>Clearer verification</strong><p>Make it easier to review a batch history and check a medicine QR.</p></div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="workflow-section" id="how-it-works" aria-labelledby="workflowTitle">
+    <div class="section-shell">
+        <div class="section-heading">
+            <span class="section-kicker">How it works</span>
+            <h2 id="workflowTitle">One journey. Connected checkpoints.</h2>
+            <p>Each participant adds or reviews the evidence relevant to their stage.</p>
+        </div>
+        <div class="workflow-steps">
+            <article class="workflow-step">
+                <span class="workflow-icon"><i class="fa-solid fa-seedling"></i></span>
+                <span class="workflow-index">01 / SOURCE</span>
+                <h3>Register the batch</h3>
+                <p>Record the source and create a traceable batch identity.</p>
+            </article>
+            <article class="workflow-step">
+                <span class="workflow-icon"><i class="fa-solid fa-flask"></i></span>
+                <span class="workflow-index">02 / QUALITY</span>
+                <h3>Verify quality</h3>
+                <p>Laboratories review the batch and record their test outcome.</p>
+            </article>
+            <article class="workflow-step">
+                <span class="workflow-icon"><i class="fa-solid fa-truck-fast"></i></span>
+                <span class="workflow-index">03 / MOVEMENT</span>
+                <h3>Monitor handling</h3>
+                <p>Follow transport and storage conditions with IoT evidence.</p>
+            </article>
+            <article class="workflow-step">
+                <span class="workflow-icon"><i class="fa-solid fa-qrcode"></i></span>
+                <span class="workflow-index">04 / VERIFICATION</span>
+                <h3>Check the medicine</h3>
+                <p>Use the QR journey to review the available product history.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
 <!-- =========================================================
      WHY TRACEVEDA
 ========================================================= -->
@@ -642,6 +739,31 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 </section>
 
 
+<!-- COMMON QUESTIONS -->
+<section class="faq-section" id="faq" aria-labelledby="faqTitle">
+    <div class="section-shell faq-layout">
+        <div class="section-heading faq-heading">
+            <span class="section-kicker">A few quick answers</span>
+            <h2 id="faqTitle">Good to know.</h2>
+            <p>Useful context before you enter the platform.</p>
+        </div>
+        <div class="faq-list">
+            <details class="faq-item">
+                <summary>What can I check with a medicine QR?</summary>
+                <p>You can open the available batch information and review the traceability details recorded for that medicine.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Who can use TraceVeda?</summary>
+                <p>Approved manufacturers, laboratories, transporters and auditors can access role-specific workspaces. Consumers can use the public verification flow.</p>
+            </details>
+            <details class="faq-item">
+                <summary>What does IoT monitoring add?</summary>
+                <p>It brings sensor readings from supported transport and storage checkpoints into the batch evidence trail.</p>
+            </details>
+        </div>
+    </div>
+</section>
+
 <!-- FOOTER -->
 
 <footer>
@@ -664,10 +786,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
     <div class="footer-links">
 
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
-        <a href="#">Contact</a>
-        <a href="#">Help</a>
+        <a href="#about">About</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#faq">FAQs</a>
+        <a href="#" onclick="openAuthModal('request');return false;">Request access</a>
 
     </div>
 
@@ -4310,5 +4432,124 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 <script src="/pages/iot.js"></script>
 <script src="/components/ui/events.js"></script>
 <script src="/lib/session.js"></script>
+<script src="/components/ui/workspace-theme.js"></script>
+<script>
+/* Fail-safe header sync: derive visibility from the actual active workspace. */
+(function () {
+    const ROLE_UI = {
+        lab: { label: "Laboratory workspace", subtitle: "Quality testing & verification", icon: "fa-flask" },
+        manufacturer: { label: "Manufacturer workspace", subtitle: "Production & batch management", icon: "fa-industry" },
+        transporter: { label: "Transporter workspace", subtitle: "Transport & logistics", icon: "fa-truck-fast" },
+        auditor: { label: "Auditor workspace", subtitle: "Audit & compliance", icon: "fa-shield-halved" },
+        admin: { label: "Administrator workspace", subtitle: "Platform administration", icon: "fa-user-gear" },
+        consumer: { label: "Consumer experience", subtitle: "Medicine verification", icon: "fa-capsules" }
+    };
+    function readUser() {
+        try { return JSON.parse(localStorage.getItem("traceveda_user") || "{}") || {}; }
+        catch (_) { return {}; }
+    }
+    function resolveRole(user) {
+        let role = document.body.getAttribute("data-role") || window.currentRole || user.role || "";
+        role = String(role).toLowerCase();
+        if (role === "regulator") role = "auditor";
+        if (role === "logistics") role = "transporter";
+        if (ROLE_UI[role]) return role;
+        const side = (document.getElementById("sidebarRole")?.textContent || "").toLowerCase();
+        return Object.keys(ROLE_UI).find(key => side.includes(key)) || "consumer";
+    }
+    function syncHeader() {
+        const workspace = document.getElementById("workspace");
+        const header = document.getElementById("workspaceHeader");
+        if (!workspace || !header) return;
+        const active = workspace.classList.contains("active");
+        if (!active) {
+            document.body.classList.remove("workspace-mode");
+            if (!document.body.hasAttribute("data-role")) header.style.setProperty("display", "none", "important");
+            return;
+        }
+        const user = readUser();
+        const role = resolveRole(user);
+        const meta = ROLE_UI[role] || ROLE_UI.consumer;
+        const name = role === "consumer" ? "Consumer" : (user.username || user.full_name || "User");
+        const displayName = user.full_name || user.username || "TraceVeda User";
+        document.body.setAttribute("data-role", role);
+        document.body.classList.add("workspace-mode");
+        header.removeAttribute("hidden");
+        header.style.setProperty("display", "flex", "important");
+        document.getElementById("publicHeaderNav")?.style.setProperty("display", "none", "important");
+        document.getElementById("publicHeaderActions")?.style.setProperty("display", "none", "important");
+        const nameNode = document.getElementById("workspaceGreetingName");
+        const roleNode = document.getElementById("workspaceRoleLabel");
+        const subtitleNode = document.getElementById("workspaceGreetingSubtitle");
+        const iconNode = document.getElementById("workspaceRoleIcon");
+        // Apply the signed-in identity layout inline so legacy stylesheet rules
+        // cannot hide the avatar or greeting (the old .workspace-header i rule did).
+        const avatarNode = header.querySelector(".workspace-header-avatar");
+        const triggerNode = document.getElementById("profileTrigger");
+        const copyNode = header.querySelector(".workspace-header-copy");
+        const topHeader = header.closest("header");
+        if (topHeader) {
+            topHeader.style.setProperty("display", "flex", "important");
+            topHeader.style.setProperty("align-items", "center", "important");
+            topHeader.style.setProperty("justify-content", "space-between", "important");
+            topHeader.style.setProperty("width", "100%", "important");
+            topHeader.style.setProperty("box-sizing", "border-box", "important");
+        }
+        header.style.setProperty("position", "relative", "important");
+        header.style.setProperty("left", "auto", "important");
+        header.style.setProperty("right", "auto", "important");
+        header.style.setProperty("transform", "none", "important");
+        header.style.setProperty("margin-left", "auto", "important");
+        header.style.setProperty("flex", "0 1 auto", "important");
+        header.style.setProperty("max-width", "min(58vw, 560px)", "important");
+        if (triggerNode) {
+            triggerNode.style.setProperty("display", "inline-flex", "important");
+            triggerNode.style.setProperty("align-items", "center", "important");
+            triggerNode.style.setProperty("gap", "11px", "important");
+            triggerNode.style.setProperty("visibility", "visible", "important");
+            triggerNode.style.setProperty("opacity", "1", "important");
+        }
+        if (avatarNode) {
+            avatarNode.style.setProperty("display", "inline-grid", "important");
+            avatarNode.style.setProperty("place-items", "center", "important");
+            avatarNode.style.setProperty("flex", "0 0 44px", "important");
+            avatarNode.style.setProperty("width", "44px", "important");
+            avatarNode.style.setProperty("height", "44px", "important");
+            avatarNode.style.setProperty("border-radius", "50%", "important");
+            avatarNode.style.setProperty("background", "linear-gradient(145deg,#e8f5eb,#cfe8d6)", "important");
+            avatarNode.style.setProperty("color", "#28794e", "important");
+            avatarNode.style.setProperty("visibility", "visible", "important");
+        }
+        if (iconNode) {
+            iconNode.style.setProperty("display", "inline-block", "important");
+            iconNode.style.setProperty("font-size", "19px", "important");
+            iconNode.style.setProperty("line-height", "1", "important");
+            iconNode.style.setProperty("color", "#28794e", "important");
+            iconNode.style.setProperty("visibility", "visible", "important");
+        }
+        if (copyNode) {
+            copyNode.style.setProperty("display", "flex", "important");
+            copyNode.style.setProperty("flex-direction", "column", "important");
+            copyNode.style.setProperty("min-width", "0", "important");
+            copyNode.style.setProperty("visibility", "visible", "important");
+        }
+        const menuName = document.getElementById("profileMenuName");
+        const menuRole = document.getElementById("profileMenuRole");
+        const menuAvatar = document.getElementById("profileAvatarLarge");
+        if (nameNode) nameNode.textContent = name;
+        if (roleNode) roleNode.textContent = meta.label;
+        if (subtitleNode) subtitleNode.textContent = meta.subtitle;
+        if (iconNode) iconNode.className = "fa-solid " + meta.icon;
+        if (menuName) menuName.textContent = displayName;
+        if (menuRole) menuRole.textContent = meta.label;
+        if (menuAvatar) menuAvatar.textContent = displayName.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join("").toUpperCase() || "TV";
+    }
+    const workspace = document.getElementById("workspace");
+    if (workspace && "MutationObserver" in window) {
+        new MutationObserver(syncHeader).observe(workspace, { attributes: true, attributeFilter: ["class"] });
+    }
+    syncHeader();
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+TraceVeda header avatar + landing-page leaves patch
+
+Replace these files in your existing project:
+1. Frontend/index.html
+2. Frontend/src/styles/traceveda-redesign.css
+3. Frontend/src/components/ui/workspace-theme.js
+4. Frontend/src/components/layout/workspace.js
+
+This patch fixes the signed-in header visibility explicitly: on login, the role avatar and Welcome, <username> appear at the far right of the same top row as the TraceVeda logo. On exit, the public navigation returns.
+
+It also re-enables a soft, low-opacity floating-leaf background on the public home page only. Leaves are hidden in signed-in workspaces and reduced for small screens / reduced-motion settings.
+
+No backend files, database operations, API routes, or role page modules are included in this patch.

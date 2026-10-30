@@ -12,6 +12,7 @@ function openRole(role, panel = null){
 
     // Store current role
     currentRole = role;
+    document.body.setAttribute("data-role", role);
 
 
     /* ==========================================
@@ -27,10 +28,6 @@ function openRole(role, panel = null){
     const workspaceHeader =
         document.getElementById("workspaceHeader");
 
-    const workspaceWelcome =
-        document.getElementById("workspaceWelcome");
-
-
     /* Hide public navigation */
     if (publicHeaderNav) {
         publicHeaderNav.style.display = "none";
@@ -43,78 +40,46 @@ function openRole(role, panel = null){
     }
 
 
-    /* Show workspace greeting */
+    /* Show and populate the identity control in the actual top header. */
+    const rolePresentation = {
+        lab: { label: "Laboratory workspace", subtitle: "Quality testing & verification", icon: "fa-flask" },
+        manufacturer: { label: "Manufacturer workspace", subtitle: "Production & batch management", icon: "fa-industry" },
+        transporter: { label: "Transporter workspace", subtitle: "Transport & logistics", icon: "fa-truck-fast" },
+        auditor: { label: "Auditor workspace", subtitle: "Audit & compliance", icon: "fa-shield-halved" },
+        admin: { label: "Administrator workspace", subtitle: "Platform administration", icon: "fa-user-gear" },
+        consumer: { label: "Consumer experience", subtitle: "Medicine verification", icon: "fa-capsules" }
+    };
+    const presentation = rolePresentation[role] || rolePresentation.consumer;
+    let signedInUser = {};
+    try {
+        signedInUser = JSON.parse(localStorage.getItem("traceveda_user") || "{}") || {};
+    } catch (error) {
+        console.warn("Unable to read logged-in user:", error);
+    }
+    const username = role === "consumer"
+        ? "Consumer"
+        : (signedInUser.username || signedInUser.full_name || "User");
+    const displayName = signedInUser.full_name || signedInUser.username || "TraceVeda User";
+
     if (workspaceHeader) {
-        workspaceHeader.style.display = "flex";
+        workspaceHeader.style.setProperty("display", "flex", "important");
+        workspaceHeader.removeAttribute("hidden");
     }
-
-
-    /* ==========================================
-       WORKSPACE GREETING
-    ========================================== */
-
-    /*
-     * Consumer verification is a public workflow.
-     * It should NOT display the username of a previously
-     * logged-in user.
-     */ 
-
-    if (role === "consumer") {
-
-        if (workspaceWelcome) {
-
-            workspaceWelcome.textContent =
-                "Welcome Consumer!";
-
-        }
-
-    }
-
-
-    /*
-     * All authenticated workspaces display the
-     * currently logged-in user's username.
-     */
-
-    else {
-
-        let loggedInUsername = "User";
-
-        try {
-
-            const storedUser =
-                JSON.parse(
-                    localStorage.getItem("traceveda_user")
-                );
-
-            if (
-                storedUser &&
-                storedUser.username
-            ) {
-
-                loggedInUsername =
-                    storedUser.username;
-
-            }
-
-        } catch (error) {
-
-            console.warn(
-                "Unable to read logged-in user:",
-                error
-            );
-
-        }
-
-
-        if (workspaceWelcome) {
-
-            workspaceWelcome.textContent =
-                `Welcome to the workspace, ${loggedInUsername}`;
-
-        }
-
-    }
+    document.body.classList.add("workspace-mode");
+    const greetingName = document.getElementById("workspaceGreetingName");
+    const roleLabel = document.getElementById("workspaceRoleLabel");
+    const greetingSubtitle = document.getElementById("workspaceGreetingSubtitle");
+    const roleIcon = document.getElementById("workspaceRoleIcon");
+    if (greetingName) greetingName.textContent = username;
+    if (roleLabel) roleLabel.textContent = presentation.label;
+    if (greetingSubtitle) greetingSubtitle.textContent = presentation.subtitle;
+    if (roleIcon) roleIcon.className = `fa-solid ${presentation.icon}`;
+    const menuName = document.getElementById("profileMenuName");
+    const menuRole = document.getElementById("profileMenuRole");
+    const menuAvatar = document.getElementById("profileAvatarLarge");
+    if (menuName) menuName.textContent = displayName;
+    if (menuRole) menuRole.textContent = presentation.label;
+    if (menuAvatar) menuAvatar.textContent = displayName.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join("").toUpperCase() || "TV";
 
     /* ==========================================
     MANUFACTURER FIELD FORMAT HINTS
@@ -326,6 +291,8 @@ if(name === "auditor-reports"){
 function showLanding(){
 
     currentRole = null;
+    document.body.removeAttribute("data-role");
+    document.body.classList.remove("workspace-mode");
 
     /* ==========================================
        RESTORE PUBLIC HEADER
