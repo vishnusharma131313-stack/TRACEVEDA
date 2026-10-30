@@ -39,6 +39,7 @@ _CONSUMER_MODULES = [
     "services.accounts",
     "dependencies",
     "routes.auth",
+    "routes.access_requests",
     "routes.batches",
     "routes.lab",
     "routes.medicine",
@@ -86,6 +87,7 @@ def make_app():
 
     for name in [
         "routes.auth",
+        "routes.access_requests",
         "routes.batches",
         "routes.lab",
         "routes.iot",

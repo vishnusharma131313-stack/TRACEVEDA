@@ -286,6 +286,17 @@ def test_the_whole_supply_chain_runs_on_top_of_the_seed_data(seeded):
 
     assert medicine_id == "MED-2026-043"
     assert qr_id == "QR-2026-043"
+    assert medicine.json()["qr_code_data_url"].startswith("data:image/svg+xml;base64,")
+
+    # Manufacturer can retrieve the same saved QR label later without
+    # creating a second identifier.
+    qr_label = client.get(
+        f"/api/medicine/{medicine_id}/qr",
+        headers=tokens["manufacturer"],
+    )
+    assert qr_label.status_code == 200, qr_label.text
+    assert qr_label.json()["qr_id"] == qr_id
+    assert qr_label.json()["qr_code_data_url"].startswith("data:image/svg+xml;base64,")
 
     # ---- 6. the consumer, with no account at all --------------------
     verify = client.get(f"/api/verify/{qr_id}")

@@ -1,0 +1,25 @@
+TraceVeda frontend repair notes
+
+1. Preserved the current index.html markup and original visual design.
+2. Extracted the inline stylesheet into src/styles/traceveda.css.
+3. Split the two inline scripts into organised API, config, layout, shared-component and page files.
+4. Fixed the misplaced manufacturer QR initialisation block: it now runs inside switchPanel(name), where name is defined.
+5. Centralised the backend URL in src/config/runtime.js and connected it to Vite's VITE_API_URL.
+6. Added a same-origin Vite proxy path for local backend development.
+7. Improved API fetch errors and avoided forcing JSON Content-Type on FormData.
+8. Removed automatic workspace restoration on page load; the app now starts on the public landing page and never opens a stale AUD-001 workspace by itself.
+9. Moved the prior independent React scaffold to archive/react-scaffold so it no longer conflicts with the HTML app that the user identified as the working source.
+10. Removed node_modules from the deliverable; npm install recreates platform-specific dependencies on the user's computer.
+11. Added the missing selectStorageNode() handler and connected storage-node selection to the documented GET /api/storage/readings/{storage_id} endpoint; telemetry cards now reflect the selected node.
+12. Added missing transporter helpers: generateRawBatchId() and retakeGeoImage().
+13. Fixed GPS success/failure UI state so geotag capture is enabled only after a location has been obtained.
+14. Preserved every original HTML event-handler attribute and all static HTML IDs (the one omitted ID is created dynamically by the existing processing-batch form); the extracted stylesheet rules match the original stylesheet.
+15. Static validation: all 16 active JavaScript files parse, all referenced local script/style assets exist, and there are no duplicate HTML IDs.
+16. Added an explicit Administrator Login action to the public header. The login checks that the backend-issued role is exactly `admin` before opening the admin workspace.
+17. Added an Administrator Dashboard that uses the existing backend account APIs: GET /api/auth/users, GET /api/auth/roles and POST /api/auth/users. It includes user counts, role counts, user creation and a user table.
+18. Added an admin sign-out action that clears the saved token and user.
+19. Removed the duplicate/fake synchronous medicine verification handler. The public consumer page now calls GET /api/verify/{qrId}, which is the route documented by the original React API client.
+20. Corrected the consumer input label: the API expects the QR ID printed on the pack, not a medicine batch ID. The page displays the backend verification verdict and does not show a fake success.
+21. Added explicit verification error and invalid-QR states; a QR ID is saved for reporting only after successful verification.
+
+- Fixed Vite /api proxy collision: browser API client script now loads from /lib/api-client.js, while /api/* remains reserved for backend API calls.

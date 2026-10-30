@@ -1,4 +1,10 @@
 from datetime import date, datetime, timezone
+import base64
+from io import BytesIO
+import re
+
+import qrcode
+from qrcode.image.svg import SvgPathFillImage
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field, model_validator
@@ -22,6 +28,9 @@ APPROVED_FOR_MANUFACTURING = "APPROVED_FOR_MANUFACTURING"
 # =========================
 
 class MedicineBatchRequest(BaseModel):
+    # The UI allows the manufacturer to assign the MED-... batch ID shown on
+    # the physical pack. If omitted by an API client, the backend mints it.
+    medicine_batch_id: str | None = Field(default=None, max_length=64)
     processing_batch_id: str = Field(min_length=1, max_length=64)
     manufacturer_id: str = Field(min_length=1, max_length=64)
     product_name: str = Field(min_length=1, max_length=200)
@@ -34,7 +43,31 @@ class MedicineBatchRequest(BaseModel):
         if self.expiry_date <= self.manufacturing_date:
             raise ValueError("expiry_date must be after manufacturing_date")
 
+        if self.medicine_batch_id:
+            medicine_id = self.medicine_batch_id.strip().upper()
+            if not re.fullmatch(r"MED-\d{4}-\d{3,}", medicine_id):
+                raise ValueError("medicine_batch_id must use MED-YYYY-NNN format")
+            self.medicine_batch_id = medicine_id
+
         return self
+
+
+def _qr_code_data_url(qr_id: str) -> str:
+    """Render the exact QR ID as a portable PNG data URL for print/download."""
+    code = qrcode.QRCode(
+        version=None,
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        box_size=10,
+        border=4,
+        image_factory=SvgPathFillImage,
+    )
+    code.add_data(qr_id)
+    code.make(fit=True)
+    image = code.make_image()
+    buffer = BytesIO()
+    image.save(buffer)
+    encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
+    return f"data:image/svg+xml;base64,{encoded}"
 
 
 # =========================
@@ -70,10 +103,17 @@ def create_medicine_batch(
             )
         )
 
-    medicine_batch_id = ids.mint("medicine_batch")
+    medicine_batch_id = data.medicine_batch_id or ids.mint("medicine_batch")
 
-    # The QR id tracks the medicine id so a scanned code is traceable back to
-    # its batch by inspection. Both are unique-indexed.
+    if db.medicine_batches.find_one(
+        {"medicine_batch_id": medicine_batch_id}, {"_id": 1}
+    ):
+        raise HTTPException(
+            status_code=409,
+            detail=f"Medicine batch id {medicine_batch_id} is already in use"
+        )
+
+    # Keep the QR ID deterministic and visibly paired with the MED batch ID.
     qr_id = medicine_batch_id.replace("MED-", "QR-", 1)
 
     if db.medicine_batches.find_one({"qr_id": qr_id}, {"_id": 1}):
@@ -116,8 +156,42 @@ def create_medicine_batch(
     return {
         "medicine_batch_id": medicine_batch_id,
         "qr_id": qr_id,
+        "qr_code_data_url": _qr_code_data_url(qr_id),
         "status": "CREATED",
         "blockchain_tx": blockchain_tx
+    }
+
+
+# =========================
+# RETRIEVE A REGISTERED MEDICINE QR CODE
+# =========================
+
+@router.get("/medicine/{medicine_batch_id}/qr")
+def get_medicine_qr(
+    medicine_batch_id: str,
+    user: dict = Depends(require_roles(MANUFACTURER)),
+):
+    """Return the saved QR ID and its printable image for a registered batch."""
+    medicine = db.medicine_batches.find_one(
+        {"medicine_batch_id": medicine_batch_id},
+        {"_id": 0, "medicine_batch_id": 1, "qr_id": 1}
+    )
+
+    if not medicine:
+        raise HTTPException(status_code=404, detail="Medicine batch not found")
+
+    qr_id = medicine.get("qr_id")
+    if not qr_id:
+        raise HTTPException(
+            status_code=409,
+            detail="This medicine batch does not have a QR ID. Register it again or contact an administrator."
+        )
+
+    return {
+        "exists": True,
+        "medicine_batch_id": medicine_batch_id,
+        "qr_id": qr_id,
+        "qr_code_data_url": _qr_code_data_url(qr_id),
     }
 
 

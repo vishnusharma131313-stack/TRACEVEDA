@@ -1,6 +1,9 @@
+
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+
 import AppShell from './components/layout/AppShell'
+import AdminDashboard from './pages/AdminDashboard'
 import BatchCommandCenter from './pages/BatchCommandCenter'
 import BatchDetail from './pages/BatchDetail'
 import BlockchainExplorer from './pages/BlockchainExplorer'
@@ -8,16 +11,10 @@ import ConsumerQR from './pages/ConsumerQR'
 import IoTMonitor from './pages/IoTMonitor'
 import Login from './pages/Login'
 import TraceRecall from './pages/TraceRecall'
+
 import { onUnauthorized } from './api/client'
 import { clearSession, restoreSession, writeSession } from './lib/auth'
 import { homeFor } from './lib/roles'
-
-/*
- * SessionContext replaces the old RoleContext. The difference is not
- * cosmetic: `role` used to be whatever the user clicked on the login screen,
- * and now it is whatever the server put in the token. Screens read it to
- * decide what to show; the API decides what to allow.
- */
 
 export const SessionContext = createContext({
   user: null,
@@ -40,11 +37,6 @@ export default function App() {
     setUser(null)
   }, [])
 
-  /* The server is the authority on whether a session is still good. When any
-   * call comes back 401 — expired token, deactivated account, restarted
-   * server with a fresh signing key — drop the session so the router sends
-   * the user to the login screen instead of leaving them on a page whose
-   * every request fails. */
   useEffect(() => onUnauthorized(() => setUser(null)), [])
 
   const value = useMemo(
@@ -57,14 +49,38 @@ export default function App() {
   return (
     <SessionContext.Provider value={value}>
       <Routes>
-        {/* ---- public: the consumer QR page needs no account ---- */}
+        {/* Public routes */}
         <Route path="/verify" element={<ConsumerQR />} />
         <Route path="/verify/:qrId" element={<ConsumerQR />} />
 
-        <Route path="/login" element={user ? <Navigate to={home} replace /> : <Login />} />
+        <Route
+          path="/login"
+          element={
+            user
+              ? <Navigate to={home} replace />
+              : <Login />
+          }
+        />
 
-        {/* ---- internal ---- */}
-        <Route path="/" element={user ? <AppShell /> : <Navigate to="/login" replace />}>
+        {/* Admin-only route */}
+        <Route
+          path="/admin"
+          element={
+            user?.role === 'admin'
+              ? <AdminDashboard />
+              : <Navigate to={user ? home : '/login'} replace />
+          }
+        />
+
+        {/* Regular authenticated users */}
+        <Route
+          path="/"
+          element={
+            user && user.role !== 'admin'
+              ? <AppShell />
+              : <Navigate to={user ? '/admin' : '/login'} replace />
+          }
+        >
           <Route index element={<Navigate to={home} replace />} />
           <Route path="dashboard" element={<BatchCommandCenter />} />
           <Route path="batch/:batchType/:batchId" element={<BatchDetail />} />
@@ -73,11 +89,18 @@ export default function App() {
           <Route path="iot" element={<IoTMonitor />} />
         </Route>
 
-        <Route path="*" element={<Navigate to={user ? home : '/login'} replace />} />
+        <Route
+          path="*"
+          element={
+            <Navigate
+              to={user ? (user.role === 'admin' ? '/admin' : home) : '/login'}
+              replace
+            />
+          }
+        />
       </Routes>
     </SessionContext.Provider>
   )
 }
 
-/* Kept so components importing the old name keep working. */
 export const RoleContext = SessionContext

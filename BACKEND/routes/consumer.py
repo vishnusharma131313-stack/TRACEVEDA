@@ -91,7 +91,6 @@ def create_consumer_report(
 # =========================
 # GET ALL CONSUMER REPORTS
 # =========================
-@router.post("/reports")
 @router.get("/reports")
 def get_all_consumer_reports(
     limit: int = Query(default=200, ge=1, le=1000),

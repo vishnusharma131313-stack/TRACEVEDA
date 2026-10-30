@@ -65,6 +65,10 @@ INDEXES = [
     ("storage_events", [("raw_batch_id", 1)], False),
     ("storage_events", [("medicine_batch_id", 1)], False),
 
+    # ---- access requests ----
+    ("access_requests", [("request_id", 1)], True),
+    ("access_requests", [("status", 1), ("submitted_at", -1)], False),
+
     # ---- consumer ----
     ("consumer_reports", [("report_id", 1)], True),
     ("consumer_reports", [("medicine_batch_id", 1)], False),

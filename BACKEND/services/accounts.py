@@ -48,6 +48,22 @@ ROLE_LABELS = {
 
 ALL_ROLES = ROLES
 
+# Older frontend builds and manually provisioned accounts may store the UI
+# label rather than the backend's canonical role key. Keep one canonical key
+# throughout authentication and authorization.
+ROLE_ALIASES = {
+    "transporter": LOGISTICS,
+    "logistics": LOGISTICS,
+    "auditor": REGULATOR,
+    "regulator": REGULATOR,
+}
+
+
+def normalize_role(role):
+    """Return the canonical backend role for a role name or UI alias."""
+    value = str(role or "").strip().lower()
+    return ROLE_ALIASES.get(value, value)
+
 
 def _db():
     return database.db
@@ -128,15 +144,18 @@ def get_user(username):
         return None
 
 
-    return _db()[COLLECTION].find_one(
+    user = _db()[COLLECTION].find_one(
         {
-            "username": str(username).lower()
+            "username": str(username).strip().lower()
         },
         {
             "_id": 0,
             "password_hash": 0
         }
     )
+    if user:
+        user["role"] = normalize_role(user.get("role"))
+    return user
 
 
 # =========================
@@ -187,7 +206,7 @@ def authenticate(username, password):
 
     user.pop("_id", None)
     user.pop("password_hash", None)
-
+    user["role"] = normalize_role(user.get("role"))
 
     return user
 
@@ -209,6 +228,8 @@ def create_user(
 
 ):
 
+
+    role = normalize_role(role)
 
     if role not in ROLES:
 
@@ -324,6 +345,70 @@ def set_password(username, password):
 
 
     return result.matched_count == 1
+
+
+# =========================
+# LIST USERS
+# =========================
+
+def list_users():
+    """Return account records without credentials and with canonical roles."""
+    users = list(
+        _db()[COLLECTION].find(
+            {},
+            {"_id": 0, "password": 0, "password_hash": 0},
+        ).sort("username", 1)
+    )
+    for user in users:
+        user["role"] = normalize_role(user.get("role"))
+    return users
+
+
+# =========================
+# LOCAL DEMO ADMINISTRATOR
+# =========================
+
+DEFAULT_ADMIN_USERNAME = "admin-001"
+DEFAULT_ADMIN_PASSWORD = "12345678"
+
+
+def ensure_default_admin():
+    """Ensure the requested demo administrator exists with known credentials.
+
+    The password is never stored in plaintext. If this named demo account
+    already exists, its role/status and default password are corrected so a
+    pre-existing database can use the documented login immediately.
+    """
+    username = DEFAULT_ADMIN_USERNAME
+    existing = _db()[COLLECTION].find_one({"username": username})
+    expected_hash_is_valid = bool(
+        existing
+        and existing.get("role") == ADMIN
+        and existing.get("is_active", True)
+        and verify_password(DEFAULT_ADMIN_PASSWORD, existing.get("password_hash", ""))
+    )
+
+    if expected_hash_is_valid:
+        return {"username": username, "created": False, "updated": False}
+
+    password_hash = hash_password(DEFAULT_ADMIN_PASSWORD)
+    _db()[COLLECTION].update_one(
+        {"username": username},
+        {
+            "$set": {
+                "username": username,
+                "password_hash": password_hash,
+                "role": ADMIN,
+                "full_name": "TraceVeda Administrator",
+                "organisation_id": "TRACEVEDA-HQ",
+                "is_active": True,
+                "updated_at": datetime.now(timezone.utc),
+            },
+            "$setOnInsert": {"created_at": datetime.now(timezone.utc)},
+        },
+        upsert=True,
+    )
+    return {"username": username, "created": existing is None, "updated": existing is not None}
 
 
 # =========================

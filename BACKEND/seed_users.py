@@ -20,6 +20,13 @@ users = [
         "role": "regulator",
         "full_name": "Regulator Demo"
     },
+    {
+        "username": "admin-001",
+        "password": "12345678",
+        "role": "admin",
+        "full_name": "TraceVeda Administrator",
+        "organisation_id": "TRACEVEDA-HQ"
+    },
 ]
 
 

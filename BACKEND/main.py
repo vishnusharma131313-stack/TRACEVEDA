@@ -26,6 +26,7 @@ from services import accounts
 from services.indexes import ensure_indexes
 
 from routes.auth import router as auth_router
+from routes.access_requests import router as access_requests_router
 from routes.batches import router as batches_router
 from routes.blockchain import router as blockchain_router
 from routes.consumer import router as consumer_router
@@ -62,6 +63,12 @@ async def lifespan(app: FastAPI):
         logger.info("Indexes ready (%s applied, %s failed)", created, len(failed))
 
         try:
+            admin_seed = accounts.ensure_default_admin()
+            logger.info("Default administrator ready: %s", admin_seed["username"])
+        except Exception:
+            logger.exception("Could not ensure the default administrator account")
+
+        try:
             if accounts.count_users() == 0:
                 logger.warning(
                     "No user accounts exist - every authenticated endpoint "
@@ -89,8 +96,9 @@ app = FastAPI(
     description=(
         "Botanical traceability for Ayurvedic medicine. All write endpoints "
         "require a bearer token from POST /api/auth/login; IoT nodes may "
-        "instead present the X-Device-Key header. The consumer QR lookup and "
-        "consumer report submission are intentionally public."
+        "instead present the X-Device-Key header. Consumer QR lookup, consumer "
+        "report submission and stakeholder access-request submission are "
+        "intentionally public; internal review requires authorisation."
     ),
     lifespan=lifespan
 )
@@ -114,17 +122,6 @@ app.add_middleware(
 )
 
 
-# =========================
-# CORS
-# =========================
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 # =========================
@@ -132,6 +129,7 @@ app.add_middleware(
 # =========================
 
 app.include_router(auth_router)
+app.include_router(access_requests_router)
 app.include_router(batches_router)
 app.include_router(plants_router)
 app.include_router(lab_router)

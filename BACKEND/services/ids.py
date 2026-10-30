@@ -93,6 +93,9 @@ ID_SPECS = {
     "investigation": IdSpec(
         "investigations", "investigation_id", "INV", 3
     ),
+    "access_request": IdSpec(
+        "access_requests", "request_id", "ACCESS", 3
+    ),
 }
 
 

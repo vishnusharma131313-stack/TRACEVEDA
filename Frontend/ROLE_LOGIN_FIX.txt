@@ -1,0 +1,8 @@
+TraceVeda role login / access-request patch
+
+1. Transporter UI role is normalised to the backend canonical role `logistics`.
+2. Backend account creation and authentication also normalise the legacy alias `transporter` to `logistics`, including existing accounts.
+3. The Request Access role chooser now includes Auditor. The backend maps `auditor` to canonical role `regulator`; approved accounts receive `aud-###` usernames and can sign in through the existing Auditor login option.
+4. Manufacturer and Laboratory role handling is unchanged.
+
+Apply this package over the current TraceVeda project. Keep your existing Backend/.env file.
