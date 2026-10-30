@@ -571,6 +571,34 @@ header{
 }
 
 /* =========================================================
+   WORKSPACE HEADER
+========================================================= */
+
+.workspace-header {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+
+    font-family: 'Cardo', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+
+    white-space: nowrap;
+}
+
+/* Hide the decorative check icon: display ID only */
+.workspace-header i {
+    display: none;
+}
+
+/* =========================================================
    DROPDOWN
 ========================================================= */
 
@@ -3050,6 +3078,26 @@ tbody tr:hover{
     }
 
 }
+
+/* =========================================================
+   FIELD FORMAT HINT
+========================================================= */
+
+.field-format {
+
+    margin-left: 8px;
+
+    font-size: 0.68rem;
+
+    font-weight: 500;
+
+    color: #6f806f;
+
+    letter-spacing: 0.01em;
+
+    white-space: nowrap;
+
+}
 </style>
 </head>
 
@@ -3168,6 +3216,7 @@ tbody tr:hover{
 
 <header>
 
+    <!-- BRAND -->
     <div class="brand-section">
 
         <div class="brand-logo">
@@ -3189,17 +3238,14 @@ tbody tr:hover{
     </div>
 
 
-    <nav class="header-links">
+    <!-- PUBLIC NAVIGATION -->
+    <nav class="header-links" id="publicHeaderNav">
 
         <a href="#" onclick="showLanding();return false;">
             Overview
         </a>
 
-        <a href="#" onclick="openRole('auditor','trace');return false;">
-            Trace Journey
-        </a>
-
-        <a href="#" onclick="openRole('consumer','qr');return false;">
+        <a href="#" onclick="openRole('consumer','consumer-qr');return false;">
             Verify Medicine
         </a>
 
@@ -3214,15 +3260,38 @@ tbody tr:hover{
     </nav>
 
 
-    <div class="header-actions">
+    <!-- PUBLIC AUTH BUTTONS -->
+    <div class="header-actions" id="publicHeaderActions">
 
-        <button class="auth-btn signin-btn" onclick="openAuthModal('signin')">
+        <button
+            class="auth-btn signin-btn"
+            onclick="openAuthModal('signin')"
+        >
             Sign In
         </button>
 
-        <button class="auth-btn signup-btn" onclick="openAuthModal('signup')">
-            Sign Up
+        <button
+            class="auth-btn signup-btn"
+            onclick="openAuthModal('request')"
+        >
+            Request Access
         </button>
+
+    </div>
+
+
+    <!-- WORKSPACE WELCOME -->
+    <div
+        class="workspace-header"
+        id="workspaceHeader"
+        style="display: none;"
+    >
+
+        <i class="fa-solid fa-circle-check"></i>
+
+        <span id="workspaceWelcome">
+            Welcome to the workspace
+        </span>
 
     </div>
 
@@ -3304,7 +3373,7 @@ tbody tr:hover{
         <div class="cta-wrap">
 
             <button class="btn btn-primary"
-            onclick="openRole('auditor')">
+            onclick="openAuthModal('signin')">
 
                 Enter TraceVeda
 
@@ -3313,7 +3382,7 @@ tbody tr:hover{
             </button>
 
             <button class="btn btn-outline"
-            onclick="openRole('consumer','qr')">
+            onclick="openRole('consumer','consumer-qr')">
 
                 <i class="fa-solid fa-qrcode"></i>
 
@@ -3533,24 +3602,6 @@ tbody tr:hover{
 
             </div>
 
-
-            <div class="kpi">
-
-                <i class="fa fa-heart-pulse kpi-icon"></i>
-
-                <div class="kpi-label">
-                    Lab Pass Rate
-                </div>
-
-                <div class="kpi-value">
-                    98.7%
-                </div>
-
-                <div class="kpi-trend">
-                    This month
-                </div>
-
-            </div>
 
         </div>
 
@@ -3837,36 +3888,7 @@ tbody tr:hover{
 
         </div>
 
-    </div>
-
-
-    <div class="card">
-
-        <div class="card-title">
-            Audit Batch Search
-        </div>
-
-        <div class="search-box">
-
-            <input
-            class="input mono"
-            id="auditSearch"
-            value="MED-2026-043"
-            placeholder="Batch ID / QR code">
-
-            <button class="btn btn-primary"
-            onclick="runAuditSearch()">
-
-                <i class="fa fa-search"></i>
-
-                Audit Batch
-
-            </button>
-
-        </div>
-
-    </div>
-
+    </div>  
 
     <div class="two-column">
 
@@ -4041,8 +4063,9 @@ tbody tr:hover{
 
         <div class="quick-grid">
 
+            <!-- Trace Journey -->
             <div class="quick"
-            onclick="switchPanel('trace')">
+            onclick="switchPanel('auditor-trace')">
 
                 <i class="fa fa-route"></i>
 
@@ -4052,8 +4075,9 @@ tbody tr:hover{
 
             </div>
 
+            <!-- IoT Evidence -->
             <div class="quick"
-            onclick="switchPanel('iot')">
+            onclick="switchPanel('auditor-iot')">
 
                 <i class="fa fa-wifi"></i>
 
@@ -4063,19 +4087,9 @@ tbody tr:hover{
 
             </div>
 
+            <!-- Batch Ledger -->
             <div class="quick"
-            onclick="switchPanel('lab')">
-
-                <i class="fa fa-flask"></i>
-
-                <strong>Lab Dossiers</strong>
-
-                <span>Certificates</span>
-
-            </div>
-
-            <div class="quick"
-            onclick="switchPanel('batches')">
+            onclick="switchPanel('auditor-batches')">
 
                 <i class="fa fa-box"></i>
 
@@ -4085,8 +4099,9 @@ tbody tr:hover{
 
             </div>
 
+            <!-- Reports -->
             <div class="quick"
-            onclick="switchPanel('reports')">
+            onclick="switchPanel('auditor-reports')">
 
                 <i class="fa fa-chart-line"></i>
 
@@ -4481,117 +4496,6 @@ tbody tr:hover{
 
 </div>
 
-
-<!-- =====================================================
-     LAB DOSSIERS
-===================================================== -->
-
-<div class="panel" id="auditor-lab">
-
-    <div class="panel-header">
-
-        <h2 class="panel-title">
-            Laboratory Test Dossiers
-        </h2>
-
-        <p class="panel-subtitle">
-            Verified laboratory certificates and assay records.
-        </p>
-
-    </div>
-
-
-    <div class="table-wrap">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Certificate</th>
-                    <th>Batch</th>
-                    <th>Laboratory</th>
-                    <th>HPLC Purity</th>
-                    <th>Lead</th>
-                    <th>Status</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                <tr>
-
-                    <td class="mono">
-                        LAB-2026-014
-                    </td>
-
-                    <td class="mono">
-                        PROCESS-2026-046
-                    </td>
-
-                    <td>
-                        Inter-State Analytical Laboratory
-                    </td>
-
-                    <td>
-                        98.5%
-                    </td>
-
-                    <td>
-                        0.02 ppm
-                    </td>
-
-                    <td>
-                        <span class="badge badge-success">
-                            PASS
-                        </span>
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td class="mono">
-                        LAB-2026-018
-                    </td>
-
-                    <td class="mono">
-                        PROCESS-2026-049
-                    </td>
-
-                    <td>
-                        Western Lab Agency
-                    </td>
-
-                    <td>
-                        99.1%
-                    </td>
-
-                    <td>
-                        0.01 ppm
-                    </td>
-
-                    <td>
-                        <span class="badge badge-success">
-                            PASS
-                        </span>
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-
 <!-- =====================================================
      IOT
 ===================================================== -->
@@ -4867,72 +4771,146 @@ tbody tr:hover{
 
         <div class="form-grid">
 
+            <!-- TARGET BATCH ID -->
             <div class="form-group">
 
-                <label>
+                <label for="labBatch">
+
                     Target Batch ID
+
+                    <span
+                        id="labBatchFormat"
+                        class="field-format"
+                        style="display: none;"
+                    ></span>
+
                 </label>
 
                 <input
-                class="input mono"
-                id="labBatch"
-                value="PROCESS-2026-046">
+                    class="input mono"
+                    id="labBatch"
+                    placeholder="Enter batch ID"
+                    required
+                >
 
             </div>
 
 
+            <!-- CERTIFICATE ID -->
             <div class="form-group">
 
-                <label>
+                <label for="labCert">
+
                     Certificate ID
+
+                    <span
+                        id="labCertFormat"
+                        class="field-format"
+                        style="display: none;"
+                    ></span>
+
                 </label>
 
                 <input
-                class="input mono"
-                id="labCert"
-                value="LAB-2026-014">
+                    class="input mono"
+                    id="labCert"
+                    placeholder="Enter certificate ID"
+                    required
+                >
+
+            </div>
+
+            <!-- LAB REPORT PDF UPLOAD -->
+            <div class="form-group">
+
+                <label for="labReport">
+                    Lab Report (PDF)
+                </label>
+
+                <input
+                    type="file"
+                    class="input"
+                    id="labReport"
+                    accept=".pdf,application/pdf"
+                    required
+                    style="padding:9px;"
+                >
+
+                <small
+                    id="labReportFileName"
+                    style="
+                        display:block;
+                        margin-top:7px;
+                        color:var(--muted);
+                        font-size:.72rem;
+                    "
+                >
+                    Select a PDF report from your computer.
+                </small>
+
+            </div>
+
+            <!-- TEST DATE -->
+            <div class="form-group">
+
+                <label for="labTestDate">
+                    Test Date
+                </label>
+
+                <input
+                    type="date"
+                    class="input"
+                    id="labTestDate"
+                    required
+                >
 
             </div>
 
 
+            <!-- TEST PHASE -->
             <div class="form-group">
 
-                <label>
-                    Purity
+                <label for="labTestPhase">
+                    Test Phase
                 </label>
 
-                <input
-                class="input"
-                id="labPurity"
-                value="98.5%">
+                <select
+                    class="input"
+                    id="labTestPhase"
+                    required
+                >
 
-            </div>
+                    <option value="">
+                        Select test phase
+                    </option>
 
+                    <option value="RAW_BATCH_TEST">
+                        Raw batch test
+                    </option>
 
-            <div class="form-group">
+                    <option value="FINAL_PRODUCT_QUALITY_TEST">
+                        Final Product Quality test
+                    </option>
 
-                <label>
-                    Lead
-                </label>
-
-                <input
-                class="input"
-                id="labLead"
-                value="0.02 ppm">
+                </select>
 
             </div>
 
         </div>
 
 
+        <!-- VERIFICATION VERDICT -->
         <div class="form-group">
 
-            <label>
+            <label for="labVerdict">
                 Verification Verdict
             </label>
 
-            <select class="input"
-            id="labVerdict">
+            <select
+                class="input"
+                id="labVerdict"
+                required
+            >
 
                 <option value="PASS">
                     ✓ PASS — Verified Safe
@@ -4947,8 +4925,11 @@ tbody tr:hover{
         </div>
 
 
-        <button class="btn btn-primary"
-        onclick="submitLab()">
+        <!-- SUBMIT -->
+        <button
+            class="btn btn-primary"
+            onclick="submitLab()"
+        >
 
             <i class="fa fa-signature"></i>
 
@@ -4959,7 +4940,6 @@ tbody tr:hover{
     </div>
 
 </div>
-
 
 <!-- =====================================================
      LAB HISTORY
@@ -4987,34 +4967,41 @@ tbody tr:hover{
             <thead>
 
                 <tr>
-                    <th>Timestamp</th>
+                    <th>Test Date</th>
                     <th>Batch</th>
-                    <th>Purity</th>
-                    <th>Lead</th>
+                    <th>Test Phase</th>
                     <th>Verdict</th>
+                    <th>Certificate ID</th>
                     <th>Transaction</th>
                 </tr>
 
             </thead>
 
+
             <tbody id="labHistory">
 
                 <tr>
 
-                    <td>29 Aug 2026</td>
+                    <td>
+                        29 Aug 2026
+                    </td>
 
                     <td class="mono">
                         PROCESS-2026-046
                     </td>
 
-                    <td>98.5%</td>
-
-                    <td>0.02 ppm</td>
+                    <td>
+                        Raw batch test
+                    </td>
 
                     <td>
                         <span class="badge badge-success">
                             PASS
                         </span>
+                    </td>
+
+                    <td class="mono">
+                        CERT-PRE-0001
                     </td>
 
                     <td class="mono">
@@ -5033,7 +5020,7 @@ tbody tr:hover{
 
 
 <!-- =====================================================
-     MANUFACTURER
+     MANUFACTURER WORKSPACE
 ===================================================== -->
 
 <div class="panel" id="manufacturer-workspace">
@@ -5055,54 +5042,172 @@ tbody tr:hover{
 
         <div class="form-grid">
 
+            <!-- NEW MEDICINE BATCH ID -->
             <div class="form-group">
 
-                <label>
+                <label for="mfgBatch">
+
                     New Medicine Batch ID
+
+                    <span
+                        id="mfgBatchFormat"
+                        class="field-format"
+                        style="display: none;"
+                    ></span>
+
                 </label>
 
                 <input
-                class="input mono"
-                id="mfgBatch"
-                value="MED-2026-046">
+                    class="input mono"
+                    id="mfgBatch"
+                    placeholder="Enter medicine batch ID"
+                    required
+                >
 
             </div>
 
 
+            <!-- SOURCE PROCESSING BATCH -->
             <div class="form-group">
 
-                <label>
-                    Source Processing Lot
+                <label for="mfgSource">
+
+                    Source Processing Batch
+
+                    <span
+                        id="mfgSourceFormat"
+                        class="field-format"
+                        style="display: none;"
+                    ></span>
+
                 </label>
 
-                <input
-                class="input mono"
-                id="mfgSource"
-                value="PROCESS-2026-046">
+
+                <!-- PROCESSING BATCH LIST -->
+                <div id="processingBatchList">
+
+                    <!-- FIRST PROCESSING BATCH -->
+                    <div class="processing-batch-row">
+
+                        <input
+                            class="input mono processing-batch-input"
+                            id="mfgSource"
+                            placeholder="Enter processing batch ID"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- ADD / REMOVE BUTTONS -->
+                <div
+                    style="
+                        display: flex;
+                        gap: 8px;
+                        margin-top: 8px;
+                    "
+                >
+
+                    <!-- ADD -->
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        onclick="addProcessingBatch()"
+                        style="
+                            padding: 7px 12px;
+                            font-size: .72rem;
+                        "
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                        Add
+                    </button>
+
+
+                    <!-- REMOVE -->
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        onclick="removeProcessingBatch()"
+                        style="
+                            padding: 7px 12px;
+                            font-size: .72rem;
+                        "
+                    >
+                        <i class="fa-solid fa-minus"></i>
+                        Remove
+                    </button>
+
+                </div>
 
             </div>
 
+
+            <!-- PRODUCT NAME -->
+            <div
+                class="form-group"
+                style="grid-column: 1 / -1;"
+            >
+
+                <label for="mfgProduct">
+                    Product Name
+                </label>
+
+                <input
+                    class="input"
+                    id="mfgProduct"
+                    placeholder="Enter product name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- MANUFACTURING DATE -->
+            <div class="form-group">
+
+                <label for="mfgManufacturingDate">
+                    Manufacturing Date
+                </label>
+
+                <input
+                    type="date"
+                    class="input"
+                    id="mfgManufacturingDate"
+                    required
+                >
+
+            </div>
+
+
+            <!-- EXPIRY DATE -->
+            <div class="form-group">
+
+                <label for="mfgExpiryDate">
+                    Expiry Date
+                </label>
+
+                <input
+                    type="date"
+                    class="input"
+                    id="mfgExpiryDate"
+                    required
+                >
+
+            </div>
+
+
         </div>
 
 
-        <div class="form-group">
+        <!-- SUBMIT -->
+        <button
+            class="btn btn-primary"
+            onclick="submitManufacturer()"
+        >
 
-            <label>
-                Product Name
-            </label>
-
-            <input
-            class="input"
-            id="mfgProduct"
-            value="Ashwagandha Fortified Tablets">
-
-        </div>
-
-
-        <button class="btn btn-primary"
-        onclick="submitManufacturer()">
-
-            <i class="fa fa-plus"></i>
+            <i class="fa-solid fa-plus"></i>
 
             Formulate & Register Batch
 
@@ -5139,16 +5244,39 @@ tbody tr:hover{
             <thead>
 
                 <tr>
-                    <th>Medicine Batch</th>
-                    <th>Product</th>
-                    <th>Ingredient Lot</th>
-                    <th>Date</th>
-                    <th>Status</th>
+
+                    <th>
+                        New Medicine Batch ID
+                    </th>
+
+                    <th>
+                        Source Processing Batch
+                    </th>
+
+                    <th>
+                        Product Name
+                    </th>
+
+                    <th>
+                        Manufacturing Date
+                    </th>
+
+                    <th>
+                        Expiry Date
+                    </th>
+
+                    <th>
+                        QR ID
+                    </th>
+
                 </tr>
 
             </thead>
 
+
             <tbody id="mfgHistory">
+
+                <!-- SAMPLE / EXISTING RECORD -->
 
                 <tr>
 
@@ -5156,12 +5284,15 @@ tbody tr:hover{
                         MED-2026-043
                     </td>
 
-                    <td>
-                        Ashwagandha Extract Tablets
+                    <td class="mono">
+
+                        ASH-P-2026-001<br>
+                        TUL-P-2026-003
+
                     </td>
 
-                    <td class="mono">
-                        PROCESS-2026-046
+                    <td>
+                        Ashwagandha Extract Tablets
                     </td>
 
                     <td>
@@ -5169,9 +5300,11 @@ tbody tr:hover{
                     </td>
 
                     <td>
-                        <span class="badge badge-success">
-                            MONITORED
-                        </span>
+                        11 March 2028
+                    </td>
+
+                    <td class="mono">
+                        QR-2026-043
                     </td>
 
                 </tr>
@@ -5184,6 +5317,429 @@ tbody tr:hover{
 
 </div>
 
+<!-- =====================================================
+     RAW MATERIAL TRANSPORT MONITORING
+===================================================== -->
+
+<div class="panel" id="manufacturer-transport">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Raw Material Transport Monitoring
+        </h2>
+
+        <p class="panel-subtitle">
+            Live IoT telemetry from raw material transportation.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         INVESTIGATE BATCH
+    ================================================== -->
+
+    <div class="card">
+
+        <div class="card-title">
+            Investigate Batch
+        </div>
+
+        <p
+            style="
+                color:var(--muted);
+                font-size:.75rem;
+                margin-bottom:18px;
+            "
+        >
+            Check whether any transport casualty or anomaly was recorded
+            for a batch released from the laboratory.
+        </p>
+
+
+        <!-- PROCESSING BATCH ID -->
+        <div class="form-group">
+
+            <label for="investigateBatchId">
+
+                Processing Batch ID
+
+                <span
+                    class="field-format"
+                    style="display:inline;"
+                >
+                    Format: CROP-P-YYYY-NNN
+                </span>
+
+            </label>
+
+            <input
+                class="input mono"
+                id="investigateBatchId"
+                placeholder="Enter processing batch ID"
+                required
+            >
+
+        </div>
+
+
+        <!-- INVESTIGATE BUTTON -->
+        <button
+            type="button"
+            class="btn btn-primary"
+            onclick="investigateBatch()"
+        >
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            Investigate Batch
+
+        </button>
+
+
+        <!-- =================================================
+             INVESTIGATION RESULT
+        ================================================== -->
+
+        <div
+            id="batchInvestigationResult"
+            style="
+                display:none;
+                margin-top:22px;
+                border-top:1px solid var(--border);
+                padding-top:18px;
+            "
+        >
+
+            <div
+                style="
+                    font-size:.65rem;
+                    text-transform:uppercase;
+                    color:var(--muted);
+                    margin-bottom:7px;
+                "
+            >
+                Investigation Result
+            </div>
+
+
+            <div
+                id="batchInvestigationStatus"
+                style="
+                    font-size:.9rem;
+                    font-weight:600;
+                    color:var(--green-dark);
+                "
+            >
+            </div>
+
+
+            <div
+                id="batchInvestigationDetails"
+                style="
+                    margin-top:9px;
+                    font-size:.72rem;
+                    color:var(--muted);
+                    line-height:1.6;
+                "
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+            TRUCK NODE IOT MONITORING
+        ================================================== -->
+
+        <div class="card" style="margin-top:20px;">
+
+            <div class="card-title">
+                Truck Node — Live IoT Telemetry
+            </div>
+
+            <p style="
+                color:var(--muted);
+                font-size:.75rem;
+                margin-bottom:20px;
+            ">
+                Live sensor readings from the truck-mounted monitoring hardware.
+            </p>
+
+            <div class="sensor-grid">
+
+                <!-- DHT22 TEMPERATURE -->
+                <div class="sensor">
+
+                    <div class="sensor-label">
+                        DHT22 — Temperature
+                    </div>
+
+                    <div class="sensor-value" id="transportTemperature">
+                        -- °C
+                    </div>
+
+                    <div class="sensor-status">
+                        <i class="fa fa-circle-check"></i>
+                        Temperature Reading
+                    </div>
+
+                </div>
+
+
+                <!-- DHT22 HUMIDITY -->
+                <div class="sensor">
+
+                    <div class="sensor-label">
+                        DHT22 — Humidity
+                    </div>
+
+                    <div class="sensor-value" id="transportHumidity">
+                        -- %
+                    </div>
+
+                    <div class="sensor-status">
+                        <i class="fa fa-circle-check"></i>
+                        Humidity Reading
+                    </div>
+
+                </div>
+
+
+                <!-- BH1750 -->
+                <div class="sensor">
+
+                    <div class="sensor-label">
+                        BH1750 — Light Intensity
+                    </div>
+
+                    <div class="sensor-value" id="transportLight">
+                        -- lx
+                    </div>
+
+                    <div class="sensor-status">
+                        <i class="fa fa-circle-check"></i>
+                        Ambient Light
+                    </div>
+
+                </div>
+
+
+                <!-- LIMIT SWITCH -->
+                <div class="sensor">
+
+                    <div class="sensor-label">
+                        Limit Switch
+                    </div>
+
+                    <div class="sensor-value" id="transportLimitSwitch">
+                        --
+                    </div>
+
+                    <div class="sensor-status">
+                        <i class="fa fa-circle-check"></i>
+                        Cargo Seal Status
+                    </div>
+
+                </div>
+
+
+                <!-- GPS NEO-6M -->
+                <div class="sensor">
+
+                    <div class="sensor-label">
+                        GPS — Neo-6M
+                    </div>
+
+                    <div class="sensor-value"
+                        id="transportGPS"
+                        style="font-size:1rem;">
+                        Waiting for GPS
+                    </div>
+
+                    <div class="sensor-status">
+                        <i class="fa fa-location-dot"></i>
+                        Truck Location
+                    </div>
+
+                </div>
+
+
+                <!-- HX711 LOAD CELL -->
+                <div class="sensor">
+
+                    <div class="sensor-label">
+                        HX711 — Load Cell
+                    </div>
+
+                    <div class="sensor-value" id="transportWeight">
+                        -- kg
+                    </div>
+
+                    <div class="sensor-status">
+                        <i class="fa fa-weight-hanging"></i>
+                        Cargo Weight
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+</div>
+
+<!-- =====================================================
+     QR ID GENERATION
+===================================================== -->
+
+<div class="panel" id="manufacturer-qr">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Medicine QR ID Generation
+        </h2>
+
+        <p class="panel-subtitle">
+            Generate and retrieve unique QR codes for registered medicine batches.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="form-group">
+
+            <label for="qrMedicineBatch">
+                Select Registered Medicine Batch
+            </label>
+
+            <select
+                class="input"
+                id="qrMedicineBatch"
+                onchange="handleMedicineQRSelection()"
+            >
+
+                <option value="">
+                    Select medicine batch ID
+                </option>
+
+                <option value="MED-2026-001">
+                    MED-2026-001 (Demo Batch)
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="btn btn-primary"
+            id="generateMedicineQRButton"
+            onclick="generateMedicineQR()"
+            disabled
+            style="opacity:.5;cursor:not-allowed;"
+        >
+
+            <i class="fa-solid fa-qrcode"></i>
+
+            Generate QR ID
+
+        </button>
+
+
+        <div
+            id="medicineQRMessage"
+            style="
+                display:none;
+                margin-top:20px;
+                font-size:.8rem;
+            "
+        ></div>
+
+
+        <!-- GENERATED / EXISTING QR CODE -->
+
+        <div
+            id="medicineQRResult"
+            style="
+                display:none;
+                margin-top:25px;
+                padding-top:22px;
+                border-top:1px solid var(--border);
+                text-align:center;
+            "
+        >
+
+            <h3 style="
+                color:var(--green-dark);
+                margin-bottom:8px;
+            ">
+                Medicine QR Code
+            </h3>
+
+            <p
+                id="qrMedicineBatchDisplay"
+                class="mono"
+                style="
+                    color:var(--muted);
+                    margin-bottom:18px;
+                "
+            ></p>
+
+
+            <div style="
+                display:inline-block;
+                padding:16px;
+                background:white;
+                border:1px solid var(--border);
+                border-radius:12px;
+            ">
+
+                <img
+                    id="medicineQRCodeImage"
+                    alt="Medicine QR Code"
+                    style="
+                        display:block;
+                        width:220px;
+                        height:220px;
+                        object-fit:contain;
+                    "
+                >
+
+            </div>
+
+
+            <p
+                id="medicineQRIdDisplay"
+                class="mono"
+                style="
+                    margin-top:18px;
+                    font-weight:600;
+                    color:var(--green-dark);
+                "
+            ></p>
+
+
+            <p style="
+                color:var(--muted);
+                font-size:.72rem;
+                margin-top:6px;
+            ">
+                Scan this QR code to verify the medicine batch.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
 
 <!-- =====================================================
      STORAGE MONITORING
@@ -5203,77 +5759,604 @@ tbody tr:hover{
 
     </div>
 
+    <!-- =====================================================
+        STORAGE SELECTION
+    ===================================================== -->
+
+    <!--/*
+    ===============================================================================
+    BACKEND REQUIREMENT — STORAGE MONITORING READINGS
+    ===============================================================================
+
+    The Storage Monitoring workspace contains a "Storage Selection" dropdown.
+
+    When the manufacturer selects a Storage Unit / Storage Node, the backend must
+    fetch the sensor readings corresponding ONLY to that selected storage unit
+    from:
+
+        iot_storage_readings.csv
+
+
+    -------------------------------------------------------------------------------
+    1. STORAGE SELECTION
+    -------------------------------------------------------------------------------
+
+    The frontend sends the selected storage unit ID, for example:
+
+        STR-001
+
+        STR-002
+
+        STR-003
+
+    etc.
+
+
+    -------------------------------------------------------------------------------
+    2. FETCH READINGS FROM iot_storage_readings.csv
+    -------------------------------------------------------------------------------
+
+    The backend must filter iot_storage_readings.csv using the selected
+    storage unit / storage node identifier.
+
+    Example:
+
+        Selected Storage Unit:
+            STR-003
+
+    The backend must return only the readings belonging to:
+
+        STR-003
+
+
+    -------------------------------------------------------------------------------
+    3. SENSOR READINGS REQUIRED
+    -------------------------------------------------------------------------------
+
+    For the selected storage unit, return the readings for:
+
+        - HX711 Load Cell
+        - Limit Switch
+        - BH1750 Lux
+
+    The MPU6050 Motion sensor is NO LONGER USED in Storage Monitoring and must
+    not be returned or displayed.
+
+
+    -------------------------------------------------------------------------------
+    4. FRONTEND RESPONSE STRUCTURE
+    -------------------------------------------------------------------------------
+
+    The backend should return a response similar to:
+
+    {
+        "storage_id": "STR-003",
+
+        "readings": {
+            "weight": 5.02,
+            "limit_switch": "CLOSED",
+            "light": 0.2
+        }
+    }
+
+
+    -------------------------------------------------------------------------------
+    5. IMPORTANT
+    -------------------------------------------------------------------------------
+
+    Changing the Storage Selection must change the readings displayed on the
+    frontend.
+
+    Example:
+
+        User selects STR-001
+                ↓
+        Backend fetches STR-001 readings
+                ↓
+        Frontend displays STR-001 readings
+
+
+        User selects STR-003
+                ↓
+        Backend fetches STR-003 readings
+                ↓
+        Frontend replaces the displayed values with STR-003 readings.
+
+
+    The frontend should NOT use hard-coded sensor values once the backend API is
+    connected.
+
+    The source of truth for Storage Monitoring readings must be:
+
+        iot_storage_readings.csv
+
+
+    -------------------------------------------------------------------------------
+    6. API REQUIREMENT
+    -------------------------------------------------------------------------------
+
+    Provide an endpoint that accepts the selected storage unit ID.
+
+    Example:
+
+        GET /api/storage/readings/{storage_id}
+
+    Example request:
+
+        GET /api/storage/readings/STR-003
+
+    Example response:
+
+    {
+        "storage_id": "STR-003",
+        "readings": {
+            "weight": 5.02,
+            "limit_switch": "CLOSED",
+            "light": 0.2
+        }
+    }
+
+
+    -------------------------------------------------------------------------------
+    7. LATEST READING
+    -------------------------------------------------------------------------------
+
+    If iot_storage_readings.csv contains multiple readings for the same storage
+    unit, return the MOST RECENT reading based on the timestamp column.
+
+    Do not combine readings from different storage units.
+
+    ===============================================================================
+    */-->
+
+    <div
+        class="card"
+        style="
+            margin-top:20px;
+            margin-bottom:20px;
+        "
+    >
+
+        <div class="form-group" style="margin-bottom:0;">
+
+            <label for="storageSelection">
+                Storage Selection
+            </label>
+
+            <select
+                class="input"
+                id="storageSelection"
+                onchange="selectStorageNode()"
+            >
+
+                <option value="STR-001">
+                    Storage Node STR-001
+                </option>
+
+                <option value="STR-002">
+                    Storage Node STR-002
+                </option>
+
+                <option value="STR-003">
+                    Storage Node STR-003
+                </option>
+
+                <option value="STR-004">
+                    Storage Node STR-004
+                </option>
+
+                <option value="STR-005">
+                    Storage Node STR-005
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
 
     <div class="sensor-grid">
 
-        <div class="sensor">
+    <!-- DHT22 TEMPERATURE -->
+    <div class="sensor">
 
-            <div class="sensor-label">
-                HX711 Load Cell
+        <div class="sensor-label">
+            DHT22 — Temperature
+        </div>
+
+        <div class="sensor-value" id="storageTemperature">
+            -- °C
+        </div>
+
+        <div class="sensor-status">
+            <i class="fa fa-circle-check"></i>
+            Temperature Reading
+        </div>
+
+    </div>
+
+
+    <!-- DHT22 HUMIDITY -->
+    <div class="sensor">
+
+        <div class="sensor-label">
+            DHT22 — Humidity
+        </div>
+
+        <div class="sensor-value" id="storageHumidity">
+            -- %
+        </div>
+
+        <div class="sensor-status">
+            <i class="fa fa-circle-check"></i>
+            Humidity Reading
+        </div>
+
+    </div>
+
+
+    <!-- BH1750 LIGHT INTENSITY -->
+    <div class="sensor">
+
+        <div class="sensor-label">
+            BH1750 — Light Intensity
+        </div>
+
+        <div class="sensor-value" id="storageLight">
+            -- lx
+        </div>
+
+        <div class="sensor-status">
+            <i class="fa fa-circle-check"></i>
+            Ambient Light
+        </div>
+
+    </div>
+
+
+    <!-- LIMIT SWITCH -->
+    <div class="sensor">
+
+        <div class="sensor-label">
+            Limit Switch
+        </div>
+
+        <div class="sensor-value" id="storageLimitSwitch">
+            --
+        </div>
+
+        <div class="sensor-status">
+            <i class="fa fa-circle-check"></i>
+            Storage Seal Status
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+     TRANSPORTER OVERVIEW
+===================================================== -->
+
+<div class="panel" id="transporter-overview">
+
+    <div class="panel-header">
+
+        <h2 class="panel-title">
+            Transporter Overview
+        </h2>
+
+        <p class="panel-subtitle">
+            Manage and monitor your transportation workspace.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+    <div class="card-title">
+        Transportation Type
+    </div>
+
+    <div class="form-group">
+
+        <label for="transporterType">
+            Select Transportation Type
+        </label>
+
+        <select
+            class="input"
+            id="transporterType"
+            onchange="handleTransporterType()"
+        >
+
+            <option value="">
+                Select transportation type
+            </option>
+
+            <option value="raw-to-processor">
+                Raw Batch To Processor
+            </option>
+
+            <option value="lab-to-manufacturer">
+                Lab To Manufacturer
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- RAW BATCH TO PROCESSOR -->
+
+    <div
+        id="rawToProcessorForm"
+        style="display:none; margin-top:25px;"
+    >
+
+        <div class="form-grid">
+
+            <!-- CROP -->
+
+            <div class="form-group">
+
+                <label for="rawCrop">
+                    Crop Name
+                </label>
+
+                <select
+                    class="input"
+                    id="rawCrop"
+                    onchange="generateRawBatchId()"
+                >
+
+                    <option value="">
+                        Select crop
+                    </option>
+
+                    <option
+                        value="BOR"
+                        data-name="Boro mankachu"
+                    >
+                        Boro mankachu
+                    </option>
+
+                    <option
+                        value="GHE"
+                        data-name="Ghee-kunvar"
+                    >
+                        Ghee-kunvar
+                    </option>
+
+                    <option
+                        value="PAB"
+                        data-name="Patabahari"
+                    >
+                        Patabahari
+                    </option>
+
+                    <option
+                        value="PUK"
+                        data-name="Pukar"
+                    >
+                        Pukar
+                    </option>
+
+                    <option
+                        value="JSU"
+                        data-name="Jasut"
+                    >
+                        Jasut
+                    </option>
+
+                    <option
+                        value="MIG"
+                        data-name="Ming Aralia"
+                    >
+                        Ming Aralia
+                    </option>
+
+                </select>
+
             </div>
 
-            <div class="sensor-value"
-            id="weightSensor">
-                5.01 kg
+
+            <!-- RAW BATCH ID -->
+
+            <div class="form-group">
+
+                <label for="rawBatchId">
+                    Raw Batch ID
+                </label>
+
+                <input
+                    type="text"
+                    class="input mono"
+                    id="rawBatchId"
+                    placeholder="Auto-generated"
+                    readonly
+                >
+
             </div>
 
-            <div class="sensor-status">
-                <i class="fa fa-circle-check"></i>
-                Stable Weight
+
+            <!-- FARM NAME -->
+
+            <div class="form-group">
+
+                <label for="rawFarmName">
+                    Farm Name
+                </label>
+
+                <input
+                    type="text"
+                    class="input"
+                    id="rawFarmName"
+                    placeholder="Enter farm name"
+                >
+
+            </div>
+            <!-- DESTINATION -->
+
+            <div class="form-group">
+
+                <label for="rawDestination">
+                    Destination
+                </label>
+
+                <input
+                    type="text"
+                    class="input"
+                    id="rawDestination"
+                    placeholder="Enter destination"
+                >
+
+            </div>
+
+            <!-- QUANTITY -->
+
+            <div class="form-group">
+
+                <label for="rawQuantity">
+                    Quantity (Kg)
+                </label>
+
+                <input
+                    type="number"
+                    class="input"
+                    id="rawQuantity"
+                    placeholder="Enter quantity"
+                    min="0"
+                    step="0.01"
+                >
+
+            </div>
+
+            <!-- DATE OF TRANSPORT -->
+
+            <div class="form-group">
+
+                <label for="rawTransportDate">
+                    Date of Transport
+                </label>
+
+                <input
+                    type="date"
+                    class="input"
+                    id="rawTransportDate"
+                >
+
+            </div>
+
+            <div style="margin-top:24px;display:flex;justify-content:flex-end;">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="signInTransportLedger('raw')"
+                >
+                    <i class="fa-solid fa-file-signature"></i>
+                    Sign in Ledger
+                </button>
             </div>
 
         </div>
 
+    </div>
 
-        <div class="sensor">
+    <!-- LAB TO MANUFACTURER -->
 
-            <div class="sensor-label">
-                Limit Switch
+    <div
+        id="labToManufacturerForm"
+        style="display:none; margin-top:25px;"
+    >
+
+        <div class="form-grid">
+
+            <!-- PROCESSED BATCH ID -->
+
+            <div class="form-group">
+
+                <label for="processedBatchId">
+                    Processed Batch ID
+                </label>
+
+                <input
+                    type="text"
+                    class="input mono"
+                    id="processedBatchId"
+                    placeholder="Enter processed batch ID"
+                >
+
             </div>
 
-            <div class="sensor-value">
-                CLOSED
+
+            <!-- MANUFACTURER ORGANIZATION -->
+
+            <div class="form-group">
+
+                <label for="manufacturerOrganization">
+                    Manufacturer Organization
+                </label>
+
+                <input
+                    type="text"
+                    class="input"
+                    id="manufacturerOrganization"
+                    placeholder="Enter manufacturer organization"
+                >
+
             </div>
 
-            <div class="sensor-status">
-                <i class="fa fa-circle-check"></i>
-                Seal Intact
+
+            <!-- QUANTITY -->
+
+            <div class="form-group">
+
+                <label for="labManufacturerQuantity">
+                    Quantity (Kg)
+                </label>
+
+                <input
+                    type="number"
+                    class="input"
+                    id="labManufacturerQuantity"
+                    placeholder="Enter quantity"
+                    min="0"
+                    step="0.01"
+                >
+
             </div>
 
-        </div>
 
+            <!-- DATE OF TRANSPORT -->
 
-        <div class="sensor">
+            <div class="form-group">
 
-            <div class="sensor-label">
-                BH1750 Lux
+                <label for="transportDate">
+                    Date of Transport
+                </label>
+
+                <input
+                    type="date"
+                    class="input"
+                    id="transportDate"
+                >
+
             </div>
 
-            <div class="sensor-value">
-                0.2 lx
-            </div>
-
-            <div class="sensor-status">
-                <i class="fa fa-circle-check"></i>
-                Dark Environment
-            </div>
-
-        </div>
-
-
-        <div class="sensor">
-
-            <div class="sensor-label">
-                MPU6050 Motion
-            </div>
-
-            <div class="sensor-value">
-                Normal
-            </div>
-
-            <div class="sensor-status">
-                <i class="fa fa-circle-check"></i>
-                Stable Environment
+            <div style="margin-top:24px;display:flex;justify-content:flex-end;">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="signInTransportLedger('lab')"
+                >
+                    <i class="fa-solid fa-file-signature"></i>
+                    Sign in Ledger
+                </button>
             </div>
 
         </div>
@@ -5281,6 +6364,356 @@ tbody tr:hover{
     </div>
 
 </div>
+</div>
+
+<!-- =====================================================
+     TRANSPORTER — GEO TAGGED IMAGE
+===================================================== -->
+
+<div class="panel" id="transporter-geotag">
+
+    <div class="panel-header">
+        <h2 class="panel-title">
+            Geo Tagged Image
+        </h2>
+
+        <p class="panel-subtitle">
+            Capture an image at the exact location where the batch is collected.
+        </p>
+    </div>
+
+
+    <!-- CAMERA CARD -->
+    <div class="card">
+
+        <div class="card-title">
+            Location Evidence
+        </div>
+
+        <div
+            style="
+                max-width:700px;
+                margin:0 auto;
+            "
+        >
+
+            <!-- CAMERA PREVIEW -->
+            <div
+                id="cameraContainer"
+                style="
+                    display:none;
+                    position:relative;
+                    width:100%;
+                    background:#000;
+                    border-radius:12px;
+                    overflow:hidden;
+                    margin-bottom:20px;
+                "
+            >
+
+                <video
+                    id="geoCamera"
+                    autoplay
+                    playsinline
+                    muted
+                    style="
+                        display:block;
+                        width:100%;
+                        max-height:520px;
+                        object-fit:cover;
+                    "
+                ></video>
+
+            </div>
+
+
+            <!-- CAPTURED IMAGE -->
+            <div
+                id="capturedImageContainer"
+                style="
+                    display:none;
+                    width:100%;
+                    margin-bottom:20px;
+                "
+            >
+
+                <img
+                    id="capturedGeoImage"
+                    alt="Captured geo tagged location"
+                    style="
+                        display:block;
+                        width:100%;
+                        max-height:520px;
+                        object-fit:cover;
+                        border-radius:12px;
+                    "
+                >
+
+            </div>
+
+
+            <!-- START CAMERA -->
+            <div
+                id="cameraStartArea"
+                style="
+                    text-align:center;
+                    padding:35px 20px;
+                "
+            >
+
+                <i
+                    class="fa-solid fa-camera"
+                    style="
+                        font-size:48px;
+                        color:var(--green);
+                        margin-bottom:18px;
+                    "
+                ></i>
+
+                <h3>
+                    Capture Collection Location
+                </h3>
+
+                <p
+                    style="
+                        color:var(--muted);
+                        margin:10px auto 22px;
+                        max-width:500px;
+                    "
+                >
+                    Allow camera and location access to capture evidence
+                    from the actual batch collection point.
+                </p>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="startGeoCapture()"
+                >
+                    <i class="fa-solid fa-camera"></i>
+                    Open Camera
+                </button>
+
+            </div>
+
+
+            <!-- CAMERA CONTROLS -->
+            <div
+                id="cameraControls"
+                style="
+                    display:none;
+                    text-align:center;
+                    margin-bottom:20px;
+                "
+            >
+                <p
+                    id="geoGpsStatus"
+                    style="
+                        margin-bottom:15px;
+                        color:var(--muted);
+                        font-size:.8rem;
+                    "
+                    aria-live="polite"
+                >
+                    Waiting for GPS location...
+                </p>
+
+                <button
+                    type="button"
+                    id="captureGeoButton"
+                    class="btn btn-primary"
+                    onclick="captureGeoImage()"
+                    disabled
+                    style="opacity:.5;cursor:not-allowed;"
+                >
+                    <i class="fa-solid fa-camera-retro"></i>
+                    Capture Image
+                </button>
+
+                <button
+                    type="button"
+                    id="retryGeoGpsButton"
+                    class="btn btn-outline"
+                    onclick="retryGeoGPS()"
+                    style="margin-left:8px;"
+                >
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                    Retry GPS
+                </button>
+</div>
+
+
+            <!-- LOCATION DETAILS -->
+            <div
+                id="geoLocationDetails"
+                style="
+                    display:none;
+                    margin-top:20px;
+                "
+            >
+
+                <div
+                    style="
+                        display:grid;
+                        grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+                        gap:12px;
+                    "
+                >
+
+                    <div
+                        style="
+                            padding:16px;
+                            border:1px solid var(--border);
+                            border-radius:10px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                color:var(--muted);
+                                font-size:.72rem;
+                                margin-bottom:6px;
+                            "
+                        >
+                            Latitude
+                        </div>
+
+                        <div
+                            id="geoLatitude"
+                            class="mono"
+                        >
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            padding:16px;
+                            border:1px solid var(--border);
+                            border-radius:10px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                color:var(--muted);
+                                font-size:.72rem;
+                                margin-bottom:6px;
+                            "
+                        >
+                            Longitude
+                        </div>
+
+                        <div
+                            id="geoLongitude"
+                            class="mono"
+                        >
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            padding:16px;
+                            border:1px solid var(--border);
+                            border-radius:10px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                color:var(--muted);
+                                font-size:.72rem;
+                                margin-bottom:6px;
+                            "
+                        >
+                            GPS Accuracy
+                        </div>
+
+                        <div
+                            id="geoAccuracy"
+                            class="mono"
+                        >
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            padding:16px;
+                            border:1px solid var(--border);
+                            border-radius:10px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                color:var(--muted);
+                                font-size:.72rem;
+                                margin-bottom:6px;
+                            "
+                        >
+                            Captured At
+                        </div>
+
+                        <div
+                            id="geoCapturedAt"
+                        >
+                            —
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- IMAGE ACTIONS -->
+                <div
+                    style="
+                        margin-top:24px;
+                        display:flex;
+                        justify-content:flex-end;
+                        gap:10px;
+                        flex-wrap:wrap;
+                    "
+                >
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        onclick="retakeGeoImage()"
+                    >
+                        <i class="fa-solid fa-rotate-left"></i>
+                        Retake Image
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        onclick="signInGeoEvidence()"
+                    >
+                        <i class="fa-solid fa-file-signature"></i>
+                        Sign in Ledger
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CONSUMER
+===================================================== -->
 
 
 <!-- =====================================================
@@ -5633,7 +7066,6 @@ const roleMenus = {
         ["auditor-overview","Overview","fa-house"],
         ["auditor-trace","Trace Journey","fa-route"],
         ["auditor-batches","Batch Records","fa-box"],
-        ["auditor-lab","Laboratory Dossiers","fa-flask"],
         ["auditor-iot","IoT Evidence","fa-wifi"],
         ["auditor-investigations","Investigations","fa-shield-halved"],
         ["auditor-reports","Consumer Reports","fa-file-lines"]
@@ -5650,11 +7082,16 @@ const roleMenus = {
     manufacturer: [
 
         ["manufacturer-workspace","Formulate Batch","fa-industry"],
-
         ["manufacturer-batches","Medicine Batches","fa-boxes-stacked"],
-
+        ["manufacturer-qr","QR ID Generation","fa-qrcode"],
+        ["manufacturer-transport","Transport Monitoring","fa-truck"],
         ["manufacturer-storage","Storage Monitoring","fa-temperature-half"]
 
+    ],
+
+    transporter: [
+        ["transporter-overview","Overview","fa-house"],
+        ["transporter-geotag","Geo Tagged Image","fa-location-dot"]
     ],
 
     consumer: [
@@ -5899,8 +7336,120 @@ function openRole(role, panel = null){
     currentRole = role;
 
 
+    /* ==========================================
+       SWITCH HEADER TO WORKSPACE MODE
+    ========================================== */
+
+    const publicHeaderNav =
+        document.getElementById("publicHeaderNav");
+
+    const publicHeaderActions =
+        document.getElementById("publicHeaderActions");
+
+    const workspaceHeader =
+        document.getElementById("workspaceHeader");
+
+    const workspaceWelcome =
+        document.getElementById("workspaceWelcome");
+
+
+    /* Hide public navigation */
+    if (publicHeaderNav) {
+        publicHeaderNav.style.display = "none";
+    }
+
+
+    /* Hide Sign In / Request Access */
+    if (publicHeaderActions) {
+        publicHeaderActions.style.display = "none";
+    }
+
+
+    /* Show workspace greeting */
+    if (workspaceHeader) {
+        workspaceHeader.style.display = "flex";
+    }
+
+
+    /* ==========================================
+       WORKSPACE GREETING
+    ========================================== */
+
+    /*
+     * Consumer verification is a public workflow.
+     * It should NOT display the username of a previously
+     * logged-in user.
+     */ 
+
+    if (role === "consumer") {
+
+        if (workspaceWelcome) {
+
+            workspaceWelcome.textContent =
+                "Welcome Consumer!";
+
+        }
+
+    }
+
+
+    /*
+     * All authenticated workspaces display the
+     * currently logged-in user's username.
+     */
+
+    else {
+
+        let loggedInUsername = "User";
+
+        try {
+
+            const storedUser =
+                JSON.parse(
+                    localStorage.getItem("traceveda_user")
+                );
+
+            if (
+                storedUser &&
+                storedUser.username
+            ) {
+
+                loggedInUsername =
+                    storedUser.username;
+
+            }
+
+        } catch (error) {
+
+            console.warn(
+                "Unable to read logged-in user:",
+                error
+            );
+
+        }
+
+
+        if (workspaceWelcome) {
+
+            workspaceWelcome.textContent =
+                `Welcome to the workspace, ${loggedInUsername}`;
+
+        }
+
+    }
+
+    /* ==========================================
+    MANUFACTURER FIELD FORMAT HINTS
+    ========================================== */
+
+    if (role === "manufacturer") {
+        updateManufacturerBatchFormats();
+    }
+
+
     // Hide landing page
-    const landing = document.getElementById("landing");
+    const landing =
+        document.getElementById("landing");
 
     if(landing){
         landing.style.display = "none";
@@ -5908,7 +7457,8 @@ function openRole(role, panel = null){
 
 
     // Show workspace
-    const workspace = document.getElementById("workspace");
+    const workspace =
+        document.getElementById("workspace");
 
     if(workspace){
         workspace.classList.add("active");
@@ -5916,7 +7466,8 @@ function openRole(role, panel = null){
 
 
     // Close role dropdown
-    const roleMenu = document.getElementById("roleMenu");
+    const roleMenu =
+        document.getElementById("roleMenu");
 
     if(roleMenu){
         roleMenu.classList.remove("open");
@@ -5930,14 +7481,27 @@ function openRole(role, panel = null){
     if(sidebarRole){
 
         const roleNames = {
-            auditor: "Auditor Workspace",
-            lab: "Laboratory Workspace",
-            manufacturer: "Manufacturer Workspace",
-            consumer: "Consumer Experience"
+
+            auditor:
+                "Auditor Workspace",
+
+            lab:
+                "Laboratory Workspace",
+
+            manufacturer:
+                "Manufacturer Workspace",
+
+            transporter:
+                "Transporter Workspace",
+
+            consumer:
+                "Consumer Experience"
         };
 
         sidebarRole.textContent =
-            roleNames[role] || "TraceVeda Workspace";
+            roleNames[role] ||
+            "TraceVeda Workspace";
+
     }
 
 
@@ -5947,19 +7511,27 @@ function openRole(role, panel = null){
 
     // Determine which panel to open
     const firstPanel =
-        panel || roleMenus[role][0][0];
+        panel ||
+        roleMenus[role][0][0];
 
 
-    console.log("Opening panel:", firstPanel);
+    console.log(
+        "Opening panel:",
+        firstPanel
+    );
+
+
     if (firstPanel === "auditor-reports") {
-    loadConsumerReports();
-}
+
+        loadConsumerReports();
+
+    }
 
 
     // Open role-specific panel
     switchPanel(firstPanel);
-}
 
+}
 
 /* =========================================================
    SIDEBAR
@@ -5986,9 +7558,14 @@ function buildSidebar(role){
         button.innerHTML=
             `<i class="fa-solid ${icon}"></i>${label}`;
 
-        button.onclick=()=>{
+        button.addEventListener("click", function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
             switchPanel(id);
-        };
+
+        });
 
         menu.appendChild(button);
 
@@ -6015,7 +7592,14 @@ function switchPanel(name){
 
 
     if(target){
+
         target.classList.add("active");
+
+        console.log(
+            "Active panel after switch:",
+            document.querySelector(".panel.active")?.id
+        );
+
     }
     else{
         console.error("Panel not found:", name);
@@ -6049,6 +7633,18 @@ if(name === "auditor-reports"){
 
 }
 
+// Initialize Medicine QR Generation panel
+if (name === "manufacturer-qr") {
+
+    const select =
+        document.getElementById("qrMedicineBatch");
+
+    if (select && select.value) {
+        handleMedicineQRSelection();
+    }
+
+}
+
 
 /* =========================================================
    LANDING
@@ -6056,19 +7652,52 @@ if(name === "auditor-reports"){
 
 function showLanding(){
 
-    document.getElementById("workspace")
-    .classList.remove("active");
+    /* ==========================================
+       RESTORE PUBLIC HEADER
+    ========================================== */
 
-    document.getElementById("landing")
-    .style.display="block";
+    const publicHeaderNav =
+        document.getElementById("publicHeaderNav");
+
+    const publicHeaderActions =
+        document.getElementById("publicHeaderActions");
+
+    const workspaceHeader =
+        document.getElementById("workspaceHeader");
+
+
+    if (publicHeaderNav) {
+        publicHeaderNav.style.display = "flex";
+    }
+
+    if (publicHeaderActions) {
+        publicHeaderActions.style.display = "flex";
+    }
+
+    if (workspaceHeader) {
+        workspaceHeader.style.display = "none";
+    }
+
+
+    /* ==========================================
+       SHOW LANDING PAGE
+    ========================================== */
+
+    document
+        .getElementById("workspace")
+        .classList.remove("active");
+
+    document
+        .getElementById("landing")
+        .style.display = "block";
+
 
     window.scrollTo({
-        top:0,
-        behavior:"smooth"
+        top: 0,
+        behavior: "smooth"
     });
 
 }
-
 
 /* =========================================================
    DROPDOWN
@@ -6159,21 +7788,22 @@ function showEvidence(stage){
         Farm:[
             ["Source","Himalayan Organic Farm"],
             ["Batch","RAW-2026-071"],
-            ["Cultivation","Organic"],
-            ["Harvest Date","10 Jan 2026"]
+            ["Supplied Date","10 Jan 2026"],
+            ["Location","Haridwar, Uttarakhand"],
+            ["Quantity","753.24 kg"]
         ],
 
         Processing:[
-            ["Process Lot","PROCESS-2026-046"],
-            ["Material","Ashwagandha Extract"],
-            ["Temperature","38.2°C"],
-            ["Process Status","Verified"]
+            ["Process Lot","ASH-P-2026-001"],
+            ["Processor ID","PROC-001"],
+            ["Processing Date","6 Jun 2026"],
+            ["Output Quantity","1016.49 kg"],
+            ["Process Status","COMPLETED"]
         ],
 
         Laboratory:[
-            ["Certificate","LAB-2026-014"],
-            ["HPLC Purity","98.5%"],
-            ["Lead","0.02 ppm"],
+            ["Certificate","CERT-PRE-0001"],
+            ["Test Date","6 Jun 2026"],
             ["Result","PASS"]
         ],
 
@@ -6194,9 +7824,8 @@ function showEvidence(stage){
         ],
 
         "Final Lab":[
-            ["Certificate","LAB-FINAL-027"],
-            ["Purity","99.1%"],
-            ["Heavy Metals","Within Limit"],
+            ["Certificate","CERT-POST-0001"],
+            ["Test Date","5 Jun 2026"],
             ["Result","PASS"]
         ],
 
@@ -6254,12 +7883,6 @@ function submitLab(){
 
     const cert =
         document.getElementById("labCert").value;
-
-    const purity =
-        document.getElementById("labPurity").value;
-
-    const lead =
-        document.getElementById("labLead").value;
 
     const verdict =
         document.getElementById("labVerdict").value;
@@ -6320,6 +7943,262 @@ function submitLab(){
 
 }
 
+/* =========================================================
+   LAB FIELD FORMAT
+========================================================= */
+
+function updateLabFieldFormats() {
+
+    const testPhase =
+        document
+            .getElementById("labTestPhase")
+            ?.value;
+
+
+    const batchFormat =
+        document.getElementById("labBatchFormat");
+
+    const certFormat =
+        document.getElementById("labCertFormat");
+
+
+    if (!batchFormat || !certFormat) {
+        return;
+    }
+
+
+    /* ------------------------------------------
+       NO TEST PHASE SELECTED
+    ------------------------------------------ */
+
+    if (!testPhase) {
+
+        batchFormat.style.display = "none";
+        certFormat.style.display = "none";
+
+        batchFormat.textContent = "";
+        certFormat.textContent = "";
+
+        return;
+
+    }
+
+
+    /* ------------------------------------------
+       RAW BATCH TEST
+    ------------------------------------------ */
+
+    if (testPhase === "RAW_BATCH_TEST") {
+
+        batchFormat.textContent =
+            "Format: CROP-YYYY-NNN";
+
+        certFormat.textContent =
+            "Format: CERT-PRE-NNNN";
+
+        batchFormat.style.display = "inline";
+        certFormat.style.display = "inline";
+
+
+        document
+            .getElementById("labBatch")
+            .placeholder =
+            "Example: ASH-2026-001";
+
+
+        document
+            .getElementById("labCert")
+            .placeholder =
+            "Example: CERT-PRE-0001";
+
+    }
+
+
+    /* ------------------------------------------
+       FINAL PRODUCT QUALITY TEST
+    ------------------------------------------ */
+
+    else if (
+        testPhase ===
+        "FINAL_PRODUCT_QUALITY_TEST"
+    ) {
+
+        batchFormat.textContent =
+            "Format: MED-YYYY-NNN";
+
+        certFormat.textContent =
+            "Format: CERT-POST-NNNN";
+
+        batchFormat.style.display = "inline";
+        certFormat.style.display = "inline";
+
+
+        document
+            .getElementById("labBatch")
+            .placeholder =
+            "Example: MED-2026-001";
+
+
+        document
+            .getElementById("labCert")
+            .placeholder =
+            "Example: CERT-POST-0001";
+
+    }
+
+}
+
+
+/* =========================================================
+   TEST PHASE CHANGE LISTENER
+========================================================= */
+
+document
+    .getElementById("labTestPhase")
+    ?.addEventListener(
+        "change",
+        updateLabFieldFormats
+    );
+
+/* =========================================================
+   MANUFACTURER BATCH ID FORMAT
+========================================================= */
+
+function updateManufacturerBatchFormats() {
+
+    const batchFormat =
+        document.getElementById("mfgBatchFormat");
+
+    const sourceFormat =
+        document.getElementById("mfgSourceFormat");
+
+    const qrFormat =
+        document.getElementById("mfgQrIdFormat");
+
+
+    if (!batchFormat || !sourceFormat || !qrFormat) {
+        return;
+    }
+
+
+    batchFormat.textContent =
+        "Format: MED-YYYY-NNN";
+
+    sourceFormat.textContent =
+        "Format: CROP-P-YYYY-NNN";
+
+    qrFormat.textContent =
+        "Format: QR-Year-NNN";
+
+
+    batchFormat.style.display = "inline";
+
+    sourceFormat.style.display = "inline";
+
+    qrFormat.style.display = "inline";
+
+}
+
+/* =========================================================
+   ADD SOURCE PROCESSING BATCH
+========================================================= */
+
+function addProcessingBatch() {
+
+    const batchList =
+        document.getElementById("processingBatchList");
+
+    if (!batchList) {
+        return;
+    }
+
+    const batchRows =
+        batchList.querySelectorAll(".processing-batch-row");
+
+    const nextNumber = batchRows.length + 1;
+
+    const row =
+        document.createElement("div");
+
+    row.className = "processing-batch-row";
+
+    row.style.marginTop = "8px";
+
+    row.innerHTML = `
+        <input
+            class="input mono processing-batch-input"
+            id="mfgSource_${nextNumber}"
+            placeholder="Enter processing batch ID"
+            required
+        >
+    `;
+
+    batchList.appendChild(row);
+}
+
+/* =========================================================
+   REMOVE SOURCE PROCESSING BATCH
+========================================================= */
+
+function removeProcessingBatch() {
+
+    const batchList =
+        document.getElementById("processingBatchList");
+
+    if (!batchList) {
+        return;
+    }
+
+    const rows =
+        batchList.querySelectorAll(".processing-batch-row");
+
+    /* Keep at least one batch field */
+    if (rows.length <= 1) {
+        alert("At least one source processing batch is required.");
+        return;
+    }
+
+    /* Build list of existing batches */
+    let message =
+        "Select the processing batch to remove:\n\n";
+
+    rows.forEach((row, index) => {
+
+        const input =
+            row.querySelector(".processing-batch-input");
+
+        const value =
+            input && input.value.trim()
+                ? input.value.trim()
+                : "Empty batch field";
+
+        message += `${index + 1}. ${value}\n`;
+    });
+
+    /* Ask user which batch to remove */
+    const selection =
+        prompt(message + "\nEnter the batch number:");
+
+    if (selection === null) {
+        return;
+    }
+
+    const selectedIndex =
+        parseInt(selection, 10) - 1;
+
+    /* Validate selection */
+    if (
+        Number.isNaN(selectedIndex) ||
+        selectedIndex < 0 ||
+        selectedIndex >= rows.length
+    ) {
+        alert("Invalid batch selection.");
+        return;
+    }
+
+    /* Remove selected row */
+    rows[selectedIndex].remove();
+}
 
 /* =========================================================
    MANUFACTURER
@@ -6327,60 +8206,644 @@ function submitLab(){
 
 function submitManufacturer(){
 
-    const batch =
-        document.getElementById("mfgBatch").value;
+    /*
+    ===============================================================================
+    BACKEND REQUIREMENT — MANUFACTURER MEDICINE BATCH REGISTRATION
+    ===============================================================================
 
-    const source =
-        document.getElementById("mfgSource").value;
+    When the Manufacturer submits the "Formulate & Register Batch" form, the
+    backend must handle the submitted data across TWO datasets:
+
+    1. medicine_batches.csv
+    2. batch_relationships.csv
+
+
+    -------------------------------------------------------------------------------
+    1. medicine_batches.csv
+    -------------------------------------------------------------------------------
+
+    EVERY FIELD FROM THE MANUFACTURER FORM EXCEPT "Source Processing Batch"
+    must be appended to medicine_batches.csv.
+
+    Fields to store:
+
+        medicine_batch_id
+        product_name
+        manufacturer_id
+        manufacturing_date
+        manufacturing_timestamp
+        expiry_date
+        qr_id
+        batch_status
+
+    The "Source Processing Batch" field MUST NOT be stored in
+    medicine_batches.csv because a medicine batch can be created from MULTIPLE
+    processing batches.
+
+
+    -------------------------------------------------------------------------------
+    2. batch_relationships.csv
+    -------------------------------------------------------------------------------
+
+    All Source Processing Batch IDs entered for the medicine batch must be stored
+    as relationships in batch_relationships.csv.
+
+    One medicine batch may have multiple processing batches.
+
+    Example frontend submission:
+
+        medicine_batch_id:
+            MED-2026-010
+
+        source_processing_batches:
+            [
+                "ASH-P-2026-001",
+                "TUL-P-2026-003",
+                "NIM-P-2026-005"
+            ]
+
+
+    The backend must create ONE PROCESSING_TO_MEDICINE relationship for EACH
+    processing batch:
+
+        REL-M-XXXX
+        parent_batch_id = ASH-P-2026-001
+        child_batch_id  = MED-2026-010
+        relationship_type = PROCESSING_TO_MEDICINE
+
+        REL-M-XXXX
+        parent_batch_id = TUL-P-2026-003
+        child_batch_id  = MED-2026-010
+        relationship_type = PROCESSING_TO_MEDICINE
+
+        REL-M-XXXX
+        parent_batch_id = NIM-P-2026-005
+        child_batch_id  = MED-2026-010
+        relationship_type = PROCESSING_TO_MEDICINE
+
+
+    -------------------------------------------------------------------------------
+    IMPORTANT
+    -------------------------------------------------------------------------------
+
+    DO NOT store multiple processing batch IDs in a single field such as:
+
+        "ASH-P-2026-001,TUL-P-2026-003,NIM-P-2026-005"
+
+    Instead, create separate rows in batch_relationships.csv.
+
+    Therefore, the relationship is:
+
+        Processing Batch 1 ──┐
+        Processing Batch 2 ──┼──> Medicine Batch
+        Processing Batch 3 ──┘
+
+
+    -------------------------------------------------------------------------------
+    FRONTEND PAYLOAD
+    -------------------------------------------------------------------------------
+
+    The frontend will send all processing batch IDs as an array.
+
+    Expected structure:
+
+    {
+        "medicine_batch_id": "MED-2026-010",
+        "source_processing_batches": [
+            "ASH-P-2026-001",
+            "TUL-P-2026-003",
+            "NIM-P-2026-005"
+        ],
+        "product_name": "...",
+        "manufacturer_id": "MAN-001",
+        "manufacturing_date": "2026-06-15",
+        "manufacturing_timestamp": "...",
+        "expiry_date": "2028-06-14",
+        "qr_id": "QR-2026-010",
+        "batch_status": "MONITORED"
+    }
+
+
+    -------------------------------------------------------------------------------
+    BACKEND RESPONSIBILITY
+    -------------------------------------------------------------------------------
+
+    On successful submission:
+
+        1. Append ONE medicine-batch record to medicine_batches.csv.
+        2. Create ONE batch_relationships.csv record for EACH source processing
+        batch.
+        3. Ensure all relationship rows use:
+            relationship_type = PROCESSING_TO_MEDICINE
+        4. Generate a unique relationship_id for every relationship row.
+        5. Keep the same medicine_batch_id as child_batch_id in every relationship.
+        6. The complete operation should be treated as one logical registration
+        so that the medicine record and its relationships remain consistent.
+
+    ===============================================================================
+    */
+
+    /* ==========================================
+       GET FORM VALUES
+    ========================================== */
+
+    const batch =
+        document.getElementById("mfgBatch").value.trim();
+
+    const sourceBatches =
+        Array.from(
+            document.querySelectorAll(".processing-batch-input")
+        )
+        .map(input => input.value.trim())
+        .filter(value => value !== "");
 
     const product =
-        document.getElementById("mfgProduct").value;
+        document.getElementById("mfgProduct").value.trim();
 
+    const manufacturingDate =
+        document.getElementById("mfgManufacturingDate").value;
+
+    const expiryDate =
+        document.getElementById("mfgExpiryDate").value;
+
+    const qrId =
+        document.getElementById("mfgQrId").value.trim();
+
+
+    /* ==========================================
+       BASIC VALIDATION
+    ========================================== */
+
+    if (!batch) {
+        alert("Please enter the medicine batch ID.");
+        return;
+    }
+
+    if (sourceBatches.length === 0) {
+        alert("Please enter at least one source processing batch.");
+        return;
+    }
+
+    if (!product) {
+        alert("Please enter the product name.");
+        return;
+    }
+
+    if (!manufacturingDate) {
+        alert("Please select the manufacturing date.");
+        return;
+    }
+
+    if (!expiryDate) {
+        alert("Please select the expiry date.");
+        return;
+    }
+
+    if (!qrId) {
+        alert("Please enter the QR ID.");
+        return;
+    }
+
+
+    /* ==========================================
+       GET HISTORY TABLE
+    ========================================== */
 
     const table =
         document.getElementById("mfgHistory");
 
+    if (!table) {
+        return;
+    }
+
+
+    /* ==========================================
+       CREATE NEW ROW
+    ========================================== */
 
     const row =
         document.createElement("tr");
 
 
-    row.innerHTML=`
+    /* ==========================================
+       FORMAT DATES
+    ========================================== */
+
+    const formattedManufacturingDate =
+        new Date(
+            manufacturingDate + "T00:00:00"
+        ).toLocaleDateString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+    const formattedExpiryDate =
+        new Date(
+            expiryDate + "T00:00:00"
+        ).toLocaleDateString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+
+    /* ==========================================
+       DISPLAY MULTIPLE PROCESSING BATCHES
+    ========================================== */
+
+    const sourceBatchDisplay =
+        sourceBatches
+            .map(batchId => `${batchId}<br>`)
+            .join("");
+
+
+    /* ==========================================
+       BUILD TABLE ROW
+    ========================================== */
+
+    row.innerHTML = `
 
         <td class="mono">
             ${batch}
         </td>
 
+
+        <td class="mono">
+            ${sourceBatchDisplay}
+        </td>
+
+
         <td>
             ${product}
         </td>
 
+
+        <td>
+            ${formattedManufacturingDate}
+        </td>
+
+
+        <td>
+            ${formattedExpiryDate}
+        </td>
+
+
         <td class="mono">
-            ${source}
-        </td>
-
-        <td>
-            ${new Date().toLocaleDateString()}
-        </td>
-
-        <td>
-            <span class="badge badge-success">
-                MONITORED
-            </span>
+            ${qrId}
         </td>
 
     `;
 
 
-    table.prepend(row);
+    table.appendChild(row);
 
+
+    /* ==========================================
+       SUCCESS MESSAGE
+    ========================================== */
 
     alert(
-        "✓ Medicine batch successfully registered on TraceVeda."
+        "Medicine batch registered successfully."
     );
+
+    /* =========================================================
+   MEDICINE QR ID GENERATION
+========================================================= */
+
+async function loadMedicineBatchesForQR() {
+
+    const select =
+        document.getElementById("qrMedicineBatch");
+
+    const message =
+        document.getElementById("medicineQRMessage");
+
+    if (!select) return;
+
+    select.innerHTML = `
+        <option value="">Loading medicine batches...</option>
+    `;
+
+    try {
+
+        /*
+         * Expected API:
+         * GET /api/medicine
+         *
+         * Returns registered medicine batches.
+         */
+
+        const data = await apiRequest(
+            "/api/medicine",
+            { method: "GET" }
+        );
+
+        const batches =
+            Array.isArray(data)
+                ? data
+                : data?.medicines || data?.batches || [];
+
+        select.innerHTML = `
+            <option value="">Select medicine batch ID</option>
+            <option value="MED-2026-001">
+                MED-2026-001 (Demo Batch)
+            </option>
+        `;
+        batches.forEach(batch => {
+
+            const batchId =
+                batch.medicine_batch_id || batch.batch_id;
+
+            if (!batchId) return;
+
+            const option =
+                document.createElement("option");
+
+            option.value = batchId;
+            option.textContent = batchId;
+
+            select.appendChild(option);
+
+        });
+
+        if (!batches.length) {
+
+            select.innerHTML = `
+                <option value="">
+                    No registered medicine batches found
+                </option>
+            `;
+
+        }
+
+        if (message) {
+            message.style.display = "none";
+        }
+
+    } catch (error) {
+
+        console.error("Medicine batch loading failed:", error);
+
+        select.innerHTML = `
+            <option value="">
+                Unable to load medicine batches
+            </option>
+        `;
+
+        showMedicineQRMessage(
+            "Unable to load registered medicine batches: " + error.message,
+            "error"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   HANDLE MEDICINE BATCH SELECTION
+========================================================= */
+
+async function handleMedicineQRSelection() {
+
+    const batchId =
+        document.getElementById("qrMedicineBatch").value;
+
+    const button =
+        document.getElementById("generateMedicineQRButton");
+
+    const result =
+        document.getElementById("medicineQRResult");
+
+    if (result) {
+        result.style.display = "none";
+    }
+
+    if (!batchId) {
+
+        button.disabled = true;
+        button.style.opacity = ".5";
+        button.style.cursor = "not-allowed";
+
+        return;
+    }
+
+    button.disabled = false;
+    button.style.opacity = "1";
+    button.style.cursor = "pointer";
+
+    showMedicineQRMessage(
+        "Checking whether this medicine batch already has a QR code...",
+        "info"
+    );
+
+    try {
+
+        /*
+         * Expected API:
+         * GET /api/medicine/{batch_id}/qr
+         *
+         * Existing QR:
+         * {
+         *   "exists": true,
+         *   "medicine_batch_id": "...",
+         *   "qr_id": "...",
+         *   "qr_code_data_url": "data:image/png;base64,..."
+         * }
+         */
+
+        const data = await apiRequest(
+            `/api/medicine/${encodeURIComponent(batchId)}/qr`,
+            { method: "GET" }
+        );
+
+        if (data?.exists && data?.qr_id) {
+
+            displayMedicineQR(data);
+
+            button.disabled = true;
+            button.style.opacity = ".5";
+            button.style.cursor = "not-allowed";
+
+            showMedicineQRMessage(
+                "An existing QR ID was found. Displaying the saved QR code.",
+                "success"
+            );
+
+        } else {
+
+            button.disabled = false;
+            button.style.opacity = "1";
+            button.style.cursor = "pointer";
+
+            showMedicineQRMessage(
+                "No QR ID exists for this batch yet. Click Generate QR ID.",
+                "info"
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error("QR lookup failed:", error);
+
+        showMedicineQRMessage(
+            "Unable to check existing QR code: " + error.message,
+            "error"
+        );
+
+    }
 
 }
 
+
+/* =========================================================
+   GENERATE NEW MEDICINE QR
+========================================================= */
+
+async function generateMedicineQR() {
+
+    const batchId =
+        document.getElementById("qrMedicineBatch").value;
+
+    if (!batchId) {
+        return alert("Please select a medicine batch.");
+    }
+
+    const button =
+        document.getElementById("generateMedicineQRButton");
+
+    button.disabled = true;
+    button.textContent = "Generating...";
+
+    try {
+
+        /*
+         * Expected API:
+         * POST /api/medicine/{batch_id}/qr
+         *
+         * Backend must generate and persist a unique QR ID.
+         */
+
+        const data = await apiRequest(
+            `/api/medicine/${encodeURIComponent(batchId)}/qr`,
+            { method: "POST" }
+        );
+
+        if (!data?.qr_id) {
+            throw new Error("Backend did not return a QR ID.");
+        }
+
+        displayMedicineQR(data);
+
+        showMedicineQRMessage(
+            "A new QR ID has been generated and saved successfully.",
+            "success"
+        );
+
+        button.disabled = true;
+
+    } catch (error) {
+
+        console.error("QR generation failed:", error);
+
+        showMedicineQRMessage(
+            "QR generation failed: " + error.message,
+            "error"
+        );
+
+        button.disabled = false;
+
+    } finally {
+
+        button.innerHTML = `
+            <i class="fa-solid fa-qrcode"></i>
+            Generate QR ID
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   DISPLAY QR CODE
+========================================================= */
+
+function displayMedicineQR(data) {
+
+    const result =
+        document.getElementById("medicineQRResult");
+
+    const image =
+        document.getElementById("medicineQRCodeImage");
+
+    const batchDisplay =
+        document.getElementById("qrMedicineBatchDisplay");
+
+    const qrDisplay =
+        document.getElementById("medicineQRIdDisplay");
+
+    const imageSource =
+        data.qr_code_data_url || data.qr_code_url;
+
+    if (!imageSource) {
+
+        throw new Error(
+            "QR ID was returned, but no QR image was provided by the backend."
+        );
+
+    }
+
+    image.src = imageSource;
+
+    batchDisplay.textContent =
+        "Medicine Batch: " +
+        (data.medicine_batch_id || "");
+
+    qrDisplay.textContent =
+        "QR ID: " + data.qr_id;
+
+    result.style.display = "block";
+
+}
+
+
+/* =========================================================
+   QR STATUS MESSAGE
+========================================================= */
+
+function showMedicineQRMessage(message, type = "info") {
+
+    const box =
+        document.getElementById("medicineQRMessage");
+
+    if (!box) return;
+
+    box.style.display = "block";
+    box.textContent = message;
+
+    if (type === "success") {
+        box.style.color = "var(--success)";
+    }
+
+    else if (type === "error") {
+        box.style.color = "var(--danger)";
+    }
+
+    else {
+        box.style.color = "var(--muted)";
+    }
+
+}
+
+}
 
 /* =========================================================
    CONSUMER VERIFICATION
@@ -6484,28 +8947,325 @@ function prevDemo(){
 
 }
 
-
 /* =========================================================
-   LIVE SENSOR SIMULATION
+   INVESTIGATE TRANSPORT BATCH
 ========================================================= */
 
-setInterval(()=>{
+/*
+===============================================================================
+BACKEND REQUIREMENT — RAW MATERIAL TRANSPORT CASUALTY INVESTIGATION
+===============================================================================
 
-    const weight =
-        document.getElementById("weightSensor");
+When the manufacturer enters a Processing Batch ID in "Investigate Batch",
+the backend must investigate the transport history of that particular batch
+using:
 
-    if(weight){
+    iot_readings_truck.csv
 
-        const value =
-            (5 + (Math.random()-.5)*.05)
-            .toFixed(2);
 
-        weight.textContent =
-            value+" kg";
+-------------------------------------------------------------------------------
+1. INPUT
+-------------------------------------------------------------------------------
+
+The frontend will send the entered Processing Batch ID.
+
+Example:
+
+    ASH-P-2026-001
+
+
+The backend must search iot_readings_truck.csv for records belonging to
+that particular batch.
+
+
+-------------------------------------------------------------------------------
+2. SWITCH STATUS CHECK
+-------------------------------------------------------------------------------
+
+For the selected batch, check the switch-status readings throughout its
+transport journey.
+
+The switch status can be:
+
+    OPEN
+    CLOSED
+
+
+The backend must determine the relevant/latest switch status for the batch.
+
+
+-------------------------------------------------------------------------------
+3. ALERT STATUS CHECK
+-------------------------------------------------------------------------------
+
+For the selected batch, check the Alert Status readings.
+
+The last/latest alert status must be determined.
+
+Possible values:
+
+    NORMAL
+    WARNING
+
+
+The investigation must use the LAST available alert reading for the batch.
+
+
+-------------------------------------------------------------------------------
+4. CASUALTY DECISION LOGIC
+-------------------------------------------------------------------------------
+
+Apply the following logic:
+
+
+CASE 1 — SWITCH IS CLOSED
+--------------------------------
+
+If the relevant/latest switch status is:
+
+    CLOSED
+
+then:
+
+    No casualty is detected based on the switch condition.
+
+The backend should still check the latest alert status and include it in
+the investigation result.
+
+
+Example:
+
+    Switch Status = CLOSED
+    Last Alert Status = NORMAL
+
+Result:
+
+    CASUALTY NOT DETECTED
+
+
+Example:
+
+    Switch Status = CLOSED
+    Last Alert Status = WARNING
+
+Result:
+
+    CASUALTY DETECTED / WARNING
+
+
+-------------------------------------------------------------------------------
+CASE 2 — SWITCH IS OPEN
+--------------------------------
+
+If the relevant/latest switch status is:
+
+    OPEN
+
+then the backend MUST perform an additional Weight Change check.
+
+
+The purpose is to determine whether the batch experienced a possible loss
+or disturbance during transportation.
+
+
+-------------------------------------------------------------------------------
+5. WEIGHT CHANGE CHECK
+-------------------------------------------------------------------------------
+
+When switch status is OPEN, compare the available weight readings for the
+selected batch.
+
+Determine whether there is a meaningful change in weight between the
+relevant readings.
+
+If the weight decreases / changes abnormally after the switch becomes OPEN,
+treat this as evidence of a possible transport casualty.
+
+
+Example:
+
+    Switch Status = OPEN
+    Weight before = 5.00 kg
+    Weight after  = 4.60 kg
+
+    Weight change = -0.40 kg
+
+Result:
+
+    CASUALTY DETECTED
+
+
+If the switch is OPEN but there is NO meaningful abnormal weight change:
+
+    CASUALTY NOT DETECTED based on weight evidence.
+
+
+-------------------------------------------------------------------------------
+6. ALERT STATUS + WEIGHT SHOULD BE CONSIDERED TOGETHER
+-------------------------------------------------------------------------------
+
+When the switch is OPEN, use both:
+
+    1. Last Alert Status
+    2. Weight Change
+
+to determine the final investigation result.
+
+
+Example:
+
+    Switch = OPEN
+    Last Alert = WARNING
+    Weight decreased
+
+    → CASUALTY DETECTED
+
+
+Example:
+
+    Switch = OPEN
+    Last Alert = NORMAL
+    No abnormal weight change
+
+    → CASUALTY NOT DETECTED
+
+
+-------------------------------------------------------------------------------
+7. RESPONSE TO FRONTEND
+-------------------------------------------------------------------------------
+
+Return a structured response so that the frontend can directly display
+"Casualty Detected" or "Casualty Not Detected".
+
+
+Example response:
+
+{
+    "batch_id": "ASH-P-2026-001",
+    "switch_status": "OPEN",
+    "last_alert_status": "WARNING",
+    "weight_before": 5.00,
+    "weight_after": 4.60,
+    "weight_change": -0.40,
+    "casualty_detected": true,
+    "investigation_status": "CASUALTY DETECTED"
+}
+
+
+For a safe batch:
+
+{
+    "batch_id": "TUL-P-2026-003",
+    "switch_status": "CLOSED",
+    "last_alert_status": "NORMAL",
+    "casualty_detected": false,
+    "investigation_status": "CASUALTY NOT DETECTED"
+}
+
+
+-------------------------------------------------------------------------------
+8. IMPORTANT
+-------------------------------------------------------------------------------
+
+The investigation must be performed using the actual records in:
+
+    iot_readings_truck.csv
+
+Do NOT use hard-coded casualty results in the frontend.
+
+The frontend should only display the result returned by the backend.
+
+The backend should determine the latest reading using the timestamp / reading
+time available in the dataset.
+
+The entered Processing Batch ID must be used to isolate records belonging
+to that batch before performing the investigation.
+
+
+-------------------------------------------------------------------------------
+9. API
+-------------------------------------------------------------------------------
+
+Provide an endpoint such as:
+
+    GET /api/transport/investigate/{batch_id}
+
+Example:
+
+    GET /api/transport/investigate/ASH-P-2026-001
+
+
+The endpoint should return the structured investigation result described
+above.
+
+===============================================================================
+*/
+
+function investigateBatch() {
+
+    const batchInput =
+        document.getElementById("investigateBatchId");
+
+    const resultBox =
+        document.getElementById("batchInvestigationResult");
+
+    const statusBox =
+        document.getElementById("batchInvestigationStatus");
+
+    const detailsBox =
+        document.getElementById("batchInvestigationDetails");
+
+
+    if (!batchInput || !resultBox) {
+        return;
+    }
+
+
+    const batchId =
+        batchInput.value.trim();
+
+
+    if (!batchId) {
+
+        alert(
+            "Please enter a processing batch ID."
+        );
+
+        return;
+    }
+
+
+    /*
+     * TEMPORARY FRONTEND BEHAVIOUR
+     *
+     * This will later be replaced with a backend API call.
+     */
+
+    resultBox.style.display = "block";
+
+
+    if (statusBox) {
+
+        statusBox.innerHTML = `
+            <span class="badge badge-success">
+                No casualty detected
+            </span>
+        `;
 
     }
 
-},3000);
+
+    if (detailsBox) {
+
+        detailsBox.textContent =
+            `No transport anomaly or casualty is currently recorded `
+            + `for batch ${batchId}.`;
+
+    }
+
+}
+
+
 
 
 /* =========================================================
@@ -6607,8 +9367,42 @@ function submitConsumerReport(event) {
         .reset();
 
 }
+function handleTransporterType() {
+
+    const type =
+        document.getElementById("transporterType")?.value;
+
+    const rawForm =
+        document.getElementById("rawToProcessorForm");
+
+    const labManufacturerForm =
+        document.getElementById("labToManufacturerForm");
+
+
+    if (rawForm) {
+
+        rawForm.style.display =
+            type === "raw-to-processor"
+                ? "block"
+                : "none";
+
+    }
+
+
+    if (labManufacturerForm) {
+
+        labManufacturerForm.style.display =
+            type === "lab-to-manufacturer"
+                ? "block"
+                : "none";
+
+    }
+
+}
 
 </script>
+
+
 <!-- AUTH MODAL -->
 <div class="auth-modal" id="authModal">
 
@@ -6630,8 +9424,8 @@ function submitConsumerReport(event) {
             </p>
         </div>
 
-        <!-- ROLE SELECTION -->
-        <div class="auth-section">
+        <!-- SIGN IN ROLE SELECTION -->
+        <div class="auth-section" id="signinRoleSection">
 
             <label>Select your role</label>
 
@@ -6666,87 +9460,161 @@ function submitConsumerReport(event) {
 
                 <button
                     class="auth-role"
-                    data-role="consumer"
+                    data-role="transporter"
                     onclick="selectAuthRole(this)"
                 >
-                    <i class="fa-solid fa-user"></i>
-                    <span>Consumer</span>
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <span>Transporter</span>
                 </button>
 
             </div>
 
         </div>
 
-        <!-- SIGN UP FORM -->
-        <form id="signupForm" class="auth-form" style="display: none;">
+        <!-- REQUEST ACCESS ROLE SELECTION -->
+        <div class="auth-section" id="requestRoleSection" style="display: none;">
 
-            <!-- ASSIGNED USERNAME -->
-            <div class="auth-field">
+            <label>Select your role</label>
 
-                <label for="signupUsername">
-                    Assigned Username
-                </label>
+            <div class="auth-role-grid">
 
-                <input
-                    type="text"
-                    id="signupUsername"
-                    placeholder="Select your role first"
-                    readonly
+                <button
+                    type="button"
+                    class="auth-role request-role"
+                    data-role="lab"
+                    onclick="selectRequestRole(this)"
                 >
+                    <i class="fa-solid fa-flask"></i>
+                    <span>Laboratory</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="auth-role request-role"
+                    data-role="manufacturer"
+                    onclick="selectRequestRole(this)"
+                >
+                    <i class="fa-solid fa-industry"></i>
+                    <span>Manufacturer</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="auth-role request-role"
+                    data-role="transporter"
+                    onclick="selectRequestRole(this)"
+                >
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <span>Transporter</span>
+                </button>
 
             </div>
 
+        </div>
 
-            <!-- USERNAME INFORMATION -->
+
+        <!-- REQUEST ACCESS FORM -->
+        <!--
+        /*
+        * ============================================================
+        * BACKEND INTEGRATION REQUIRED
+        * ============================================================
+        *
+        * Replace the temporary frontend handling below with:
+        *
+        * POST /api/access-requests
+        *
+        * Request body:
+        * {
+        *     role: selectedRequestRole,
+        *     organisation_name: organisationName,
+        *     location: location,
+        *     contact_details: contactDetails
+        * }
+        *
+        * Expected backend workflow:
+        *
+        * 1. Validate the submitted request.
+        * 2. Store it as PENDING.
+        * 3. Make it available to Admin/Auditor for verification.
+        * 4. On approval, create/assign the stakeholder ID.
+        * 5. Create the corresponding user account.
+        * 6. Generate/provide TraceVeda credentials.
+        *
+        * IMPORTANT:
+        * Do NOT create an active user account directly when this
+        * request is submitted.
+        *
+        * The existing /api/auth/signup endpoint should not be used
+        * for this public Request Access form.
+        */-->
+
+        <form id="requestAccessForm" class="auth-form" style="display: none;">
+
             <div class="username-info">
 
-                <i class="fa-solid fa-circle-info"></i>
+                <i class="fa-solid fa-shield-halved"></i>
 
                 <span>
-                    Your username will be generated by TraceVeda.
+                    Access is granted only after verification by a TraceVeda Admin/Auditor.
+                    Your TraceVeda ID and password will be issued after approval.
                 </span>
 
             </div>
 
 
-            <!-- PASSWORD -->
             <div class="auth-field">
 
-                <label for="signupPassword">
-                    Create Password
+                <label for="requestOrganisationName">
+                    Organisation Name
                 </label>
 
                 <input
-                    type="password"
-                    id="signupPassword"
-                    placeholder="Create your password"
+                    type="text"
+                    id="requestOrganisationName"
+                    placeholder="Enter your organisation name"
+                    autocomplete="organization"
                     required
                 >
 
             </div>
 
 
-            <!-- CONFIRM PASSWORD -->
             <div class="auth-field">
 
-                <label for="signupConfirmPassword">
-                    Confirm Password
+                <label for="requestLocation">
+                    Location
                 </label>
 
                 <input
-                    type="password"
-                    id="signupConfirmPassword"
-                    placeholder="Confirm your password"
+                    type="text"
+                    id="requestLocation"
+                    placeholder="City, State"
                     required
                 >
 
             </div>
 
 
-            <!-- SUBMIT -->
+            <div class="auth-field">
+
+                <label for="requestContactDetails">
+                    Contact Details
+                </label>
+
+                <input
+                    type="text"
+                    id="requestContactDetails"
+                    placeholder="Phone number or email address"
+                    required
+                >
+
+            </div>
+
+
             <button type="submit" class="auth-submit">
 
-                Create Account
+                Submit Access Request
 
                 <i class="fa-solid fa-arrow-right"></i>
 
@@ -6807,6 +9675,7 @@ function submitConsumerReport(event) {
 <script>
 
 let selectedAuthRole = null;
+let selectedRequestRole = null;
 let currentAuthMode = "signin";
 
 
@@ -6866,11 +9735,14 @@ function openAuthModal(mode) {
     const signinForm =
         document.getElementById("signinForm");
 
-    const signupForm =
-        document.getElementById("signupForm");
+    const requestAccessForm =
+        document.getElementById("requestAccessForm");
 
-    const authSections =
-        document.querySelectorAll(".auth-section");
+    const signinRoleSection =
+        document.getElementById("signinRoleSection");
+
+    const requestRoleSection =
+        document.getElementById("requestRoleSection");
 
     const message =
         document.getElementById("authMessage");
@@ -6878,131 +9750,111 @@ function openAuthModal(mode) {
 
     modal.classList.add("active");
 
-
     selectedAuthRole = null;
+    selectedRequestRole = null;
 
-
-    /* ------------------------------------------
-       HIDE AUDITOR DURING SIGNUP
-    ------------------------------------------ */
 
     document.querySelectorAll(".auth-role").forEach(role => {
-
-        if (role.dataset.role === "auditor") {
-
-            role.style.display =
-                mode === "signup"
-                    ? "none"
-                    : "";
-
-        }
-
-    });
-
-
-    /* ------------------------------------------
-       RESET ROLE SELECTION
-    ------------------------------------------ */
-
-    document.querySelectorAll(".auth-role").forEach(role => {
-
         role.classList.remove("selected");
-
     });
 
-
-    /* ------------------------------------------
-       CLEAR MESSAGE
-    ------------------------------------------ */
 
     if (message) {
-
         message.className = "auth-message";
-
         message.textContent = "";
-
     }
 
-
-    /* ------------------------------------------
-       RESET FORMS
-    ------------------------------------------ */
 
     if (signinForm) {
-
         signinForm.style.display = "none";
-
         signinForm.reset();
-
     }
 
 
-    if (signupForm) {
-
-        signupForm.style.display = "none";
-
-        signupForm.reset();
-
+    if (requestAccessForm) {
+        requestAccessForm.style.display = "none";
+        requestAccessForm.reset();
     }
 
 
-    /* ------------------------------------------
-       USERNAME IS AUTO-GENERATED
-    ------------------------------------------ */
+    /* SIGN IN */
 
-    const signupUsername =
-        document.getElementById("signupUsername");
-
-
-    if (signupUsername) {
-
-        signupUsername.value = "";
-
-        signupUsername.required = false;
-
-        signupUsername.disabled = true;
-
-        signupUsername.placeholder =
-            "Your TraceVeda ID will be generated automatically";
-
-    }
-
-
-    /* ------------------------------------------
-       MODAL TEXT
-    ------------------------------------------ */
-
-    if (mode === "signin") {
+    if (currentAuthMode === "signin") {
 
         title.textContent = "Sign In";
 
         subtitle.textContent =
-            "Access your TraceVeda workspace.";
+            "Use the TraceVeda ID and password issued to you after verification.";
+
+        if (signinRoleSection) {
+            signinRoleSection.style.display = "";
+        }
+
+        if (requestRoleSection) {
+            requestRoleSection.style.display = "none";
+        }
 
     }
+
+
+    /* REQUEST ACCESS */
 
     else {
 
-        title.textContent = "Create Account";
+        title.textContent = "Request Access";
 
         subtitle.textContent =
-            "Create your secure TraceVeda account.";
+            "Submit your organisation details for Admin/Auditor verification.";
+
+        if (signinRoleSection) {
+            signinRoleSection.style.display = "none";
+        }
+
+        if (requestRoleSection) {
+            requestRoleSection.style.display = "";
+        }
 
     }
 
-
-    /* ------------------------------------------
-       SHOW ROLE SELECTION
-    ------------------------------------------ */
-
-    authSections.forEach(section => {
-
-        section.style.display = "";
-
-    });
-
 }
 
+/* ==========================================
+   SELECT SIGN IN ROLE
+========================================== */
+
+function selectAuthRole(button) {
+
+    /* Remove previous selection */
+    document
+        .querySelectorAll("#signinRoleSection .auth-role")
+        .forEach(role => {
+            role.classList.remove("selected");
+        });
+
+    /* Select clicked role */
+    button.classList.add("selected");
+
+    /* Store selected role */
+    selectedAuthRole =
+        button.dataset.role;
+
+    /* Hide role selection */
+    const signinRoleSection =
+        document.getElementById("signinRoleSection");
+
+    /* Show username/password form */
+    const signinForm =
+        document.getElementById("signinForm");
+
+    if (signinRoleSection) {
+        signinRoleSection.style.display = "none";
+    }
+
+    if (signinForm) {
+        signinForm.style.display = "flex";
+    }
+
+}
 
 /* ==========================================
    CLOSE AUTH MODAL
@@ -7094,7 +9946,45 @@ document
 
             );
 
+            /* ------------------------------------------
+            TEMPORARY TRANSPORTER DEMO LOGIN
+            ------------------------------------------ */
 
+            if (
+                selectedAuthRole === "transporter" &&
+                username === "tra-001" &&
+                password === "123"
+            ) {
+
+                const sessionUser = {
+                    username: "transporter01",
+                    role: "transporter",
+                    full_name: "Transporter Demo User"
+                };
+
+                localStorage.setItem(
+                    "traceveda_user",
+                    JSON.stringify(sessionUser)
+                );
+
+                showAuthMessage(
+                    "Sign in successful!",
+                    "success"
+                );
+
+                setTimeout(function() {
+
+                    closeAuthModal();
+
+                    openRole(
+                        "transporter",
+                        "transporter-overview"
+                    );
+
+                }, 500);
+
+                return;
+            }
             try {
 
 
@@ -7257,120 +10147,158 @@ document
 
 
 /* ==========================================
-   SELECT ROLE
+   SELECT REQUEST ACCESS ROLE
 ========================================== */
 
-function selectAuthRole(button) {
-
-
-    /* ------------------------------------------
-       REMOVE PREVIOUS SELECTION
-    ------------------------------------------ */
+function selectRequestRole(button) {
 
     document
-        .querySelectorAll(".auth-role")
+        .querySelectorAll("#requestRoleSection .auth-role")
         .forEach(role => {
-
             role.classList.remove("selected");
-
         });
-
-
-    /* ------------------------------------------
-       SELECT CURRENT ROLE
-    ------------------------------------------ */
 
     button.classList.add("selected");
 
-
-    selectedAuthRole =
+    selectedRequestRole =
         button.dataset.role;
 
+    const requestRoleSection =
+        document.getElementById("requestRoleSection");
 
-    /* ------------------------------------------
-       SIGNUP USERNAME MESSAGE
-    ------------------------------------------ */
-
-    const signupUsername =
-        document.getElementById("signupUsername");
+    const requestAccessForm =
+        document.getElementById("requestAccessForm");
 
 
-    if (
-        signupUsername &&
-        currentAuthMode === "signup"
-    ) {
-
-        signupUsername.value =
-            "ID will be generated automatically";
-
+    if (requestRoleSection) {
+        requestRoleSection.style.display = "none";
     }
 
 
-    /* ------------------------------------------
-       GET FORMS
-    ------------------------------------------ */
-
-    const authSections =
-        document.querySelectorAll(".auth-section");
-
-
-    const signinForm =
-        document.getElementById("signinForm");
-
-
-    const signupForm =
-        document.getElementById("signupForm");
-
-
-    /* ------------------------------------------
-       HIDE ROLE SELECTION
-    ------------------------------------------ */
-
-    authSections.forEach(section => {
-
-        section.style.display = "none";
-
-    });
-
-
-    /* ------------------------------------------
-       SHOW CORRECT FORM
-    ------------------------------------------ */
-
-    if (currentAuthMode === "signin") {
-
-
-        if (signinForm) {
-
-            signinForm.style.display = "flex";
-
-        }
-
-
-    }
-
-    else {
-
-
-        if (signupForm) {
-
-            signupForm.style.display = "flex";
-
-        }
-
-
+    if (requestAccessForm) {
+        requestAccessForm.style.display = "flex";
     }
 
 }
 
 
 /* ==========================================
-   SIGN UP
+   REQUEST ACCESS SUBMISSION
 ========================================== */
 
 document
-    .getElementById("signupForm")
+    .getElementById("requestAccessForm")
     .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            if (!selectedRequestRole) {
+
+                showAuthMessage(
+                    "Please select your role first.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const organisationName =
+                document
+                    .getElementById("requestOrganisationName")
+                    .value
+                    .trim();
+
+
+            const location =
+                document
+                    .getElementById("requestLocation")
+                    .value
+                    .trim();
+
+
+            const contactDetails =
+                document
+                    .getElementById("requestContactDetails")
+                    .value
+                    .trim();
+
+
+            if (
+                !organisationName ||
+                !location ||
+                !contactDetails
+            ) {
+
+                showAuthMessage(
+                    "Please complete all required fields.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const requestData = {
+
+                role: selectedRequestRole,
+
+                organisation_name:
+                    organisationName,
+
+                location:
+                    location,
+
+                contact_details:
+                    contactDetails
+
+            };
+
+
+            /*
+             * Temporary frontend behaviour.
+             *
+             * Later this object will be sent to the backend
+             * access-request API.
+             */
+
+            console.log(
+                "TraceVeda access request:",
+                requestData
+            );
+
+
+            showAuthMessage(
+                "Access request submitted successfully. Your request will be reviewed by a TraceVeda Admin/Auditor. Your TraceVeda ID and password will be issued after approval.",
+                "success"
+            );
+
+
+            document
+                .getElementById("requestAccessForm")
+                .reset();
+
+
+            selectedRequestRole = null;
+
+        }
+    );
+
+/* ==========================================
+   SIGN UP
+========================================== */
+
+const signupForm =
+    document.getElementById("signupForm");
+
+if (signupForm) {
+
+    signupForm.addEventListener(
         "submit",
         async function(event) {
 
@@ -7384,15 +10312,11 @@ document
             if (!selectedAuthRole) {
 
                 showAuthMessage(
-
                     "Please select your role first.",
-
                     "error"
-
                 );
 
                 return;
-
             }
 
 
@@ -7414,30 +10338,22 @@ document
             ) {
 
                 showAuthMessage(
-
                     "Consumer access does not require an account.",
-
                     "error"
-
                 );
 
                 return;
-
             }
 
 
             if (!backendRole) {
 
                 showAuthMessage(
-
                     "This role cannot create an account.",
-
                     "error"
-
                 );
 
                 return;
-
             }
 
 
@@ -7449,7 +10365,6 @@ document
                 document
                     .getElementById("signupPassword")
                     .value;
-
 
             const confirmPassword =
                 document
@@ -7464,15 +10379,11 @@ document
             if (password !== confirmPassword) {
 
                 showAuthMessage(
-
                     "Passwords do not match.",
-
                     "error"
-
                 );
 
                 return;
-
             }
 
 
@@ -7483,15 +10394,11 @@ document
             if (password.length < 8) {
 
                 showAuthMessage(
-
                     "Password must contain at least 8 characters.",
-
                     "error"
-
                 );
 
                 return;
-
             }
 
 
@@ -7500,16 +10407,12 @@ document
             ------------------------------------------ */
 
             showAuthMessage(
-
                 "Creating your TraceVeda account...",
-
                 "success"
-
             );
 
 
             try {
-
 
                 /* ------------------------------------------
                    BACKEND SIGNUP REQUEST
@@ -7517,30 +10420,20 @@ document
 
                 const response =
                     await fetch(
-
                         `${API_URL}/api/auth/signup`,
-
                         {
-
                             method: "POST",
 
                             headers: {
-
                                 "Content-Type":
                                     "application/json"
-
                             },
 
                             body: JSON.stringify({
-
                                 password: password,
-
                                 role: backendRole
-
                             })
-
                         }
-
                     );
 
 
@@ -7555,16 +10448,12 @@ document
                 if (!response.ok) {
 
                     showAuthMessage(
-
                         data.detail ||
                         "Unable to create account.",
-
                         "error"
-
                     );
 
                     return;
-
                 }
 
 
@@ -7577,20 +10466,14 @@ document
 
 
                 showAuthMessage(
-
                     `Account created successfully! Your TraceVeda ID is: ${generatedID}`,
-
                     "success"
-
                 );
 
 
                 console.log(
-
                     "Account created:",
-
                     data
-
                 );
 
 
@@ -7599,32 +10482,22 @@ document
                 ------------------------------------------ */
 
                 localStorage.setItem(
-
                     "traceveda_user",
-
                     JSON.stringify(data.user)
-
                 );
 
 
                 /* ------------------------------------------
-                   OPTIONAL:
-                   AUTO-FILL SIGNIN USERNAME
+                   AUTO-FILL SIGN IN
                 ------------------------------------------ */
 
                 setTimeout(function() {
 
-
                     alert(
-
                         "Account Created Successfully!\n\n" +
-
                         "Your TraceVeda ID is:\n" +
-
                         generatedID +
-
                         "\n\nPlease remember this ID."
-
                     );
 
 
@@ -7671,30 +10544,21 @@ document
 
                     }
 
-
                 }, 1000);
 
 
             }
-
             catch (error) {
 
-
                 console.error(
-
                     "Signup error:",
-
                     error
-
                 );
 
 
                 showAuthMessage(
-
                     "Unable to connect to the server.",
-
                     "error"
-
                 );
 
             }
@@ -7702,7 +10566,7 @@ document
         }
     );
 
-
+}
 /* ==========================================
    SHOW AUTH MESSAGE
 ========================================== */
@@ -7750,7 +10614,658 @@ document.addEventListener(
     }
 
 );
+           
 
+/* =========================================================
+   TRANSPORTER — GEO TAGGED IMAGE
+========================================================= */
+
+window.geoCameraStream = null;
+window.geoCapturedImageBlob = null;
+window.geoCoordinates = null;
+window.geoCapturedAt = null;
+
+
+/* =========================================================
+   START CAMERA + GET LOCATION
+========================================================= */
+
+async function startGeoCapture() {
+
+    console.log("Open Camera clicked");
+
+    /* -----------------------------------------
+       CAMERA SUPPORT CHECK
+    ----------------------------------------- */
+
+    if (
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
+    ) {
+        alert(
+            "Camera access is not supported by this browser."
+        );
+        return;
+    }
+
+    try {
+
+        /* -----------------------------------------
+           OPEN CAMERA FIRST
+        ----------------------------------------- */
+
+        window.geoCameraStream =
+            await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: {
+                        ideal: "environment"
+                    }
+                },
+                audio: false
+            });
+
+        console.log("Camera stream acquired.");
+
+
+        /* -----------------------------------------
+           CAMERA PREVIEW
+        ----------------------------------------- */
+
+        const video =
+            document.getElementById("geoCamera");
+
+        if (!video) {
+            alert(
+                "Camera preview element not found."
+            );
+            return;
+        }
+
+        video.srcObject =
+            window.geoCameraStream;
+
+        await video.play();
+
+
+        document
+            .getElementById("cameraStartArea")
+            .style.display = "none";
+
+        document
+            .getElementById("cameraContainer")
+            .style.display = "block";
+
+        document
+            .getElementById("cameraControls")
+            .style.display = "block";
+
+
+        /* -----------------------------------------
+           GET GPS AFTER CAMERA IS OPEN
+        ----------------------------------------- */
+
+        if (navigator.geolocation) {
+
+            navigator.geolocation.getCurrentPosition(
+
+                function(position) {
+
+                    geoCoordinates = {
+                        latitude:
+                            position.coords.latitude,
+
+                        longitude:
+                            position.coords.longitude,
+
+                        accuracy:
+                            position.coords.accuracy
+                    };
+
+
+                    const latitude =
+                        document.getElementById(
+                            "geoLatitude"
+                        );
+
+                    const longitude =
+                        document.getElementById(
+                            "geoLongitude"
+                        );
+
+                    const accuracy =
+                        document.getElementById(
+                            "geoAccuracy"
+                        );
+
+
+                    if (latitude) {
+                        latitude.textContent =
+                            geoCoordinates.latitude.toFixed(6);
+                    }
+
+                    if (longitude) {
+                        longitude.textContent =
+                            geoCoordinates.longitude.toFixed(6);
+                    }
+
+                    if (accuracy) {
+                        accuracy.textContent =
+                            `±${Math.round(
+                                geoCoordinates.accuracy
+                            )} m`;
+                    }
+
+
+                    console.log(
+                        "GPS location acquired:",
+                        geoCoordinates
+                    );
+
+                },
+
+                function(error) {
+
+                    console.error(
+                        "Geolocation error:",
+                        error
+                    );
+
+                    alert(
+                        "Camera opened, but location could not be obtained. Please enable location permission."
+                    );
+
+                },
+
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+            );
+
+        } else {
+
+            alert(
+                "Geolocation is not supported by this browser."
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Camera error:",
+            error
+        );
+
+        if (error.name === "NotAllowedError") {
+
+            alert(
+                "Camera permission was denied. Please allow camera access in your browser."
+            );
+
+        }
+
+        else if (error.name === "NotFoundError") {
+
+            alert(
+                "No camera was found on this device."
+            );
+
+        }
+
+        else if (error.name === "NotReadableError") {
+
+            alert(
+                "The camera is already being used by another application."
+            );
+
+        }
+
+        else if (error.name === "SecurityError") {
+
+            alert(
+                "Camera access was blocked by the browser. Make sure TraceVeda is running on HTTPS or localhost."
+            );
+
+        }
+
+        else {
+
+            alert(
+                `Unable to open camera: ${error.message}`
+            );
+
+        }
+
+    }
+}
+
+
+/* =========================================================
+   GPS LOCATION MANAGEMENT
+========================================================= */
+
+function setGeoGPSStatus(message, success = false) {
+
+    const status = document.getElementById("geoGpsStatus");
+    const captureButton = document.getElementById("captureGeoButton");
+
+    if (status) {
+        status.textContent = message;
+        status.style.color = success
+            ? "var(--success)"
+            : "var(--muted)";
+    }
+
+    if (captureButton) {
+        captureButton.disabled = !success;
+        captureButton.style.opacity = success ? "1" : ".5";
+        captureButton.style.cursor = success ? "pointer" : "not-allowed";
+    }
+}
+
+
+function requestGeoGPS() {
+
+    window.geoCoordinates = null;
+
+    setGeoGPSStatus("Requesting location permission...");
+
+    if (!navigator.geolocation) {
+        setGeoGPSStatus("Geolocation is not supported by this browser.");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            window.geoCoordinates = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                accuracy: position.coords.accuracy
+            };
+
+            const latitude = document.getElementById("geoLatitude");
+            const longitude = document.getElementById("geoLongitude");
+            const accuracy = document.getElementById("geoAccuracy");
+
+            if (latitude) {
+                latitude.textContent =
+                    window.geoCoordinates.latitude.toFixed(6);
+            }
+
+            if (longitude) {
+                longitude.textContent =
+                    window.geoCoordinates.longitude.toFixed(6);
+            }
+
+            if (accuracy) {
+                accuracy.textContent =
+                    `±${Math.round(window.geoCoordinates.accuracy)} m`;
+            }
+
+            setGeoGPSStatus(
+                "Location acquired successfully. You can now capture the image.",
+                true
+            );
+
+            console.log("GPS coordinates:", window.geoCoordinates);
+
+        },
+
+        function(error) {
+
+            console.error("GPS error:", error.code, error.message);
+
+            if (error.code === 1) {
+                setGeoGPSStatus(
+                    "Location permission denied. Allow location access in browser site settings."
+                );
+            }
+
+            else if (error.code === 2) {
+                setGeoGPSStatus(
+                    "Location unavailable. Check your device location services."
+                );
+            }
+
+            else if (error.code === 3) {
+                setGeoGPSStatus(
+                    "Location request timed out. Click Retry GPS."
+                );
+            }
+
+            else {
+                setGeoGPSStatus(
+                    `Unable to obtain location: ${error.message}`
+                );
+            }
+
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 30000,
+            maximumAge: 0
+        }
+    );
+}
+
+/* =========================================================
+   RETRY GPS
+========================================================= */
+
+function retryGeoGPS() {
+    requestGeoGPS();
+}
+
+
+/* =========================================================
+   CAPTURE IMAGE
+========================================================= */
+
+function captureGeoImage() {
+
+    const video =
+        document.getElementById("geoCamera");
+
+    if (
+        !video ||
+        !video.videoWidth ||
+        !video.videoHeight
+    ) {
+        alert(
+            "Camera is not ready yet."
+        );
+
+        return;
+    }
+
+
+    const canvas =
+        document.createElement("canvas");
+
+    canvas.width =
+        video.videoWidth;
+
+    canvas.height =
+        video.videoHeight;
+
+
+    const context =
+        canvas.getContext("2d");
+
+    context.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    canvas.toBlob(
+        function(blob) {
+
+            geoCapturedImageBlob =
+                blob;
+
+            geoCapturedAt =
+                new Date();
+
+
+            const imageURL =
+                URL.createObjectURL(blob);
+
+
+            document
+                .getElementById("capturedGeoImage")
+                .src = imageURL;
+
+
+            document
+                .getElementById("cameraContainer")
+                .style.display = "none";
+
+
+            document
+                .getElementById("cameraControls")
+                .style.display = "none";
+
+
+            document
+                .getElementById("capturedImageContainer")
+                .style.display = "block";
+
+
+            document
+                .getElementById("geoLocationDetails")
+                .style.display = "block";
+
+
+            if (geoCapturedAt) {
+
+                document
+                    .getElementById("geoCapturedAt")
+                    .textContent =
+                    geoCapturedAt.toLocaleString(
+                        "en-IN",
+                        {
+                            dateStyle: "medium",
+                            timeStyle: "medium"
+                        }
+                    );
+
+            }
+
+
+            /* -----------------------------------------
+               STOP CAMERA
+            ----------------------------------------- */
+
+            stopGeoCamera();
+
+        },
+        "image/jpeg",
+        0.90
+    );
+}
+
+
+/* =========================================================
+   STOP CAMERA
+========================================================= */
+
+function stopGeoCamera() {
+
+    if (window.geoCameraStream) {
+
+        window.geoCameraStream
+            .getTracks()
+            .forEach(
+                track => track.stop()
+            );
+
+        window.geoCameraStream = null;
+    }
+
+}
+
+
+/* =========================================================
+   SIGN GEO EVIDENCE IN LEDGER
+========================================================= */
+
+async function signInGeoEvidence() {
+
+    if (!geoCapturedImageBlob) {
+
+        alert(
+            "Please capture an image first."
+        );
+
+        return;
+    }
+
+
+    if (!geoCoordinates) {
+
+        alert(
+            "Location data is not available."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const formData =
+            new FormData();
+
+
+        /* -----------------------------------------
+           IMAGE
+        ----------------------------------------- */
+
+        formData.append(
+            "image",
+            geoCapturedImageBlob,
+            `geo-${Date.now()}.jpg`
+        );
+
+
+        /* -----------------------------------------
+           LOCATION
+        ----------------------------------------- */
+
+        formData.append(
+            "latitude",
+            geoCoordinates.latitude
+        );
+
+        formData.append(
+            "longitude",
+            geoCoordinates.longitude
+        );
+
+        formData.append(
+            "gps_accuracy_m",
+            geoCoordinates.accuracy
+        );
+
+
+        /* -----------------------------------------
+           CAPTURE TIME
+        ----------------------------------------- */
+
+        formData.append(
+            "captured_at",
+            geoCapturedAt
+                ? geoCapturedAt.toISOString()
+                : new Date().toISOString()
+        );
+
+
+        /* -----------------------------------------
+           TRANSPORTER
+        ----------------------------------------- */
+
+        const sessionUser =
+            JSON.parse(
+                localStorage.getItem(
+                    "traceveda_user"
+                ) || "{}"
+            );
+
+
+        formData.append(
+            "transporter_id",
+            sessionUser.username || ""
+        );
+
+
+        /* -----------------------------------------
+           BACKEND REQUEST
+           IMPORTANT:
+           FormData must NOT use JSON headers.
+        ----------------------------------------- */
+
+        const token =
+            getTraceVedaToken();
+
+
+        const headers = {};
+
+        if (token) {
+            headers.Authorization =
+                `Bearer ${token}`;
+        }
+
+
+        const response =
+            await fetch(
+                `${TRACEVEDA_API}/api/transport/geotag`,
+                {
+                    method: "POST",
+                    headers,
+                    body: formData
+                }
+            );
+
+
+        let data = null;
+
+        try {
+            data = await response.json();
+        }
+        catch (_) {
+            data = null;
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data?.detail ||
+                data?.message ||
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        console.log(
+            "Geo tagged evidence stored:",
+            data
+        );
+
+
+        alert(
+            "✓ Geo tagged image signed in ledger successfully."
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Geo tagged evidence error:",
+            error
+        );
+
+
+        alert(
+            `Unable to sign geo tagged evidence: ${error.message}`
+        );
+
+    }
+
+}
 
 
 /* =========================================================
@@ -7850,6 +11365,142 @@ async function apiRequest(path, options = {}) {
         `;
     }
 }
+
+/* =========================================================
+   TRANSPORTER — SIGN IN LEDGER
+========================================================= */
+
+async function signInTransportLedger(type) {
+
+    let payload = {};
+
+    /* -----------------------------------------
+       RAW BATCH → PROCESSOR
+    ----------------------------------------- */
+
+    if (type === "raw") {
+
+        const crop = document
+            .getElementById("rawCrop")
+            ?.value
+            .trim();
+
+        const batchId = document
+            .getElementById("rawBatchId")
+            ?.value
+            .trim();
+
+        const farmName = document
+            .getElementById("rawFarmName")
+            ?.value
+            .trim();
+
+        const quantity = document
+            .getElementById("rawQuantity")
+            ?.value
+            .trim();
+
+        const destination = document
+            .getElementById("rawDestination")
+            ?.value
+            .trim();
+
+        const transportDate = document
+            .getElementById("rawTransportDate")
+            ?.value;
+
+        if (
+            !crop ||
+            !batchId ||
+            !farmName ||
+            !quantity ||
+            !destination ||
+            !transportDate
+        ) {
+            alert("Please complete all transport fields.");
+            return;
+        }
+
+        payload = {
+            transport_stage: "RAW_BATCH_TO_PROCESSOR",
+            crop_name: crop,
+            batch_id: batchId,
+            farm_name: farmName,
+            quantity: quantity,
+            destination: destination,
+            date_of_transport: transportDate
+        };
+    }
+
+    /* -----------------------------------------
+       LAB → MANUFACTURER
+    ----------------------------------------- */
+
+    else if (type === "lab") {
+
+        const processedBatchId = document
+            .getElementById("processedBatchId")
+            ?.value
+            .trim();
+
+        const manufacturer = document
+            .getElementById("manufacturerOrganization")
+            ?.value
+            .trim();
+
+        const quantity = document
+            .getElementById("labManufacturerQuantity")
+            ?.value
+            .trim();
+
+        const transportDate = document
+            .getElementById("transportDate")
+            ?.value;
+
+        if (
+            !processedBatchId ||
+            !manufacturer ||
+            !quantity ||
+            !transportDate
+        ) {
+            alert("Please complete all transport fields.");
+            return;
+        }
+
+        payload = {
+            transport_stage: "LAB_TO_MANUFACTURER",
+            batch_id: processedBatchId,
+            manufacturer_organization: manufacturer,
+            quantity: quantity,
+            date_of_transport: transportDate
+        };
+    }
+
+    try {
+
+        const data = await apiRequest("/api/transport", {
+            method: "POST",
+            body: JSON.stringify(payload)
+        });
+
+        console.log("Transport ledger record created:", data);
+
+        alert("✓ Transport record signed in ledger successfully.");
+
+    } catch (error) {
+
+        console.error(
+            "Transport ledger submission error:",
+            error
+        );
+
+        alert(
+            `Unable to sign transport record in ledger: ${error.message}`
+        );
+    }
+}
+
+
 /* ---------------- IOT ---------------- */
 loadIoTEvidence = async function () {
     const input = document.getElementById("iotBatchId");
@@ -7874,38 +11525,460 @@ loadIoTEvidence = async function () {
 };
 
 /* ---------------- LAB ---------------- */
-submitLab = async function () {
-    const batch = document.getElementById("labBatch")?.value.trim();
-    const cert = document.getElementById("labCert")?.value.trim();
-    const purity = document.getElementById("labPurity")?.value.trim();
-    const lead = document.getElementById("labLead")?.value.trim();
-    const verdict = document.getElementById("labVerdict")?.value;
 
-    if (!batch) return alert("Please enter a processing batch ID.");
+submitLab = async function () {
+
+    const batch =
+        document
+            .getElementById("labBatch")
+            ?.value
+            .trim();
+
+
+    const cert =
+        document
+            .getElementById("labCert")
+            ?.value
+            .trim();
+
+
+    const testDate =
+        document
+            .getElementById("labTestDate")
+            ?.value;
+
+
+    const testPhase =
+        document
+            .getElementById("labTestPhase")
+            ?.value;
+
+
+    const verdict =
+        document
+            .getElementById("labVerdict")
+            ?.value;
+
+
+    /* ------------------------------------------
+       VALIDATION
+    ------------------------------------------ */
+
+    if (!batch) {
+
+        return alert(
+            "Please enter a batch ID."
+        );
+
+    }
+
+
+    if (!cert) {
+
+        return alert(
+            "Please enter a certificate ID."
+        );
+
+    }
+
+
+    if (!testDate) {
+
+        return alert(
+            "Please select the test date."
+        );
+
+    }
+
+
+    if (!testPhase) {
+
+        return alert(
+            "Please select the test phase."
+        );
+
+    }
+
+
+    /* ------------------------------------------
+       TEST PHASE DISPLAY VALUE
+    ------------------------------------------ */
+
+    const testPhaseLabel = {
+
+        RAW_BATCH_TEST:
+            "Raw batch test",
+
+        FINAL_PRODUCT_QUALITY_TEST:
+            "Final Product Quality test"
+
+    };
+
+
+    const displayedPhase =
+        testPhaseLabel[testPhase] ||
+        testPhase;
+
+    
+         /*
+        * ============================================================
+        * BACKEND INTEGRATION REQUIRED — LAB TEST CERTIFICATION
+        * ============================================================
+        *
+        * API ENDPOINT:
+        * POST /api/lab/tests
+        *
+        * PURPOSE:
+        * When the Laboratory user clicks "Sign Ledger Verification",
+        * this request must create a new laboratory test record and
+        * append/store it in the lab_tests dataset.
+        *
+        * IMPORTANT:
+        * The frontend MUST NOT generate lab_test_id.
+        * lab_test_id must be generated by the backend.
+        *
+        *
+        * ------------------------------------------------------------
+        * 1. LAB TEST ID GENERATION
+        * ------------------------------------------------------------
+        *
+        * The ID prefix depends on the selected Test Phase:
+        *
+        * A) Raw batch test:
+        *
+        *     LABTEST-PRE-0001
+        *     LABTEST-PRE-0002
+        *     LABTEST-PRE-0003
+        *     ...
+        *
+        * B) Final Product Quality test:
+        *
+        *     LABTEST-POST-0001
+        *     LABTEST-POST-0002
+        *     LABTEST-POST-0003
+        *     ...
+        *
+        * The backend must determine the next number automatically by
+        * checking the latest existing ID for the corresponding phase.
+        *
+        * Example:
+        *
+        * Last RAW test:
+        *     LABTEST-PRE-0001
+        *
+        * Next RAW test:
+        *     LABTEST-PRE-0002
+        *
+        * Last FINAL PRODUCT test:
+        *     LABTEST-POST-0002
+        *
+        * Next FINAL PRODUCT test:
+        *     LABTEST-POST-0003
+        *
+        * RAW and FINAL PRODUCT sequences must be maintained separately.
+        *
+        * The frontend should NEVER send lab_test_id.
+        *
+        *
+        * ------------------------------------------------------------
+        * 2. DATA RECEIVED FROM FRONTEND
+        * ------------------------------------------------------------
+        *
+        * The frontend will send:
+        *
+        * {
+        *     batch_id: selected batch ID,
+        *     lab_id: logged-in laboratory ID,
+        *     test_date: selected test date,
+        *     test_phase: selected test phase,
+        *     test_type: test type if required by backend schema,
+        *     result: PASS / FAIL,
+        *     certificate_id: certificate ID
+        * }
+        *
+        *
+        * test_phase values:
+        *
+        *     RAW_BATCH_TEST
+        *     FINAL_PRODUCT_QUALITY_TEST
+        *
+        *
+        * ------------------------------------------------------------
+        * 3. CERTIFICATE ID
+        * ------------------------------------------------------------
+        *
+        * Certificate ID is entered by the Laboratory user.
+        *
+        * Expected frontend format:
+        *
+        * Raw batch test:
+        *     CERT-PRE-<Batch Number>
+        *
+        * Final Product Quality test:
+        *     CERT-POST-<Batch Number>
+        *
+        * The backend should validate the submitted certificate ID
+        * against the selected test phase where appropriate.
+        *
+        *
+        * ------------------------------------------------------------
+        * 4. TEST DATE
+        * ------------------------------------------------------------
+        *
+        * Store the exact Test Date entered by the Laboratory user.
+        *
+        * Do NOT replace the Test Date with the server submission date.
+        *
+        * The backend may separately maintain a verification timestamp
+        * for the actual submission/ledger registration time.
+        *
+        *
+        * ------------------------------------------------------------
+        * 5. RECORD CREATION
+        * ------------------------------------------------------------
+        *
+        * On successful submission:
+        *
+        *     1. Validate all fields.
+        *     2. Determine the correct LABTEST-PRE / LABTEST-POST prefix.
+        *     3. Generate the next sequential lab_test_id.
+        *     4. Create the laboratory test record.
+        *     5. Persist it in the backend datastore.
+        *     6. Append/synchronize the record with lab_tests.csv if
+        *        CSV is being maintained as the project dataset.
+        *     7. Return the newly generated lab_test_id and relevant
+        *        record information to the frontend.
+        *
+        *
+        * ------------------------------------------------------------
+        * 6. IMPORTANT — SEQUENCE SAFETY
+        * ------------------------------------------------------------
+        *
+        * ID generation must be handled on the backend to prevent
+        * duplicate IDs when two laboratory users submit records at
+        * nearly the same time.
+        *
+        * Do NOT rely on:
+        *
+        *     frontend row count
+        *     Math.random()
+        *     browser localStorage
+        *     hardcoded IDs
+        *
+        *
+        * ------------------------------------------------------------
+        * 7. RESPONSE EXPECTATION
+        * ------------------------------------------------------------
+        *
+        * The API should return at least:
+        *
+        * {
+        *     "success": true,
+        *     "lab_test_id": "LABTEST-PRE-0002",
+        *     "batch_id": "...",
+        *     "certificate_id": "...",
+        *     "test_date": "...",
+        *     "test_phase": "...",
+        *     "result": "PASS"
+        * }
+        *
+        * If a blockchain transaction/hash is created, it may also
+        * return:
+        *
+        *     "transaction_id"
+        *
+        * or
+        *
+        *     "blockchain_tx"
+        *
+        * The frontend will display the returned ID and transaction
+        * information in Verification History.
+        *
+        *
+        * ============================================================
+        * 
+        * API to be used: POST /api/lab/tests
+        */
 
     try {
-        const data = await apiRequest("/api/lab/tests", {
-            method: "POST",
-            body: JSON.stringify({
-                batch_id: batch,
-                lab_id: cert || "LAB-001",
-                test_stage: "PRE_MANUFACTURING",
-                test_type: "QUALITY_TEST",
-                test_parameters: { purity, lead },
-                result: verdict
-            })
-        });
 
-        const table = document.getElementById("labHistory");
+        /* --------------------------------------
+           BACKEND API
+        -------------------------------------- */
+
+        /*
+         * BACKEND INTEGRATION NOTE:
+         *
+         * The current lab_tests schema contains:
+         * batch_id, lab_id, test_date, test_type,
+         * test_parameters, result, certificate_id,
+         * verification_timestamp.
+         *
+         * "test_phase" is a frontend workflow field.
+         * The backend should map/store the selected phase
+         * appropriately when the API contract is finalized.
+         *
+         * Do not reintroduce removed fields such as:
+         * test_stage
+         * verified_by
+         */
+
+
+        const data =
+            await apiRequest(
+                "/api/lab/tests",
+                {
+                    method: "POST",
+
+                    body: JSON.stringify({
+
+                        batch_id:
+                            batch,
+
+                        lab_id:
+                            cert || "LAB-001",
+
+                        test_date:
+                            testDate,
+
+                        test_type:
+                            displayedPhase,
+
+                        result:
+                            verdict,
+
+                        certificate_id:
+                            cert
+
+                    })
+
+                }
+            );
+
+
+        /* --------------------------------------
+           UPDATE HISTORY
+        -------------------------------------- */
+
+        const table =
+            document.getElementById(
+                "labHistory"
+            );
+
+
         if (table) {
-            const row = document.createElement("tr");
-            row.innerHTML = `<td>${new Date().toLocaleDateString()}</td><td class="mono">${data?.batch_id || batch}</td><td>${purity || "—"}</td><td>${lead || "—"}</td><td><span class="badge ${String(verdict).toUpperCase()==="PASS" ? "badge-success" : "badge-danger"}">${verdict}</span></td><td class="mono">${data?.blockchain_tx || data?.transaction_id || "—"}</td>`;
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${testDate}
+                </td>
+
+                <td class="mono">
+                    ${data?.batch_id || batch}
+                </td>
+
+                <td>
+                    ${displayedPhase}
+                </td>
+
+                <td>
+
+                    <span class="badge ${
+                        String(verdict)
+                            .toUpperCase() === "PASS"
+
+                        ? "badge-success"
+
+                        : "badge-danger"
+                    }">
+
+                        ${verdict}
+
+                    </span>
+
+                </td>
+
+                <td class="mono">
+                    ${
+                        data?.certificate_id ||
+                        cert ||
+                        "—"
+                    }
+                </td>
+
+                <td class="mono">
+
+                    ${
+                        data?.blockchain_tx ||
+                        data?.transaction_id ||
+                        "—"
+                    }
+
+                </td>
+
+            `;
+
+
             table.prepend(row);
+
         }
-        alert("✓ Laboratory certification submitted and stored successfully.");
-    } catch (error) {
-        alert(`Laboratory submission failed: ${error.message}`);
+
+
+        alert(
+            "✓ Laboratory certification submitted and stored successfully."
+        );
+
+
+        /* --------------------------------------
+           CLEAR FORM
+        -------------------------------------- */
+
+        document
+            .getElementById("labBatch")
+            .value = "";
+
+
+        document
+            .getElementById("labCert")
+            .value = "";
+
+
+        document
+            .getElementById("labTestDate")
+            .value = "";
+
+
+        document
+            .getElementById("labTestPhase")
+            .value = "";
+
+
+        document
+            .getElementById("labVerdict")
+            .value = "PASS";
+
+
     }
+
+    catch (error) {
+
+        console.error(
+            "Laboratory certification error:",
+            error
+        );
+
+
+        alert(
+            `Unable to submit laboratory certification: ${error.message}`
+        );
+
+    }
+
 };
 
 /* ---------------- MANUFACTURER / MEDICINE ---------------- */
