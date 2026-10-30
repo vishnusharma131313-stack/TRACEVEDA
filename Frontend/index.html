@@ -156,6 +156,22 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     </div>
 
 
+    <!-- MOBILE PUBLIC NAVIGATION TOGGLE -->
+    <button
+        class="public-nav-toggle"
+        id="publicNavToggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="publicHeaderMenu"
+        onclick="togglePublicNavMenu()"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="public-header-menu" id="publicHeaderMenu">
     <!-- PUBLIC NAVIGATION -->
     <nav class="header-links" id="publicHeaderNav">
 
@@ -208,6 +224,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         </button>
 
     </div>
+    </div><!-- /.public-header-menu -->
 
 
     <!-- SIGNED-IN ROLE IDENTITY / PROFILE MENU -->
@@ -227,7 +244,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                 onclick="toggleProfileMenu()"
             >
                 <span class="workspace-header-avatar" aria-hidden="true">
-                    <span class="fa-solid fa-flask" id="workspaceRoleIcon" aria-hidden="true"></span>
+                    <i class="fa-solid fa-flask" id="workspaceRoleIcon"></i>
                 </span>
                 <span class="profile-trigger-copy workspace-header-copy">
                     <small class="workspace-header-role" id="workspaceRoleLabel">Laboratory workspace</small>
@@ -4482,57 +4499,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         const roleNode = document.getElementById("workspaceRoleLabel");
         const subtitleNode = document.getElementById("workspaceGreetingSubtitle");
         const iconNode = document.getElementById("workspaceRoleIcon");
-        // Apply the signed-in identity layout inline so legacy stylesheet rules
-        // cannot hide the avatar or greeting (the old .workspace-header i rule did).
-        const avatarNode = header.querySelector(".workspace-header-avatar");
-        const triggerNode = document.getElementById("profileTrigger");
-        const copyNode = header.querySelector(".workspace-header-copy");
-        const topHeader = header.closest("header");
-        if (topHeader) {
-            topHeader.style.setProperty("display", "flex", "important");
-            topHeader.style.setProperty("align-items", "center", "important");
-            topHeader.style.setProperty("justify-content", "space-between", "important");
-            topHeader.style.setProperty("width", "100%", "important");
-            topHeader.style.setProperty("box-sizing", "border-box", "important");
-        }
-        header.style.setProperty("position", "relative", "important");
-        header.style.setProperty("left", "auto", "important");
-        header.style.setProperty("right", "auto", "important");
-        header.style.setProperty("transform", "none", "important");
-        header.style.setProperty("margin-left", "auto", "important");
-        header.style.setProperty("flex", "0 1 auto", "important");
-        header.style.setProperty("max-width", "min(58vw, 560px)", "important");
-        if (triggerNode) {
-            triggerNode.style.setProperty("display", "inline-flex", "important");
-            triggerNode.style.setProperty("align-items", "center", "important");
-            triggerNode.style.setProperty("gap", "11px", "important");
-            triggerNode.style.setProperty("visibility", "visible", "important");
-            triggerNode.style.setProperty("opacity", "1", "important");
-        }
-        if (avatarNode) {
-            avatarNode.style.setProperty("display", "inline-grid", "important");
-            avatarNode.style.setProperty("place-items", "center", "important");
-            avatarNode.style.setProperty("flex", "0 0 44px", "important");
-            avatarNode.style.setProperty("width", "44px", "important");
-            avatarNode.style.setProperty("height", "44px", "important");
-            avatarNode.style.setProperty("border-radius", "50%", "important");
-            avatarNode.style.setProperty("background", "linear-gradient(145deg,#e8f5eb,#cfe8d6)", "important");
-            avatarNode.style.setProperty("color", "#28794e", "important");
-            avatarNode.style.setProperty("visibility", "visible", "important");
-        }
-        if (iconNode) {
-            iconNode.style.setProperty("display", "inline-block", "important");
-            iconNode.style.setProperty("font-size", "19px", "important");
-            iconNode.style.setProperty("line-height", "1", "important");
-            iconNode.style.setProperty("color", "#28794e", "important");
-            iconNode.style.setProperty("visibility", "visible", "important");
-        }
-        if (copyNode) {
-            copyNode.style.setProperty("display", "flex", "important");
-            copyNode.style.setProperty("flex-direction", "column", "important");
-            copyNode.style.setProperty("min-width", "0", "important");
-            copyNode.style.setProperty("visibility", "visible", "important");
-        }
         const menuName = document.getElementById("profileMenuName");
         const menuRole = document.getElementById("profileMenuRole");
         const menuAvatar = document.getElementById("profileAvatarLarge");
@@ -4551,5 +4517,43 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     syncHeader();
 })();
 </script>
+<script>
+/* Accessible public navigation drawer for phones and narrow tablets. */
+(function () {
+    const header = document.querySelector('body > header');
+    const toggle = document.getElementById('publicNavToggle');
+    const menu = document.getElementById('publicHeaderMenu');
+    if (!header || !toggle || !menu) return;
+
+    window.togglePublicNavMenu = function (force) {
+        const shouldOpen = typeof force === 'boolean'
+            ? force
+            : !header.classList.contains('public-menu-open');
+        header.classList.toggle('public-menu-open', shouldOpen);
+        toggle.setAttribute('aria-expanded', String(shouldOpen));
+        toggle.setAttribute('aria-label', shouldOpen ? 'Close navigation menu' : 'Open navigation menu');
+        return shouldOpen;
+    };
+
+    menu.querySelectorAll('a, button').forEach(function (item) {
+        item.addEventListener('click', function () { window.togglePublicNavMenu(false); });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (header.classList.contains('public-menu-open') && !header.contains(event.target)) {
+            window.togglePublicNavMenu(false);
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') window.togglePublicNavMenu(false);
+    });
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 860) window.togglePublicNavMenu(false);
+    });
+})();
+</script>
+
 </body>
 </html>

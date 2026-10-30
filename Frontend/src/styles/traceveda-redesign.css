@@ -848,11 +848,202 @@ body > header #workspaceHeader .workspace-header-role {
   body > header #workspaceHeader .workspace-header-role { font-size: .42rem !important; }
 }
 
+/* =========================================================
+   PUBLIC MOBILE NAVIGATION — compact hamburger drawer
+   Desktop navigation remains unchanged. On narrow screens the
+   links and auth actions move into a single accessible dropdown.
+========================================================= */
+.public-header-menu {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(14px, 2vw, 28px);
+}
 
-/* Header identity layout: responsive fallback for role greeting/avatar. */
-#workspaceHeader .workspace-header-avatar { display:inline-grid !important; flex:0 0 44px !important; width:44px !important; height:44px !important; place-items:center !important; border-radius:50% !important; background:#e1f1e5 !important; color:#28794e !important; }
-#workspaceHeader #workspaceRoleIcon { display:inline-block !important; visibility:visible !important; font-size:19px !important; line-height:1 !important; }
-#workspaceHeader .workspace-header-copy { display:flex !important; flex-direction:column !important; min-width:0 !important; }
-#workspaceHeader .workspace-header-role, #workspaceHeader .workspace-header-welcome { display:block !important; visibility:visible !important; }
-@media(max-width:760px) { #workspaceHeader { max-width:58vw !important; } #workspaceHeader .workspace-header-avatar { flex-basis:37px !important; width:37px !important; height:37px !important; } #workspaceHeader .workspace-header-subtitle { display:none !important; } }
-@media(max-width:420px) { #workspaceHeader { max-width:61vw !important; } #workspaceHeader .workspace-header-copy { max-width:118px !important; } #workspaceHeader .workspace-header-welcome { font-size:.66rem !important; } }
+.public-nav-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  border: 1px solid #dce9de;
+  border-radius: 12px;
+  background: #fff;
+  color: #246b49;
+  box-shadow: 0 3px 12px rgba(25, 69, 44, .07);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.public-nav-toggle span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 99px;
+  background: currentColor;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.public-nav-toggle:focus-visible {
+  outline: 3px solid rgba(54, 139, 91, .22);
+  outline-offset: 2px;
+}
+body > header.public-menu-open .public-nav-toggle span:first-child {
+  transform: translateY(7px) rotate(45deg);
+}
+body > header.public-menu-open .public-nav-toggle span:nth-child(2) {
+  opacity: 0;
+}
+body > header.public-menu-open .public-nav-toggle span:last-child {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Do not show the public menu toggle inside authenticated workspaces. */
+body.workspace-mode > header .public-nav-toggle,
+body[data-role] > header .public-nav-toggle,
+body:has(#workspace.active) > header .public-nav-toggle {
+  display: none !important;
+}
+
+@media (max-width: 860px) {
+  body > header {
+    position: sticky;
+    display: flex;
+    min-height: 66px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 9px 14px;
+    overflow: visible;
+  }
+  body > header .brand-section {
+    min-width: 0;
+    flex: 0 1 auto;
+    gap: 8px;
+  }
+  body > header .brand-logo {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+  }
+  body > header .brand-title {
+    font-size: 1.08rem;
+    white-space: nowrap;
+  }
+  body > header .brand-subtitle {
+    font-size: .45rem;
+    white-space: nowrap;
+  }
+  body > header .public-nav-toggle {
+    display: inline-flex !important;
+    margin-left: auto;
+    position: relative;
+    z-index: 452;
+  }
+  body > header .public-header-menu {
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    right: 0;
+    z-index: 450;
+    display: none !important;
+    max-height: calc(100dvh - 82px);
+    overflow-y: auto;
+    flex: none;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 13px 15px 17px;
+    border: 1px solid #e1ebe2;
+    border-top: 0;
+    border-radius: 0 0 17px 17px;
+    background: rgba(255, 255, 255, .985);
+    box-shadow: 0 16px 30px rgba(26, 66, 44, .14);
+    backdrop-filter: blur(16px);
+  }
+  body > header.public-menu-open .public-header-menu {
+    display: flex !important;
+    animation: traceveda-menu-in .16s ease-out both;
+  }
+  body > header .public-header-menu .header-links {
+    display: flex !important;
+    width: 100%;
+    flex: none;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    margin: 0;
+    color: #385d49;
+    font-size: .94rem;
+  }
+  body > header .public-header-menu .header-links a {
+    display: flex;
+    min-height: 46px;
+    align-items: center;
+    padding: 11px 10px;
+    border-bottom: 1px solid #edf2ed;
+    color: #385d49;
+    font-size: .91rem;
+    font-weight: 650;
+  }
+  body > header .public-header-menu .header-links a::after { display: none; }
+  body > header .public-header-menu .header-links a:last-child { border-bottom: 0; }
+  body > header .public-header-menu .header-actions {
+    display: grid !important;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+  }
+  body > header .public-header-menu .header-actions .auth-btn {
+    display: inline-flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 43px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border-radius: 10px;
+    font-size: .76rem;
+    white-space: nowrap;
+  }
+  body > header .public-header-menu .header-actions .auth-btn[title="Administrator Login"] {
+    grid-column: 1 / -1;
+    width: 100%;
+    font-size: .76rem;
+  }
+  body > header .public-header-menu .header-actions .auth-btn[title="Administrator Login"] i {
+    margin-right: 7px;
+    font-size: .78rem;
+  }
+  /* Role header remains a compact single row after login. */
+  body.workspace-mode > header .public-nav-toggle,
+  body[data-role] > header .public-nav-toggle,
+  body:has(#workspace.active) > header .public-nav-toggle { display: none !important; }
+}
+
+@media (max-width: 420px) {
+  body > header { min-height: 62px; padding: 8px 12px; gap: 8px; }
+  body > header .brand-section { gap: 7px; }
+  body > header .brand-logo { width: 36px; height: 36px; flex-basis: 36px; }
+  body > header .brand-title { font-size: 1rem; }
+  body > header .brand-subtitle { display: none; }
+  body > header .public-nav-toggle { width: 40px; height: 40px; flex-basis: 40px; }
+}
+
+@keyframes traceveda-menu-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body > header.public-menu-open .public-header-menu { animation: none; }
+  .public-nav-toggle span { transition: none; }
+}
