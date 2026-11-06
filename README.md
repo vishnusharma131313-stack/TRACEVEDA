@@ -1,412 +1,488 @@
-# TraceVeda
+# TRACEVEDA
 
-## AI + IoT + Blockchain Based Herbal Medicine Traceability System
+### Blockchain- and IoT-enabled traceability for Ayurvedic herbs
 
-TraceVeda is a supply-chain traceability platform designed to track herbal medicines from their raw-material origin to the final consumer.
+TRACEVEDA is an end-to-end digital traceability platform designed to
+connect medicinal-herb sourcing, processing, laboratory verification,
+transportation, storage, manufacturing and consumer verification. It
+combines batch lineage, IoT monitoring, QR-based verification, consumer
+reporting and tamper-evident event records to support evidence-based
+investigation across the supply chain.
 
-The system combines:
+------------------------------------------------------------------------
 
-- IoT-based monitoring
-- MongoDB-based traceability
-- Blockchain event verification
-- QR-based medicine verification
-- Consumer reporting
-- End-to-end batch traceability
+## Contents
 
----
+-   [Problem addressed](#problem-addressed)
+-   [Solution overview](#solution-overview)
+-   [Key capabilities](#key-capabilities)
+-   [System architecture](#system-architecture)
+-   [IoT hardware](#iot-hardware)
+-   [Technology stack](#technology-stack)
+-   [Repository structure](#repository-structure)
+-   [Getting started](#getting-started)
+-   [Configuration and security](#configuration-and-security)
+-   [Dataset and demo data](#dataset-and-demo-data)
+-   [API documentation](#api-documentation)
+-   [Testing](#testing)
+-   [Current implementation and future
+    work](#current-implementation-and-future-work)
+-   [Contributors](#contributors)
 
-## System Flow
+## Problem addressed
 
-Farm
-↓
-Plant / Raw Material
-↓
-Processing
-↓
-Laboratory Verification
-↓
-IoT Monitoring
-↓
-Medicine Manufacturing
-↓
-Transport
-↓
-Storage
-↓
-QR Verification
-↓
-Consumer
-↓
-Traceability / Reports
+Traceability information in a multi-stage herbal supply chain can be
+distributed across sourcing, processing, laboratory testing, transport,
+storage and manufacturing records. A laboratory result alone does not
+describe the conditions a batch experiences after testing. When a
+quality or safety concern is reported, investigators need to connect the
+finished medicine to its upstream batches, review relevant evidence and
+identify other products that may share an affected source.
 
----
+## Solution overview
 
-## Backend Technology
+TRACEVEDA assigns digital identities to supply-chain batches and
+maintains parent--child relationships as raw materials move through
+processing and manufacturing. IoT nodes collect environmental and
+handling data during storage and transportation. The backend links these
+records with batch, laboratory, transport and manufacturing information.
+QR verification provides consumers with access to relevant product
+provenance and a channel to report concerns.
 
-- Python
-- FastAPI
-- MongoDB / MongoDB Atlas
-- Pydantic
-- Uvicorn
-- SHA-256 cryptographic hash-chain ledger
+### End-to-end journey
 
----
-
-## Blockchain Layer
-
-### What it is
-
-TraceVeda anchors every critical supply-chain action to a **cryptographic
-hash chain** — an append-only ledger where each event carries the fingerprint
-of the event before it.
-
-This makes the supply-chain history **tamper-evident**: once an event is
-anchored, it cannot be edited, reordered or removed without the system being
-able to prove that it happened.
-
-The ledger is implemented as a SHA-256 hash chain over MongoDB, following the
-architecture recommended in the project research dossier — the same chaining
-primitive that underpins permissioned ledgers, with none of the operational
-overhead of running a consensus network during development.
-
-### How the chain works
-
-Every anchored event is fingerprinted together with the fingerprint of its
-predecessor:
-
-```text
-event_hash = SHA256(
-    event_type + entity_type + entity_id +
-    event_data + timestamp + previous_hash
-)
-                     ▲
-                     └── the previous event's event_hash
+``` text
+Farm / Collection
+       |
+       v
+Raw-material batch
+       |
+       v
+Transport + IoT monitoring
+       |
+       v
+Processing batch
+       |
+       v
+Laboratory verification
+       |
+       v
+Transport + IoT monitoring
+       |
+       v
+Manufacturer storage / production
+       |
+       v
+Medicine batch + QR
+       |
+       v
+Consumer verification / issue report
+       |
+       v
+Auditor investigation
+       |
+       +---- Reverse trace to source
+       |
+       +---- Forward impact analysis of related batches
 ```
 
-Because each hash feeds into the next, the events form a continuous chain:
+## Key capabilities
 
-```text
-GENESIS ──▶ Event 1 ──▶ Event 2 ──▶ Event 3 ──▶ Event 4
-             hash A       hash B       hash C      hash D
-                          prev: A      prev: B     prev: C
+-   **Batch identity and lineage:** Unique identifiers and parent--child
+    batch relationships connect raw materials, processing batches and
+    finished medicines.
+-   **IoT monitoring:** ESP32-based nodes collect temperature, humidity,
+    light, door-state, location and payload-weight readings, depending
+    on the node.
+-   **Storage and transport evidence:** Separate Storage and Truck nodes
+    monitor different stages of the physical supply chain.
+-   **Offline buffering:** Firmware uses ESP32 LittleFS storage to
+    retain queued readings during network interruptions and upload them
+    when connectivity returns.
+-   **Backend ingestion:** Sensor readings are sent to the backend using
+    HTTPS API requests and device-key authentication.
+-   **Laboratory records:** Test results are associated with relevant
+    batches.
+-   **QR verification:** A medicine QR identifier can be used to
+    retrieve its verification and traceability information.
+-   **Consumer reporting:** Consumers can submit an issue report against
+    a medicine/QR record.
+-   **Reverse trace and forward impact analysis:** Investigators can
+    trace a medicine upstream and identify downstream batches linked to
+    an affected source.
+-   **Tamper-evident event history:** Critical supply-chain events are
+    recorded in a sequential SHA-256 hash-chain ledger.
+
+## System architecture
+
+``` text
+ESP32 Storage Node                 ESP32 Truck Node
+(DHT22, BH1750, limit switch)      (DHT22, BH1750, GPS,
+          |                         limit switch, HX711/load cell)
+          | HTTPS + device key              |
+          +---------------+-----------------+
+                          |
+                          v
+                  FastAPI backend
+                          |
+          +---------------+-------------------+
+          |               |                   |
+          v               v                   v
+      MongoDB       Traceability/API     SHA-256 event
+   operational data    workflows         hash-chain ledger
+          |               |                   |
+          +---------------+-------------------+
+                          |
+                          v
+                 Web frontend / QR
+                          |
+        +-----------------+------------------+
+        |                 |                  |
+   Stakeholder        Consumer           Auditor /
+   workspaces         verification       investigation
 ```
 
-Change anything inside Event 2 and its hash no longer recomputes. Correct that
-hash and Event 3's `previous_hash` no longer matches. Remove Event 2 entirely
-and a gap appears in the sequence. **Every route to altering history leaves a
-mark the verifier can find.**
+**Ledger clarification:** The current backend implements a sequential
+SHA-256 hash-chain event ledger stored with MongoDB. This provides
+tamper-evident event verification. It is not currently a deployed
+Hyperledger Fabric network. A permissioned blockchain such as
+Hyperledger Fabric is a possible future integration.
 
-### What gets anchored, automatically
+## IoT hardware
 
-Anchoring is built into the supply-chain routes themselves — there is no
-separate step to remember and nothing to wire up by hand. Each of these
-endpoints anchors on success and returns the ledger transaction id as
-`blockchain_tx`:
+### Storage Node
 
-| Action | Endpoint | Event type | Entity |
-|---|---|---|---|
-| Raw batch created | `POST /api/batches/raw` | `BATCH_CREATED` | RAW |
-| Processing batch created | `POST /api/batches/processing` | `BATCH_CREATED` | PROCESSING |
-| Manufacturing linkage | `POST /api/batches/relationships` | `BATCH_LINKED` | PROCESSING |
-| Lab result recorded | `POST /api/lab/tests` | `QUALITY_STATUS` | PROCESSING |
-| Medicine manufactured | `POST /api/medicine` | `MEDICINE_LINKED` | MEDICINE |
-| Critical tamper alert | `POST /api/iot/readings` | `TAMPER_EVENT` | resolved automatically |
+  Component      Purpose                                    ESP32 connection
+  -------------- ------------------------------------------ ---------------------
+  ESP32          Sensor acquisition and API communication   Controller
+  DHT22          Temperature and humidity                   DATA: GPIO 4
+  BH1750         Light intensity                            I²C: SDA 21, SCL 22
+  I²C LCD 20×4   Local readings and status                  I²C: SDA 21, SCL 22
+  Limit switch   Storage-door state                         GPIO 27
+  Red LED        Backend-directed alert indication          GPIO 25
 
-Example response — the anchor is visible the instant the action completes:
+### Truck Node
 
-```json
-{
-  "raw_batch_id": "RAW-2026-001",
-  "status": "CREATED",
-  "blockchain_tx": "TX-2026-000001"
-}
+  Component           Purpose                                    ESP32 connection
+  ------------------- ------------------------------------------ ---------------------------
+  ESP32               Sensor acquisition and API communication   Controller
+  DHT22               Temperature and humidity                   DATA: GPIO 4
+  BH1750              Light intensity                            I²C: SDA 21, SCL 22
+  I²C LCD 16×2        Local readings and status                  I²C: SDA 21, SCL 22
+  GPS module          Geographic location                        UART2: ESP32 RX 16, TX 17
+  Limit switch        Transport-compartment door state           GPIO 27
+  HX711 + load cell   Payload weight measurement                 DT 32, SCK 33
+  Red LED             Backend-directed alert indication          GPIO 25
+
+The firmware in this repository currently uses DHT22 declarations. If a
+DHT11 is substituted, update the DHT sensor type in both node sketches
+and validate the resulting readings. Confirm the voltage requirements of
+the exact breakout boards before wiring; ESP32 GPIOs are not 5 V
+tolerant. The LCD I²C backpack may require level shifting if its
+pull-ups drive SDA/SCL to 5 V.
+
+### Firmware folders
+
+-   `HARDWARE/Storage_Node/Storage_Node_Backend/`
+-   `HARDWARE/Truck_Node/Truck_Node_Backend/`
+-   `HARDWARE/Component_Testing/` contains individual sensor and
+    peripheral test sketches.
+
+## Technology stack
+
+  -----------------------------------------------------------------------
+  Layer                               Technologies
+  ----------------------------------- -----------------------------------
+  Microcontroller / firmware          ESP32, C++, Arduino framework
+
+  Sensors                             DHT22, BH1750, GPS, limit switch,
+                                      HX711/load cell
+
+  Device connectivity                 Wi-Fi, HTTPS, REST API
+
+  Offline device queue                LittleFS
+
+  Backend                             Python, FastAPI, Pydantic, Uvicorn
+
+  Database                            MongoDB, PyMongo
+
+  Event integrity                     SHA-256 sequential hash-chain
+                                      ledger
+
+  Frontend                            HTML, CSS, JavaScript; Vite
+                                      tooling; React dependencies are
+                                      also present in the project
+
+  API / data format                   REST, JSON
+
+  Testing                             pytest, httpx, mongomock
+
+  Version control                     Git and GitHub
+  -----------------------------------------------------------------------
+
+## Repository structure
+
+``` text
+TRACEVEDA/
+├── BACKEND/
+│   ├── main.py
+│   ├── config.py
+│   ├── database.py
+│   ├── dependencies.py
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── tests/
+│   ├── TraceVeda_Master_Dataset/
+│   ├── requirements.txt
+│   └── .env.example
+├── Frontend/
+│   ├── index.html
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── .env.example
+├── HARDWARE/
+│   ├── Storage_Node/
+│   ├── Truck_Node/
+│   ├── Component_Testing/
+│   └── Little_FS_Clear/
+├── docs/
+│   ├── API_CONTRACT.md
+│   └── DATA_MODEL.md
+└── README.md
 ```
 
-Laboratory results are anchored for **both PASS and FAIL** outcomes, so the
-quality record a dispute would turn on is always on the ledger.
+## Getting started
 
-### On-chain / off-chain split
+### Prerequisites
 
-The ledger carries what matters and stays lean by design:
+-   Python 3.10+ (use a version compatible with the pinned backend
+    dependencies)
+-   Node.js LTS and npm
+-   MongoDB local instance or MongoDB Atlas connection
+-   Arduino IDE with ESP32 board support for firmware work
 
-**Anchored** — dispute-relevant, state-changing events: batch creation,
-manufacturing linkage, quality status, medicine release, and CRITICAL tamper
-alerts.
+### 1. Clone the repository
 
-**Kept in MongoDB** — high-frequency telemetry: routine sensor readings, and
-WARNING / YELLOW advisory alerts.
-
-A transport node streaming temperature every few seconds produces thousands of
-readings nobody will ever litigate. Keeping them off the ledger keeps
-verification fast and the chain focused on evidence, which is standard practice
-for production traceability systems.
-
-### Race-free ordering
-
-The chain is ordered by an **atomic sequence counter**, not by timestamps.
-
-Multiple IoT devices reporting simultaneously — or a batch creation immediately
-followed by a lab test — receive strictly increasing, collision-free sequence
-numbers from a single atomic operation. Transaction ids are derived from the
-same counter, so they are unique by construction.
-
-The result: the chain stays correct and linear under concurrent load, and every
-event has one unambiguous place in history.
-
-### Verification
-
-A single call proves the integrity of the entire recorded history:
-
-```http
-GET /api/blockchain/verify-chain
+``` bash
+git clone <YOUR_REPOSITORY_URL>
+cd TRACEVEDA
 ```
 
-```json
-{
-  "valid": true,
-  "checked": 376,
-  "broken_at": null,
-  "reason": null
-}
-```
+### 2. Configure and run the backend
 
-The verifier walks every event in sequence order and confirms that each hash
-recomputes correctly and that each event links to its true predecessor. If
-anything is ever off, the response names the exact transaction and the reason —
-turning verification into an actionable audit rather than a yes/no answer.
-
-### Blockchain endpoints
-
-```http
-POST /api/blockchain/events              # manual / admin anchoring
-GET  /api/blockchain/events/{tx_id}      # one anchored event
-GET  /api/blockchain/batch/{entity_id}   # full anchored trail for a batch
-GET  /api/blockchain/verify/{tx_id}      # verify a single event
-GET  /api/blockchain/verify-chain        # verify the entire chain
-```
-
-`GET /api/blockchain/batch/{entity_id}` returns the complete anchored history
-of any batch or medicine id in chain order — the audit trail behind the QR
-verification and reverse-trace flows:
-
-```json
-{
-  "entity_id": "PROCESS-2026-001",
-  "event_count": 4,
-  "events": [
-    { "sequence": 2, "transaction_id": "TX-2026-000002", "event_type": "BATCH_CREATED"  },
-    { "sequence": 3, "transaction_id": "TX-2026-000003", "event_type": "BATCH_LINKED"   },
-    { "sequence": 4, "transaction_id": "TX-2026-000004", "event_type": "QUALITY_STATUS" },
-    { "sequence": 6, "transaction_id": "TX-2026-000006", "event_type": "TAMPER_EVENT"   }
-  ]
-}
-```
-
-### Ledger event schema
-
-```text
-transaction_id     TX-<year>-<sequence>   unique ledger reference
-sequence           int                    atomic, strictly increasing
-event_type         str                    BATCH_CREATED, QUALITY_STATUS, ...
-entity_type        str                    RAW | PROCESSING | MEDICINE
-entity_id          str                    batch / medicine this event is about
-event_data         dict                   event payload
-timestamp          str                    ISO8601 UTC
-previous_hash      str                    prior event's hash, or GENESIS
-event_hash         str                    SHA-256 of the canonical payload
-blockchain_status  str                    ANCHORED
-```
-
-### Built to scale up
-
-The ledger is isolated behind a single service
-(`services/blockchain_service.py`). The event vocabulary, the on-chain /
-off-chain split and every anchor point are already in place and stable, so
-moving to a full permissioned ledger such as Hyperledger Fabric is a change
-inside one service — the supply-chain routes stay exactly as they are.
-
-### Verified by tests
-
-The backend ships with **86 automated tests**, running against an in-memory
-MongoDB so no database server is required:
-
-- Full supply-chain flow, asserting every step anchors and the chain verifies
-- **50-thread concurrency stress test** proving the chain stays valid and
-  linear under simultaneous writes
-- Tamper-detection coverage for edited, deleted and re-hashed events
-- Seed-data migration verified against the real 375-event dataset
-- Every write and internal read endpoint asserted to reject anonymous callers
-- Forged, unsigned (`alg: none`) and expired tokens all rejected
-- The full demo replayed end to end against the real ~14,000-document dataset
-
-```bash
+``` bash
 cd BACKEND
-python -m pytest tests/ -q
+python -m venv .venv
 ```
 
----
+Activate the environment:
 
-## Security Model
+``` bash
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
 
-### Authentication
-
-Every endpoint except the two public consumer routes requires a bearer token.
-
-```http
-POST /api/auth/login     {"username": "...", "password": "..."}  ->  token
-GET  /api/auth/me        the caller's own account
-GET  /api/auth/roles     the role vocabulary (public)
+# macOS / Linux
+source .venv/bin/activate
 ```
 
-Tokens are short-lived HS256 JWTs carrying the user's role. The algorithm is
-pinned to a single value, so an unsigned `alg: none` token — the classic JWT
-forgery — is rejected rather than trusted. Passwords are stored only as
-PBKDF2-HMAC-SHA256 hashes at 600,000 iterations; the plaintext is never
-written or logged.
+Install dependencies and configure environment variables:
 
-The role in the token is a hint. `dependencies.get_current_user` re-reads the
-account from the database on every request, so **deactivating a user or
-changing their role takes effect on their next call**, not whenever their
-token happens to expire.
-
-### Authorisation
-
-Roles are enforced server-side, per endpoint:
-
-| Endpoint | Role |
-|---|---|
-| `POST /api/batches/raw` | farmer |
-| `POST /api/batches/processing`, `/relationships` | processor |
-| `POST /api/lab/tests` | lab |
-| `POST /api/medicine` | manufacturer |
-| `POST /api/transport/events`, `/api/storage/events` | logistics |
-| `POST /api/iot/readings` | logistics, **or** a node with `X-Device-Key` |
-| `POST /api/blockchain/events` | regulator |
-| `PATCH /api/consumer/reports/{id}/status` | regulator |
-| all internal reads | any signed-in account |
-
-`admin` is admitted everywhere. The distinction between **401** (no valid
-credentials) and **403** (valid credentials, wrong role) is kept, because
-collapsing them makes a misconfigured account indistinguishable from an
-expired token.
-
-### Deliberately public
-
-Two routes take no credentials, and that is a decision rather than an
-oversight — a shopper holding a suspect pack has no account:
-
-```http
-GET  /api/verify/{qr_id}      scan a QR code
-POST /api/consumer/reports    file an adverse-event report
-```
-
-The QR lookup returns provenance only: no quantities, no operator names, no
-manufacturer internals. A report can only be filed against a real batch/QR
-pair, always opens as `OPEN`, and only a regulator can move it on.
-
-### IoT nodes
-
-The ESP32 nodes cannot hold a rotating token, so they authenticate with a
-shared key sent as `X-Device-Key`, compared in constant time. Set
-`TRACEVEDA_DEVICE_API_KEY` in `BACKEND/.env` and flash the same value into
-both sketches under `HARDWARE/`.
-
-### What this does and does not prove
-
-The hash chain proves that **nobody edited history**. It says nothing about
-who was entitled to write an entry in the first place — that is what the role
-checks above are for. Both are needed: integrity without authorisation just
-means a forged record is tamper-evidently forged.
-
----
-
-## Backend Structure
-
-```text
-BACKEND/
-│
-├── main.py                            app, CORS, lifespan
-├── config.py                          all settings, read from .env once
-├── database.py                        the MongoDB client
-├── dependencies.py                    require_roles / device-key auth
-├── .env.example                       copy to .env
-│
-├── import_csv.py                      load the dataset (+ indexes, counters)
-├── retry_iot_import.py                re-import just the IoT reference CSVs
-├── migrate_seed_blockchain_events.py  put seeded ledger rows on the chain
-├── seed_users.py                      create one account per role
-├── requirements.txt
-│
-├── models/
-│   └── schemas.py
-│
-├── routes/
-│   ├── auth.py                        login / me / roles
-│   ├── batches.py
-│   ├── blockchain.py
-│   ├── consumer.py
-│   ├── iot.py
-│   ├── lab.py
-│   ├── medicine.py
-│   ├── storage.py
-│   ├── trace.py
-│   └── transport.py
-│
-├── services/
-│   ├── accounts.py                    users and the role vocabulary
-│   ├── blockchain_service.py          the hash chain
-│   ├── ids.py                         atomic, collision-free identifiers
-│   ├── indexes.py                     index definitions
-│   └── security.py                    password hashing, JWT
-│
-├── tests/
-│   ├── mongo_harness.py
-│   ├── test_auth.py                   authn/authz over real HTTP
-│   ├── test_data_integrity.py         ids, seed-data compatibility
-│   ├── test_seed_dataset_e2e.py       the whole demo on the real dataset
-│   ├── test_blockchain_integration.py
-│   ├── test_blockchain_concurrency.py
-│   └── test_seed_migration.py
-│
-└── TraceVeda_Master_Dataset/
-```
-
----
-
-## Setup
-
-```bash
-cd BACKEND
+``` bash
 pip install -r requirements.txt
-cp .env.example .env        # then set MONGO_URI and the two secrets
 ```
 
-Load the dataset, prepare the ledger, and create the accounts:
+Copy `.env.example` to `.env`, then set the MongoDB URI and strong
+secrets. Do not commit `.env`.
 
-```bash
-python import_csv.py                       # dataset + indexes + id counters
-python migrate_seed_blockchain_events.py   # seeded ledger history onto the chain
-python seed_users.py                       # one account per role
+For a local MongoDB instance, the URI commonly looks like:
+
+``` env
+MONGO_URI=mongodb://localhost:27017
+DB_NAME=traceveda
+TRACEVEDA_JWT_SECRET=<long-random-secret>
+TRACEVEDA_DEVICE_API_KEY=<shared-device-key>
+TRACEVEDA_CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 ```
 
-Run the API:
+Load the sample dataset and prepare demo accounts if using the bundled
+demo data:
 
-```bash
+``` bash
+python import_csv.py
+python migrate_seed_blockchain_events.py
+python seed_users.py
+```
+
+Start the API:
+
+``` bash
 uvicorn main:app --reload
 ```
 
-`GET /api/health` reports `"hardened": false` while either secret is still
-running on a generated development value, so there is never any doubt about
-which configuration is in front of you.
+The API is normally available at `http://127.0.0.1:8000`. Interactive
+API documentation is available at `http://127.0.0.1:8000/docs`.
 
-Confirm the ledger is healthy:
+### 3. Run the frontend
 
-```http
-GET /api/blockchain/verify-chain
+Open a second terminal:
+
+``` bash
+cd Frontend
+npm install
+npm run dev
 ```
 
-Run the test suite:
+Open the local URL printed by Vite (normally `http://localhost:5173`).
 
-```bash
+The frontend's `.env` should set `VITE_API_URL` to the backend base URL
+when required. For local proxy-based development, follow the
+instructions in `Frontend/README.md`. Restart the Vite server after
+changing environment variables.
+
+### 4. Build the frontend
+
+``` bash
+npm run build
+npm run preview
+```
+
+The production build is written to `Frontend/dist/`.
+
+### 5. Flash the ESP32 nodes
+
+1.  Open the relevant `.ino` sketch from the Storage Node or Truck Node
+    folder in Arduino IDE.
+2.  Install the libraries included by the sketch.
+3.  Select the correct ESP32 board and serial port.
+4.  Configure Wi-Fi credentials, backend endpoint, batch/storage or
+    transport identifiers, and the device API key.
+5.  Ensure the device API key matches `TRACEVEDA_DEVICE_API_KEY` in the
+    backend environment.
+6.  Confirm the pin mapping and module voltage before powering the
+    circuit.
+7.  Upload the sketch and inspect the serial monitor and LCD.
+8.  Verify that readings reach the backend. Test offline buffering only
+    in a controlled way by interrupting connectivity and then restoring
+    it.
+
+Do not publish real Wi-Fi passwords, API keys, JWT secrets or other
+credentials in source control, screenshots or demo videos.
+
+## Configuration and security
+
+The backend reads its configuration from environment variables. See
+`BACKEND/.env.example`.
+
+-   User authentication uses signed JWT access tokens.
+-   Passwords are stored as hashes, not plaintext.
+-   Role-based authorization is enforced by backend routes.
+-   ESP32 nodes authenticate IoT ingestion using the `X-Device-Key`
+    header.
+-   Public consumer routes are limited to QR verification and consumer
+    issue reporting.
+-   Configure CORS origins for the frontend deployment.
+-   Replace all development/demo credentials before any public
+    deployment.
+
+**Never commit `.env` files or real credentials.** The example file
+contains placeholders only.
+
+## Dataset and demo data
+
+The backend includes `TraceVeda_Master_Dataset/`, containing reference
+and demonstration CSV files for plants, farms, batches, batch
+relationships, laboratory tests, IoT devices/readings, transport,
+medicine batches, consumer reports, investigations and blockchain
+events.
+
+The dataset is intended for development and demonstration. It should not
+be interpreted as live operational data or independently verified field
+records unless separately validated.
+
+Use the backend import scripts from the `BACKEND/` directory and review
+their output before using the imported records in a demonstration.
+
+## API documentation
+
+-   `docs/API_CONTRACT.md` describes the principal API endpoints,
+    request fields, roles and response examples.
+-   `docs/DATA_MODEL.md` describes the core entities and relationships.
+-   Once the backend is running, use `/docs` for interactive OpenAPI
+    documentation.
+
+Core API areas include authentication, plant references, raw and
+processing batches, batch relationships, laboratory tests, transport and
+storage events, IoT readings and alerts, medicine batches, QR
+verification, consumer reports, investigations, traceability and
+blockchain-event verification.
+
+## Testing
+
+Run the backend test suite from the `BACKEND/` directory:
+
+``` bash
 python -m pytest tests/ -q
 ```
+
+The repository includes tests for authentication and authorization, data
+integrity, supply-chain workflows, blockchain/hash-chain integration and
+concurrency. Test results depend on the checked-out code, installed
+dependencies and test environment; run the suite locally before quoting
+a test count or claiming a passing build.
+
+For a basic manual integration check:
+
+1.  Start MongoDB and the backend.
+2.  Confirm the backend health endpoint responds.
+3.  Start the frontend and sign in with a configured demo account.
+4.  Submit or inspect a batch workflow.
+5.  Send a test IoT reading using a registered sensor and valid device
+    key.
+6.  Confirm the reading appears in the backend.
+7.  Verify the batch trace and QR workflow.
+8.  If testing offline buffering, disconnect the node from Wi-Fi, allow
+    readings to queue, restore connectivity and confirm queued records
+    upload.
+
+## Current implementation and future work
+
+The repository contains backend routes and data models for the broader
+supply-chain workflow, a frontend with stakeholder workspaces, and
+firmware for two ESP32 monitoring nodes. The firmware supports sensor
+acquisition, LCD display, Wi-Fi/HTTPS communication and local buffering.
+
+The backend's current event-integrity mechanism is a MongoDB-backed
+SHA-256 hash chain. A full permissioned blockchain deployment (for
+example, Hyperledger Fabric), field integration across all supply-chain
+participants, and production-scale pilots are future
+deployment/integration work unless separately demonstrated.
+
+Potential next steps include:
+
+-   Validate the full workflow with a real herb supply-chain partner.
+-   Expand device deployment and test long-duration connectivity,
+    calibration and power reliability.
+-   Complete and validate all stakeholder data-entry and verification
+    workflows.
+-   Evaluate a permissioned ledger integration if deployment
+    requirements justify it.
+-   Conduct field testing and document measurable performance and
+    operational outcomes.
+
+## Contributors
+
+| Team member | Contribution |
+|---|---|
+| **Ojaswi Gautam** | Dataset, Frontend & System Architecture |
+| **Anirudh Khatavkar** | Hardware |
+| **Vishnu Sharma** | Backend |
+| **Raghav Gulati** | Blockchain |
+| **Aishwarya Deshmukh** | Presenter |
+| **Nandini Dua** | Presenter |
+
+------------------------------------------------------------------------
+
+**TRACEVEDA --- Connecting provenance, quality evidence and traceability
+from plant to product.**
