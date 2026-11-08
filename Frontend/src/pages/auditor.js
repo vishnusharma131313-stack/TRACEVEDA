@@ -85,7 +85,6 @@ function showEvidence(stage){
             ["Weight","4.18 kg"],
             ["Door","OPEN"],
             ["Light","1850 lux"],
-            ["Motion","Shock 3.2g"],
             ["Status","ANOMALY DETECTED"]
         ],
 
