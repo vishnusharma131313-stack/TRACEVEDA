@@ -602,6 +602,21 @@ function showMedicineQRMessage(message, type = "info") {
 
 
 /* Load the latest live/seeded telemetry for the selected truck node. */
+/* Keep Storage Node and Truck Node telemetry timestamps visually consistent. */
+function formatTelemetryTimestamp(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    return date.toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    }).replace(/\b(am|pm)\b/i, match => match.toUpperCase());
+}
+
 async function loadTruckNode() {
     const selector = document.getElementById("truckNodeSelection");
     if (!selector) return;
@@ -676,7 +691,7 @@ async function loadTruckNode() {
             ? `${Number(latitude).toFixed(5)}, ${Number(longitude).toFixed(5)}`
             : "Waiting for GPS");
 
-        const updated = timestamp ? `Updated ${new Date(timestamp).toLocaleString()}` : `Latest reading · ${vehicleId}`;
+        const updated = timestamp ? `Updated ${formatTelemetryTimestamp(timestamp)}` : `Latest reading · ${vehicleId}`;
         Object.entries({
             temperature, humidity, light, limitSwitch: switchStatus, weight
         }).forEach(([key, value]) => {
@@ -764,7 +779,7 @@ async function selectStorageNode() {
         setValue(fields.humidity, humidity, " %");
         setValue(fields.limitSwitch, limitSwitch);
 
-        const updated = timestamp ? `Updated ${timestamp}` : `Latest reading for ${storageId}`;
+        const updated = timestamp ? `Updated ${formatTelemetryTimestamp(timestamp)}` : `Latest reading for ${storageId}`;
         setStatus(statuses.weight, weight === null ? "Weight unavailable" : updated, weight === null ? "warning" : "success");
         setStatus(statuses.light, light === null ? "Light reading unavailable" : updated, light === null ? "warning" : "success");
         setStatus(statuses.limitSwitch, limitSwitch === null ? "Seal status unavailable" : updated, limitSwitch === null ? "warning" : "success");

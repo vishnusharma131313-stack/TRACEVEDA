@@ -34,7 +34,15 @@ function formatIoTTimestamp(value) {
     if (!value) return "—";
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return String(value);
-    return date.toLocaleString();
+    return date.toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    }).replace(/\b(am|pm)\b/i, match => match.toUpperCase());
 }
 
 function getMotionText(reading) {
@@ -73,27 +81,27 @@ function renderIoTReadings(readings, alerts) {
     document.getElementById("iotWeightValue").textContent =
         weightReading ? iotValue(weightReading.weight_kg, " kg") : "—";
     document.getElementById("iotWeightStatus").textContent =
-        weightReading ? `Latest reading • ${formatIoTTimestamp(weightReading.timestamp)}` : "No weight reading";
+        weightReading ? `Updated ${formatIoTTimestamp(weightReading.timestamp)}` : "No weight reading";
 
     document.getElementById("iotDoorValue").textContent =
         doorReading ? String(doorReading.switch_status).toUpperCase() : "—";
     document.getElementById("iotDoorStatus").textContent =
-        doorReading ? `Latest switch reading • ${formatIoTTimestamp(doorReading.timestamp)}` : "No switch reading";
+        doorReading ? `Updated ${formatIoTTimestamp(doorReading.timestamp)}` : "No switch reading";
 
     document.getElementById("iotLightValue").textContent =
         lightReading ? iotValue(lightReading.light_intensity_lux, " lx") : "—";
     document.getElementById("iotLightStatus").textContent =
-        lightReading ? `Latest light reading • ${formatIoTTimestamp(lightReading.timestamp)}` : "No light reading";
+        lightReading ? `Updated ${formatIoTTimestamp(lightReading.timestamp)}` : "No light reading";
 
     document.getElementById("iotTemperatureValue").textContent =
         temperatureReading ? iotValue(temperatureReading.temperature_c, " °C") : "—";
     document.getElementById("iotTemperatureStatus").textContent =
-        temperatureReading ? `Latest reading • ${formatIoTTimestamp(temperatureReading.timestamp)}` : "No temperature reading";
+        temperatureReading ? `Updated ${formatIoTTimestamp(temperatureReading.timestamp)}` : "No temperature reading";
 
     document.getElementById("iotHumidityValue").textContent =
         humidityReading ? iotValue(humidityReading.humidity_percent, " %") : "—";
     document.getElementById("iotHumidityStatus").textContent =
-        humidityReading ? `Latest reading • ${formatIoTTimestamp(humidityReading.timestamp)}` : "No humidity reading";
+        humidityReading ? `Updated ${formatIoTTimestamp(humidityReading.timestamp)}` : "No humidity reading";
 
     const body = document.getElementById("iotReadingsBody");
     body.innerHTML = "";
