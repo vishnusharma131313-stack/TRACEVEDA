@@ -77,6 +77,12 @@ function renderIoTReadings(readings, alerts) {
     const lightReading = latestIoTReading(readings, "light_intensity_lux");
     const temperatureReading = latestIoTReading(readings, "temperature_c");
     const humidityReading = latestIoTReading(readings, "humidity_percent");
+    const gpsReading = [...readings].reverse().find(reading =>
+        (reading.latitude ?? reading.lat) !== null &&
+        (reading.latitude ?? reading.lat) !== undefined &&
+        (reading.longitude ?? reading.lon ?? reading.lng) !== null &&
+        (reading.longitude ?? reading.lon ?? reading.lng) !== undefined
+    );
 
     document.getElementById("iotWeightValue").textContent =
         weightReading ? iotValue(weightReading.weight_kg, " kg") : "—";
@@ -102,6 +108,16 @@ function renderIoTReadings(readings, alerts) {
         humidityReading ? iotValue(humidityReading.humidity_percent, " %") : "—";
     document.getElementById("iotHumidityStatus").textContent =
         humidityReading ? `Updated ${formatIoTTimestamp(humidityReading.timestamp)}` : "No humidity reading";
+    const gpsLatitude = gpsReading ? Number(gpsReading.latitude ?? gpsReading.lat) : null;
+    const gpsLongitude = gpsReading ? Number(gpsReading.longitude ?? gpsReading.lon ?? gpsReading.lng) : null;
+    document.getElementById("iotGpsValue").textContent =
+        gpsReading && Number.isFinite(gpsLatitude) && Number.isFinite(gpsLongitude)
+            ? `${gpsLatitude.toFixed(5)}, ${gpsLongitude.toFixed(5)}`
+            : "Waiting for GPS";
+    document.getElementById("iotGpsStatus").textContent =
+        gpsReading && Number.isFinite(gpsLatitude) && Number.isFinite(gpsLongitude)
+            ? `Updated ${formatIoTTimestamp(gpsReading.timestamp)}`
+            : "GPS coordinates unavailable";
 
     const body = document.getElementById("iotReadingsBody");
     body.innerHTML = "";

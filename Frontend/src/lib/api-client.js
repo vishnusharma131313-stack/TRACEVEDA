@@ -51,6 +51,21 @@ async function apiRequest(path, options = {}) {
     return data;
 }
 
+function formatConsumerReportTimestamp(value) {
+    if (!value) return "-";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    return date.toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    }).replace(/\\b(am|pm)\\b/i, match => match.toUpperCase());
+}
+
 async function loadConsumerReports() {
     const tbody = document.querySelector("#auditor-reports tbody");
 
@@ -91,7 +106,7 @@ async function loadConsumerReports() {
                 <td class="mono">${report.medicine_batch_id || "-"}</td>
                 <td>${report.issue_type || "-"}</td>
                 <td>${report.description || report.symptoms || "-"}</td>
-                <td>${report.reported_at || "-"}</td>
+                <td>${formatConsumerReportTimestamp(report.reported_at)}</td>
             </tr>
         `).join("");
 

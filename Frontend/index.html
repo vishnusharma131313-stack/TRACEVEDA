@@ -1211,7 +1211,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
             <input
             class="input mono"
             id="traceInput"
-            value="MED-2026-043">
+            value="MED-2026-001">
 
             <button
             class="btn btn-primary"
@@ -1608,7 +1608,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     <div class="sensor-grid">
 
         <div class="sensor">
-            <div class="sensor-label">Load Cell HX711</div>
+            <div class="sensor-label">HX711 — LOAD CELL</div>
             <div class="sensor-value" id="iotWeightValue">—</div>
             <div class="sensor-status" id="iotWeightStatus">
                 Waiting for batch data
@@ -1624,7 +1624,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         </div>
 
         <div class="sensor">
-            <div class="sensor-label">BH1750 Lux</div>
+            <div class="sensor-label">BH1750 — LIGHT INTENSITY</div>
             <div class="sensor-value" id="iotLightValue">—</div>
             <div class="sensor-status" id="iotLightStatus">
                 Waiting for batch data
@@ -1632,7 +1632,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         </div>
 
         <div class="sensor">
-            <div class="sensor-label">Temperature</div>
+            <div class="sensor-label">DHT22 — TEMPERATURE</div>
             <div class="sensor-value" id="iotTemperatureValue">—</div>
             <div class="sensor-status" id="iotTemperatureStatus">
                 Waiting for batch data
@@ -1640,10 +1640,20 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         </div>
 
         <div class="sensor">
-            <div class="sensor-label">Humidity</div>
+            <div class="sensor-label">DHT22 — HUMIDITY</div>
             <div class="sensor-value" id="iotHumidityValue">—</div>
             <div class="sensor-status" id="iotHumidityStatus">
                 Waiting for batch data
+            </div>
+        </div>
+
+        <div class="sensor">
+            <div class="sensor-label">GPS — NEO-6M</div>
+            <div class="sensor-value" id="iotGpsValue" style="font-size:1rem;">
+                Waiting for GPS
+            </div>
+            <div class="sensor-status" id="iotGpsStatus">
+                GPS coordinates unavailable
             </div>
         </div>
 
