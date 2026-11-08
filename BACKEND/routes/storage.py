@@ -140,3 +140,34 @@ def get_storage_events(
         "events": events,
         "count": len(events)
     }
+
+@router.get("/readings/{storage_id}")
+def get_storage_node_reading(
+    storage_id: str,
+    user: dict = Depends(require_authenticated),
+):
+    """Return the latest selected storage-node telemetry from `iot_readings`.
+
+    Storage telemetry is stored in the same canonical collection as truck
+    telemetry. Filter by the selected `storage_id`; leave `storage_events`
+    untouched because that collection stores custody/storage event records,
+    not the live sensor stream.
+    """
+    storage_id = str(storage_id).strip()
+    telemetry_filter = {"storage_id": storage_id}
+
+    total = db.iot_readings.count_documents(telemetry_filter)
+    cursor = (
+        db.iot_readings.find(telemetry_filter, {"_id": 0})
+        .sort("timestamp", -1)
+        .limit(1)
+    )
+    latest = next(iter(cursor), None)
+
+    return {
+        "storage_id": storage_id,
+        "reading": latest,
+        "readings": latest,
+        "count": total,
+        "status": "FOUND" if latest else "NO_DATA",
+    }

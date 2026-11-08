@@ -120,3 +120,58 @@ def get_transport_events(
         "events": events,
         "count": len(events)
     }
+
+@router.get("/readings/{vehicle_id}")
+def get_truck_node_reading(
+    vehicle_id: str,
+    user: dict = Depends(require_authenticated),
+):
+    """Return the latest truck telemetry from the existing `iot_readings`
+    collection.
+
+    The dashboard selects a vehicle (for example VEH-001), while telemetry
+    rows identify a trip with `transport_id`. Resolve the vehicle's transport
+    IDs from the existing `transport_events` collection, then use those IDs
+    to filter `iot_readings`. Direct `transport_id == vehicle_id` and
+    `vehicle_id` matches are also supported for manually entered records.
+    No telemetry collections are created, cleared, or imported here.
+    """
+    vehicle_id = str(vehicle_id).strip()
+    transport_ids = {vehicle_id}
+
+    mappings = db.transport_events.find(
+        {
+            "vehicle_id": vehicle_id,
+            "transport_id": {"$exists": True, "$nin": [None, ""]},
+        },
+        {"_id": 0, "transport_id": 1},
+    )
+
+    for mapping in mappings:
+        transport_id = mapping.get("transport_id")
+        if transport_id:
+            transport_ids.add(str(transport_id).strip())
+
+    telemetry_filter = {
+        "$or": [
+            {"transport_id": {"$in": sorted(transport_ids)}},
+            {"vehicle_id": vehicle_id},
+        ]
+    }
+
+    total = db.iot_readings.count_documents(telemetry_filter)
+    cursor = (
+        db.iot_readings.find(telemetry_filter, {"_id": 0})
+        .sort("timestamp", -1)
+        .limit(1)
+    )
+    latest = next(iter(cursor), None)
+
+    return {
+        "vehicle_id": vehicle_id,
+        "transport_ids": sorted(transport_ids - {vehicle_id}),
+        "reading": latest,
+        "readings": latest,
+        "count": total,
+        "status": "FOUND" if latest else "NO_DATA",
+    }

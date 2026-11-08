@@ -67,7 +67,8 @@ function renderIoTReadings(readings, alerts) {
     const weightReading = latestIoTReading(readings, "weight_kg");
     const doorReading = latestIoTReading(readings, "switch_status");
     const lightReading = latestIoTReading(readings, "light_intensity_lux");
-    const motionReading = readings.length ? readings[readings.length - 1] : null;
+    const temperatureReading = latestIoTReading(readings, "temperature_c");
+    const humidityReading = latestIoTReading(readings, "humidity_percent");
 
     document.getElementById("iotWeightValue").textContent =
         weightReading ? iotValue(weightReading.weight_kg, " kg") : "—";
@@ -84,10 +85,15 @@ function renderIoTReadings(readings, alerts) {
     document.getElementById("iotLightStatus").textContent =
         lightReading ? `Latest light reading • ${formatIoTTimestamp(lightReading.timestamp)}` : "No light reading";
 
-    document.getElementById("iotMotionValue").textContent =
-        getMotionText(motionReading);
-    document.getElementById("iotMotionStatus").textContent =
-        motionReading ? `Latest motion data • ${formatIoTTimestamp(motionReading.timestamp)}` : "No motion reading";
+    document.getElementById("iotTemperatureValue").textContent =
+        temperatureReading ? iotValue(temperatureReading.temperature_c, " °C") : "—";
+    document.getElementById("iotTemperatureStatus").textContent =
+        temperatureReading ? `Latest reading • ${formatIoTTimestamp(temperatureReading.timestamp)}` : "No temperature reading";
+
+    document.getElementById("iotHumidityValue").textContent =
+        humidityReading ? iotValue(humidityReading.humidity_percent, " %") : "—";
+    document.getElementById("iotHumidityStatus").textContent =
+        humidityReading ? `Latest reading • ${formatIoTTimestamp(humidityReading.timestamp)}` : "No humidity reading";
 
     const body = document.getElementById("iotReadingsBody");
     body.innerHTML = "";
@@ -95,7 +101,7 @@ function renderIoTReadings(readings, alerts) {
     if (!readings.length) {
         body.innerHTML = `
             <tr>
-                <td colspan="7" style="text-align:center;">
+                <td colspan="8" style="text-align:center;">
                     No IoT readings were found for this batch.
                 </td>
             </tr>`;
@@ -134,7 +140,8 @@ function renderIoTReadings(readings, alerts) {
             <td>${iotValue(reading.weight_kg, " kg")}</td>
             <td>${reading.switch_status ? String(reading.switch_status).toUpperCase() : "—"}</td>
             <td>${iotValue(reading.light_intensity_lux, " lux")}</td>
-            <td>${getMotionText(reading)}</td>
+            <td>${iotValue(reading.temperature_c, " °C")}</td>
+            <td>${iotValue(reading.humidity_percent, " %")}</td>
             <td><span class="badge ${badgeClass}">${integrity}</span></td>
         `;
 

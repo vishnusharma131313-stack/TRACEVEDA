@@ -600,6 +600,102 @@ function showMedicineQRMessage(message, type = "info") {
 
 
 
+
+/* Load the latest live/seeded telemetry for the selected truck node. */
+async function loadTruckNode() {
+    const selector = document.getElementById("truckNodeSelection");
+    if (!selector) return;
+
+    const vehicleId = selector.value;
+    const message = document.getElementById("truckTelemetryMessage");
+    const fields = {
+        temperature: document.getElementById("transportTemperature"),
+        humidity: document.getElementById("transportHumidity"),
+        light: document.getElementById("transportLight"),
+        limitSwitch: document.getElementById("transportLimitSwitch"),
+        gps: document.getElementById("transportGPS"),
+        weight: document.getElementById("transportWeight")
+    };
+    const statuses = {
+        temperature: document.getElementById("transportTemperatureStatus"),
+        humidity: document.getElementById("transportHumidityStatus"),
+        light: document.getElementById("transportLightStatus"),
+        limitSwitch: document.getElementById("transportLimitSwitchStatus"),
+        gps: document.getElementById("transportGPSStatus"),
+        weight: document.getElementById("transportWeightStatus")
+    };
+    const setMessage = (text, type = "info") => {
+        if (!message) return;
+        message.textContent = text;
+        message.style.display = text ? "block" : "none";
+        message.className = `auth-message ${type}`;
+    };
+    const pick = (reading, ...keys) => {
+        for (const key of keys) {
+            if (reading?.[key] !== null && reading?.[key] !== undefined && reading?.[key] !== "") {
+                return reading[key];
+            }
+        }
+        return null;
+    };
+    const setValue = (element, value, suffix = "") => {
+        if (element) element.textContent = value === null ? `--${suffix}` : `${value}${suffix}`;
+    };
+    Object.values(fields).forEach(element => setValue(element, null));
+    Object.values(statuses).forEach(element => {
+        if (element) element.textContent = "Loading latest reading…";
+    });
+    selector.disabled = true;
+
+    try {
+        const response = await apiRequest(`/api/transport/readings/${encodeURIComponent(vehicleId)}`);
+        const reading = response?.reading ?? response?.readings ?? null;
+        if (!reading) {
+            setMessage(`No telemetry is stored for ${vehicleId} yet.`, "info");
+            Object.values(statuses).forEach(element => {
+                if (element) element.textContent = "No reading available";
+            });
+            return;
+        }
+
+        const temperature = pick(reading, "temperature_c", "temperature", "temp_c");
+        const humidity = pick(reading, "humidity_percent", "humidity", "humidity_pct");
+        const light = pick(reading, "light_intensity_lux", "light", "light_lux", "lux");
+        const switchStatus = pick(reading, "switch_status", "limit_switch", "seal_status");
+        const weight = pick(reading, "weight_kg", "weight", "load_kg");
+        const latitude = pick(reading, "latitude", "lat");
+        const longitude = pick(reading, "longitude", "lon", "lng");
+        const timestamp = pick(reading, "timestamp", "recorded_at", "created_at");
+
+        setValue(fields.temperature, temperature, " °C");
+        setValue(fields.humidity, humidity, " %");
+        setValue(fields.light, light, " lx");
+        setValue(fields.limitSwitch, switchStatus);
+        setValue(fields.weight, weight, " kg");
+        setValue(fields.gps, latitude !== null && longitude !== null
+            ? `${Number(latitude).toFixed(5)}, ${Number(longitude).toFixed(5)}`
+            : "Waiting for GPS");
+
+        const updated = timestamp ? `Updated ${new Date(timestamp).toLocaleString()}` : `Latest reading · ${vehicleId}`;
+        Object.entries({
+            temperature, humidity, light, limitSwitch: switchStatus, weight
+        }).forEach(([key, value]) => {
+            if (statuses[key]) statuses[key].textContent = value === null ? "No reading available" : updated;
+        });
+        if (statuses.gps) statuses.gps.textContent =
+            latitude !== null && longitude !== null ? updated : "GPS coordinates unavailable";
+        setMessage(`Live telemetry loaded for ${vehicleId}.`, "success");
+    } catch (error) {
+        console.error(`Failed to load truck telemetry for ${vehicleId}:`, error);
+        setMessage(`Unable to load truck telemetry: ${error.message}`, "error");
+        Object.values(statuses).forEach(element => {
+            if (element) element.textContent = "Backend unavailable";
+        });
+    } finally {
+        selector.disabled = false;
+    }
+}
+
 /* Load the latest telemetry for the storage node currently selected. */
 async function selectStorageNode() {
     const selector = document.getElementById("storageSelection");

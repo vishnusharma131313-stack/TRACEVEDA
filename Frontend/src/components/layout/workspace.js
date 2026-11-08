@@ -74,6 +74,10 @@ function openRole(role, panel = null){
     if (roleLabel) roleLabel.textContent = presentation.label;
     if (greetingSubtitle) greetingSubtitle.textContent = presentation.subtitle;
     if (roleIcon) roleIcon.className = `fa-solid ${presentation.icon}`;
+    const changePasswordButton = document.getElementById("changePasswordMenuButton");
+    if (changePasswordButton) {
+        changePasswordButton.style.display = (role === "admin" || role === "consumer") ? "none" : "flex";
+    }
     const menuName = document.getElementById("profileMenuName");
     const menuRole = document.getElementById("profileMenuRole");
     const menuAvatar = document.getElementById("profileAvatarLarge");
@@ -285,6 +289,10 @@ if(name === "auditor-reports"){
     // Refresh the selected storage node's latest telemetry when the panel opens.
     if (name === "manufacturer-storage") {
         selectStorageNode();
+    }
+
+    if (name === "manufacturer-transport" && typeof loadTruckNode === "function") {
+        loadTruckNode();
     }
 }
 

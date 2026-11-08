@@ -15,6 +15,13 @@ class LoginRequest(BaseModel):
     password: str = Field(min_length=1)
 
 
+
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str = Field(min_length=1)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
 class AdminCreateUserRequest(BaseModel):
     """A user can only be created by an authenticated administrator."""
     password: str = Field(min_length=8)
@@ -46,6 +53,36 @@ def login(data: LoginRequest):
         "status": "SUCCESS",
         "user": user,
     }
+
+
+
+
+@router.post("/change-password")
+def change_password(
+    data: ChangePasswordRequest,
+    user: dict = Depends(get_current_user),
+):
+    """Allow stakeholders to change their own password; admin is excluded."""
+    if user.get("role") == accounts.ADMIN:
+        raise HTTPException(
+            status_code=403,
+            detail="Password changes are disabled for administrator accounts.",
+        )
+
+    authenticated = accounts.authenticate(user.get("username"), data.current_password)
+    if not authenticated:
+        raise HTTPException(status_code=400, detail="Current password is incorrect.")
+
+    if data.current_password == data.new_password:
+        raise HTTPException(
+            status_code=400,
+            detail="New password must be different from the current password.",
+        )
+
+    if not accounts.set_password(user.get("username"), data.new_password):
+        raise HTTPException(status_code=404, detail="Account not found.")
+
+    return {"status": "SUCCESS", "message": "Password changed successfully."}
 
 
 @router.get("/me")

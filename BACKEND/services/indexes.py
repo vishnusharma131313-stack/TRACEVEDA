@@ -53,6 +53,8 @@ INDEXES = [
     # ---- telemetry (the big ones) ----
     ("iot_readings", [("reading_id", 1)], True),
     ("iot_readings", [("batch_id", 1), ("timestamp", 1)], False),
+    ("iot_readings", [("storage_id", 1), ("timestamp", -1)], False),
+    ("iot_readings", [("transport_id", 1), ("timestamp", -1)], False),
 
     ("iot_alerts", [("alert_id", 1)], True),
     ("iot_alerts", [("batch_id", 1), ("created_at", -1)], False),

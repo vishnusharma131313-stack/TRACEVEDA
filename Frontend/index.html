@@ -262,6 +262,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                     </span>
                 </div>
                 <div class="profile-menu-divider"></div>
+                <button type="button" id="changePasswordMenuButton" role="menuitem" onclick="openChangePasswordModal(); document.getElementById('profileMenu')?.classList.remove('open')">
+                    <i class="fa-solid fa-key"></i>
+                    Change password
+                </button>
                 <button type="button" role="menuitem" onclick="logoutTraceVeda()">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     Exit workspace
@@ -1222,10 +1226,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         </div>
 
         <small style="color:var(--muted)">
-            Try:
-            <b>MED-2026-043</b>
-            or
-            <b>RAW-2026-071</b>
+            Try: <b>MED-2026-001</b>
         </small>
 
     </div>
@@ -1631,9 +1632,17 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         </div>
 
         <div class="sensor">
-            <div class="sensor-label">MPU6050 Motion</div>
-            <div class="sensor-value" id="iotMotionValue">—</div>
-            <div class="sensor-status" id="iotMotionStatus">
+            <div class="sensor-label">Temperature</div>
+            <div class="sensor-value" id="iotTemperatureValue">—</div>
+            <div class="sensor-status" id="iotTemperatureStatus">
+                Waiting for batch data
+            </div>
+        </div>
+
+        <div class="sensor">
+            <div class="sensor-label">Humidity</div>
+            <div class="sensor-value" id="iotHumidityValue">—</div>
+            <div class="sensor-status" id="iotHumidityStatus">
                 Waiting for batch data
             </div>
         </div>
@@ -1655,14 +1664,15 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                     <th>Weight</th>
                     <th>Door</th>
                     <th>Light</th>
-                    <th>Motion</th>
+                    <th>Temperature</th>
+                    <th>Humidity</th>
                     <th>Integrity</th>
                 </tr>
             </thead>
 
             <tbody id="iotReadingsBody">
                 <tr>
-                    <td colspan="7" style="text-align:center;">
+                    <td colspan="8" style="text-align:center;">
                         Enter a batch ID and load IoT evidence.
                     </td>
                 </tr>
@@ -2532,6 +2542,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                 Live sensor readings from the truck-mounted monitoring hardware.
             </p>
 
+            <div class="form-group" style="max-width:420px;margin-bottom:18px;">
+                <label for="truckNodeSelection">Truck / Vehicle Selection</label>
+                <select class="input" id="truckNodeSelection" onchange="loadTruckNode()">
+                    <option value="VEH-001">Truck Node VEH-001</option>
+                    <option value="VEH-002">Truck Node VEH-002</option>
+                    <option value="VEH-003">Truck Node VEH-003</option>
+                    <option value="VEH-004">Truck Node VEH-004</option>
+                    <option value="VEH-005">Truck Node VEH-005</option>
+                </select>
+            </div>
+            <div id="truckTelemetryMessage" class="auth-message" style="display:none;margin-bottom:14px;" aria-live="polite"></div>
+
             <div class="sensor-grid">
 
                 <!-- DHT22 TEMPERATURE -->
@@ -2545,7 +2567,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                         -- °C
                     </div>
 
-                    <div class="sensor-status">
+                    <div class="sensor-status" id="transportTemperatureStatus">
                         <i class="fa fa-circle-check"></i>
                         Temperature Reading
                     </div>
@@ -2564,7 +2586,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                         -- %
                     </div>
 
-                    <div class="sensor-status">
+                    <div class="sensor-status" id="transportHumidityStatus">
                         <i class="fa fa-circle-check"></i>
                         Humidity Reading
                     </div>
@@ -2583,7 +2605,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                         -- lx
                     </div>
 
-                    <div class="sensor-status">
+                    <div class="sensor-status" id="transportLightStatus">
                         <i class="fa fa-circle-check"></i>
                         Ambient Light
                     </div>
@@ -2602,7 +2624,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                         --
                     </div>
 
-                    <div class="sensor-status">
+                    <div class="sensor-status" id="transportLimitSwitchStatus">
                         <i class="fa fa-circle-check"></i>
                         Cargo Seal Status
                     </div>
@@ -2623,7 +2645,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                         Waiting for GPS
                     </div>
 
-                    <div class="sensor-status">
+                    <div class="sensor-status" id="transportGPSStatus">
                         <i class="fa fa-location-dot"></i>
                         Truck Location
                     </div>
@@ -2642,7 +2664,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                         -- kg
                     </div>
 
-                    <div class="sensor-status">
+                    <div class="sensor-status" id="transportWeightStatus">
                         <i class="fa fa-weight-hanging"></i>
                         Cargo Weight
                     </div>
@@ -2992,27 +3014,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                 onchange="selectStorageNode()"
             >
 
-                <option value="STR-001">
+                <option value="STR-0001">
                     Storage Node STR-001
                 </option>
 
-                <option value="STR-002">
+                <option value="STR-0002">
                     Storage Node STR-002
                 </option>
 
-                <option value="STR-003">
+                <option value="STR-0003">
                     Storage Node STR-003
                 </option>
-
-                <option value="STR-004">
-                    Storage Node STR-004
-                </option>
-
-                <option value="STR-005">
-                    Storage Node STR-005
-                </option>
-
-            </select>
+</select>
 
         </div>
 
@@ -4178,6 +4191,37 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 
 
+
+<!-- CHANGE PASSWORD MODAL (stakeholder accounts only) -->
+<div class="auth-modal" id="changePasswordModal" aria-hidden="true">
+    <div class="auth-modal-overlay" onclick="closeChangePasswordModal()"></div>
+    <div class="auth-box" role="dialog" aria-modal="true" aria-labelledby="changePasswordTitle">
+        <button class="auth-close" type="button" onclick="closeChangePasswordModal()" aria-label="Close">&times;</button>
+        <div class="auth-header">
+            <span class="auth-eyebrow">TRACEVEDA · ACCOUNT SECURITY</span>
+            <h2 id="changePasswordTitle">Change Password</h2>
+            <p>Update the password for your stakeholder account.</p>
+        </div>
+        <form id="changePasswordForm" class="auth-form">
+            <div class="auth-field">
+                <label for="currentPassword">Current password</label>
+                <input id="currentPassword" type="password" autocomplete="current-password" required>
+            </div>
+            <div class="auth-field">
+                <label for="newPassword">New password</label>
+                <input id="newPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+            </div>
+            <div class="auth-field">
+                <label for="confirmNewPassword">Confirm new password</label>
+                <input id="confirmNewPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+            </div>
+            <div id="changePasswordMessage" class="auth-message" aria-live="polite"></div>
+            <button type="submit" class="btn btn-primary" id="changePasswordSubmit">
+                <i class="fa-solid fa-key"></i> Update Password
+            </button>
+        </form>
+    </div>
+</div>
 
 <!-- AUTH MODAL -->
 <div class="auth-modal" id="authModal">

@@ -687,9 +687,102 @@ document.addEventListener(
         if (event.key === "Escape") {
 
             closeAuthModal();
+            closeChangePasswordModal();
 
         }
 
     }
 
 );
+
+/* Stakeholder self-service password change. The API independently blocks admin. */
+function openChangePasswordModal() {
+    const modal = document.getElementById("changePasswordModal");
+    const form = document.getElementById("changePasswordForm");
+    const message = document.getElementById("changePasswordMessage");
+    const user = (() => {
+        try { return JSON.parse(localStorage.getItem("traceveda_user") || "{}"); }
+        catch (_) { return {}; }
+    })();
+
+    if (user.role === "admin") {
+        alert("Password changes are not available for administrator accounts.");
+        return;
+    }
+    if (!localStorage.getItem("traceveda_token")) {
+        alert("Please sign in again to change your password.");
+        return;
+    }
+    if (form) form.reset();
+    if (message) {
+        message.textContent = "";
+        message.className = "auth-message";
+    }
+    if (modal) {
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+    }
+}
+
+function closeChangePasswordModal() {
+    const modal = document.getElementById("changePasswordModal");
+    if (modal) {
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+    }
+}
+
+document.getElementById("changePasswordForm")?.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const currentPassword = document.getElementById("currentPassword")?.value || "";
+    const newPassword = document.getElementById("newPassword")?.value || "";
+    const confirmPassword = document.getElementById("confirmNewPassword")?.value || "";
+    const message = document.getElementById("changePasswordMessage");
+    const submit = document.getElementById("changePasswordSubmit");
+
+    const showMessage = (text, type = "error") => {
+        if (!message) return;
+        message.textContent = text;
+        message.className = `auth-message ${type}`;
+    };
+
+    if (newPassword.length < 8) {
+        showMessage("New password must contain at least 8 characters.");
+        return;
+    }
+    if (newPassword !== confirmPassword) {
+        showMessage("New passwords do not match.");
+        return;
+    }
+    if (currentPassword === newPassword) {
+        showMessage("New password must be different from the current password.");
+        return;
+    }
+
+    if (submit) {
+        submit.disabled = true;
+        submit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating…';
+    }
+
+    try {
+        const result = await apiRequest("/api/auth/change-password", {
+            method: "POST",
+            body: JSON.stringify({
+                current_password: currentPassword,
+                new_password: newPassword
+            })
+        });
+        showMessage(result?.message || "Password changed successfully.", "success");
+        document.getElementById("changePasswordForm")?.reset();
+        setTimeout(closeChangePasswordModal, 1100);
+    } catch (error) {
+        showMessage(error.message || "Unable to change password.");
+    } finally {
+        if (submit) {
+            submit.disabled = false;
+            submit.innerHTML = '<i class="fa-solid fa-key"></i> Update Password';
+        }
+    }
+});
+
