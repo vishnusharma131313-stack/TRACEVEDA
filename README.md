@@ -183,9 +183,9 @@ pull-ups drive SDA/SCL to 5 V.
 
 ### Firmware folders
 
--   `HARDWARE/Storage_Node/Storage_Node_Backend/`
--   `HARDWARE/Truck_Node/Truck_Node_Backend/`
--   `HARDWARE/Component_Testing/` contains individual sensor and
+-   `HARDWARE/Storage_Node_Final/`
+-   `HARDWARE/Truck_Node_Final/`
+-   `HARDWARE/Development/Component_Testing/` contains individual sensor and
     peripheral test sketches.
 
 ## Technology stack
@@ -243,9 +243,9 @@ TRACEVEDA/
 │   ├── package.json
 │   └── .env.example
 ├── HARDWARE/
-│   ├── Storage_Node/
-│   ├── Truck_Node/
-│   ├── Component_Testing/
+│   ├── Storage_Node_Final/
+│   ├── Truck_Node_Final/
+│   ├── Development/
 │   └── Little_FS_Clear/
 ├── docs/
 │   ├── API_CONTRACT.md
