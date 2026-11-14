@@ -103,15 +103,16 @@ class Settings:
             ],
         )
 
-      # ---------- public assistant (Gemini) ----------
-self.gemini_api_key = _env("GEMINI_API_KEY")
-self.gemini_model = _env(
-    "GEMINI_MODEL",
-    "gemini-3.5-flash-lite"
-)
-self.assistant_session_days = _env_int(
-    "TRACEVEDA_ASSISTANT_SESSION_DAYS", 30
-)
+          # ---------- public assistant (Gemini) ----------
+        self.gemini_api_key = _env("GEMINI_API_KEY")
+        self.gemini_model = _env(
+            "GEMINI_MODEL",
+            "gemini-3.5-flash-lite"
+        )
+        self.assistant_session_days = _env_int(
+            "TRACEVEDA_ASSISTANT_SESSION_DAYS", 30
+        )
+
         # ---------- query limits ----------
         # 11k+ seeded IoT readings live in one collection; an unbounded
         # find() on it is the slowest thing this API can be asked to do.
