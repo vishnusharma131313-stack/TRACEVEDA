@@ -51,21 +51,34 @@ function renderAdminAccessRequests(requests) {
     const pending = requests.filter(request => request.status === "PENDING").length;
     adminSetCount("adminPendingRequests", pending);
     adminSetTable("adminAccessRequestsBody", requests.length ? requests.map(request => {
-        const pendingActions = request.status === "PENDING" ? `
+        const pendingActions = request.status === "PENDING" ? (request.activation_ready === false ? `
+            <div class="admin-action-group">
+                <span class="status-pill warning">Legacy request · resubmission required</span>
+                <button class="btn btn-outline" type="button" data-admin-action="reject-access" data-id="${adminEscape(request.request_id)}">Close request</button>
+            </div>` : `
             <div class="admin-action-group">
                 <button class="btn btn-primary" type="button" data-admin-action="approve-access" data-id="${adminEscape(request.request_id)}">Approve</button>
                 <button class="btn btn-outline" type="button" data-admin-action="reject-access" data-id="${adminEscape(request.request_id)}">Reject</button>
-            </div>` : `<span class="status-pill">${adminEscape(request.status)}</span>`;
+            </div>`) : `<span class="status-pill">${adminEscape(request.status)}${request.status === "APPROVED" ? (request.activation_status === "ACTIVATED" ? " · account active" : " · awaiting applicant activation") : ""}</span>`;
         return `<tr>
             <td class="mono">${adminEscape(request.request_id)}</td>
+            <td>${adminEscape(request.full_name || "—")}</td>
             <td>${adminEscape(request.role)}</td>
             <td>${adminEscape(request.organisation_name)}</td>
+            <td>${adminEscape(request.email || request.contact_details || "—")}<small class="tv-contact-unverified">${request.email ? "Unverified · manual check" : ""}</small></td>
+            <td>${adminEscape(request.phone || "—")}<small class="tv-contact-unverified">${request.phone ? "Unverified · manual check" : ""}</small></td>
             <td>${adminEscape(request.location)}</td>
-            <td>${adminEscape(request.contact_details)}</td>
+            <td><details class="tv-access-request-details">
+                <summary>View details</summary>
+                <div><strong>Designation:</strong> ${adminEscape(request.designation)}</div>
+                <div><strong>Credentials / role details:</strong> ${adminEscape(request.role_details)}</div>
+                <div><strong>Reason:</strong> ${adminEscape(request.reason)}</div>
+                ${request.admin_notes ? `<div><strong>Admin notes:</strong> ${adminEscape(request.admin_notes)}</div>` : ""}
+            </details></td>
             <td>${adminEscape(adminDate(request.submitted_at))}</td>
             <td>${pendingActions}</td>
         </tr>`;
-    }).join("") : '<tr><td colspan="7">No access requests have been submitted.</td></tr>', 7);
+    }).join("") : '<tr><td colspan="10">No access requests have been submitted.</td></tr>', 10);
 }
 
 function renderAdminReports(reports) {
@@ -145,7 +158,7 @@ async function loadAdminDashboard() {
         renderAdminAccessRequests(accessResult.value?.requests || []);
         setAdminMessage("adminAccessRequestsMessage", "Access requests are up to date.", "success");
     } else {
-        adminSetTable("adminAccessRequestsBody", "", 7, accessResult.reason.message);
+        adminSetTable("adminAccessRequestsBody", "", 10, accessResult.reason.message);
         setAdminMessage("adminAccessRequestsMessage", accessResult.reason.message, "error");
     }
 
@@ -212,7 +225,7 @@ async function decideAdminAccessRequest(requestId, decision) {
         if (decision === "APPROVE") {
             setAdminMessage(
                 "adminAccessDecisionMessage",
-                `Approved. New account: ${result.username} | Temporary password: ${result.temporary_password}. Copy it now and share it securely; it will not be shown again.`,
+                `Approved. Login ID: ${result.username}. The applicant must use the Request ID and recovery code they saved when applying to check status and create their own password. No email or SMS was sent.`,
                 "success"
             );
         } else {

@@ -26,6 +26,7 @@ from services import accounts
 from services.indexes import ensure_indexes
 
 from routes.auth import router as auth_router
+from routes.assistant import router as assistant_router
 from routes.access_requests import router as access_requests_router
 from routes.batches import router as batches_router
 from routes.blockchain import router as blockchain_router
@@ -116,7 +117,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
     allow_credentials=False,
-    allow_methods=["GET", "POST", "PATCH", "OPTIONS"],
+    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type", "X-Device-Key"],
     max_age=600,
 )
@@ -129,6 +130,7 @@ app.add_middleware(
 # =========================
 
 app.include_router(auth_router)
+app.include_router(assistant_router)
 app.include_router(access_requests_router)
 app.include_router(batches_router)
 app.include_router(plants_router)

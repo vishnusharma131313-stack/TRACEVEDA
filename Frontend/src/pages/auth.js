@@ -33,6 +33,19 @@ function getBackendRole(frontendRole) {
 
 function openAuthModal(mode) {
 
+    if (mode === "request") {
+        if (typeof window.openTraceVedaAssistant === "function") {
+            window.openTraceVedaAssistant("account");
+        } else {
+            const message = document.getElementById("authMessage");
+            if (message) {
+                message.textContent = "TraceVeda Assistant is still loading. Please try again in a moment.";
+                message.className = "auth-message error";
+            }
+        }
+        return;
+    }
+
     currentAuthMode = mode;
 
     const modal =
@@ -293,83 +306,22 @@ document
         }
     });
 
-function selectRequestRole(button) {
-
-    document
-        .querySelectorAll("#requestRoleSection .auth-role")
-        .forEach(role => {
-            role.classList.remove("selected");
-        });
-
-    button.classList.add("selected");
-
-    selectedRequestRole =
-        button.dataset.role;
-
-    const requestRoleSection =
-        document.getElementById("requestRoleSection");
-
-    const requestAccessForm =
-        document.getElementById("requestAccessForm");
-
-
-    if (requestRoleSection) {
-        requestRoleSection.style.display = "none";
+function selectRequestRole() {
+    // Legacy role picker is retained in the markup for compatibility, but all
+    // new applications must use the guided assistant so no required fields or
+    // one-time recovery-code receipt are skipped.
+    if (typeof window.openTraceVedaAssistant === "function") {
+        window.openTraceVedaAssistant("account");
     }
-
-
-    if (requestAccessForm) {
-        requestAccessForm.style.display = "flex";
-    }
-
 }
 
-document
-    .getElementById("requestAccessForm")
-    .addEventListener("submit", async function(event) {
+const legacyRequestForm = document.getElementById("requestAccessForm");
+if (legacyRequestForm) {
+    legacyRequestForm.addEventListener("submit", event => {
         event.preventDefault();
-
-        if (!selectedRequestRole) {
-            showAuthMessage("Please select your role first.", "error");
-            return;
-        }
-
-        const organisationName = document.getElementById("requestOrganisationName").value.trim();
-        const location = document.getElementById("requestLocation").value.trim();
-        const contactDetails = document.getElementById("requestContactDetails").value.trim();
-        if (!organisationName || !location || !contactDetails) {
-            showAuthMessage("Please complete all required fields.", "error");
-            return;
-        }
-
-        const submitButton = document.querySelector("#requestAccessForm button[type='submit']");
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.textContent = "Submitting…";
-        }
-
-        try {
-            const result = await apiRequest("/api/access-requests", {
-                method: "POST",
-                body: JSON.stringify({
-                    role: selectedRequestRole,
-                    organisation_name: organisationName,
-                    location,
-                    contact_details: contactDetails
-                })
-            });
-            showAuthMessage(`Request submitted successfully. Your request ID is ${result.request_id}. An administrator will review it.`, "success");
-            document.getElementById("requestAccessForm").reset();
-            selectedRequestRole = null;
-        } catch (error) {
-            showAuthMessage(`Could not submit access request: ${error.message}`, "error");
-        } finally {
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.innerHTML = 'Submit Access Request <i class="fa-solid fa-arrow-right"></i>';
-            }
-        }
+        selectRequestRole();
     });
+}
 
 const signupForm =
     document.getElementById("signupForm");

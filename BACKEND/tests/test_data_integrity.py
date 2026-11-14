@@ -742,7 +742,7 @@ def test_import_default_covers_every_collection_the_code_reads():
     )
 
     # Written by the app at runtime, not loaded from a CSV.
-    runtime_only = {"users", "counters", "iot_alerts", "investigations"}
+    runtime_only = {"users", "counters", "iot_alerts", "investigations", "access_requests", "assistant_conversations"}
 
     # Not collections - attributes and methods on the database object.
     not_collections = {
@@ -892,7 +892,7 @@ def test_index_failures_are_diagnosed_not_just_repeated():
         def __getitem__(self, name):
             return self
 
-        def create_index(self, keys, unique=False):
+        def create_index(self, keys, unique=False, **options):
             raise RuntimeError(
                 "you are over your space quota, using 512 MB of 512 MB. "
                 "Writes are blocked on your cluster."
@@ -901,7 +901,7 @@ def test_index_failures_are_diagnosed_not_just_repeated():
     succeeded, failed = indexes.ensure_indexes(FullCluster())
 
     assert succeeded == 0
-    assert len(failed) == len(indexes.INDEXES)
+    assert len(failed) == len(indexes.INDEXES) + len(indexes.TTL_INDEXES)
 
     # The summary names the real cause and what to do about it.
     diagnosis = indexes._diagnose([error for _, _, error in failed])

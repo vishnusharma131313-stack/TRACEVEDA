@@ -103,6 +103,11 @@ class Settings:
             ],
         )
 
+        # ---------- public assistant ----------
+        self.openai_api_key = _env("OPENAI_API_KEY")
+        self.openai_model = _env("OPENAI_MODEL", "gpt-6-luna")
+        self.assistant_session_days = _env_int("TRACEVEDA_ASSISTANT_SESSION_DAYS", 30)
+
         # ---------- query limits ----------
         # 11k+ seeded IoT readings live in one collection; an unbounded
         # find() on it is the slowest thing this API can be asked to do.

@@ -3821,14 +3821,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
     <div class="card" style="margin-bottom:20px">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px">
-            <div><div class="card-title">Access Requests</div><p style="font-size:.78rem;color:var(--muted);margin-top:5px">Review new organisation requests. Approval creates a stakeholder account.</p></div>
+            <div><div class="card-title">Access Requests</div><p style="font-size:.78rem;color:var(--muted);margin-top:5px">Review the applicant details and verify contact information manually. No email or SMS is sent; applicants activate with their saved one-time recovery code.</p></div>
             <button class="btn btn-outline" type="button" onclick="loadAdminDashboard()"><i class="fa-solid fa-rotate"></i> Refresh Requests</button>
         </div>
         <div id="adminAccessRequestsMessage" class="auth-message" style="margin-bottom:8px" aria-live="polite"></div>
         <div id="adminAccessDecisionMessage" class="auth-message" style="margin-bottom:12px" aria-live="polite"></div>
         <div class="table-wrap"><table>
-            <thead><tr><th>Request ID</th><th>Role</th><th>Organisation</th><th>Location</th><th>Contact</th><th>Submitted</th><th>Actions</th></tr></thead>
-            <tbody id="adminAccessRequestsBody"><tr><td colspan="7">Loading access requests…</td></tr></tbody>
+            <thead><tr><th>Request ID</th><th>Applicant</th><th>Role</th><th>Organisation</th><th>Email</th><th>Phone</th><th>Location</th><th>Application details</th><th>Submitted</th><th>Actions</th></tr></thead>
+            <tbody id="adminAccessRequestsBody"><tr><td colspan="10">Loading access requests…</td></tr></tbody>
         </table></div>
     </div>
 
@@ -4215,6 +4215,60 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     </div>
 </div>
 
+<!-- PUBLIC TRACEVEDA ASSISTANT: no guest login required -->
+<div id="traceVedaAssistantRoot" class="tv-assistant-root">
+    <button type="button" id="tvAssistantLauncher" class="tv-assistant-launcher" aria-label="Open TraceVeda Assistant" aria-expanded="false">
+        <i class="fa-solid fa-sparkles" aria-hidden="true"></i>
+        <span>Ask TraceVeda</span>
+    </button>
+    <section id="tvAssistantPanel" class="tv-assistant-panel" role="dialog" aria-modal="false" aria-labelledby="tvAssistantTitle" hidden>
+        <header class="tv-assistant-header">
+            <div class="tv-assistant-brand-icon"><i class="fa-solid fa-leaf" aria-hidden="true"></i></div>
+            <div class="tv-assistant-heading">
+                <strong id="tvAssistantTitle">TraceVeda Assistant</strong>
+                <span>Website guide · English · हिंदी · Hinglish</span>
+            </div>
+            <button type="button" id="tvAssistantNewChat" class="tv-assistant-icon-button" title="Start a new chat" aria-label="Start a new chat"><i class="fa-solid fa-rotate-right"></i></button>
+            <button type="button" id="tvAssistantClose" class="tv-assistant-icon-button" title="Close assistant" aria-label="Close assistant"><i class="fa-solid fa-xmark"></i></button>
+        </header>
+        <div id="tvAssistantMessages" class="tv-assistant-messages" aria-live="polite" aria-relevant="additions text"></div>
+        <div id="tvAssistantQuickActions" class="tv-assistant-quick-actions"></div>
+        <form id="tvAssistantForm" class="tv-assistant-form">
+            <input id="tvAssistantInput" type="text" maxlength="1200" autocomplete="off" placeholder="Ask about TraceVeda…" aria-label="Message TraceVeda Assistant">
+            <button id="tvAssistantSend" type="submit" aria-label="Send message"><i class="fa-solid fa-arrow-up"></i></button>
+        </form>
+        <div class="tv-assistant-footnote">Chats are stored for up to 30 days. Email and phone are collected for admin contact only; no OTP or email is sent. Never share passwords or recovery codes.</div>
+    </section>
+</div>
+
+<!-- Applicant checks request status and sets their password after admin approval -->
+<div id="tvActivationModal" class="tv-activation-overlay" hidden>
+    <div class="tv-activation-card" role="dialog" aria-modal="true" aria-labelledby="tvActivationTitle">
+        <button type="button" id="tvActivationClose" class="tv-activation-close" aria-label="Close">&times;</button>
+        <div class="tv-activation-mark"><i class="fa-solid fa-shield-halved"></i></div>
+        <h2 id="tvActivationTitle">Track or activate your TraceVeda account</h2>
+        <p>Enter the Request ID and recovery code shown when you submitted your application. Keep the recovery code private.</p>
+        <form id="tvActivationLookupForm">
+            <label for="tvActivationRequestId">Request ID</label>
+            <input id="tvActivationRequestId" type="text" maxlength="100" autocomplete="off" required>
+            <label for="tvActivationRecoveryCode">Recovery code</label>
+            <input id="tvActivationRecoveryCode" type="password" minlength="24" maxlength="128" autocomplete="off" required>
+            <button id="tvActivationLookupSubmit" type="submit">Check status</button>
+        </form>
+        <div id="tvActivationMessage" class="tv-activation-message" aria-live="polite"></div>
+        <div id="tvActivationApprovalPanel" hidden>
+            <p id="tvActivationApprovedText"></p>
+            <form id="tvActivationForm" hidden>
+                <label for="tvActivationPassword">Create password</label>
+                <input id="tvActivationPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+                <label for="tvActivationConfirm">Confirm password</label>
+                <input id="tvActivationConfirm" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+                <button id="tvActivationSubmit" type="submit">Activate account</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- AUTH MODAL -->
 <div class="auth-modal" id="authModal">
 
@@ -4352,8 +4406,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                 <i class="fa-solid fa-shield-halved"></i>
 
                 <span>
-                    Access is granted only after review by a TraceVeda Administrator.
-                    Your TraceVeda ID and password will be issued after approval.
+                    Submit new applications through Ask TraceVeda. After approval, use your saved Request ID and one-time recovery code to create your password. No email or SMS is sent.
                 </span>
 
             </div>
@@ -4481,6 +4534,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 <script src="/pages/demo.js"></script>
 <script src="/pages/transporter.js"></script>
 <script src="/pages/auth.js"></script>
+<script src="/pages/assistant.js"></script>
 <script src="/pages/iot.js"></script>
 <script src="/components/ui/events.js"></script>
 <script src="/lib/session.js"></script>

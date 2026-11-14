@@ -70,6 +70,9 @@ INDEXES = [
     # ---- access requests ----
     ("access_requests", [("request_id", 1)], True),
     ("access_requests", [("status", 1), ("submitted_at", -1)], False),
+    ("access_requests", [("email", 1), ("status", 1)], False),
+    ("access_requests", [("phone", 1), ("status", 1)], False),
+    ("assistant_conversations", [("session_id", 1)], True),
 
     # ---- consumer ----
     ("consumer_reports", [("report_id", 1)], True),
@@ -89,6 +92,12 @@ INDEXES = [
     ("farms", [("farm_id", 1)], True),
     ("plants", [("plant_id", 1)], True),
 ]
+
+# MongoDB TTL cleanup for 30-day anonymous visitor conversations.
+TTL_INDEXES = [
+    ("assistant_conversations", "expires_at"),
+]
+
 
 
 def _diagnose(errors):
@@ -176,5 +185,12 @@ def ensure_indexes(db):
         logger.warning(
             "The API still runs; queries fall back to collection scans."
         )
+
+    for collection, field in TTL_INDEXES:
+        try:
+            db[collection].create_index([(field, 1)], expireAfterSeconds=0)
+        except Exception as error:
+            failed.append((collection, [(field, 1)], str(error)))
+            logger.warning("Could not create TTL index on %s.%s: %s", collection, field, error)
 
     return succeeded, failed

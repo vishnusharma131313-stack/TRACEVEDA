@@ -40,6 +40,7 @@ _CONSUMER_MODULES = [
     "dependencies",
     "routes.auth",
     "routes.access_requests",
+    "routes.assistant",
     "routes.batches",
     "routes.lab",
     "routes.medicine",
@@ -88,6 +89,7 @@ def make_app():
     for name in [
         "routes.auth",
         "routes.access_requests",
+        "routes.assistant",
         "routes.batches",
         "routes.lab",
         "routes.iot",

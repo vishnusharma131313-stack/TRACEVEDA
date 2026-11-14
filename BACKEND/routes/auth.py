@@ -1,11 +1,16 @@
 """Authentication and administrator-managed account endpoints."""
 
-from fastapi import APIRouter, Depends, HTTPException
+import hashlib
+import hmac
+from datetime import datetime, timezone
+
+from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import BaseModel, Field
 
+from database import db
 from dependencies import get_current_user, require_roles
 from services import accounts
-from services.security import create_access_token
+from services.security import create_access_token, hash_password
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 
@@ -20,6 +25,12 @@ class LoginRequest(BaseModel):
 class ChangePasswordRequest(BaseModel):
     current_password: str = Field(min_length=1)
     new_password: str = Field(min_length=8, max_length=128)
+
+
+class ActivateAccountRequest(BaseModel):
+    request_id: str = Field(min_length=4, max_length=100)
+    recovery_code: str = Field(min_length=24, max_length=128)
+    password: str = Field(min_length=8, max_length=128)
 
 
 class AdminCreateUserRequest(BaseModel):
@@ -83,6 +94,65 @@ def change_password(
         raise HTTPException(status_code=404, detail="Account not found.")
 
     return {"status": "SUCCESS", "message": "Password changed successfully."}
+
+
+@router.post("/activate")
+def activate_account(data: ActivateAccountRequest, response: Response):
+    """Activate an approved account using its one-time applicant recovery code."""
+    response.headers["Cache-Control"] = "no-store"
+    request = db.access_requests.find_one({"request_id": data.request_id})
+    if not request:
+        raise HTTPException(status_code=404, detail="Request ID or recovery code is incorrect.")
+
+    supplied_hash = hashlib.sha256(f"{data.request_id}:{data.recovery_code}".encode("utf-8")).hexdigest()
+    stored_hash = request.get("claim_code_hash") or ""
+    if not stored_hash or not hmac.compare_digest(stored_hash, supplied_hash):
+        raise HTTPException(status_code=404, detail="Request ID or recovery code is incorrect.")
+
+    if request.get("status") != "APPROVED":
+        if request.get("status") == "PENDING":
+            raise HTTPException(status_code=409, detail="Your application is still awaiting administrator approval.")
+        if request.get("status") == "REJECTED":
+            raise HTTPException(status_code=403, detail="This application was not approved.")
+        raise HTTPException(status_code=409, detail="This application is not ready for activation.")
+
+    now = datetime.now(timezone.utc)
+    if request.get("claim_code_used_at"):
+        raise HTTPException(status_code=409, detail="This recovery code has already been used. Please sign in instead.")
+    if request.get("claim_code_expires_at") and request["claim_code_expires_at"] <= now:
+        raise HTTPException(status_code=410, detail="This recovery code has expired. Contact the administrator.")
+
+    username = request.get("provisioned_username")
+    if not username:
+        raise HTTPException(status_code=409, detail="The approved account is unavailable. Contact the administrator.")
+
+    result = db.users.update_one(
+        {"username": username, "is_active": False},
+        {"$set": {
+            "password_hash": hash_password(data.password),
+            "is_active": True,
+            "must_change_password": False,
+            "activated_at": now,
+        }},
+    )
+    if result.matched_count != 1:
+        raise HTTPException(status_code=409, detail="This account is already active or unavailable.")
+
+    claim_result = db.access_requests.update_one(
+        {"_id": request["_id"], "claim_code_used_at": None},
+        {"$set": {"claim_code_used_at": now, "activation_status": "ACTIVATED"}},
+    )
+    if claim_result.matched_count != 1:
+        # A concurrent activation already consumed the recovery code. Deactivate
+        # this account update rather than allowing a second activation attempt.
+        db.users.update_one({"username": username}, {"$set": {"is_active": False}})
+        raise HTTPException(status_code=409, detail="This recovery code has already been used.")
+
+    return {
+        "status": "SUCCESS",
+        "username": username,
+        "message": "Account activated. You can now sign in using your TraceVeda ID and new password.",
+    }
 
 
 @router.get("/me")
