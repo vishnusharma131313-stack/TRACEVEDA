@@ -37,6 +37,7 @@ The backend uses MongoDB for application records and a sequential SHA-256 hash c
 - Pydantic
 - MongoDB and PyMongo
 - PyJWT
+- Google Gen AI SDK (Gemini-powered public website assistant)
 - pytest, httpx and mongomock
 
 Dependencies and pinned versions are listed in `requirements.txt`.
@@ -122,9 +123,13 @@ DB_NAME=traceveda
 TRACEVEDA_JWT_SECRET=<long-random-secret>
 TRACEVEDA_DEVICE_API_KEY=<shared-device-key>
 TRACEVEDA_CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+GEMINI_API_KEY=<your-gemini-api-key>
+GEMINI_MODEL=gemini-3.5-flash-lite
 ```
 
 `TRACEVEDA_CORS_ORIGINS` is a comma-separated list. Add the deployed frontend origin when hosting the frontend separately.
+
+The public website assistant uses the Gemini Developer API. Set `GEMINI_API_KEY` on the backend only; do not put it in Vercel frontend variables. `GEMINI_MODEL` defaults to `gemini-3.5-flash-lite`. If the Gemini key is missing or the provider is temporarily unavailable, the assistant falls back to its built-in FAQ responses.
 
 Do not commit `.env`. Keep real secrets outside source control.
 

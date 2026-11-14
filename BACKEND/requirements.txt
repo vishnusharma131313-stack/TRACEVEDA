@@ -17,3 +17,6 @@ httpx==0.28.1
 
 # Generate manufacturer-printable medicine QR codes.
 qrcode==8.2
+
+# Google Gemini API client (official Google Gen AI SDK)
+google-genai==3.3.0

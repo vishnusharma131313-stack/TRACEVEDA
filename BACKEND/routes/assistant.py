@@ -4,8 +4,9 @@ from datetime import datetime, timedelta, timezone
 import secrets
 import logging
 
-import httpx
 from fastapi import APIRouter, HTTPException
+from google import genai
+from google.genai import types
 from pydantic import BaseModel, Field
 
 from config import settings
@@ -98,46 +99,43 @@ def _fallback_answer(message: str) -> str:
             "Manufacturer, Transporter or Auditor account here. Applicants provide email and phone for administrator contact; no OTP or email is sent. If the AI service is not configured yet, some answers may be limited.")
 
 
-def _openai_answer(messages: list[dict]) -> str:
-    if not settings.openai_api_key:
-        raise RuntimeError("OPENAI_API_KEY is not configured")
+def _gemini_answer(messages: list[dict]) -> str:
+    """Generate a public-assistant reply with the Gemini Developer API."""
+    if not settings.gemini_api_key:
+        raise RuntimeError("GEMINI_API_KEY is not configured")
 
-    # The Responses API is the recommended starting point for new text apps.
-    # Keep the visitor transcript as plain text so only the website prompt is
-    # treated as trusted instructions; the model receives no tools or actions.
-    transcript = "\n\n".join(
-        f"{item['role'].upper()}: {item['content']}"
-        for item in messages[-16:]
-        if item.get("role") in {"user", "assistant"}
-    )
-    response = httpx.post(
-        "https://api.openai.com/v1/responses",
-        headers={"Authorization": f"Bearer {settings.openai_api_key}"},
-        json={
-            "model": settings.openai_model,
-            "instructions": SYSTEM_PROMPT,
-            "input": transcript,
-            "max_output_tokens": 600,
-            "reasoning": {"effort": "none"},
-            "store": False,
-        },
-        timeout=25.0,
-    )
-    response.raise_for_status()
-    data = response.json()
-
-    # Raw Responses API JSON contains output message items. The convenience
-    # `output_text` property is SDK-side, so extract the text parts directly.
-    chunks = []
-    for item in data.get("output", []):
-        if item.get("type") != "message":
+    # Gemini uses "model" for assistant turns. Keep the last 16 transcript
+    # entries and pass the trusted website prompt separately as system input.
+    contents = []
+    for item in messages[-16:]:
+        role = item.get("role")
+        content = item.get("content")
+        if role not in {"user", "assistant"} or not isinstance(content, str):
             continue
-        for part in item.get("content", []):
-            if part.get("type") == "output_text" and isinstance(part.get("text"), str):
-                chunks.append(part["text"])
-    answer = "\n".join(chunks).strip()
+        contents.append({
+            "role": "user" if role == "user" else "model",
+            "parts": [{"text": content}],
+        })
+
+    if not contents:
+        raise RuntimeError("No valid conversation messages were provided")
+
+    client = genai.Client(
+        api_key=settings.gemini_api_key,
+        http_options=types.HttpOptions(timeout=25_000),
+    )
+    response = client.models.generate_content(
+        model=settings.gemini_model,
+        contents=contents,
+        config=types.GenerateContentConfig(
+            system_instruction=SYSTEM_PROMPT,
+            max_output_tokens=600,
+        ),
+    )
+
+    answer = (response.text or "").strip()
     if not answer:
-        raise RuntimeError("The AI service returned an empty response")
+        raise RuntimeError("Gemini returned an empty response")
     return answer[:5000]
 
 
@@ -196,15 +194,15 @@ def chat(data: AssistantChatRequest):
         raise HTTPException(status_code=429, detail="This chat has reached its hourly message limit. Please try again later.")
 
     history = session.get("messages", [])
-    openai_messages = [
+    conversation_messages = [
         {"role": item["role"], "content": item["content"]}
         for item in history[-16:]
         if item.get("role") in {"user", "assistant"} and isinstance(item.get("content"), str)
     ]
-    openai_messages.append({"role": "user", "content": text})
-    provider = "openai"
+    conversation_messages.append({"role": "user", "content": text})
+    provider = "gemini"
     try:
-        reply = _openai_answer(openai_messages)
+        reply = _gemini_answer(conversation_messages)
     except Exception as error:
         # The website guide remains useful during initial setup or a temporary
         # provider outage. Do not expose provider errors or secrets to visitors.

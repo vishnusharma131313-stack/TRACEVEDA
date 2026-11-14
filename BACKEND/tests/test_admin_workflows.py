@@ -214,15 +214,47 @@ def test_legacy_transporter_role_is_normalized_for_login_and_authorization():
     assert accounts.get_user("log-legacy-001")["role"] == accounts.LOGISTICS
 
 
+def test_gemini_adapter_formats_history_and_uses_system_prompt(monkeypatch):
+    import routes.assistant as assistant_routes
+
+    captured = {}
+
+    class FakeModels:
+        def generate_content(self, **kwargs):
+            captured.update(kwargs)
+            return type("FakeResponse", (), {"text": "Hello from Gemini"})()
+
+    class FakeClient:
+        def __init__(self, **kwargs):
+            captured["client_options"] = kwargs
+            self.models = FakeModels()
+
+    monkeypatch.setattr(assistant_routes.genai, "Client", FakeClient)
+    monkeypatch.setattr(assistant_routes.settings, "gemini_api_key", "test-key")
+    monkeypatch.setattr(assistant_routes.settings, "gemini_model", "gemini-3.5-flash-lite")
+
+    answer = assistant_routes._gemini_answer([
+        {"role": "user", "content": "Hi"},
+        {"role": "assistant", "content": "Hello"},
+        {"role": "user", "content": "What is TraceVeda?"},
+    ])
+
+    assert answer == "Hello from Gemini"
+    assert captured["model"] == "gemini-3.5-flash-lite"
+    assert [item["role"] for item in captured["contents"]] == ["user", "model", "user"]
+    assert captured["config"].system_instruction == assistant_routes.SYSTEM_PROMPT
+    assert captured["client_options"]["http_options"].timeout == 25_000
+
+
 def test_public_assistant_sessions_store_chat_history(client, monkeypatch):
     import routes.assistant as assistant_routes
-    monkeypatch.setattr(assistant_routes, "_openai_answer", lambda messages: "Namaste! TraceVeda tracks supply-chain events.")
+    monkeypatch.setattr(assistant_routes, "_gemini_answer", lambda messages: "Namaste! TraceVeda tracks supply-chain events.")
     created = client.post("/api/assistant/session", json={})
     assert created.status_code == 201, created.text
     session_id = created.json()["session_id"]
     reply = client.post("/api/assistant/chat", json={"session_id": session_id, "message": "What is TraceVeda?"})
     assert reply.status_code == 200, reply.text
-    assert reply.json()["provider"] == "openai"
+    assert reply.json()["provider"] == "gemini"
     history = client.get(f"/api/assistant/session/{session_id}")
     assert history.status_code == 200
     assert len(history.json()["messages"]) == 2
