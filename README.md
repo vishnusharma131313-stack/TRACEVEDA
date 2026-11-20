@@ -112,6 +112,11 @@ Auditor investigation
     an affected source.
 -   **Tamper-evident event history:** Critical supply-chain events are
     recorded in a sequential SHA-256 hash-chain ledger.
+-   **Public AI assistant:** A Gemini-powered website assistant answers
+    questions about TraceVeda features in English, Hindi or Hinglish and
+    guides visitors through organisation account requests and application
+    tracking/activation. If Gemini is unavailable or not configured, the
+    assistant uses a built-in FAQ fallback.
 
 ## System architecture
 
@@ -216,6 +221,10 @@ pull-ups drive SDA/SCL to 5 V.
   API / data format                   REST, JSON
 
   Testing                             pytest, httpx, mongomock
+
+  AI assistant                        Google Gemini Developer API via the
+                                      Google Gen AI SDK, with a built-in
+                                      FAQ fallback
 
   Version control                     Git and GitHub
   -----------------------------------------------------------------------
@@ -383,6 +392,11 @@ The backend reads its configuration from environment variables. See
 -   Public consumer routes are limited to QR verification and consumer
     issue reporting.
 -   Configure CORS origins for the frontend deployment.
+-   The public AI assistant uses `GEMINI_API_KEY` and `GEMINI_MODEL`.
+    Configure these on the backend only; never expose the Gemini key in
+    frontend environment variables or browser code.
+-   `TRACEVEDA_ASSISTANT_SESSION_DAYS` controls assistant conversation
+    retention (30 days by default).
 -   Replace all development/demo credentials before any public
     deployment.
 
@@ -415,8 +429,8 @@ their output before using the imported records in a demonstration.
 Core API areas include authentication, plant references, raw and
 processing batches, batch relationships, laboratory tests, transport and
 storage events, IoT readings and alerts, medicine batches, QR
-verification, consumer reports, investigations, traceability and
-blockchain-event verification.
+verification, consumer reports, investigations, traceability,
+blockchain-event verification and public-assistant session/chat handling.
 
 ## Testing
 

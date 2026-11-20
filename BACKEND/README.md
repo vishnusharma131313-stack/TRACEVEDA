@@ -24,6 +24,7 @@ The backend uses MongoDB for application records and a sequential SHA-256 hash c
 - JWT-based user authentication and role-aware route authorization.
 - Batch, plant, laboratory, transport, storage and medicine workflows.
 - IoT telemetry ingestion and threshold-based alert generation.
+- Public AI website assistant powered by the Gemini Developer API, with a built-in FAQ fallback when Gemini is not configured or temporarily unavailable.
 - Consumer QR verification and consumer-submitted reports.
 - Auditor investigation and traceability workflows.
 - MongoDB-backed event records with sequential SHA-256 hash-chain verification.
@@ -175,6 +176,7 @@ The application registers route modules for the following areas:
 | Route module | Main responsibility |
 |---|---|
 | `routes/auth.py` | Login, current-user information and role discovery |
+| `routes/assistant.py` | Anonymous public assistant sessions and chat responses using Gemini or the built-in FAQ fallback |
 | `routes/access_requests.py` | Stakeholder access requests |
 | `routes/plants.py` | Botanical reference data |
 | `routes/batches.py` | Raw/processing batches and relationships |
@@ -189,6 +191,46 @@ The application registers route modules for the following areas:
 | `routes/investigations.py` | Investigation workflows |
 
 For request fields, roles, examples and endpoint details, see [`../docs/API_CONTRACT.md`](../docs/API_CONTRACT.md). The live `/docs` page is the most direct reference for the API version currently running.
+
+## Public AI assistant integration
+
+The public website assistant is implemented in `routes/assistant.py` under
+`/api/assistant`. It answers questions about TraceVeda's website and platform
+features. It supports English, Hindi and Hinglish responses and is designed as
+a public website guide, not as an authenticated stakeholder agent.
+
+The assistant uses the Google Gemini Developer API through the Google Gen AI
+SDK. Configure `GEMINI_API_KEY` and, optionally, `GEMINI_MODEL` in the backend
+`.env` file. The default model is `gemini-3.5-flash-lite`. The Gemini key must
+remain on the backend and must never be exposed through frontend code or
+`VITE_` variables.
+
+If the Gemini key is missing or the provider request fails, the backend
+returns a built-in FAQ response. The response includes a `provider` field
+(`gemini` or `fallback`) so the caller can identify which response path was
+used.
+
+### Assistant endpoints
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /api/assistant/session` | Create an anonymous assistant conversation and return its session ID and expiry |
+| `GET /api/assistant/session/{session_id}` | Retrieve the conversation history for a valid session |
+| `DELETE /api/assistant/session/{session_id}` | Delete an anonymous conversation |
+| `POST /api/assistant/chat` | Submit a message and receive a Gemini-generated or FAQ fallback reply |
+
+The chat request contains a `session_id` and a non-empty `message` (maximum
+1,200 characters). A session is limited to 40 messages per hour. Conversation
+history is retained for the configured session period, which defaults to
+30 days and can be changed with `TRACEVEDA_ASSISTANT_SESSION_DAYS`. The chat
+keeps a bounded recent message history for context.
+
+The assistant is intentionally restricted to public website guidance. It
+cannot access private account data, live telemetry, private batch records or
+administrator actions; it cannot create accounts, approve access requests,
+change roles or modify supply-chain records. Account requests and approval
+remain separate application workflows. It must not be used for medical advice
+or as a guarantee that a medicine is safe.
 
 ## IoT device integration
 

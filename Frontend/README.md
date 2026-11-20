@@ -25,8 +25,18 @@ The active application uses the existing HTML/CSS interface with JavaScript file
 - Laboratory, transporter and manufacturer workflows.
 - Consumer QR verification and issue reporting.
 - IoT telemetry views for Storage and Truck Nodes.
+- Public TraceVeda AI assistant for website questions, available without
+  stakeholder sign-in; supports English, Hindi and Hinglish responses.
+- Guided organisation account requests and application tracking/activation
+  through the assistant's quick actions.
 
 The frontend requires the backend for live data, authentication and API-backed workflows. A page rendering in the browser does not mean that its backend services are connected.
+
+The public assistant uses the backend endpoints under `/api/assistant` for
+anonymous conversation sessions and chat. Gemini credentials remain on the
+backend; the browser does not call Gemini directly. If the Gemini service is
+not configured or temporarily unavailable, the backend returns a built-in
+FAQ fallback response.
 
 ## Technology
 
@@ -175,6 +185,7 @@ Deploy the contents of `dist/` to a static hosting provider. Set the API base UR
 | Area | Purpose |
 |---|---|
 | Public website | Project introduction and navigation |
+| Public AI assistant | Answers questions about TraceVeda and guides visitors through organisation account requests and application tracking/activation |
 | Verify Medicine | Consumer-facing QR verification |
 | Consumer Reports | Submit product concerns after the relevant medicine has been verified |
 | Laboratory workspace | Laboratory test and verification workflow |
@@ -190,7 +201,7 @@ Exact permissions and available actions are enforced by the backend; the fronten
 - The active frontend uses classic browser script loading to preserve existing inline handlers and shared browser functions. Avoid converting scripts to ES modules or changing script-loading order without checking those dependencies.
 - `vite.config.js` serves `src/` as a static public directory and configures the local `/api` proxy.
 - `archive/react-scaffold/` is retained as a historical/reference implementation. It is not the current application entry point.
-- Do not place secrets in frontend code or `VITE_` environment variables.
+- Do not place secrets in frontend code or `VITE_` environment variables. The Gemini API key must be configured on the backend only.
 - When changing an existing workflow, keep the change scoped to the relevant page/script and test the affected role and adjacent workflows in a browser.
 
 ---
