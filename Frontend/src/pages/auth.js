@@ -224,7 +224,7 @@ document
             submitButton.textContent = "Signing in…";
         }
         showAuthMessage(
-            "Please note: TraceVeda is hosted on a free Render instance. After a period of inactivity, the service may take approximately 50–70 seconds to start. Please keep this page open while your sign-in request is processed.",
+            "Please note: TraceVeda is hosted on a free Render instance. Please wait while we connect you securely. This may take up to a minute. Keep this page open until sign-in is complete.",
             "info"
         );
 
