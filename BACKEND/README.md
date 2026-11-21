@@ -28,6 +28,7 @@ The backend uses MongoDB for application records and a sequential SHA-256 hash c
 - Consumer QR verification and consumer-submitted reports.
 - Auditor investigation and traceability workflows.
 - MongoDB-backed event records with sequential SHA-256 hash-chain verification.
+- Private laboratory PDF reports stored in MongoDB GridFS, with authenticated downloads and SHA-256 report fingerprints.
 - Seed-data import and migration utilities.
 - Automated tests using pytest, httpx and mongomock.
 
@@ -126,11 +127,14 @@ TRACEVEDA_DEVICE_API_KEY=<shared-device-key>
 TRACEVEDA_CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 GEMINI_API_KEY=<your-gemini-api-key>
 GEMINI_MODEL=gemini-3.5-flash-lite
+TRACEVEDA_MAX_LAB_REPORT_BYTES=10485760
 ```
 
 `TRACEVEDA_CORS_ORIGINS` is a comma-separated list. Add the deployed frontend origin when hosting the frontend separately.
 
 The public website assistant uses the Gemini Developer API. Set `GEMINI_API_KEY` on the backend only; do not put it in Vercel frontend variables. `GEMINI_MODEL` defaults to `gemini-3.5-flash-lite`. If the Gemini key is missing or the provider is temporarily unavailable, the assistant falls back to its built-in FAQ responses.
+
+Laboratory PDF reports are stored in the same MongoDB database using GridFS (the `lab_reports.files` and `lab_reports.chunks` collections). This avoids relying on Render's ephemeral application filesystem. The default upload limit is 10 MiB; override it with `TRACEVEDA_MAX_LAB_REPORT_BYTES`. The upload endpoint accepts the lab test fields as JSON in a multipart `payload` field and the optional file in a multipart `report` field. The response includes `report.download_url`; downloading that URL requires an authenticated TraceVeda bearer token.
 
 Do not commit `.env`. Keep real secrets outside source control.
 
@@ -180,7 +184,7 @@ The application registers route modules for the following areas:
 | `routes/access_requests.py` | Stakeholder access requests |
 | `routes/plants.py` | Botanical reference data |
 | `routes/batches.py` | Raw/processing batches and relationships |
-| `routes/lab.py` | Laboratory tests and certification records |
+| `routes/lab.py` | Laboratory tests, PDF certificates (GridFS), and authenticated report downloads |
 | `routes/transport.py` | Transport events |
 | `routes/storage.py` | Storage events |
 | `routes/iot.py` | IoT telemetry and alert evaluation |

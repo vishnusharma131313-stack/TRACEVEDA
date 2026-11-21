@@ -127,316 +127,6 @@ function removeProcessingBatch() {
     rows[selectedIndex].remove();
 }
 
-function submitManufacturer(){
-
-    /*
-    ===============================================================================
-    BACKEND REQUIREMENT — MANUFACTURER MEDICINE BATCH REGISTRATION
-    ===============================================================================
-
-    When the Manufacturer submits the "Formulate & Register Batch" form, the
-    backend must handle the submitted data across TWO datasets:
-
-    1. medicine_batches.csv
-    2. batch_relationships.csv
-
-
-    -------------------------------------------------------------------------------
-    1. medicine_batches.csv
-    -------------------------------------------------------------------------------
-
-    EVERY FIELD FROM THE MANUFACTURER FORM EXCEPT "Source Processing Batch"
-    must be appended to medicine_batches.csv.
-
-    Fields to store:
-
-        medicine_batch_id
-        product_name
-        manufacturer_id
-        manufacturing_date
-        manufacturing_timestamp
-        expiry_date
-        qr_id
-        batch_status
-
-    The "Source Processing Batch" field MUST NOT be stored in
-    medicine_batches.csv because a medicine batch can be created from MULTIPLE
-    processing batches.
-
-
-    -------------------------------------------------------------------------------
-    2. batch_relationships.csv
-    -------------------------------------------------------------------------------
-
-    All Source Processing Batch IDs entered for the medicine batch must be stored
-    as relationships in batch_relationships.csv.
-
-    One medicine batch may have multiple processing batches.
-
-    Example frontend submission:
-
-        medicine_batch_id:
-            MED-2026-010
-
-        source_processing_batches:
-            [
-                "ASH-P-2026-001",
-                "TUL-P-2026-003",
-                "NIM-P-2026-005"
-            ]
-
-
-    The backend must create ONE PROCESSING_TO_MEDICINE relationship for EACH
-    processing batch:
-
-        REL-M-XXXX
-        parent_batch_id = ASH-P-2026-001
-        child_batch_id  = MED-2026-010
-        relationship_type = PROCESSING_TO_MEDICINE
-
-        REL-M-XXXX
-        parent_batch_id = TUL-P-2026-003
-        child_batch_id  = MED-2026-010
-        relationship_type = PROCESSING_TO_MEDICINE
-
-        REL-M-XXXX
-        parent_batch_id = NIM-P-2026-005
-        child_batch_id  = MED-2026-010
-        relationship_type = PROCESSING_TO_MEDICINE
-
-
-    -------------------------------------------------------------------------------
-    IMPORTANT
-    -------------------------------------------------------------------------------
-
-    DO NOT store multiple processing batch IDs in a single field such as:
-
-        "ASH-P-2026-001,TUL-P-2026-003,NIM-P-2026-005"
-
-    Instead, create separate rows in batch_relationships.csv.
-
-    Therefore, the relationship is:
-
-        Processing Batch 1 ──┐
-        Processing Batch 2 ──┼──> Medicine Batch
-        Processing Batch 3 ──┘
-
-
-    -------------------------------------------------------------------------------
-    FRONTEND PAYLOAD
-    -------------------------------------------------------------------------------
-
-    The frontend will send all processing batch IDs as an array.
-
-    Expected structure:
-
-    {
-        "medicine_batch_id": "MED-2026-010",
-        "source_processing_batches": [
-            "ASH-P-2026-001",
-            "TUL-P-2026-003",
-            "NIM-P-2026-005"
-        ],
-        "product_name": "...",
-        "manufacturer_id": "MAN-001",
-        "manufacturing_date": "2026-06-15",
-        "manufacturing_timestamp": "...",
-        "expiry_date": "2028-06-14",
-        "qr_id": "QR-2026-010",
-        "batch_status": "MONITORED"
-    }
-
-
-    -------------------------------------------------------------------------------
-    BACKEND RESPONSIBILITY
-    -------------------------------------------------------------------------------
-
-    On successful submission:
-
-        1. Append ONE medicine-batch record to medicine_batches.csv.
-        2. Create ONE batch_relationships.csv record for EACH source processing
-        batch.
-        3. Ensure all relationship rows use:
-            relationship_type = PROCESSING_TO_MEDICINE
-        4. Generate a unique relationship_id for every relationship row.
-        5. Keep the same medicine_batch_id as child_batch_id in every relationship.
-        6. The complete operation should be treated as one logical registration
-        so that the medicine record and its relationships remain consistent.
-
-    ===============================================================================
-    */
-
-    /* ==========================================
-       GET FORM VALUES
-    ========================================== */
-
-    const batch =
-        document.getElementById("mfgBatch").value.trim();
-
-    const sourceBatches =
-        Array.from(
-            document.querySelectorAll(".processing-batch-input")
-        )
-        .map(input => input.value.trim())
-        .filter(value => value !== "");
-
-    const product =
-        document.getElementById("mfgProduct").value.trim();
-
-    const manufacturingDate =
-        document.getElementById("mfgManufacturingDate").value;
-
-    const expiryDate =
-        document.getElementById("mfgExpiryDate").value;
-
-    const qrId =
-        document.getElementById("mfgQrId").value.trim();
-
-
-    /* ==========================================
-       BASIC VALIDATION
-    ========================================== */
-
-    if (!batch) {
-        alert("Please enter the medicine batch ID.");
-        return;
-    }
-
-    if (sourceBatches.length === 0) {
-        alert("Please enter at least one source processing batch.");
-        return;
-    }
-
-    if (!product) {
-        alert("Please enter the product name.");
-        return;
-    }
-
-    if (!manufacturingDate) {
-        alert("Please select the manufacturing date.");
-        return;
-    }
-
-    if (!expiryDate) {
-        alert("Please select the expiry date.");
-        return;
-    }
-
-    if (!qrId) {
-        alert("Please enter the QR ID.");
-        return;
-    }
-
-
-    /* ==========================================
-       GET HISTORY TABLE
-    ========================================== */
-
-    const table =
-        document.getElementById("mfgHistory");
-
-    if (!table) {
-        return;
-    }
-
-
-    /* ==========================================
-       CREATE NEW ROW
-    ========================================== */
-
-    const row =
-        document.createElement("tr");
-
-
-    /* ==========================================
-       FORMAT DATES
-    ========================================== */
-
-    const formattedManufacturingDate =
-        new Date(
-            manufacturingDate + "T00:00:00"
-        ).toLocaleDateString(
-            "en-GB",
-            {
-                day: "2-digit",
-                month: "long",
-                year: "numeric"
-            }
-        );
-
-    const formattedExpiryDate =
-        new Date(
-            expiryDate + "T00:00:00"
-        ).toLocaleDateString(
-            "en-GB",
-            {
-                day: "2-digit",
-                month: "long",
-                year: "numeric"
-            }
-        );
-
-
-    /* ==========================================
-       DISPLAY MULTIPLE PROCESSING BATCHES
-    ========================================== */
-
-    const sourceBatchDisplay =
-        sourceBatches
-            .map(batchId => `${batchId}<br>`)
-            .join("");
-
-
-    /* ==========================================
-       BUILD TABLE ROW
-    ========================================== */
-
-    row.innerHTML = `
-
-        <td class="mono">
-            ${batch}
-        </td>
-
-
-        <td class="mono">
-            ${sourceBatchDisplay}
-        </td>
-
-
-        <td>
-            ${product}
-        </td>
-
-
-        <td>
-            ${formattedManufacturingDate}
-        </td>
-
-
-        <td>
-            ${formattedExpiryDate}
-        </td>
-
-
-        <td class="mono">
-            ${qrId}
-        </td>
-
-    `;
-
-
-    table.appendChild(row);
-
-
-    /* ==========================================
-       SUCCESS MESSAGE
-    ========================================== */
-
-    alert(
-        "Medicine batch registered successfully."
-    );
-}
-
 /* =========================================================
    MEDICINE QR ID GENERATION
 ========================================================= */
@@ -793,17 +483,37 @@ async function selectStorageNode() {
     }
 }
 
-/* Backend-backed medicine registration. The backend creates the paired QR ID
-   and QR image as part of the same medicine registration transaction. */
+/* Register one medicine batch with every selected processing-batch parent. */
 submitManufacturer = async function () {
-    const batch = document.getElementById("mfgBatch")?.value.trim().toUpperCase();
-    const source = document.getElementById("mfgSource")?.value.trim();
-    const product = document.getElementById("mfgProduct")?.value.trim();
-    const manufacturingDate = document.getElementById("mfgManufacturingDate")?.value;
-    const expiryDate = document.getElementById("mfgExpiryDate")?.value;
+    const batchInput = document.getElementById("mfgBatch");
+    const productInput = document.getElementById("mfgProduct");
+    const manufacturingInput = document.getElementById("mfgManufacturingDate");
+    const expiryInput = document.getElementById("mfgExpiryDate");
+    const batch = batchInput?.value.trim().toUpperCase();
+    const product = productInput?.value.trim();
+    const manufacturingDate = manufacturingInput?.value;
+    const expiryDate = expiryInput?.value;
+    const sourceInputs = [...document.querySelectorAll("#processingBatchList .processing-batch-input")];
+    const rawSources = sourceInputs.map(input => input.value.trim());
 
-    if (!batch || !source || !product || !manufacturingDate || !expiryDate) {
-        return alert("Please complete the batch ID, source processing batch, product name, manufacturing date and expiry date.");
+    if (!batch || !product || !manufacturingDate || !expiryDate) {
+        alert("Complete the medicine batch ID, product name, manufacturing date and expiry date.");
+        return;
+    }
+    if (!sourceInputs.length || rawSources.some(value => !value)) {
+        alert("Enter an ID in every source processing-batch field, or remove unused fields.");
+        return;
+    }
+    if (new Date(expiryDate) <= new Date(manufacturingDate)) {
+        alert("Expiry date must be later than the manufacturing date.");
+        return;
+    }
+
+    const sources = rawSources.map(value => value.toUpperCase());
+    const uniqueSources = new Set(sources);
+    if (uniqueSources.size !== sources.length) {
+        alert("A source processing batch is listed more than once. Remove duplicate IDs.");
+        return;
     }
 
     const sessionUser = (() => {
@@ -811,7 +521,14 @@ submitManufacturer = async function () {
         catch (_) { return {}; }
     })();
     const manufacturerId = sessionUser.organisation_id || sessionUser.username;
-    if (!manufacturerId) return alert("Your manufacturer session could not be identified. Sign in again.");
+    if (!manufacturerId) {
+        alert("Your manufacturer session could not be identified. Sign in again.");
+        return;
+    }
+    if (typeof apiRequest !== "function") {
+        alert("The API client is unavailable. Refresh the page and sign in again.");
+        return;
+    }
 
     const submitButton = document.querySelector('#manufacturer-workspace button[onclick="submitManufacturer()"]');
     const originalButtonHtml = submitButton?.innerHTML;
@@ -825,7 +542,7 @@ submitManufacturer = async function () {
             method: "POST",
             body: JSON.stringify({
                 medicine_batch_id: batch,
-                processing_batch_id: source,
+                source_processing_batches: sources,
                 manufacturer_id: manufacturerId,
                 product_name: product,
                 manufacturing_date: manufacturingDate,
@@ -834,40 +551,71 @@ submitManufacturer = async function () {
         });
 
         if (!data?.medicine_batch_id || !data?.qr_id || !data?.qr_code_data_url) {
-            throw new Error("Medicine was registered but the backend did not return its QR label. Refresh the QR panel to retrieve it.");
+            throw new Error("The API response did not include the registered batch and its QR label.");
         }
 
+        const savedSources = Array.isArray(data.processing_batch_ids) && data.processing_batch_ids.length
+            ? data.processing_batch_ids
+            : sources;
         const table = document.getElementById("mfgHistory");
         if (table) {
             const row = document.createElement("tr");
-            [
+            const values = [
                 data.medicine_batch_id,
-                source,
+                savedSources.join(" · "),
                 product,
                 manufacturingDate,
                 expiryDate,
                 data.qr_id
-            ].forEach(value => {
+            ];
+            values.forEach((value, index) => {
                 const cell = document.createElement("td");
                 cell.textContent = value;
-                if (String(value).startsWith("MED-") || String(value).startsWith("QR-")) cell.className = "mono";
+                if (index === 0 || index === 1 || index === 5) cell.className = "mono";
                 row.appendChild(cell);
             });
             table.prepend(row);
         }
 
-        // Populate the retrieval panel with the just-created batch and its QR.
-        await loadMedicineBatchesForQR(data.medicine_batch_id);
-        if (typeof switchPanel === "function") {
-            switchPanel("manufacturer-qr");
-        } else {
-            displayMedicineQR(data);
+        // The POST response contains the persisted QR image. Show it directly;
+        // refreshing the batch selector is best-effort and must not undo success.
+        displayMedicineQR(data);
+        const qrSelect = document.getElementById("qrMedicineBatch");
+        if (qrSelect) {
+            let option = [...qrSelect.options].find(item => item.value === data.medicine_batch_id);
+            if (!option) {
+                option = document.createElement("option");
+                option.value = data.medicine_batch_id;
+                option.textContent = `${data.medicine_batch_id} — ${product}`;
+                qrSelect.appendChild(option);
+            }
+            qrSelect.value = data.medicine_batch_id;
         }
+        if (typeof switchPanel === "function") switchPanel("manufacturer-qr");
 
-        alert(`Medicine registered successfully.\nMedicine Batch: ${data.medicine_batch_id}\nQR ID: ${data.qr_id}\nThe QR label is now ready to download and print.`);
-        document.getElementById("mfgBatch")?.value && (document.getElementById("mfgBatch").value = "");
-        document.getElementById("mfgSource")?.value && (document.getElementById("mfgSource").value = "");
-        document.getElementById("mfgProduct")?.value && (document.getElementById("mfgProduct").value = "");
+        alert(
+            `Medicine registered successfully.\nMedicine Batch: ${data.medicine_batch_id}` +
+            `\nSource Processing Batches: ${savedSources.join(", ")}` +
+            `\nQR ID: ${data.qr_id}\nThe QR label is ready to download and print.`
+        );
+
+        if (batchInput) batchInput.value = "";
+        if (productInput) productInput.value = "";
+        if (manufacturingInput) manufacturingInput.value = "";
+        if (expiryInput) expiryInput.value = "";
+        // Restore one empty source field; remove any additional dynamic fields.
+        const batchList = document.getElementById("processingBatchList");
+        if (batchList) {
+            const rows = [...batchList.querySelectorAll(".processing-batch-row")];
+            rows.forEach((row, index) => {
+                const input = row.querySelector(".processing-batch-input");
+                if (index === 0) {
+                    if (input) input.value = "";
+                } else {
+                    row.remove();
+                }
+            });
+        }
     } catch (error) {
         console.error("Medicine registration failed:", error);
         alert(`Medicine registration failed: ${error.message}`);
