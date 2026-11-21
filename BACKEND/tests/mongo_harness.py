@@ -28,6 +28,10 @@ if str(BACKEND_ROOT) not in sys.path:
 
 
 import mongomock  # noqa: E402
+import mongomock.gridfs  # noqa: E402
+
+# GridFS uses PyMongo's public API; mongomock provides an integration shim.
+mongomock.gridfs.enable_gridfs_integration()
 
 import database  # noqa: E402
 

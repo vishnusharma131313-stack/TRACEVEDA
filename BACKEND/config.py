@@ -119,6 +119,12 @@ class Settings:
         self.default_page_size = _env_int("TRACEVEDA_PAGE_SIZE", 200)
         self.max_page_size = _env_int("TRACEVEDA_MAX_PAGE_SIZE", 2000)
 
+        # ---------- laboratory report uploads ----------
+        # GridFS stores PDFs in MongoDB so they survive Render restarts.
+        self.max_lab_report_bytes = _env_int(
+            "TRACEVEDA_MAX_LAB_REPORT_BYTES", 10 * 1024 * 1024
+        )
+
     @property
     def is_hardened(self):
         """True when no secret is running on a generated development value."""

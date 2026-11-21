@@ -181,6 +181,10 @@ function openRole(role, panel = null){
         loadAdminDashboard();
     }
 
+    if (role === "lab" && typeof loadLabHistory === "function") {
+        loadLabHistory();
+    }
+
 
     // Open role-specific panel
     switchPanel(firstPanel);

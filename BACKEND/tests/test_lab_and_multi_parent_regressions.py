@@ -1,5 +1,6 @@
-"""Regression coverage for the unified lab contract and multi-parent medicine lots."""
+"""Regression coverage for lab PDF storage and multi-parent medicine lots."""
 
+import json
 import mongo_harness  # noqa: F401 - install mongomock before importing routes/services
 
 mongo_harness.install()
@@ -129,3 +130,67 @@ def test_medicine_registration_persists_all_processing_parents_and_trace_links(c
     assert verified.json()["traceability"]["processing_batch_ids"] == [
         "PROCESS-2026-001", "PROCESS-2026-002"
     ]
+
+
+
+def test_lab_pdf_report_is_stored_in_gridfs_and_downloadable(client):
+    db = mongo_harness.current_db()
+    headers = auth_header("lab-pdf-regression", accounts.LAB, "LAB-ORG-PDF")
+    db.raw_material_batches.insert_one({"raw_batch_id": "ASH-PDF-2026-001", "status": "REGISTERED"})
+
+    payload = {
+        "batch_id": "ASH-PDF-2026-001",
+        "test_phase": "RAW_BATCH_TEST",
+        "test_type": "RAW_MATERIAL_QUALITY",
+        "test_date": "2026-11-21",
+        "certificate_id": "CERT-PDF-0001",
+        "test_parameters": {"moisture": "within limits"},
+        "result": "PASS",
+    }
+    pdf_bytes = b"%PDF-1.7\nTraceVeda test PDF\n%%EOF"
+    response = client.post(
+        "/api/lab/tests",
+        data={"payload": json.dumps(payload)},
+        files={"report": ("quality-certificate.pdf", pdf_bytes, "application/pdf")},
+        headers=headers,
+    )
+    assert response.status_code == 201, response.text
+    created = response.json()
+    assert created["report"]["filename"] == "quality-certificate.pdf"
+    assert created["report"]["size_bytes"] == len(pdf_bytes)
+    assert created["report"]["download_url"].endswith(
+        f"/api/lab/tests/{created['lab_test_id']}/report"
+    )
+
+    saved = db.lab_tests.find_one({"lab_test_id": created["lab_test_id"]})
+    assert saved["report"]["sha256"] == created["report"]["sha256"]
+    assert db["lab_reports.files"].count_documents(
+        {"metadata.lab_test_id": created["lab_test_id"]}
+    ) == 1
+
+    downloaded = client.get(created["report"]["download_url"], headers=headers)
+    assert downloaded.status_code == 200, downloaded.text
+    assert downloaded.headers["content-type"].startswith("application/pdf")
+    assert downloaded.content == pdf_bytes
+
+
+def test_lab_report_upload_rejects_non_pdf_content(client):
+    db = mongo_harness.current_db()
+    headers = auth_header("lab-invalid-pdf", accounts.LAB, "LAB-ORG-PDF")
+    db.raw_material_batches.insert_one({"raw_batch_id": "ASH-PDF-2026-002", "status": "REGISTERED"})
+    payload = {
+        "batch_id": "ASH-PDF-2026-002",
+        "test_phase": "RAW_BATCH_TEST",
+        "test_type": "RAW_MATERIAL_QUALITY",
+        "test_date": "2026-11-21",
+        "certificate_id": "CERT-PDF-0002",
+        "result": "PASS",
+    }
+    response = client.post(
+        "/api/lab/tests",
+        data={"payload": json.dumps(payload)},
+        files={"report": ("not-a-pdf.pdf", b"this is not a PDF", "application/pdf")},
+        headers=headers,
+    )
+    assert response.status_code == 400, response.text
+    assert db.lab_tests.count_documents({"batch_id": "ASH-PDF-2026-002"}) == 0
