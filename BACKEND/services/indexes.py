@@ -40,6 +40,7 @@ INDEXES = [
     ("medicine_batches", [("medicine_batch_id", 1)], True),
     ("medicine_batches", [("qr_id", 1)], True),
     ("medicine_batches", [("processing_batch_id", 1)], False),
+    ("medicine_batches", [("processing_batch_ids", 1)], False),
     ("medicine_batches", [("created_at", -1)], False),
 
     ("batch_relationships", [("relationship_id", 1)], True),
