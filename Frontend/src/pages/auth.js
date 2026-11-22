@@ -224,7 +224,7 @@ document
             submitButton.textContent = "Signing in…";
         }
         showAuthMessage(
-            "Please note: TraceVeda is hosted on a free Render instance. Please wait while we connect you securely. This may take up to a minute. Keep this page open until sign-in is complete.",
+            "Please wait while we connect you securely. This may take up to a minute. Keep this page open until sign-in is complete.",
             "info"
         );
 
